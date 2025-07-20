@@ -19,6 +19,7 @@ export default defineConfig(({ mode }) => {
   ],
     define: {
       'import.meta.env.APP_TYPE': JSON.stringify(env.APP_TYPE),
+      'import.meta.env.APP_PORT': JSON.stringify(env.API_PORT),
     },
     resolve: {
     alias: {
