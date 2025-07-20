@@ -1,0 +1,51 @@
+{
+    "transaction": {
+        "account": {
+            "details": {
+                "title": "Account Book Details",
+                "fields": [
+                    {
+                        "key": "name",
+                        "label": "Account Book Name",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": true
+                    },
+                    {
+                        "key": "transaction",
+                        "label": "Transaction Type",
+                        "type": "dropdown",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "opening",
+                        "label": "Opening Balance",
+                        "type": "dropdown",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "duedate",
+                        "label": "Due Date",
+                        "type": "date",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "notes",
+                        "label": "Notes",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    }
+                ]
+            }
+        }
+    }
+}
