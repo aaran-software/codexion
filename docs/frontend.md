@@ -1,3 +1,7 @@
+
+# Frontend Project Structure
+
+```
 codexsion/
 │
 ├── React/ # React frontend application
@@ -147,3 +151,4 @@ codexsion/
 │ ├── vite.config.ts / webpack.config.js # Build configuration
 │ ├── package.json # Project dependencies & scripts
 │ └── README.md # Project overview and documentation
+```
