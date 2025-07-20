@@ -1,12 +1,16 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "./theme.css";
+import App from "./App.tsx";
 
-const app_type = import.meta.env.APP_TYPE || 'cms'
-
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App app_type={app_type} />
-  </StrictMode>,
-)
+import { AppProvider } from "./pages/GlobalContext/AppContaxt.tsx";
+import AppInitializer from "./pages/app/useSettings.tsx";
+createRoot(document.getElementById("root")!).render(
+    <AppInitializer>
+      <AppProvider>
+        <StrictMode>
+          <App />
+        </StrictMode>
+      </AppProvider>
+    </AppInitializer>
+);
