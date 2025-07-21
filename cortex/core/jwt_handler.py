@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from jose import jwt, JWTError
-
+from sqlalchemy.orm import Session
+from cortex.models.token import Token
 
 # Constants (move to config later if needed)
 SECRET_KEY = "your_secret_key_here"
@@ -20,3 +21,6 @@ def decode_token(token: str):
         return username
     except JWTError:
         return None
+
+def is_token_blacklisted(token: str, db: Session) -> bool:
+    return db.query(Token).filter_by(token=token).first() is not None

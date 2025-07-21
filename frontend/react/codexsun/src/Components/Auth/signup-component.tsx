@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../Chart/card"
 import PasswordInput from "../Input/passwordInput"
 import Button from "../Input/Button"
 import FloatingInput from "../Input/FloatingInput"
+import { useAppContext } from "../../pages/GlobalContext/AppContaxt"
 
 export function SignupComponent({
   className,
@@ -16,7 +17,7 @@ export function SignupComponent({
   const [password, setPassword] = useState("")
   const [passwordConfirm, setPasswordConfirm] = useState("")
   const [error, setError] = useState("")
-
+  const {API_URL}=useAppContext();
   const handleSignup = async (e: React.FormEvent) => {
   e.preventDefault();
   setError("");
@@ -27,7 +28,7 @@ export function SignupComponent({
   }
 
   try {
-    const response = await fetch("http://127.0.0.1:8000/api/register", {
+    const response = await fetch(`${API_URL}/api/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

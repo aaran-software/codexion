@@ -31,8 +31,9 @@ import {
 import { useNavigate } from "react-router-dom";
 import HelpMenu from "./HelpMenu";
 import { useRef, useState } from "react";
-import { useAuth } from "@/pages/auth/AuthContext";
-import { logoutUser } from "@/pages/auth/logout";
+// import { useAuth } from "../../pages/auth/AuthContext";
+import { logoutUser } from "../../pages/auth/logout";
+import { useAppContext } from "../../pages/GlobalContext/AppContaxt";
 
 export function NavUser({
   user,
@@ -46,10 +47,11 @@ export function NavUser({
   const { isMobile } = useSidebar();
   const navigate = useNavigate();
   const [showHelpMenu, setShowHelpMenu] = useState(false);
-  const { logout } = useAuth();
+  // const { logout } = useAuth();
+  const { API_URL } = useAppContext();
    const handleLogout = () => {
-    logoutUser()
-    logout();
+    logoutUser(API_URL);
+    // logout();
     navigate("/");
   };
   const helpTimeout = useRef<NodeJS.Timeout | null>(null);

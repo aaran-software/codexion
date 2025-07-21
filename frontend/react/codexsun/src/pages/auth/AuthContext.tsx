@@ -1,5 +1,6 @@
 // AuthContext.tsx
 import { createContext, useContext, useEffect, useState } from "react";
+import {useAppContext} from "../GlobalContext/AppContaxt.tsx";
 
 type User = {
   username: string;
@@ -25,6 +26,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
+    const {API_URL} = useAppContext();
 
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
@@ -32,7 +34,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const verifyToken = async () => {
       if (savedToken && savedUser) {
-        const res = await fetch("http://127.0.0.1:8000/api/protected", {
+        const res = await fetch(`${API_URL}/api/protected`, {
           headers: {
             Authorization: `Bearer ${savedToken}`,
           },

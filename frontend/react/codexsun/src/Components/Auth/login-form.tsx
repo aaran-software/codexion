@@ -38,19 +38,28 @@ export function LoginForm({className}: { className?: string }) {
         }
 
         try {
-            const form = new URLSearchParams();
-            form.append("username", usr);
-            form.append("password", pwd);
-            form.append("grant_type", "password");
-
+            // const form = new URLSearchParams();
+            // form.append("username", usr);
+            // form.append("password", pwd);
+            // form.append("grant_type", "password");
+            //
+            // const response = await fetch(`${API_URL}/api/login`, {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/x-www-form-urlencoded",
+            //     },
+            //     body: form.toString(),
+            //     credentials: "include",
+            // });
             const response = await fetch(`${API_URL}/api/login`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
+                    "Content-Type": "application/json",
                 },
-                body: form.toString(),
+                body: JSON.stringify({username: usr, password: pwd}),
                 credentials: "include",
             });
+
 
             if (!response.ok) {
                 throw new Error("Login failed");
