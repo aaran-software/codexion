@@ -15,33 +15,6 @@ import {
 import { useEffect, useState } from "react";
 import { useAppContext } from "../../GlobalContext/AppContaxt";
 import { useNavigate, useParams } from "react-router-dom";
-// import Purchase from "../";
-// import Sales from "./Forms/Invoice/Sales";
-// import Payment from "./Forms/Invoice/Payment";
-// import Receipt from "./Forms/Invoice/Receipt";
-// import AccountBooks from "./Forms/Transaction/Account-Books";
-// import AccountHeads from "./Forms/Books/Account-Heads";
-// import Ledger from "./Forms/Books/Ledger";
-// import Contacts from "./Forms/Master/Contacts";
-// import Products from "./Forms/Master/Products";
-// import Orders from "./Forms/Master/Orders";
-// import Styles from "./Forms/Master/Styles";
-// import City from "./Forms/Common/City";
-// import States from "./Forms/Common/State";
-// import PinCode from "./Forms/Common/Pin-Codes";
-// import Countries from "./Forms/Common/Countries";
-// import HSNCode from "./Forms/Common/HSN-Codes";
-// import Units from "./Forms/Common/Units";
-// import Categories from "./Forms/Common/Categories";
-// import Colours from "./Forms/Common/Colours";
-// import Size from "./Forms/Common/Sizes";
-// import Departments from "./Forms/Common/Departments";
-// import Bank from "./Forms/Common/Bank";
-// import ReceiptType from "./Forms/Common/Receipt-Type";
-// import Despatches from "./Forms/Common/Despatches";
-// import GstPercent from "./Forms/Common/Gst-Percents";
-// import ContactType from "./Forms/Common/Contact-Types";
-// import PaymentMode from "./Forms/Common/Payment.Mode";
 import { useAuth } from "../auth/AuthContext";
 import Dashboard from "../../../Components/Dashboard/Dashboard";
 import AppHeader from "../../../Components/Header/AppHeader";
@@ -74,14 +47,7 @@ useEffect(() => {
   useEffect(() => {
     if (currentComponent) {
       const titleMap: Record<string, string> = {
-        themes: "Theme",
         admin: "Dashboard",
-        logo: "Customize Logo",
-        sales: "Sales",
-        purchase: "Purchase",
-        receipt: "Receipt",
-        payment: "Payment",
-        accountbook: "Account Books",
         docker: "Docker",
       };
       document.title = titleMap[currentComponent];
@@ -89,7 +55,6 @@ useEffect(() => {
   }, [currentComponent]);
 
   const [compoent] = useState([
-
 
     {
       id: "dashboard",
@@ -101,160 +66,7 @@ useEffect(() => {
       className: "w-[100%] min-h-full",
       component: <Docker />,
     },
- 
-    // {
-    //   id: "purchase",
-    //   className: "w-[100%] min-h-full",
-    //   component: <Purchase />,
-    // },
-    // {
-    //   id: "sales",
-    //   className: "w-[100%] min-h-full",
-    //   component: <Sales />,
-    // },
-    // {
-    //   id: "receipt",
-    //   className: "w-[100%] min-h-full",
-    //   component: <Receipt />,
-    // },
-    // {
-    //   id: "payment",
-    //   className: "w-[100%] min-h-full",
-    //   component: <Payment />,
-    // },
 
-    // // transaction
-    // {
-    //   id: "accountbook",
-    //   className: "w-[100%] min-h-full",
-    //   component: <AccountBooks />,
-    // },
-
-    // // books
-    // {
-    //   id: "accounthead",
-    //   className: "w-[100%] min-h-full",
-    //   component: <AccountHeads />,
-    // },
-    // {
-    //   id: "ledgergroup",
-    //   className: "w-[100%] min-h-full",
-    //   component: <AccountHeads />,
-    // },
-    // {
-    //   id: "ledger",
-    //   className: "w-[100%] min-h-full",
-    //   component: <Ledger />,
-    // },
-
-    // {
-    //   id: "contacts",
-    //   className: "w-[100%] min-h-full",
-    //   component: <Contacts />,
-    // },
-    // {
-    //   id: "products",
-    //   className: "w-[100%] min-h-full",
-    //   component: <Products />,
-    // },
-    // {
-    //   id: "company",
-    //   className: "w-[100%] min-h-full",
-    //   component: <Ledger />,
-    // },
-    // {
-    //   id: "orders",
-    //   className: "w-[100%] min-h-full",
-    //   component: <Orders />,
-    // },
-    // {
-    //   id: "styles",
-    //   className: "w-[100%] min-h-full",
-    //   component: <Styles />,
-    // },
-
-    // // common
-
-    //  {
-    //   id: "city",
-    //   className: "w-[100%] min-h-full",
-    //   component: <City />,
-    // },
-    //   {
-    //   id: "state",
-    //   className: "w-[100%] min-h-full",
-    //   component: <States />,
-    // },
-    //   {
-    //   id: "pincode",
-    //   className: "w-[100%] min-h-full",
-    //   component: <PinCode />,
-    // },
-    //   {
-    //   id: "country",
-    //   className: "w-[100%] min-h-full",
-    //   component: <Countries />,
-    // },
-    //   {
-    //   id: "hsncode",
-    //   className: "w-[100%] min-h-full",
-    //   component: <HSNCode />,
-    // },
-    //   {
-    //   id: "units",
-    //   className: "w-[100%] min-h-full",
-    //   component: <Units />,
-    // },
-    //   {
-    //   id: "category",
-    //   className: "w-[100%] min-h-full",
-    //   component: <Categories />,
-    // },
-    //   {
-    //   id: "colours",
-    //   className: "w-[100%] min-h-full",
-    //   component: <Colours />,
-    // },
-    //   {
-    //   id: "sizes",
-    //   className: "w-[100%] min-h-full",
-    //   component: <Size />,
-    // },
-    //   {
-    //   id: "departments",
-    //   className: "w-[100%] min-h-full",
-    //   component: <Departments />,
-    // },
-    //   {
-    //   id: "bank",
-    //   className: "w-[100%] min-h-full",
-    //   component: <Bank />,
-    // },
-    //   {
-    //   id: "receipttype",
-    //   className: "w-[100%] min-h-full",
-    //   component: <ReceiptType />,
-    // },
-    //   {
-    //   id: "despatches",
-    //   className: "w-[100%] min-h-full",
-    //   component: <Despatches />,
-    // },
-    //   {
-    //   id: "gstpercent",
-    //   className: "w-[100%] min-h-full",
-    //   component: <GstPercent />,
-    // },
-    //   {
-    //   id: "contacttype",
-    //   className: "w-[100%] min-h-full",
-    //   component: <ContactType />,
-    // },
-    //   {
-    //   id: "paymentmode",
-    //   className: "w-[100%] min-h-full",
-    //   component: <PaymentMode />,
-    // },
   ]);
 
   return (

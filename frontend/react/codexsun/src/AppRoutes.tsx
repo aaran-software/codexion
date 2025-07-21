@@ -71,9 +71,9 @@ const AppRoutes = () => {
 
   const routes = (() => {
     switch (APP_CODE) {
-      case "web2":
-        return Codexsun();
       case "web":
+        return Codexsun();
+      case "cortex":
         return Cortex();
       default:
         return [
