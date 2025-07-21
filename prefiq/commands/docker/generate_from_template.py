@@ -1,7 +1,7 @@
 import os
 import re
 from jinja2 import Environment, FileSystemLoader
-from corebase.codemaker.utils.jinja_cleanup import postprocess_rendered
+from prefiq.utils.jinja_cleanup import postprocess_rendered
 
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), 'templates')
 

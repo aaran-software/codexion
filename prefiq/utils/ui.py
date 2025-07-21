@@ -17,37 +17,50 @@ console = Console()
 def print_success(message: str):
     console.print(f"[bold green][OK][/bold green] {message}")
 
+
 def print_error(message: str):
     console.print(f"[bold red][ERROR][/bold red] {message}")
+
 
 def print_warning(message: str):
     console.print(f"[bold yellow][WARN][/bold yellow] {message}")
 
+
 def print_info(message: str):
     console.print(f"[bold cyan][INFO][/bold cyan] {message}")
+
 
 def print_separator(title: str = ""):
     """Draw a horizontal rule with an optional title."""
     console.rule(f"[bold blue]{title}[/bold blue]" if title else "")
 
 
+def _alert(message: str):
+    print(f"[bold red]Alert![/bold red] [white]{message}[/white]! :boom:")
+
+
 # ─────────────────────────────────────────────────────
 # Panel Helpers
 # ─────────────────────────────────────────────────────
 
-def panel_message(message: str, title: str = "Message", style: str = "bold white", border_style: str = "cyan", box_style=box.ROUNDED):
+def panel_message(message: str, title: str = "Message", style: str = "bold white", border_style: str = "cyan",
+                  box_style=box.ROUNDED):
     """Prints a panel with custom styles."""
     panel = Panel(Text(message, style=style), title=title, border_style=border_style, box=box_style)
     console.print(panel)
 
+
 def panel_success(message: str, title="Success"):
     panel_message(message, title, style="bold green", border_style="green")
+
 
 def panel_error(message: str, title="Error"):
     panel_message(message, title, style="bold red", border_style="red")
 
+
 def panel_info(message: str, title="Info"):
     panel_message(message, title, style="bold cyan", border_style="cyan")
+
 
 def panel_warning(message: str, title="Warning"):
     panel_message(message, title, style="bold yellow", border_style="yellow")
@@ -60,13 +73,13 @@ def panel_warning(message: str, title="Warning"):
 def show_progress(task_message: str, steps: list[str]):
     """Displays a progress bar with step logging."""
     with Progress(
-        SpinnerColumn(),
-        TextColumn("[progress.description]{task.description}"),
-        BarColumn(),
-        TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
-        TimeElapsedColumn(),
-        console=console,
-        transient=True
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}"),
+            BarColumn(),
+            TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+            TimeElapsedColumn(),
+            console=console,
+            transient=True
     ) as progress:
         task = progress.add_task(task_message, total=len(steps))
         for step in steps:
@@ -79,6 +92,7 @@ def show_progress(task_message: str, steps: list[str]):
 # ─────────────────────────────────────────────────────
 
 from rich.text import Text
+
 
 def styled_text(content: str, color: str = "white", bold: bool = False, italic: bool = False) -> Text:
     """Returns a styled Text object with the specified color and optional bold/italic styles."""
@@ -112,6 +126,7 @@ def print_main_help():
     )
 
     console.print(panel)
+
 
 """
 from prefiq.utils.ui import *
