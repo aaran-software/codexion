@@ -10,15 +10,14 @@ from prefiq.commands.docker.gen_pgdb import gen_pgdb_compose
 from prefiq.commands.docker.nginx import gen_nginx_compose
 from prefiq.commands.docker.traefik import gen_traefik_compose
 from prefiq.commands.docker.gen_docker_json import remove_docker_domain_entry
-from prefiq.commands.docker.actions.build import run_build
 
-docker_build = typer.Typer(help="Prefiq Docker commands")
+docker_actions = typer.Typer(help="Prefiq Docker commands")
 DOCKERFILE_DIR = Path("./docker")
 DEFAULT_REGISTRY = "docker.io"
 
 
 # ------------------ Create Dockerfile ------------------
-@docker_build.command("create", help="Generate a Dockerfile for your app.")
+@docker_actions.command("create", help="Generate a Dockerfile for your app.")
 def create_dockerfile(name: str = typer.Option(None, "--name", "-n", help="Dockerfile name (e.g., app)")):
     """
     Generate a Dockerfile for your app.
@@ -31,7 +30,7 @@ def create_dockerfile(name: str = typer.Option(None, "--name", "-n", help="Docke
 
 
 # ------------------ Compose ------------------
-@docker_build.command("compose", help="Generate docker-compose.yml for your app with domain and port.")
+@docker_actions.command("compose", help="Generate docker-compose.yml for your app with domain and port.")
 def compose_docker():
     """
     Generate docker-compose.yml for your app with domain and port.
@@ -47,7 +46,7 @@ def compose_docker():
 
 
 # ------------------ MariaDB ------------------
-@docker_build.command("mariadb", help="Generate docker-compose file for MariaDB.")
+@docker_actions.command("mariadb", help="Generate docker-compose file for MariaDB.")
 def compose_mariadb():
     """
     Generate docker-compose file for MariaDB.
@@ -60,7 +59,7 @@ def compose_mariadb():
 
 
 # ------------------ Postgres SQL ------------------
-@docker_build.command("pgdb", help="Generate docker-compose file for Postgres SQL.")
+@docker_actions.command("pgdb", help="Generate docker-compose file for Postgres SQL.")
 def compose_pgdb():
     """
     Generate docker-compose file for Postgres SQL.
@@ -71,7 +70,7 @@ def compose_pgdb():
 
 
 # ------------------ Nginx ------------------
-@docker_build.command("nginx", help="Generate docker-compose and nginx.conf for reverse proxy.")
+@docker_actions.command("nginx", help="Generate docker-compose and nginx.conf for reverse proxy.")
 def compose_nginx_proxy():
     """
     Generate docker-compose and nginx.conf for reverse proxy.
@@ -82,7 +81,7 @@ def compose_nginx_proxy():
 
 
 # ------------------ Traefik ------------------
-@docker_build.command("traefik", help="Generate docker-compose for Traefik with SSL setup.")
+@docker_actions.command("traefik", help="Generate docker-compose for Traefik with SSL setup.")
 def compose_traefik_proxy():
     """
     Generate docker-compose for Traefik with Let's Encrypt SSL setup.
@@ -92,7 +91,7 @@ def compose_traefik_proxy():
 
 
 # ------------------ Build ------------------
-@docker_build.command("remove-compose", help="Remove a site's docker-compose entry")
+@docker_actions.command("remove-compose", help="Remove a site's docker-compose entry")
 def remove_compose_entry(domain: str = typer.Argument(None, help="Domain to remove (e.g., sundar.com)")):
     """
       Remove a site's docker-compose entry from docker.json.
@@ -105,7 +104,7 @@ def remove_compose_entry(domain: str = typer.Argument(None, help="Domain to remo
 
 # ------------------ Build ------------------
 
-@docker_build.command("build", help="Build Docker image(s)")
+@docker_actions.command("build", help="Build Docker image(s)")
 def build(
         name: Optional[str] = typer.Argument(None,
                                              help="App name to build (if omitted, builds all from docker.json)"),
@@ -123,7 +122,7 @@ def build(
 
 # ------------------ Tag ------------------
 
-@docker_build.command("tag", help="Tag a Docker image")
+@docker_actions.command("tag", help="Tag a Docker image")
 def tag(
         source: str = typer.Argument(..., help="Source image name (e.g., sundar:latest)"),
         target: str = typer.Argument(..., help="Target image tag (e.g., registry.com/sundar:latest)")
@@ -137,7 +136,7 @@ def tag(
 
 # ------------------ Push ------------------
 
-@docker_build.command("push", help="Push a Docker image to registry")
+@docker_actions.command("push", help="Push a Docker image to registry")
 def push(
         tag: str = typer.Argument(..., help="Image tag to push (e.g., sundar:latest)")
 ):
@@ -150,7 +149,7 @@ def push(
 
 # ------------------ Delete ------------------
 
-@docker_build.command("delete", help="Delete a local Docker image")
+@docker_actions.command("delete", help="Delete a local Docker image")
 def delete(
         name: str = typer.Argument(..., help="Image name to delete")
 ):
@@ -163,7 +162,7 @@ def delete(
 
 # ------------------ Up ------------------
 
-@docker_build.command("up", help="Start containers using docker-compose")
+@docker_actions.command("up", help="Start containers using docker-compose")
 def up(
         name: str = typer.Argument(..., help="App/domain name to start (e.g., sundar)")
 ):
@@ -177,7 +176,7 @@ def up(
 
 # ------------------ Down ------------------
 
-@docker_build.command("down", help="Stop and remove containers")
+@docker_actions.command("down", help="Stop and remove containers")
 def down(
         name: str = typer.Argument(..., help="App/domain name to stop (e.g., sundar)")
 ):
@@ -191,7 +190,7 @@ def down(
 
 # ------------------ Purge ------------------
 
-@docker_build.command("purge", help="Stop and delete image & container")
+@docker_actions.command("purge", help="Stop and delete image & container")
 def purge(
         name: str = typer.Argument(..., help="App/domain name to fully remove")
 ):
@@ -205,7 +204,7 @@ def purge(
 
 # ------------------ Registry ------------------
 
-@docker_build.command("registry", help="Show full image path in registry")
+@docker_actions.command("registry", help="Show full image path in registry")
 def registry(
         name: str = typer.Argument(..., help="App/domain name"),
         tag: str = typer.Option("latest", "--tag", help="Image tag")

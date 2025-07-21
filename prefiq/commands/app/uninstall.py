@@ -1,37 +1,27 @@
-from pathlib import Path
-import json
+# prefiq/commands/app/uninstall.py
+
+import os
 import shutil
+import json
 from prefiq.utils.path import get_apps_dir, get_config_path
-from prefiq.utils.ui import print_success, print_warning, print_info
+from prefiq.utils.ui import print_success, print_error
 
 
-def load_config() -> dict:
-    config_path = Path(get_config_path())
-    if not config_path.exists():
-        return {"apps": []}
-    with config_path.open("r") as f:
-        return json.load(f)
-
-
-def save_config(data: dict):
-    config_path = Path(get_config_path())
-    with config_path.open("w") as f:
-        json.dump(data, f, indent=2)
-
-
-def run(args):
-    app_name = args.name
-    app_path = Path(get_apps_dir()) / app_name
-
-    if not app_path.exists():
-        print_warning(f"App '{app_name}' does not exist in apps/")
+def run(name: str):
+    app_path = os.path.join(get_apps_dir(), name)
+    if not os.path.exists(app_path):
+        print_error(f"App '{name}' not found.")
         return
 
     shutil.rmtree(app_path)
 
-    config = load_config()
-    if app_name in config.get("apps", []):
-        config["apps"].remove(app_name)
-        save_config(config)
+    config_path = get_config_path()
+    if os.path.exists(config_path):
+        with open(config_path, "r") as f:
+            config = json.load(f)
+        if name in config.get("apps", []):
+            config["apps"].remove(name)
+            with open(config_path, "w") as f:
+                json.dump(config, f, indent=2)
 
-    print_info(f"App '{app_name}' uninstalled successfully.")
+    print_success(f"App '{name}' uninstalled.")

@@ -1,39 +1,49 @@
 # prefiq/cli.py
 
-import argparse
+import typer
 from prefiq.commands.app import install, uninstall, update_app, list_app, reinstall
+
+app = typer.Typer(help="Prefiq App Manager")
+
+@app.command("install-app")
+def install_app(
+    name: str = typer.Argument(None, help="App name to install"),
+    force: bool = typer.Option(False, "--force", help="Overwrite if app exists")
+):
+    if not name:
+        name = typer.prompt("Enter app name to install")
+    install.run(name=name, force=force)
+
+
+@app.command("uninstall-app")
+def uninstall_app(name: str = typer.Argument(None, help="App name to uninstall")):
+    if not name:
+        name = typer.prompt("Enter app name to uninstall")
+    uninstall.run(name=name)
+
+
+@app.command("reinstall-app")
+def reinstall_app(name: str = typer.Argument(None, help="App name to reinstall")):
+    if not name:
+        name = typer.prompt("Enter app name to reinstall")
+    reinstall.run(name=name)
+
+
+@app.command("update-app")
+def update_app_cmd(name: str = typer.Argument(None, help="App name to update")):
+    if not name:
+        name = typer.prompt("Enter app name to update")
+    update_app.run(name=name)
+
+
+@app.command("list-apps")
+def list_apps():
+    list_app.run()
 
 
 def run_cli():
-    parser = argparse.ArgumentParser(prog="prefiq", description="Prefiq App Manager")
-    subparsers = parser.add_subparsers(dest="command")
+    app()
 
-    # install-app
-    install_parser = subparsers.add_parser("install-app", help="Install a new app")
-    install_parser.add_argument("name", help="App name to install")
-    install_parser.add_argument("--force", action="store_true", help="Overwrite if app exists")
 
-    # uninstall-app
-    uninstall_parser = subparsers.add_parser("uninstall-app", help="Uninstall an app")
-    uninstall_parser.add_argument("name", help="App name to uninstall")
-
-    # re-install
-    reinstall_parser = subparsers.add_parser("reinstall-app", help="Reinstall an app")
-    reinstall_parser.add_argument("name", help="App name to reinstall")
-
-    # update-app
-    update_parser = subparsers.add_parser("update-app", help="Update an existing app from Git")
-    update_parser.add_argument("name", help="App name to update")
-
-    # list-apps
-    subparsers.add_parser("list-apps", help="List all installed apps")
-
-    args = parser.parse_args()
-
-    match args.command:
-        case "install-app": install.run(args)
-        case "uninstall-app": uninstall.run(args)
-        case "reinstall-app": reinstall.run(args)
-        case "update-app": update_app.run(args)
-        case "list-apps": list_app.run([])
-        case _: parser.print_help()
+if __name__ == "__main__":
+    run_cli()
