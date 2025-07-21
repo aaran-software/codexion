@@ -1,0 +1,16 @@
+[project]
+name = "prefiq"
+version = "0.1.0"
+description = "Prefiq App CLI"
+authors = [{ name = "Sundar", email = "aaransoftware@gmail.com" }]
+dependencies = []
+
+[project.scripts]
+prefiq = "prefiq.__main__:main"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["prefiq"]

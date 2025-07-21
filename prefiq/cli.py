@@ -1,7 +1,7 @@
 # prefiq/cli.py
 
 import argparse
-from prefiq.commands import install, uninstall, reinstall, update_app
+from prefiq.commands import install, uninstall, reinstall, update_app, list_app
 
 
 def main():
@@ -25,6 +25,9 @@ def main():
     update_parser = subparsers.add_parser("update-app", help="Update an existing app from Git")
     update_parser.add_argument("name", help="App name to update")
 
+    # list-apps ✅
+    list_parser = subparsers.add_parser("list-apps", help="List all installed apps")
+
     args = parser.parse_args()
 
     if args.command == "install-app":
@@ -35,5 +38,7 @@ def main():
         reinstall.run(args)
     elif args.command == "update-app":
         update_app.run(args)
+    elif args.command == "list-apps":
+        list_app.run([])
     else:
         parser.print_help()

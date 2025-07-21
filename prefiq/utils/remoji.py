@@ -1,17 +1,43 @@
 import os
 import re
 
+# Emoji ➝ ASCII replacements
 EMOJI_REPLACEMENTS = {
-    "[OK]": "[OK]",
-    "[ERROR]": "[ERROR]",
-    "[UPDATE]": "[UPDATE]",
-    "[DELETE]": "[DELETE]",
-    "[WARN]": "[WARN]",
-    "[REINSTALL]": "[REINSTALL]",
+    "✅": "[OK]",
+    "❌": "[ERROR]",
+    "🔄": "[UPDATE]",
+    "🗑️": "[DELETE]",
+    "⚠️": "[WARN]",
+    "🔁": "[REINSTALL]",
+    "📦": "[PACKAGE]",
+    "📭": "[INBOX]",
+    "📄": "[FILE]",
+    "🔍": "[SCAN]",
+    "🐳": "[DOCKER]",
+    "🐬": "[MARIADB]",
+    "🛠️": "[BUILD]",
+    "📁": "[VOLUME]",
+    "🧱": "[LAYER]",
+    "🧰": "[TOOLBOX]",
+    "🧩": "[PLUGIN]",
+    "🌀": "[NETWORK]",
+    "🚢": "[DEPLOY]",
+    "⛴️": "[SHIP]",
+    "🧼": "[CLEANUP]",
+    "🪝": "[HOOK]",
+    "🧿": "[WATCHER]",
+    "🐍": "[PYTHON]",
+    "🔷": "[PYFEATURE]",
+    "📚": "[DOCS]",
+    "🧪": "[TEST]",
+    "🚀": "[LAUNCH]",
+    "⚙️": "[CONFIG]",
+    "🧵": "[THREAD]",
+    "🧠": "[AI]",
+    "📈": "[STATS]",
 }
 
-remoji add this 📦 📭
-
+# Compile regex pattern to match any emoji key
 EMOJI_PATTERN = re.compile("|".join(map(re.escape, EMOJI_REPLACEMENTS.keys())))
 
 def scan_file(file_path):
@@ -22,7 +48,7 @@ def scan_file(file_path):
     if not matches:
         return False
 
-    print(f"\n📄 Found emojis in: {file_path}")
+    print(f"\n[FILE] Found emojis in: {file_path}")
     for match in matches:
         emoji = match.group(0)
         replacement = EMOJI_REPLACEMENTS.get(emoji)
@@ -30,18 +56,18 @@ def scan_file(file_path):
 
     confirm = input("Replace these emojis with ASCII equivalents? [y/N]: ").strip().lower()
     if confirm != "y":
-        print("[ERROR] Skipping.")
+        print("[SKIP] Skipping.")
         return False
 
     new_content = EMOJI_PATTERN.sub(lambda m: EMOJI_REPLACEMENTS[m.group(0)], content)
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(new_content)
 
-    print("[OK] Replaced successfully.")
+    print("[DONE] Replaced successfully.")
     return True
 
 def scan_folder(folder):
-    print(f"🔍 Scanning folder: {folder}")
+    print(f"[SCAN] Scanning folder: {folder}")
     for root, _, files in os.walk(folder):
         for file in files:
             if file.endswith(".py"):
