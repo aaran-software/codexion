@@ -1,6 +1,6 @@
 import os
 
-from prefiq.commands import uninstall, install
+from prefiq.commands.app import install, uninstall
 from prefiq.utils.path import get_apps_dir
 from prefiq.utils.ui import print_success, print_warning
 

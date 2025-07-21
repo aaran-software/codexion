@@ -1,7 +1,7 @@
 # prefiq/cli.py
 
 import argparse
-from prefiq.commands import install, uninstall, reinstall, update_app, list_app
+from prefiq.commands.app import install, uninstall, update_app, list_app, reinstall
 
 
 def main():
