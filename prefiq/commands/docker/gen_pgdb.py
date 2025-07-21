@@ -8,20 +8,20 @@ TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), 'templates')
 OUTPUT_DIR = os.path.join(os.getcwd(), 'docker')
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-def gen_mariadb_compose(name: str, password: str = "DbPass1@@"):
-    """
-    Generates docker-compose file for MariaDB
-    """
 
+def gen_pgdb_compose(name: str, password: str = "PgPass1@@"):
+    """
+    Generates docker-compose file for PostgreSQL
+    """
     context = {
         "db_name": name,
         "db_password": password,
     }
 
-    output_filename = "docker-compose-mariadb.yml"
+    output_filename = "docker-compose-postgres.yml"
 
     generate_from_template(
-        template_name="mariadb.j2",
+        template_name="postgres.j2",
         output_filename=output_filename,
         context=context,
         output_dir=OUTPUT_DIR

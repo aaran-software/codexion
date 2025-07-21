@@ -11,7 +11,7 @@ docker_build = typer.Typer(help="Docker utility commands")
 
 
 @docker_build.command("build")
-def create_dockerfile(name: str = None):
+def create_dockerfile(name: str = typer.Option(None, "--name", "-n", help="Dockerfile name (e.g., app)")):
     if not name:
         name = typer.prompt("Dockerfile name (e.g., app)")
     gen_dockerfile(name=name)
@@ -25,17 +25,18 @@ def compose_docker():
 
 
 @docker_build.command("mariadb")
-def gen_mariadb_compose():
+def compose_mariadb():
     name = typer.prompt("MariaDB database name", default="mariadb")
     password = typer.prompt("MariaDB root password", default="DbPass1@@", hide_input=True)
     gen_mariadb_compose(name=name, password=password)
 
 
 @docker_build.command("pgdb")
-def gen_postgres_compose():
+def compose_pgdb():
     name = typer.prompt("Postgres database name", default="postgres")
     password = typer.prompt("Postgres root password", default="PgPass1@@", hide_input=True)
     gen_pgdb_compose(name=name, password=password)
+
 
 @docker_build.command("nginx")
 def compose_nginx_proxy():
@@ -48,4 +49,3 @@ def compose_nginx_proxy():
 def compose_traefik_proxy():
     email = typer.prompt("Email for SSL cert (Let's Encrypt)")
     gen_traefik_compose(email=email)
-
