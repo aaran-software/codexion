@@ -1,6 +1,8 @@
 from pathlib import Path
 import json
 from prefiq.utils.path import get_apps_dir, get_config_path
+from prefiq.utils.ui import print_warning, print_success
+
 
 def is_app_installed(app_name: str) -> bool:
     config_path = Path(get_config_path())
@@ -16,14 +18,14 @@ def run(args):
     app_path = Path(get_apps_dir()) / app_name
 
     if not app_path.exists():
-        print(f"[ERROR] App '{app_name}' does not exist in apps/")
+        print_warning(f" App '{app_name}' does not exist in apps/")
         return
 
     if not is_app_installed(app_name):
-        print(f"[WARN] App '{app_name}' is not registered as installed.")
+        print_warning(f"App '{app_name}' is not registered as installed.")
         return
 
-    print(f"[UPDATE] Updating app '{app_name}'...")
+    print_success(f" Updating app '{app_name}'...")
 
     update_file = app_path / "last_updated.txt"
     update_file.write_text("App updated!")

@@ -2,6 +2,7 @@ import os
 import json
 import shutil
 from prefiq.utils.path import get_apps_dir, get_config_path
+from prefiq.utils.ui import *
 
 
 def load_config():
@@ -30,9 +31,9 @@ def run(args):
     if os.path.exists(app_path):
         if force:
             shutil.rmtree(app_path)
-            print(f"[WARN]  Overwriting existing app '{app_name}'")
+            print_warning(f"Overwriting existing app '{app_name}'")
         else:
-            print(f"[ERROR] App '{app_name}' already exists. Use --force to overwrite.")
+            print_error(f"App '{app_name}' already exists. Use --force to overwrite.")
             return
 
     os.makedirs(app_path)
@@ -42,4 +43,4 @@ def run(args):
         config["apps"].append(app_name)
         save_config(config)
 
-    print(f"[ok] App '{app_name}' installed at apps/{app_name}", flush=True)
+    print_success(f"[ok] App '{app_name}' installed at apps/{app_name}")
