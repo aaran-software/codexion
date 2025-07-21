@@ -1,5 +1,4 @@
 import os
-
 from prefiq.commands.docker.templates.generate_from_template import generate_from_template
 from prefiq.utils.ui import print_success
 
@@ -8,11 +7,20 @@ TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), 'templates')
 OUTPUT_DIR = os.path.join(os.getcwd(), 'docker')
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-def gen_compose(name: str):
+def gen_compose(domain: str, port: int):
+    # Sanitize name for docker usage
+    name = domain.replace('.', '_').lower()
+
     context = {
-        "base_image": "ubuntu:24.04",
-        "packages": ["python3", "python3-pip", "curl", "nano"],
-        "cmd": "bash"
+        "service_name": name,
+        "image_name": name,
+        "version": "1",
+        "container_name": name,
+        "host_port": port,
+        "container_port": port,
+        "domain": domain,
+        "router_prefix": name,
+        "traefik_service_name": name
     }
 
     output_filename = f"docker-compose-{name}.yml"

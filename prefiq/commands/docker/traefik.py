@@ -1,27 +1,19 @@
 import os
-
 from prefiq.commands.docker.templates.generate_from_template import generate_from_template
 from prefiq.utils.ui import print_success
 
-# Define paths
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), 'templates')
 OUTPUT_DIR = os.path.join(os.getcwd(), 'docker')
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-def gen_compose(name: str):
+def gen_traefik_compose(email: str):
     context = {
-        "base_image": "ubuntu:24.04",
-        "packages": ["python3", "python3-pip", "curl", "nano"],
-        "cmd": "bash"
+        "email": email,
     }
-
-    output_filename = f"docker-compose-mariadb.yml"
-
     generate_from_template(
-        template_name='cloud.j2',
-        output_filename=output_filename,
+        template_name='traefik.j2',
+        output_filename='docker-compose-traefik.yml',
         context=context,
         output_dir=OUTPUT_DIR
     )
-
-    print_success(f"Compose written to: {os.path.join(OUTPUT_DIR, output_filename)}")
+    print_success("Traefik compose generated.")
