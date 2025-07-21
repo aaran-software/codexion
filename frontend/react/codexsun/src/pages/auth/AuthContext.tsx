@@ -1,6 +1,6 @@
 // AuthContext.tsx
 import { createContext, useContext, useEffect, useState } from "react";
-import {useAppContext} from "../GlobalContext/AppContaxt.tsx";
+import { useAppContext } from "../GlobalContext/AppContaxt.tsx";
 
 type User = {
   username: string;
@@ -26,14 +26,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isInitialized, setIsInitialized] = useState(false);
-    const {API_URL} = useAppContext();
+  const { API_URL } = useAppContext();
 
   useEffect(() => {
-    const savedToken = localStorage.getItem("token");
-    const savedUser = localStorage.getItem("user");
+  const savedToken = localStorage.getItem("token");
+  const savedUser = localStorage.getItem("user");
 
-    const verifyToken = async () => {
-      if (savedToken && savedUser) {
+  const verifyToken = async () => {
+    if (savedToken && savedUser) {
+      try {
         const res = await fetch(`${API_URL}/api/protected`, {
           headers: {
             Authorization: `Bearer ${savedToken}`,
@@ -43,17 +44,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (res.ok) {
           setToken(savedToken);
           setUser(JSON.parse(savedUser));
-        } else {
+        } else if (res.status === 401 || res.status === 403) {
+          // Only remove token if it's clearly unauthorized
+          console.warn("Token unauthorized, logging out.");
           localStorage.removeItem("token");
           localStorage.removeItem("user");
+        } else {
+          console.warn("Unexpected response status:", res.status);
+          // Don't remove token, assume temporary issue
         }
+      } catch (err) {
+        console.error("Network error during token verification:", err);
+        // Don't remove token. Assume user still logged in.
       }
+    }
 
-      setIsInitialized(true);
-    };
+    setIsInitialized(true);
+  };
 
-    verifyToken();
-  }, []);
+  verifyToken();
+}, []);
+
 
   const login = (user: User, token: string) => {
     setUser(user);
@@ -71,7 +82,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <AuthContext.Provider value={{ user, token, login, logout, isInitialized }}>
-      {children}
+      {!isInitialized ? (
+        <div className="flex items-center justify-center min-h-screen">
+          <span className="text-lg font-medium">Loading...</span>
+        </div>
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   );
 };
