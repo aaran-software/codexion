@@ -2,6 +2,7 @@ import typer
 
 from prefiq.commands.docker.composefile import gen_compose
 from prefiq.commands.docker.dockerfile import gen_dockerfile
+from prefiq.commands.docker.gen_docker_json import remove_docker_domain_entry
 from prefiq.commands.docker.gen_mariadb import gen_mariadb_compose
 from prefiq.commands.docker.gen_pgdb import gen_pgdb_compose
 from prefiq.commands.docker.nginx import gen_nginx_compose
@@ -43,3 +44,9 @@ def compose_nginx_proxy():
 def compose_traefik_proxy():
     email = typer.prompt("Email for SSL cert (Let's Encrypt)")
     gen_traefik_compose(email=email)
+
+@docker_build.command("remove-compose", help="Remove a site's docker-compose entry")
+def remove_compose_entry(domain: str = typer.Argument(None, help="Domain to remove (e.g., sundar.com)")):
+    if not domain:
+        domain = typer.prompt("Domain to remove (e.g., sundar.com)")
+    remove_docker_domain_entry(domain)

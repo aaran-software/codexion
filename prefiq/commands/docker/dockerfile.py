@@ -1,5 +1,6 @@
 import os
 
+from prefiq.commands.docker.gen_docker_json import gen_docker_json
 from prefiq.commands.docker.templates.generate_from_template import generate_from_template
 from prefiq.utils.ui import print_success
 
@@ -23,5 +24,8 @@ def gen_dockerfile(name: str):
         context=context,
         output_dir=OUTPUT_DIR
     )
+
+    gen_docker_json("DOCKERFILE_NAME", output_filename)
+    gen_docker_json("DOCKERFILE_PATH", {os.path.join(OUTPUT_DIR, output_filename)})
 
     print_success(f"Dockerfile written to: {os.path.join(OUTPUT_DIR, output_filename)}")

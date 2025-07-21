@@ -1,5 +1,7 @@
 import os
 
+from prefiq.commands.core.update_env import gen_env
+from prefiq.commands.docker.gen_docker_json import gen_docker_json
 from prefiq.commands.docker.templates.generate_from_template import generate_from_template
 from prefiq.utils.ui import print_success
 
@@ -7,6 +9,7 @@ from prefiq.utils.ui import print_success
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), 'templates')
 OUTPUT_DIR = os.path.join(os.getcwd(), 'docker')
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+
 
 def gen_mariadb_compose(name: str, password: str = "DbPass1@@"):
     """
@@ -26,5 +29,10 @@ def gen_mariadb_compose(name: str, password: str = "DbPass1@@"):
         context=context,
         output_dir=OUTPUT_DIR
     )
+
+    gen_env("MARIADB_DB", name)
+    gen_env("MARIADB_PASSWORD", password)
+
+    gen_docker_json("MARIADB_COMPOSE", {os.path.join(OUTPUT_DIR, output_filename)})
 
     print_success(f"Compose written to: {os.path.join(OUTPUT_DIR, output_filename)}")
