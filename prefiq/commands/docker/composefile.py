@@ -1,26 +1,35 @@
 import os
-from corebase.codemaker.docker.generators.generate_from_template import generate_from_template, generate_template_to_string
+from prefiq.commands.docker.templates.generate_from_template import generate_from_template
+from prefiq.utils.ui import print_success
 
+# Define paths
+TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), 'templates')
+OUTPUT_DIR = os.path.join(os.getcwd(), 'docker')
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-def docker_compose(output_dir: str):
-    service_names = ["mariadb", "cloud", "nginx"]
-    networks = ["codexion-network:", "external:true"]
+def gen_compose(domain: str, port: int):
+    # Sanitize name for docker usage
+    name = domain.replace('.', '_').lower()
 
-
-    output_path = os.path.join(output_dir, "docker", "output")
-    os.makedirs(output_path, exist_ok=True)
-
-    service_blocks = ""
-    for service_name in service_names:
-        template_file = f"{service_name}.j2"
-        # No context needed for now
-        rendered = generate_template_to_string(template_file, context=None)
-        service_blocks += rendered.strip() + "\n"
-
-    full_context = {
-        "service_blocks": service_blocks.strip(),
-        "networks": networks
+    context = {
+        "service_name": name,
+        "image_name": name,
+        "version": "1",
+        "container_name": name,
+        "host_port": port,
+        "container_port": port,
+        "domain": domain,
+        "router_prefix": name,
+        "traefik_service_name": name
     }
 
-    generate_from_template("base-compose.j2", "docker-compose.yml", full_context, output_path)
-    print(f"[OK] docker-compose.yml generated at: {output_path}")
+    output_filename = f"docker-compose-{name}.yml"
+
+    generate_from_template(
+        template_name='cloud.j2',
+        output_filename=output_filename,
+        context=context,
+        output_dir=OUTPUT_DIR
+    )
+
+    print_success(f"Compose written to: {os.path.join(OUTPUT_DIR, output_filename)}")
