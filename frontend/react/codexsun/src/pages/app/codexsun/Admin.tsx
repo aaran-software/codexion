@@ -50,6 +50,7 @@ import AppHeader from "../../../Components/Header/AppHeader";
 import { AppSidebar } from "../../../Components/Sidebar/app-sidebar";
 import ScrollToTopButton from "../../../Components/common/scrolltotop";
 import Docker from "../cortex/Docker";
+import GrandStream from "./Forms/GrandStream";
 
 export default function Admin() {
 const { token } = useAuth();
@@ -107,6 +108,11 @@ useEffect(() => {
       id: "docker",
       className: "w-[100%] min-h-full",
       component: <Docker />,
+    },
+     {
+      id: "calllog",
+      className: "w-[100%] min-h-full",
+      component: <GrandStream />,
     },
     {
       id: "logo",

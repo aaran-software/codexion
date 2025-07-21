@@ -13,7 +13,9 @@ import Button from "../../Components/Input/Button";
 import DropdownRead from "../../Components/Input/Dropdown-read";
 import Pagination from "../../Components/Pagination/Pagination";
 import { useEffect, useMemo, useRef, useState } from "react";
-import CommonForm, { type FieldGroup } from "../../Components/common/commonform";
+import CommonForm, {
+  type FieldGroup,
+} from "../../Components/common/commonform";
 import { useReactToPrint } from "react-to-print";
 import Print from "../External/Print";
 import apiClient from "../../pages/app/codexsun/api/apiClients";
@@ -21,29 +23,65 @@ type FormLayoutProps = {
   groupedFields: FieldGroup[];
   head: Column[];
   formApi: ApiList;
-  printableFields:string[]
+  printableFields: string[];
+  data?: any[];
 };
 
-function FormLayout({ groupedFields, head, formApi, printableFields }: FormLayoutProps) {
+function FormLayout({
+  groupedFields,
+  head,
+  formApi,
+  printableFields,
+  data
+}: FormLayoutProps) {
+  // useEffect(() => {
+  //   apiClient
+  //     .get(formApi.read) // fetch up to 1000 customers
+  //     .then(async (res: { data: { data: any } }) => {
+  //       const customerList = res.data.data;
 
-  useEffect(() => {
-    apiClient
-      .get(formApi.read) // fetch up to 1000 customers
+  //       // Fetch full details of each customer in parallel
+  //       const detailedData = await Promise.all(
+  //         customerList.map(
+  //           (cust: any) =>
+  //             apiClient
+  //               .get(`${formApi.read}/${encodeURIComponent(cust.name)}`)
+  //               .then((res: { data: { data: any } }) => res.data.data)
+  //               .catch(() => null) // handle errors gracefully
+  //         )
+  //       );
+
+  //       // Clean nulls and format into table rows
+  //       const rows = detailedData.filter(Boolean).map((c: any) => ({
+  //         id: c.name,
+  //         customer_name: c.customer_name,
+  //         status: c.status || "",
+  //         customer_group: c.customer_group || "",
+  //         customer_type: c.customer_type || "",
+  //       }));
+
+  //       setTableData(rows);
+  //     })
+  //     .catch((err: any) => {
+  //       console.error("❌ Failed to fetch Customers:", err);
+  //     });
+  // }, []);
+useEffect(() => {
+  if (Array.isArray(data)) {
+    setTableData(data); // ✅ Use data from props
+  } else {
+    // Fallback to API fetching
+    apiClient.get(formApi.read)
       .then(async (res: { data: { data: any } }) => {
         const customerList = res.data.data;
-
-        // Fetch full details of each customer in parallel
         const detailedData = await Promise.all(
-          customerList.map(
-            (cust: any) =>
-              apiClient
-                .get(`${formApi.read}/${encodeURIComponent(cust.name)}`)
-                .then((res: { data: { data: any } }) => res.data.data)
-                .catch(() => null) // handle errors gracefully
+          customerList.map((cust: any) =>
+            apiClient
+              .get(`${formApi.read}/${encodeURIComponent(cust.name)}`)
+              .then((res: { data: { data: any } }) => res.data.data)
+              .catch(() => null)
           )
         );
-
-        // Clean nulls and format into table rows
         const rows = detailedData.filter(Boolean).map((c: any) => ({
           id: c.name,
           customer_name: c.customer_name,
@@ -51,13 +89,13 @@ function FormLayout({ groupedFields, head, formApi, printableFields }: FormLayou
           customer_group: c.customer_group || "",
           customer_type: c.customer_type || "",
         }));
-
         setTableData(rows);
       })
       .catch((err: any) => {
-        console.error("❌ Failed to fetch Customers:", err);
+        console.error("❌ Failed to fetch data:", err);
       });
-  }, []);
+  }
+}, [data, formApi.read]);
 
   const [tableData, setTableData] = useState<TableRowData[]>([]);
 
@@ -163,7 +201,7 @@ function FormLayout({ groupedFields, head, formApi, printableFields }: FormLayou
     return options;
   };
 
-   const printRef = useRef<HTMLDivElement>(null);
+  const printRef = useRef<HTMLDivElement>(null);
   const handlePrint = useReactToPrint({
     contentRef: printRef,
     documentTitle: "receipt",

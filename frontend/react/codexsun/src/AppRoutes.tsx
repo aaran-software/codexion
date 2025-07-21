@@ -11,7 +11,7 @@ const AppRoutes = () => {
 console.log("type",APP_CODE)
   const routes = (() => {
     switch (APP_CODE) {
-      case "web":
+      case "billing":
         return Codexsun();
       case "cortex":
         return Cortex();

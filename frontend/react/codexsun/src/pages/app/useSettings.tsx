@@ -27,7 +27,7 @@ export default function AppInitializer({ children }: { children: ReactNode }) {
     const jsonPath =
       APP_CODE === "billing"
         ? "/settings.json"
-        : APP_CODE === "web2"
+        : APP_CODE === "cortex"
         ? "/JSON/codexsun/menubar.json"
         : "/settings.json";
 

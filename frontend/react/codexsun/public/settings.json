@@ -30,6 +30,12 @@
         "icon": "LayoutDashboard",
         "url": "docker"
       },
+        {
+        "title": "GrandStream",
+        "currentComponent": "calllog",
+        "icon": "LayoutDashboard",
+        "url": "calllog"
+      },
       {
         "title": "Invoice",
         "icon": "LucideNotepadText",
