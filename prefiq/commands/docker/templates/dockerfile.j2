@@ -1,0 +1,13 @@
+FROM {{ base_image }}
+
+WORKDIR {{ workdir }}
+
+{% for src, dst in copy_instructions %}
+COPY {{ src }} {{ dst }}
+{% endfor %}
+
+{% for run in run_commands %}
+RUN {{ run }}
+{% endfor %}
+
+CMD [{{ cmd }}]
