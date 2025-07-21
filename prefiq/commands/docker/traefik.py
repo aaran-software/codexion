@@ -1,10 +1,13 @@
 import os
+
+from prefiq.commands.docker.gen_docker_json import gen_docker_json
 from prefiq.commands.docker.templates.generate_from_template import generate_from_template
 from prefiq.utils.ui import print_success
 
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), 'templates')
 OUTPUT_DIR = os.path.join(os.getcwd(), 'docker')
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+
 
 def gen_traefik_compose(email: str):
     context = {
@@ -16,4 +19,7 @@ def gen_traefik_compose(email: str):
         context=context,
         output_dir=OUTPUT_DIR
     )
+
+    gen_docker_json("TRAEFIK_COMPOSE", {os.path.join(OUTPUT_DIR, "docker-compose-traefik.yml")})
+
     print_success("Traefik compose generated.")

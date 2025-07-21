@@ -11,28 +11,27 @@ OUTPUT_DIR = os.path.join(os.getcwd(), 'docker')
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
-def gen_mariadb_compose(name: str, password: str = "DbPass1@@"):
+def gen_pgdb_compose(name: str, password: str = "PgPass1@@"):
     """
-    Generates docker-compose file for MariaDB
+    Generates docker-compose file for Postgres SQL
     """
-
     context = {
         "db_name": name,
         "db_password": password,
     }
 
-    output_filename = "docker-compose-mariadb.yml"
+    output_filename = "docker-compose-postgres.yml"
 
     generate_from_template(
-        template_name="mariadb.j2",
+        template_name="postgres.j2",
         output_filename=output_filename,
         context=context,
         output_dir=OUTPUT_DIR
     )
 
-    gen_env("MARIADB_DB", name)
-    gen_env("MARIADB_PASSWORD", password)
+    gen_env("PG_DB", name)
+    gen_env("PG_PASSWORD", password)
 
-    gen_docker_json("MARIADB_COMPOSE", {os.path.join(OUTPUT_DIR, output_filename)})
+    gen_docker_json("PG_COMPOSE", {os.path.join(OUTPUT_DIR, output_filename)})
 
     print_success(f"Compose written to: {os.path.join(OUTPUT_DIR, output_filename)}")

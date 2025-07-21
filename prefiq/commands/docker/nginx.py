@@ -1,5 +1,7 @@
 import os
 import subprocess
+
+from prefiq.commands.docker.gen_docker_json import gen_docker_json
 from prefiq.commands.docker.templates.generate_from_template import generate_from_template
 from prefiq.utils.ui import print_success, print_warning
 
@@ -8,6 +10,7 @@ OUTPUT_DIR = os.path.join(os.getcwd(), 'docker')
 NGINX_DIR = os.path.join(OUTPUT_DIR, 'nginx')
 CERTS_DIR = os.path.join(NGINX_DIR, 'certs')
 os.makedirs(CERTS_DIR, exist_ok=True)
+
 
 def generate_self_signed_cert():
     cert_path = os.path.join(CERTS_DIR, 'fullchain.pem')
@@ -26,6 +29,7 @@ def generate_self_signed_cert():
     ], check=True)
 
     print_success("Self-signed certificates generated.")
+
 
 def gen_nginx_compose(service_name: str, service_port: int):
     context = {
@@ -51,5 +55,8 @@ def gen_nginx_compose(service_name: str, service_port: int):
 
     # 3. SSL Certs
     generate_self_signed_cert()
+
+    gen_docker_json("NGINX_COMPOSE", {os.path.join(OUTPUT_DIR, "docker-compose-traefik.yml")})
+    gen_docker_json("NGINX_CONF", {os.path.join(OUTPUT_DIR, "nginx.conf")})
 
     print_success("Nginx setup complete with nginx.conf and self-signed SSL.")

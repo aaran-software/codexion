@@ -1,4 +1,7 @@
 import os
+
+from prefiq.commands.core.update_env import gen_env
+from prefiq.commands.docker.gen_docker_json import gen_docker_json
 from prefiq.commands.docker.templates.generate_from_template import generate_from_template
 from prefiq.utils.ui import print_success
 
@@ -6,6 +9,7 @@ from prefiq.utils.ui import print_success
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), 'templates')
 OUTPUT_DIR = os.path.join(os.getcwd(), 'docker')
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+
 
 def gen_compose(domain: str, port: int):
     # Sanitize name for docker usage
@@ -30,6 +34,16 @@ def gen_compose(domain: str, port: int):
         output_filename=output_filename,
         context=context,
         output_dir=OUTPUT_DIR
+    )
+
+    gen_env("DOMAIN", name)
+    gen_env("DOMAIN_PORT", str(port))
+
+    gen_docker_json(
+        key="COMPOSE_FILE",
+        file_path=os.path.join(OUTPUT_DIR, output_filename),
+        domain=name,
+        port=str(port)
     )
 
     print_success(f"Compose written to: {os.path.join(OUTPUT_DIR, output_filename)}")
