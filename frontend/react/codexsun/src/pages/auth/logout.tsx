@@ -1,21 +1,23 @@
-// logout.ts
-export async function logoutUser() {
+export async function logoutUser(API_URL: string) {
   const token = localStorage.getItem("token");
-
   if (!token) return;
 
   try {
-    const response = await fetch("http://127.0.0.1:8000/api/logout", {
+    const response = await fetch(`${API_URL}/api/logout`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
     });
 
     if (response.ok) {
+      // ✅ Wait for server to complete before redirecting
+      await response.json();
+
       localStorage.removeItem("token");
-      window.location.href = "/"; // or use navigate() if using react-router
+      console.log("Logout successful");
+      window.location.href = "/"; // ✅ AFTER everything finishes
     } else {
       console.error("Logout failed");
     }

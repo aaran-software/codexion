@@ -23,7 +23,7 @@ type AppContextType = {
 };
 
 const APP_CODE = import.meta.env.APP_TYPE || 'cms'
-const API_URL = import.meta.env.APP_TYPE || 'http://localhost:4000/'
+const API_URL = import.meta.env.API_URL || 'http://127.0.0.1:4000'
 
 // console.log(APP_CODE)
 

@@ -15,10 +15,6 @@ import {
 import { useEffect, useState } from "react";
 import { useAppContext } from "../GlobalContext/AppContaxt";
 import { useNavigate, useParams } from "react-router-dom";
-import AppHeader from "@/Components/Header/AppHeader";
-import Dashboard from "@/Components/Dashboard/Dashboard";
-import { AppSidebar } from "@/Components/Sidebar/app-sidebar";
-import ScrollToTopButton from "@/Components/common/scrolltotop";
 import CustomizeTheme from "./AdminComponents/CustomizeTheme";
 import CustomizeLogo from "./AdminComponents/CustomizeLogo";
 import Purchase from "./Forms/Invoice/Purchase";
@@ -49,6 +45,10 @@ import GstPercent from "./Forms/Common/Gst-Percents";
 import ContactType from "./Forms/Common/Contact-Types";
 import PaymentMode from "./Forms/Common/Payment.Mode";
 import { useAuth } from "../auth/AuthContext";
+import Dashboard from "../../Components/Dashboard/Dashboard";
+import AppHeader from "../../Components/Header/AppHeader";
+import { AppSidebar } from "../../Components/Sidebar/app-sidebar";
+import ScrollToTopButton from "../../Components/common/scrolltotop";
 
 export default function Admin() {
 const { token } = useAuth();
