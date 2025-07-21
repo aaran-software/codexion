@@ -1,5 +1,5 @@
 import os
-from prefiq.commands.docker.commands.build.generate_from_template import generate_from_template
+from prefiq.commands.docker.commands.prepare.generate_from_template import generate_from_template
 from prefiq.commands.utils.ui import print_success
 
 # Paths
