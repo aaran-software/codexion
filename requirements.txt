@@ -11,6 +11,11 @@ bcrypt
 pymysql
 starlette
 pytest
+pytest~=8.4.1
 black
 ruff
 mypy
+rich~=14.0.0
+prefiq~=0.1.0
+Jinja2~=3.1.6
+typer~=0.16.0

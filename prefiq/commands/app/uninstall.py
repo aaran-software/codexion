@@ -2,6 +2,7 @@ from pathlib import Path
 import json
 import shutil
 from prefiq.utils.path import get_apps_dir, get_config_path
+from prefiq.utils.ui import print_success, print_warning, print_info
 
 
 def load_config() -> dict:
@@ -23,7 +24,7 @@ def run(args):
     app_path = Path(get_apps_dir()) / app_name
 
     if not app_path.exists():
-        print(f"[ERROR] App '{app_name}' does not exist in apps/")
+        print_warning(f"App '{app_name}' does not exist in apps/")
         return
 
     shutil.rmtree(app_path)
@@ -33,4 +34,4 @@ def run(args):
         config["apps"].remove(app_name)
         save_config(config)
 
-    print(f"[!] App '{app_name}' uninstalled successfully.", flush=True)
+    print_info(f"App '{app_name}' uninstalled successfully.")
