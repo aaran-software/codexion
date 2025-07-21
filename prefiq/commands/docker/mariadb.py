@@ -15,7 +15,7 @@ def gen_compose(name: str):
         "cmd": "bash"
     }
 
-    output_filename = f"docker-compose-{name}.yml"
+    output_filename = f"docker-compose-mariadb.yml"
 
     generate_from_template(
         template_name='cloud.j2',

@@ -3,10 +3,11 @@ import re
 from jinja2 import Environment, FileSystemLoader
 from prefiq.utils.jinja_cleanup import postprocess_rendered
 
-TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), 'templates')
+TEMPLATE_DIR = os.path.join(os.path.dirname(__file__))
 
 
 def generate_from_template(template_name: str, output_filename: str, context: dict, output_dir: str):
+
     env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
     template = env.get_template(template_name)
 
