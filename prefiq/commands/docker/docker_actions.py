@@ -6,7 +6,7 @@ dockit_app = typer.Typer(help="Docker-related utilities")
 
 @dockit_app.command("dockfile")
 def create_dockfile(
-    name: str = typer.Argument(..., help="Custom Dockerfile name (e.g., sundar)"),
+    name: str = typer.Argument(..., help="Custom Dockerfile name (e.g., cx_dockerfile)"),
     base: str = typer.Option("python:3.11", "--base", help="Base image"),
     workdir: str = typer.Option("/app", "--workdir", help="Working directory"),
     copy: list[str] = typer.Option([".:."], "--copy", help="COPY instructions (SRC:DST)"),

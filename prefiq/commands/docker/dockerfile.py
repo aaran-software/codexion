@@ -1,7 +1,9 @@
 import os
 from jinja2 import Environment, FileSystemLoader
 
-TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), '..', '..', 'templates')
+from prefiq.utils.ui import print_success
+
+TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), 'templates')
 OUTPUT_DIR = os.path.join(os.getcwd(), 'docker')
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -28,4 +30,4 @@ def generate_dockerfile(
     with open(output_path, 'w') as f:
         f.write(rendered)
 
-    print(f"[✓] Dockerfile written to: {output_path}")
+    print_success(f"Dockerfile written to: {output_path}")
