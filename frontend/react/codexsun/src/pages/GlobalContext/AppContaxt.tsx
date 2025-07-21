@@ -21,7 +21,7 @@ type AppContextType = {
     API_URL: string; // Expose API_URL to the context
 };
 
-const APP_CODE = import.meta.env.APP_TYPE || 'ecart'
+const APP_CODE = import.meta.env.APP_TYPE || 'billing'
 const API_URL = import.meta.env.API_URL || 'http://127.0.0.1:4000'
 
 // console.log(APP_CODE)
