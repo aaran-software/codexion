@@ -1,16 +1,38 @@
-  cloud:
+{#version: '3.9'#}
+
+services:
+  {{ service_name }}:
     build:
       context: .
       dockerfile: Dockerfile
-    image: codexion-cloud:latest
-    container_name: codexion-cloud
-    depends_on:
-      - mariadb
+    image: {{ image_name }}:v{{ version }}
+    container_name: {{ container_name }}
     ports:
-      - "8000:8000"    # Frappe backend
-      - "9000:9000"    # Optional: code-server or admin UI
+      - "{{ host_port }}:{{ container_port }}"
     volumes:
-      - cloud_volume:/home/devops
-      - ./supervisor:/etc/supervisor/conf.d
-    tty: true
+      - ./public/{{ service_name }}:/app/public
+    labels:
+      - "traefik.enable=true"
+
+      # HTTP Router
+      - "traefik.http.routers.{{ router_prefix }}_http.rule=Host(`{{ domain }}`)"
+      - "traefik.http.routers.{{ router_prefix }}_http.entrypoints=web"
+      - "traefik.http.routers.{{ router_prefix }}_http.service={{ traefik_service_name }}"
+
+      # HTTPS Router
+      - "traefik.http.routers.{{ router_prefix }}_https.rule=Host(`{{ domain }}`)"
+      - "traefik.http.routers.{{ router_prefix }}_https.entrypoints=websecure"
+      - "traefik.http.routers.{{ router_prefix }}_https.tls.certresolver=myresolver"
+      - "traefik.http.routers.{{ router_prefix }}_https.service={{ traefik_service_name }}"
+
+      # Service Definition
+      - "traefik.http.services.{{ traefik_service_name }}.loadbalancer.server.port={{ container_port }}"
+
+    networks:
+      - codexion-network
     restart: unless-stopped
+    tty: true
+
+networks:
+  codexion-network:
+    external: true
