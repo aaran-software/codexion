@@ -2,7 +2,7 @@ import json
 import subprocess
 from pathlib import Path
 from typing import Optional
-from prefiq.utils.ui import print_success, print_error
+from prefiq.commands.utils.ui import print_success, print_error
 
 DOCKER_JSON_PATH = Path("docker/docker.json")
 

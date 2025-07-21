@@ -3,13 +3,13 @@ import subprocess
 from pathlib import Path
 from typing import Optional
 
-from prefiq.commands.docker.dockerfile import gen_dockerfile
-from prefiq.commands.docker.composefile import gen_compose
-from prefiq.commands.docker.gen_mariadb import gen_mariadb_compose
-from prefiq.commands.docker.gen_pgdb import gen_pgdb_compose
-from prefiq.commands.docker.nginx import gen_nginx_compose
-from prefiq.commands.docker.traefik import gen_traefik_compose
-from prefiq.commands.docker.gen_docker_json import remove_docker_domain_entry
+from prefiq.commands.docker.commands.build.dockerfile import gen_dockerfile
+from prefiq.commands.docker.commands.build.composefile import gen_compose
+from prefiq.commands.docker.commands.build.gen_mariadb import gen_mariadb_compose
+from prefiq.commands.docker.commands.build.gen_pgdb import gen_pgdb_compose
+from prefiq.commands.docker.commands.build.nginx import gen_nginx_compose
+from prefiq.commands.docker.commands.build.traefik import gen_traefik_compose
+from prefiq.commands.docker.commands.build.gen_docker_json import remove_docker_domain_entry
 
 docker_actions = typer.Typer(help="Prefiq Docker commands")
 DOCKERFILE_DIR = Path("./docker")

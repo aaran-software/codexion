@@ -1,8 +1,8 @@
 import os
 
-from prefiq.commands.app import install, uninstall
-from prefiq.utils.path import get_apps_dir
-from prefiq.utils.ui import print_success, print_warning
+from prefiq.commands.app.commands import uninstall, install
+from prefiq.commands.utils.path import get_apps_dir
+from prefiq.commands.utils.ui import print_success, print_warning
 
 
 def run(name: str, force: bool = False):

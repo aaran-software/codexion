@@ -1,7 +1,7 @@
 import json
 import os
-from prefiq.utils.path import get_config_path
-from prefiq.utils.ui import styled_text, print_success, print_warning, console
+from prefiq.commands.utils.path import get_config_path
+from prefiq.commands.utils.ui import styled_text, print_warning, console
 
 
 def run():
