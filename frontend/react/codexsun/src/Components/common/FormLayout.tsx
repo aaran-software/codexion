@@ -1,22 +1,22 @@
-import ButtonDropdown from "@/Components/Button/ButtonDropdown";
-import ImageButton from "@/Components/Button/ImageBtn";
+import ButtonDropdown from "../../Components/Button/ButtonDropdown";
+import ImageButton from "../../Components/Button/ImageBtn";
 import CommonTable, {
   type ApiList,
   type Column,
   type TableRowData,
-} from "@/Components/common/commontable";
-import Filter from "@/Components/common/Filter";
-import Drawer from "@/Components/Drawer/Drawer";
-import { exportToCSV } from "@/Components/External/ExportToCSV";
-import AnimateButton from "@/Components/Input/animatebutton";
-import Button from "@/Components/Input/Button";
-import DropdownRead from "@/Components/Input/Dropdown-read";
-import Pagination from "@/Components/Pagination/Pagination";
+} from "../../Components/common/commontable";
+import Filter from "../../Components/common/Filter";
+import Drawer from "../../Components/Drawer/Drawer";
+import { exportToCSV } from "../../Components/External/ExportToCSV";
+import AnimateButton from "../../Components/Input/animatebutton";
+import Button from "../../Components/Input/Button";
+import DropdownRead from "../../Components/Input/Dropdown-read";
+import Pagination from "../../Components/Pagination/Pagination";
 import { useEffect, useMemo, useRef, useState } from "react";
-import CommonForm, { type FieldGroup } from "@/Components/common/commonform";
-import apiClient from "@/pages/app/api/apiClients";
+import CommonForm, { type FieldGroup } from "../../Components/common/commonform";
 import { useReactToPrint } from "react-to-print";
 import Print from "../External/Print";
+import apiClient from "../../pages/app/codexsun/api/apiClients";
 type FormLayoutProps = {
   groupedFields: FieldGroup[];
   head: Column[];

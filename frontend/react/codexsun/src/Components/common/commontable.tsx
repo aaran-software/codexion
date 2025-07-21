@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import ImageButton from "../Button/ImageBtn";
 import ActionMenu from "./ActionMenu";
 import Warning from "../Alert/Warning";
-import apiClient from "@/pages/app/api/apiClients";
+import apiClient from "../../pages/app/codexsun/api/apiClients";
 
 export interface TableRowData {
   [key: string]: string | React.ReactNode;

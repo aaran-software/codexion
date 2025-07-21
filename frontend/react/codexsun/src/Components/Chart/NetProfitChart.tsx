@@ -16,13 +16,13 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/Components/Chart/card"
+} from "../../Components/Chart/card"
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   type ChartConfig,
-} from "@/Components/Chart/chart"
+} from "../../Components/Chart/chart"
 
 interface NetIncomeChartProps {
   title?: string

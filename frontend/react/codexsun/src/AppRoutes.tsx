@@ -2,11 +2,11 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./pages/auth/Login";
 import SignUp from "./pages/auth/Signup";
 import NotFound from "./Components/NotFound";
-import Admin from "./pages/app/Admin";
 import { AuthProvider } from "./pages/auth/AuthContext";
 
 import "animate.css";
 import ProtectedRoute from "./pages/auth/ProtectedRoute";
+import Admin from "./pages/app/codexsun/Admin";
 
 export default function AppRoutes() {
   return (
