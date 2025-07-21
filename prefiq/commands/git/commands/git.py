@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 
 # Define base structure
-BASE_DIR = Path("prefiq")
+BASE_DIR = Path("../prefiq")
 GIT_DIR = BASE_DIR / "git"
 CMD_DIR = BASE_DIR / "commands" / "git"
 
@@ -31,7 +31,7 @@ app.command()(status.run)
 
 def attach_git_commands(parent_app):
     parent_app.add_typer(app, name="git")
-""")
+""", encoding="utf-8")
 
 # Command file template
 def command_template(name: str, body: str) -> str:
@@ -47,19 +47,19 @@ def run(
 
 # Git commands and their initial (mock) logic
 commands = {
-    "connect.py": 'print_success("✅ SSH key connected (mocked)")',
-    "ssh.py": 'print_success("✅ SSH key created and stored (mocked)")',
-    "commit.py": 'print_success(f"✅ Committed changes for {app} (mocked)")',
-    "push.py": 'print_success(f"✅ Pushed changes for {app} (mocked)")',
-    "pull.py": 'print_success(f"✅ Pulled latest for {app} (mocked)")',
-    "sync.py": 'print_success(f"✅ Synced {app} (pull → commit → push) (mocked)")',
-    "status.py": 'print_success(f"✅ Status for {app}: clean (mocked)")',
+    "connect.py": 'print_success("[OK] SSH key connected (mocked)")',
+    "ssh.py": 'print_success("[OK] SSH key created and stored (mocked)")',
+    "commit.py": 'print_success(f"[OK] Committed changes for {app} (mocked)")',
+    "push.py": 'print_success(f"[OK] Pushed changes for {app} (mocked)")',
+    "pull.py": 'print_success(f"[OK] Pulled latest for {app} (mocked)")',
+    "sync.py": 'print_success(f"[OK] Synced {app} (pull → commit → push) (mocked)")',
+    "status.py": 'print_success(f"[OK] Status for {app}: clean (mocked)")',
 }
 
-# Write command files
+# Write command files with UTF-8 encoding
 for file_name, body in commands.items():
     fpath = CMD_DIR / file_name
     if not fpath.exists():
-        fpath.write_text(command_template(file_name.replace(".py", ""), body))
+        fpath.write_text(command_template(file_name.replace(".py", ""), body), encoding="utf-8")
 
-print("✅ Git folders and command files generated successfully.")
+print("[OK] Git folders and command files generated successfully.")

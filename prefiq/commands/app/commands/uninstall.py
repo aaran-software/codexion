@@ -3,8 +3,8 @@
 import os
 import shutil
 import json
-from prefiq.utils.path import get_apps_dir, get_config_path
-from prefiq.utils.ui import print_success, print_error
+from prefiq.commands.utils.path import get_apps_dir, get_config_path
+from prefiq.commands.utils.ui import print_success, print_error
 
 
 def run(name: str):

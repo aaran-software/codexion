@@ -1,9 +1,9 @@
 import os
 
-from prefiq.commands.core.update_env import gen_env
-from prefiq.commands.docker.gen_docker_json import gen_docker_json
-from prefiq.commands.docker.templates.generate_from_template import generate_from_template
-from prefiq.utils.ui import print_success
+from prefiq.commands.core.commands.update_env import gen_env
+from prefiq.commands.docker.commands.prepare.gen_docker_json import gen_docker_json
+from prefiq.commands.docker.commands.prepare.generate_from_template import generate_from_template
+from prefiq.commands.utils.ui import print_success
 
 # Define paths
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), 'templates')

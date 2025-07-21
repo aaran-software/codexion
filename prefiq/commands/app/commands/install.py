@@ -1,8 +1,8 @@
 import os
 import json
 import shutil
-from prefiq.utils.path import get_apps_dir, get_config_path
-from prefiq.utils.ui import print_success, print_warning, print_error
+from prefiq.commands.utils.path import get_apps_dir, get_config_path
+from prefiq.commands.utils.ui import print_success, print_warning, print_error
 
 
 def load_config():

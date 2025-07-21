@@ -1,7 +1,7 @@
 import os
 import json
 
-from prefiq.utils.ui import print_success
+from prefiq.commands.utils.ui import print_success
 
 # Updated path: rootfolder/docker/docker.json
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../"))

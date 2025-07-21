@@ -1,9 +1,9 @@
 import os
 import subprocess
 
-from prefiq.commands.docker.gen_docker_json import gen_docker_json
-from prefiq.commands.docker.templates.generate_from_template import generate_from_template
-from prefiq.utils.ui import print_success, print_warning
+from prefiq.commands.docker.commands.prepare.gen_docker_json import gen_docker_json
+from prefiq.commands.docker.commands.prepare.generate_from_template import generate_from_template
+from prefiq.commands.utils.ui import print_success, print_warning
 
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), 'templates')
 OUTPUT_DIR = os.path.join(os.getcwd(), 'docker')
