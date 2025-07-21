@@ -49,6 +49,7 @@ import Dashboard from "../../Components/Dashboard/Dashboard";
 import AppHeader from "../../Components/Header/AppHeader";
 import { AppSidebar } from "../../Components/Sidebar/app-sidebar";
 import ScrollToTopButton from "../../Components/common/scrolltotop";
+import Docker from "./docker";
 
 export default function Admin() {
 const { token } = useAuth();
@@ -83,6 +84,7 @@ useEffect(() => {
         receipt: "Receipt",
         payment: "Payment",
         accountbook: "Account Books",
+        docker: "Docker",
       };
       document.title = titleMap[currentComponent];
     }
@@ -100,6 +102,11 @@ useEffect(() => {
       id: "dashboard",
       className: "w-[100%] min-h-full",
       component: <Dashboard />,
+    },
+    {
+      id: "docker",
+      className: "w-[100%] min-h-full",
+      component: <Docker />,
     },
     {
       id: "logo",

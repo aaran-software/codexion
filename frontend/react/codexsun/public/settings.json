@@ -24,7 +24,12 @@
         "icon": "LayoutDashboard",
         "url": ""
       },
-
+      {
+        "title": "Docker",
+        "currentComponent": "docker",
+        "icon": "LayoutDashboard",
+        "url": "docker"
+      },
       {
         "title": "Invoice",
         "icon": "LucideNotepadText",
