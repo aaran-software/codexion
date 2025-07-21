@@ -3,8 +3,10 @@ import json
 
 from prefiq.utils.ui import print_success
 
-DOCKER_JSON_PATH = os.path.join(os.path.dirname(__file__), "docker.json")
-MULTI_SITES_PATH = os.path.join(os.path.dirname(__file__), "../../config/multi_sites.json")
+# Updated path: rootfolder/docker/docker.json
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../"))
+DOCKER_JSON_PATH = os.path.join(PROJECT_ROOT, "docker", "docker.json")
+MULTI_SITES_PATH = os.path.join(PROJECT_ROOT, "prefiq", "config", "multi_sites.json")
 
 
 def load_multi_sites():
@@ -37,10 +39,10 @@ def gen_docker_json(key: str, file_path, domain: str = None, port: str = None):
 
     multi_sites = load_multi_sites()
 
-    # Ensure dir exists
+    # Ensure the docker directory exists
     os.makedirs(os.path.dirname(DOCKER_JSON_PATH), exist_ok=True)
 
-    # Load docker.json if exists
+    # Load docker.json if it exists
     if os.path.exists(DOCKER_JSON_PATH):
         with open(DOCKER_JSON_PATH, "r") as f:
             try:
@@ -50,7 +52,7 @@ def gen_docker_json(key: str, file_path, domain: str = None, port: str = None):
     else:
         data = {}
 
-    # Special case: COMPOSE_FILE key for multi-site domains
+    # Special case for COMPOSE_FILE
     if key == "COMPOSE_FILE" and domain:
         entry = {
             domain: safe_json_value(file_path),
@@ -60,28 +62,23 @@ def gen_docker_json(key: str, file_path, domain: str = None, port: str = None):
         if key not in data or not isinstance(data[key], list):
             data[key] = []
 
-        # Avoid duplicates
         if entry not in data[key]:
             data[key].append(entry)
             print_success(f"docker.json updated: {key} += {entry}")
         else:
             print_success(f"docker.json already contains: {entry}")
     else:
-        # Generic key update
         data[key] = safe_json_value(file_path)
         print_success(f"docker.json updated: {key} = {file_path}")
 
-    # Write back
     with open(DOCKER_JSON_PATH, "w") as f:
         json.dump(data, f, indent=4)
 
 
 def remove_docker_domain_entry(domain_to_remove: str):
-    """
-    Removes the COMPOSE_FILE entry for a specific domain.
-    """
+    """Remove domain entry from docker.json COMPOSE_FILE."""
     if not os.path.exists(DOCKER_JSON_PATH):
-        print(f"docker.json does not exist.")
+        print("docker.json does not exist.")
         return
 
     with open(DOCKER_JSON_PATH, "r") as f:
@@ -96,16 +93,16 @@ def remove_docker_domain_entry(domain_to_remove: str):
         return
 
     original_length = len(data["COMPOSE_FILE"])
-    updated_list = [
+    updated = [
         entry for entry in data["COMPOSE_FILE"]
         if not (isinstance(entry, dict) and domain_to_remove in entry)
     ]
 
-    if len(updated_list) == original_length:
+    if len(updated) == original_length:
         print(f"No entry found for domain: {domain_to_remove}")
         return
 
-    data["COMPOSE_FILE"] = updated_list
+    data["COMPOSE_FILE"] = updated
 
     with open(DOCKER_JSON_PATH, "w") as f:
         json.dump(data, f, indent=4)
