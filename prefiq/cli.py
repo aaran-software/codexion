@@ -2,12 +2,10 @@
 import typer
 
 # from prefiq.commands.app import actions
-from prefiq.commands.docker.dockgen import docker_build
-from prefiq.commands.docker.action import docker_action
+from prefiq.commands.docker.docgen import docker_actions
 
 docker = typer.Typer()
-docker.add_typer(docker_build, name="docker", help="Docker commands")
-docker.add_typer(docker_action, name="docker", help="Docker actions")
+docker.add_typer(docker_actions, name="docker", help="Docker commands")
 
 
 def main():

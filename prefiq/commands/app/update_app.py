@@ -13,21 +13,21 @@ def is_app_installed(app_name: str) -> bool:
         data = json.load(f)
         return app_name in data.get("apps", [])
 
-def run(args):
-    app_name = args.name
-    app_path = Path(get_apps_dir()) / app_name
+
+def run(name: str):
+    app_path = Path(get_apps_dir()) / name
 
     if not app_path.exists():
-        print_warning(f" App '{app_name}' does not exist in apps/")
+        print_warning(f"App '{name}' does not exist in apps/")
         return
 
-    if not is_app_installed(app_name):
-        print_warning(f"App '{app_name}' is not registered as installed.")
+    if not is_app_installed(name):
+        print_warning(f"App '{name}' is not registered as installed.")
         return
 
-    print_success(f" Updating app '{app_name}'...")
+    print_success(f"Updating app '{name}'...")
 
     update_file = app_path / "last_updated.txt"
     update_file.write_text("App updated!")
 
-    print(f"[ok] App '{app_name}' updated successfully!", flush=True)
+    print(f"[ok] App '{name}' updated successfully!", flush=True)
