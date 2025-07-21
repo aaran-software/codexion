@@ -45,7 +45,7 @@ def add_header_to_file(file_path: Path, header: str):
         return
     updated_content = header + original_content
     file_path.write_text(updated_content, encoding="utf-8")
-    print(f"✅ Header added to: {file_path}")
+    print(f"[OK] Header added to: {file_path}")
 
 def main(target_dir: Path, author: str = "Sundar", version: str = "1.0.0"):
     for file_path in target_dir.rglob("*"):
