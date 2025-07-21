@@ -1,7 +1,7 @@
 # prefiq/cli.py
 import typer
 
-from prefiq.commands.app import actions
+# from prefiq.commands.app import actions
 from prefiq.commands.docker.dockgen import docker_build
 from prefiq.commands.docker.action import docker_action
 
