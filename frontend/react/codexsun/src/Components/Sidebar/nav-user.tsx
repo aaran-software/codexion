@@ -32,8 +32,8 @@ import { useNavigate } from "react-router-dom";
 import HelpMenu from "./HelpMenu";
 import { useRef, useState } from "react";
 // import { useAuth } from "../../pages/auth/AuthContext";
-import { logoutUser } from "../../pages/auth/logout";
 import { useAppContext } from "../../pages/GlobalContext/AppContaxt";
+import { logoutUser } from "../../pages/app/auth/logout";
 
 export function NavUser({
   user,

@@ -44,12 +44,12 @@ import Despatches from "./Forms/Common/Despatches";
 import GstPercent from "./Forms/Common/Gst-Percents";
 import ContactType from "./Forms/Common/Contact-Types";
 import PaymentMode from "./Forms/Common/Payment.Mode";
-import { useAuth } from "../../auth/AuthContext";
+import { useAuth } from "../auth/AuthContext";
 import Dashboard from "../../../Components/Dashboard/Dashboard";
 import AppHeader from "../../../Components/Header/AppHeader";
 import { AppSidebar } from "../../../Components/Sidebar/app-sidebar";
 import ScrollToTopButton from "../../../Components/common/scrolltotop";
-import Docker from "./Docker";
+import Docker from "../cortex/Docker";
 
 export default function Admin() {
 const { token } = useAuth();

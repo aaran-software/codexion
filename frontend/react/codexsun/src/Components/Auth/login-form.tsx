@@ -6,8 +6,8 @@ import PasswordInput from "../SecondaryInput/PasswordInput";
 import Button from "../Input/Button";
 // import {useAuth} from "@/pages/auth/AuthContext";
 import {Card, CardContent, CardHeader, CardTitle} from "../Chart/card";
-import {useAuth} from "../../pages/auth/AuthContext.tsx";
 import {useAppContext} from "../../pages/GlobalContext/AppContaxt.tsx";
+import { useAuth } from "../../pages/app/auth/AuthContext.tsx";
 
 export function LoginForm({className}: { className?: string }) {
     const [usr, setUsr] = useState("");

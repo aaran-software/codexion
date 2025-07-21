@@ -1,5 +1,4 @@
 import { useEffect, useState, createContext, useContext, type ReactNode } from "react";
-import { useAppContext } from "../GlobalContext/AppContaxt";
 
 // Create context
 const SettingsContext = createContext<any>(null);
@@ -17,15 +16,6 @@ export function useAppSettings() {
 export default function AppInitializer({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<any>(null);
 
-  // const [jsonPath,setJsonPath]=useState("web");
-  // const {APP_CODE}=useAppContext()
-
-  // if(APP_CODE==="web"){
-  //   setJsonPath("/settings.json")
-  // }else{
-  //   setJsonPath("/settings.json")
-
-  // }
   useEffect(() => {
     async function loadSettings() {
       try {
