@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
+import FooterLink from "./FooterLink";
 
 function FooterPortfolio() {
   const [address]=useState([
@@ -69,7 +70,11 @@ function FooterPortfolio() {
   ])
 
   return (
-    <footer className="bg-foreground pt-10">
+   <div>
+          <FooterLink />
+
+     <footer className="bg-foreground pt-10">
+      
       <div className="mb-5">
         <div className="grid grid-cols-2 md:grid-cols-4 p-5 lg:px-[12%] gap-5 text-background bg-foreground/90">
           <div className="flex flex-col gap-4">
@@ -149,6 +154,7 @@ function FooterPortfolio() {
       </div>
    
     </footer>
+   </div>
   );
 }
 

@@ -5,6 +5,8 @@ import { useAppContext } from "./pages/GlobalContext/AppContaxt";
 import Codexsun from "./pages/app/codexsun/route";
 import Cortex from "./pages/app/cortex/route";
 import Ecart from "./pages/app/ecart/route";
+import Mazsone from "./pages/app/mazsone/route";
+import Logicx from "./pages/Website/Logicx/route";
 
 const AppRoutes = () => {
   const { APP_CODE } = useAppContext();
@@ -17,6 +19,10 @@ const AppRoutes = () => {
         return Cortex();
       case "ecart":
         return Ecart();
+      case "mazsone":
+        return Mazsone();
+      case "logicx":
+        return Logicx();
       default:
         return [
           {

@@ -1,0 +1,57 @@
+{
+  "theme": "system",
+  "recordsPerPage": 60,
+  "user": {
+    "name": "Cortex",
+    "email": "cortex@gmail.com",
+    "avatar": "/avatars/shadcn.jpg"
+  },
+  "logo": {
+    "path": "/assets/svg/logo.svg",
+    "position": "center",
+    "height": "20",
+    "font_size": "2",
+    "company_name": "",
+    "color": "",
+    "padding": "0"
+  },
+  
+  "sidemenu": {
+    "main": [
+      {
+        "title": "Admin",
+        "icon": "LayoutDashboard",
+        "url": ""
+      },
+      {
+        "title": "Theme",
+        "icon": "Settings",
+        "url": "#",
+        "items": [
+          {
+            "title": "Logo",
+            "currentComponent": "logo",
+            "url": "logo"
+          },
+          {
+            "title": "Team",
+            "currentComponent": "",
+            "url": "#"
+          },
+          {
+            "title": "Billing",
+            "currentComponent": "",
+            "url": "#"
+          },
+          {
+            "title": "Limits",
+            "currentComponent": "",
+            "url": "#"
+          }
+        ]
+      }
+    ],
+    "help": {},
+    "document": {}
+  }
+}
