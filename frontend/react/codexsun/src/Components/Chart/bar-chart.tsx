@@ -11,7 +11,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/Components/Chart/card";
+} from "../../Components/Chart/card";
 
 import {
   type ChartConfig,

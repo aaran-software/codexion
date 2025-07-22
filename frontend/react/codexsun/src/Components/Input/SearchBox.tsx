@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { cn } from "@/library/utils.ts";
+import { cn } from "../../library/utils.ts";
 
 interface GlobalSearchProps {
   className?: string;

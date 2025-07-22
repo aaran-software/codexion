@@ -1,9 +1,14 @@
-import { useEffect, useState, createContext, useContext, type ReactNode } from "react";
+import {
+  useEffect,
+  useState,
+  createContext,
+  useContext,
+  type ReactNode,
+} from "react";
+import { useAppContext } from "../GlobalContext/AppContaxt";
 
-// Create context
 const SettingsContext = createContext<any>(null);
 
-// Custom hook to access settings
 export function useAppSettings() {
   const context = useContext(SettingsContext);
   if (!context) {
@@ -12,25 +17,37 @@ export function useAppSettings() {
   return context;
 }
 
-// Provider component that loads settings and provides them via context
 export default function AppInitializer({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<any>(null);
+  const { APP_CODE } = useAppContext();
 
   useEffect(() => {
-    async function loadSettings() {
+    if (!APP_CODE) return;
+
+    const jsonPath =
+      APP_CODE === "billing"
+        ? "/settings.json"
+        : APP_CODE === "cortex"
+        ? "/JSON/codexsun/menubar.json"
+        // : APP_CODE === "ecart"
+        // ? "/JSON/ecart/ecartSideManu.json"
+        : "/settings.json";
+
+    const loadSettings = async () => {
       try {
-        const res = await fetch("/settings.json");
+        const res = await fetch(jsonPath);
+        if (!res.ok) throw new Error(`Failed to load settings from ${jsonPath}`);
         const data = await res.json();
         setSettings(data);
       } catch (error) {
-        console.error("Failed to load settings.json", error);
+        console.error("Error loading settings:", error);
       }
-    }
+    };
 
     loadSettings();
-  }, []);
+  }, [APP_CODE]);
 
-  if (!settings) return <div>Loading settings...</div>;
+  if (!settings) return <div>Loading settings for {APP_CODE}...</div>;
 
   return (
     <SettingsContext.Provider value={settings}>

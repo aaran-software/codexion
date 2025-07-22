@@ -1,0 +1,64 @@
+{
+  "theme": "system",
+  "recordsPerPage": 60,
+  "user": {
+    "name": "Cortex",
+    "email": "cortex@gmail.com",
+    "avatar": "/avatars/shadcn.jpg"
+  },
+
+  "logo": {
+    "path": "/assets/svg/logo.svg",
+    "position": "center",
+    "height": "20",
+    "font_size": "2",
+    "company_name": "",
+    "color": "",
+    "padding": "0"
+  },
+
+  "sidemenu": {
+    "main": [
+      {
+        "title": "Dashboard",
+        "icon": "LayoutDashboard",
+        "url": ""
+      },
+      {
+        "title": "Docker",
+        "currentComponent": "docker",
+        "icon": "LayoutDashboard",
+        "url": "docker"
+      },
+      {
+        "title": "Invoice",
+        "icon": "LucideNotepadText",
+        "url": "#",
+        "items": [
+          {
+            "title": "Sales",
+            "currentComponent": "sales",
+            "url": "sales"
+          },
+          {
+            "title": "Purchase",
+            "currentComponent": "purchase",
+            "url": "purchase"
+          },
+          {
+            "title": "Receipt",
+            "currentComponent": "receipt",
+            "url": "receipt"
+          },
+          {
+            "title": "Payment",
+            "currentComponent": "payment",
+            "url": "payment"
+          }
+        ]
+      }
+    ],
+    "help": {},
+    "document": {}
+  }
+}

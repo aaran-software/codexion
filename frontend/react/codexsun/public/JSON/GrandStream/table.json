@@ -1,0 +1,395 @@
+{
+    "grandstream": {
+        "calllog": {
+            "details": {
+                "title": "Call Logs",
+                "fields": [
+                    {
+                        "key": "AcctId",
+                        "label": "Account ID",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "accountcode",
+                        "label": "Account Code",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "src",
+                        "label": "Source",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": true
+                    },
+                    {
+                        "key": "dst",
+                        "label": "Destination",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": true
+                    },
+                    {
+                        "key": "dcontext",
+                        "label": "DContext",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "clid",
+                        "label": "Caller ID",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "channel",
+                        "label": "Channel",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "dstchannel",
+                        "label": "Destination Channel",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "lastapp",
+                        "label": "Last App",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "lastdata",
+                        "label": "Last Data",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "start",
+                        "label": "Start Time",
+                        "type": "date",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": true
+                    },
+                    {
+                        "key": "answer",
+                        "label": "Answer Time",
+                        "type": "date",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "end",
+                        "label": "End Time",
+                        "type": "date",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "duration",
+                        "label": "Duration (s)",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": true
+                    },
+                    {
+                        "key": "billsec",
+                        "label": "Bill Sec",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "disposition",
+                        "label": "Disposition",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "amaflags",
+                        "label": "AMA Flags",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "uniqueid",
+                        "label": "Unique ID",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "userfield",
+                        "label": "User Field",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "channel_ext",
+                        "label": "Channel Ext",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "dstchannel_ext",
+                        "label": "Dst Channel Ext",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "service",
+                        "label": "Service",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "caller_name",
+                        "label": "Caller Name",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": true
+                    },
+                    {
+                        "key": "recordfiles",
+                        "label": "Recording",
+                        "type": "file",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "dstanswer",
+                        "label": "Destination Answer",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "chanext",
+                        "label": "Chan Ext",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "dstchanext",
+                        "label": "Dst Chan Ext",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "session",
+                        "label": "Session",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "action_owner",
+                        "label": "Action Owner",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "action_type",
+                        "label": "Action Type",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "src_trunk_name",
+                        "label": "Src Trunk",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "dst_trunk_name",
+                        "label": "Dst Trunk",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "nat_call",
+                        "label": "NAT Call",
+                        "type": "checkbox",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "nat_call_peer",
+                        "label": "NAT Peer",
+                        "type": "checkbox",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "video_call",
+                        "label": "Video Call",
+                        "type": "checkbox",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "gdms_unique_code",
+                        "label": "GDMS Code",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "gds_call",
+                        "label": "GDS Call",
+                        "type": "checkbox",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "gsc_call",
+                        "label": "GSC Call",
+                        "type": "checkbox",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "wave_src_seqid",
+                        "label": "Wave Src SeqID",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "wave_dst_seqid",
+                        "label": "Wave Dst SeqID",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "device_info",
+                        "label": "Device Info",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "device_info_peer",
+                        "label": "Device Peer Info",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "recordfiles_desc",
+                        "label": "Recording Description",
+                        "type": "textarea",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "anonymous_call",
+                        "label": "Anonymous",
+                        "type": "checkbox",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "reason",
+                        "label": "Reason",
+                        "type": "textarea",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "wave_src_hide",
+                        "label": "Wave Src Hidden",
+                        "type": "checkbox",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "wave_dst_hide",
+                        "label": "Wave Dst Hidden",
+                        "type": "checkbox",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "new_src",
+                        "label": "New Source",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": false
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -1,31 +1,39 @@
-import { Routes, Route } from "react-router-dom";
-import Login from "./pages/auth/Login";
-import SignUp from "./pages/auth/Signup";
-import NotFound from "./Components/NotFound";
-import Admin from "./pages/app/Admin";
-import { AuthProvider } from "./pages/auth/AuthContext";
+// src/AppRouter.tsx
+import { BrowserRouter } from "react-router-dom";
+import { useRoutes } from "react-router-dom";
+import { useAppContext } from "./pages/GlobalContext/AppContaxt";
+import Codexsun from "./pages/app/codexsun/route";
+import Cortex from "./pages/app/cortex/route";
+import Ecart from "./pages/app/ecart/route";
 
-import "animate.css";
-import ProtectedRoute from "./pages/auth/ProtectedRoute";
+const AppRoutes = () => {
+  const { APP_CODE } = useAppContext();
+  console.log("type", APP_CODE);
+  const routes = (() => {
+    switch (APP_CODE) {
+      case "billing":
+        return Codexsun();
+      case "cortex":
+        return Cortex();
+      case "ecart":
+        return Ecart();
+      default:
+        return [
+          {
+            path: "*",
+            element: <div>App Not Found</div>,
+          },
+        ];
+    }
+  })();
 
-export default function AppRoutes() {
-  return (
-    <AuthProvider>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
+  return useRoutes(routes);
+};
 
-        <Route
-          path="/dashboard/:component?"
-          element={
-            <ProtectedRoute>
-              <Admin />
-            </ProtectedRoute>
-          }
-        />
+const AppRouter = () => (
+  <BrowserRouter>
+    <AppRoutes />
+  </BrowserRouter>
+);
 
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </AuthProvider>
-  );
-}
+export default AppRouter;
