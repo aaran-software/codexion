@@ -3,14 +3,14 @@
 import os
 import shutil
 import json
-from prefiq.commands.utils.path import get_apps_dir, get_config_path
-from prefiq.commands.utils.ui import print_success, print_error
+from prefiq import get_apps_dir,get_config_path
+from prefiq.utils.cprint import cprint_success, cprint_error
 
 
 def run(name: str):
     app_path = os.path.join(get_apps_dir(), name)
     if not os.path.exists(app_path):
-        print_error(f"App '{name}' not found.")
+        cprint_error(f"App '{name}' not found.")
         return
 
     shutil.rmtree(app_path)
@@ -24,4 +24,4 @@ def run(name: str):
             with open(config_path, "w") as f:
                 json.dump(config, f, indent=2)
 
-    print_success(f"App '{name}' uninstalled.")
+    cprint_success(f"App '{name}' uninstalled.")
