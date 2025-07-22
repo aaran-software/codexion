@@ -1,0 +1,519 @@
+{
+  "theme": "system",
+  "recordsPerPage": 60,
+  "user": {
+    "name": "Tech Media",
+    "email": "Techmedia@gmail.com",
+    "avatar": "/avatars/shadcn.jpg"
+  },
+
+  "logo": {
+    "path": "/assets/svg/logo.svg",
+    "position": "center",
+    "height": "20",
+    "font_size": "2",
+    "company_name": "",
+    "color": "",
+    "padding": "0"
+  },
+
+  "Mainmenu": [
+    {
+      "menu": {
+        "name": "Laptops",
+        "image": "/assets/products/laptop.webp",
+        "alt": "Laptops image",
+        "subMenu": {
+          "title": "Laptop Types",
+          "items": [
+            { "title": "Business Laptop", "path": "/" },
+            { "title": "Gaming Laptop", "path": "/" },
+            { "title": "Personal Laptop", "path": "/" }
+          ]
+        },
+        "card": {
+          "title": "Top Laptop Deals",
+          "description": "Browse the latest laptops for work, gaming, or everyday use.",
+          "image": "/assets/products/laptop.webp"
+        }
+      }
+    },
+    {
+      "menu": {
+        "name": "Desktops",
+        "image": "/assets/products/desktop.webp",
+        "alt": "Desktops image",
+        "subMenu": {
+          "title": "Desktop Types",
+          "items": [
+            { "title": "Business Tower PCs", "path": "/" },
+            { "title": "Business All-In-One PCs", "path": "/" },
+            { "title": "Consumer Tower PCs", "path": "/" },
+            { "title": "Consumer All-In-One PCs", "path": "/" },
+            { "title": "Lenovo Smart Hub", "path": "/" }
+          ]
+        },
+        "card": {
+          "title": "Powerful Desktops",
+          "description": "High-performance desktops for professionals, creators, and gamers.",
+          "image": "/assets/products/desktop.webp"
+        }
+      }
+    },
+    {
+      "menu": {
+        "name": "PC Hardwares",
+        "image": "/assets/products/hardware.webp",
+        "alt": "PC Hardwares image",
+        "subMenu": {
+          "title": "Processors & Boards",
+          "items": [
+            { "title": "Intel Processors", "path": "/" },
+            { "title": "Motherboards For Intel", "path": "/" },
+            { "title": "Motherboards For AMD", "path": "/" }
+          ]
+        },
+        "subMenu2": {
+          "title": "Hard Drives",
+          "items": [
+            { "title": "SAS Hard Drives", "path": "/" },
+            { "title": "AV Hard Drives", "path": "/" },
+            { "title": "Enterprise Hard Drives", "path": "/" },
+            { "title": "External Hard Drives", "path": "/" }
+          ]
+        },
+        "subMenu3": {
+          "title": "Brands",
+          "items": [
+            { "title": "Logitech", "path": "/" },
+            { "title": "HP", "path": "/" },
+            { "title": "HP", "path": "/" }
+          ]
+        },
+        "subMenu4": {
+          "title": "Memory",
+          "items": [
+            { "title": "Notebook Memories", "path": "/" },
+            { "title": "Desktop Memories", "path": "/" },
+            { "title": "Server Memories", "path": "/" }
+          ]
+        },
+        "subMenu5": {
+          "title": "Power Backup",
+          "items": [
+            { "title": "UPS", "path": "/" }
+          ]
+        },
+        "card": {
+          "title": "PC Components & Upgrades",
+          "description": "Find RAM, SSDs, motherboards, and more to boost your PC's performance.",
+          "image": "/assets/products/hardware.webp"
+        }
+      }
+    },
+  
+     {
+      "menu": {
+        "name": "Printer",
+        "image": "/assets/products/printer.jpg",
+        "alt": "Networking image",
+        "subMenu": {
+          "title": "Printer Type",
+          "items": [
+            { "title": "Inkjet Printers", "path": "/" },
+            { "title": "Laser Printers", "path": "/" },
+            { "title": "All-in-One Printers", "path": "/" },
+            { "title": "Dot Matrix Printers", "path": "/" },
+            { "title": "Thermal Printers", "path": "/" },
+            { "title": "3D Printers", "path": "/" },
+            { "title": "Photo Printers", "path": "/" },
+            { "title": "Label Printers", "path": "/" }
+          ]
+        },
+        "subMenu2": {
+          "title": "Use Case",
+          "items": [
+            { "title": "Home Printers", "path": "/" },
+            { "title": "Office Printers", "path": "/" },
+            { "title": "Portable Printers", "path": "/" },
+            { "title": "Commercial/Enterprise Printers", "path": "/" }
+          ]
+        },
+         "subMenu3": {
+          "title": "By Features",
+          "items": [
+            { "title": "Wireless Printers", "path": "/" },
+            { "title": "Duplex (Double-Sided) Printers", "path": "/" },
+            { "title": "Color Printers", "path": "/" },
+            { "title": "Monochrome Printers", "path": "/" },
+            { "title": "Mobile Printing Support", "path": "/" },
+            { "title": "Cloud-Enabled Printers", "path": "/" }
+          ]
+        },
+         "subMenu4": {
+          "title": "Use Case",
+          "items": [
+            { "title": "USB Printers", "path": "/" },
+            { "title": "Wi-Fi Printers", "path": "/" },
+            { "title": "Bluetooth Printers", "path": "/" },
+            { "title": "Ethernet Network Printers", "path": "/" }
+          ]
+        },
+    
+        "card": {
+          "title": "Choose Your Print Style",
+          "description": "From ink to laser, print your way",
+          "image": "/assets/products/printer.jpg"
+        }
+      }
+    },
+    {
+      "menu": {
+        "name": "Camera",
+        "image": "/assets/products/camera.webp",
+        "alt": "Camera image",
+        "subMenu": {
+          "title": "Camera Categories",
+          "items": [
+            { "title": "Smartphones", "path": "/" },
+            { "title": "Accessories", "path": "/" },
+            { "title": "Tablets", "path": "/" }
+          ]
+        },
+        "card": {
+          "title": "Smart CCTV Systems",
+          "description": "Explore surveillance cameras and security systems for home and business safety.",
+          "image": "/assets/products/camera.webp"
+        }
+      }
+    },
+    {
+      "menu": {
+        "name": "Networking",
+        "image": "/assets/products/network.jpeg",
+        "alt": "Networking image",
+        "subMenu": {
+          "title": "WiFi Devices",
+          "items": [
+            { "title": "Routers", "path": "/" },
+            { "title": "Range Extenders", "path": "/" },
+            { "title": "Access Points", "path": "/" }
+            
+          ]
+        },
+        "subMenu2": {
+          "title": "Network Accessories",
+          "items": [
+            { "title": "Switches", "path": "/" },
+            { "title": "Cables", "path": "/" },
+            { "title": "Adapters", "path": "/" }
+          ]
+        },
+        "card": {
+          "title": "Smart Networking Gear",
+          "description": "Find routers, switches, and access points for your home or office.",
+          "image": "/assets/products/network.jpeg"
+        }
+      }
+    },
+      {
+      "menu": {
+        "name": "Server",
+        "image": "/assets/products/server.png",
+        "alt": "Server image",
+        "subMenu": {
+          "title": "Server Types",
+          "items": [
+            { "title": "Tower Servers", "path": "/" },
+            { "title": "Rack Servers", "path": "/" },
+            { "title": "Server Options", "path": "/" }
+          ]
+        },
+        "subMenu2": {
+          "title": "Workstations",
+          "items": [
+            { "title": "Tower Workstations", "path": "/" },
+            { "title": "Mobile Workstations", "path": "/" }
+          ]
+        },
+        "card": {
+          "title": "Enterprise Server Solutions",
+          "description": "Reliable and scalable servers for your IT infrastructure needs.",
+          "image": "/assets/products/server.png"
+        }
+      }
+    },
+   
+    {
+      "menu": {
+        "name": "Accessories",
+        "image": "/assets/products/accessories.jpeg",
+        "alt": "Accessories image",
+        "subMenu": {
+          "title": "Power Essentials",
+          "items": [
+            { "title": "Charging Cables", "path": "/" },
+            { "title": "Wall Adapters", "path": "/" }
+          ]
+        },
+        "subMenu2": {
+          "title": "Audio Accessories",
+          "items": [
+            { "title": "Headphones", "path": "/" },
+            { "title": "Bluetooth Speakers", "path": "/" }
+          ]
+        },
+        "card": {
+          "title": "Boost Your Setup",
+          "description": "Keyboards, mice, stands — built for comfort and control.",
+          "image": "/assets/products/accessories.jpeg"
+        }
+      }
+    }
+  ],
+
+
+  "product": {
+    "details": {
+      "title": "Product Details",
+      "fields": [
+        { "key": "id", "label": "ID", "inTable": true, "isForm": true },
+        {
+          "key": "name",
+          "label": "Product Name",
+          "type": "textinput",
+          "api": "",
+          "inTable": true,
+          "isForm": true
+        },
+        {
+          "key": "price",
+          "label": "Price",
+          "type": "textinput",
+          "inTable": true,
+          "isForm": true
+        },
+        {
+          "key": "images",
+          "label": "Image",
+          "type": "file",
+          "multiple": true,
+          "inTable": true,
+          "isForm": true
+        },
+        {
+          "key": "submit",
+          "label": "Submit",
+          "type": "button",
+          "multiple": true,
+          "className": "bg-update text-update-foreground w-full",
+          "inTable": true,
+          "isForm": true
+        },
+        {
+          "key": "cancel",
+          "label": "Cancel",
+          "type": "button",
+          "className": "bg-delete text-delete-foreground w-full",
+          "multiple": true,
+          "inTable": true,
+          "isForm": true
+        },
+
+        { "key": "action", "label": "Action", "inTable": true, "isForm": true }
+      ]
+    },
+    "specification": {
+      "title": "Product Specifications",
+      "editable": [
+        {
+          "key": "menu_heading",
+          "label": "Submenu Heading",
+          "type": "dropdown",
+          "api": "",
+          "inTable": true,
+          "isForm": true
+        },
+        {
+          "key": "menu_items",
+          "label": "label",
+          "type": "textinput",
+          "api": "",
+          "inTable": true,
+          "isForm": true
+        },
+        {
+          "key": "menu_values",
+          "label": "value",
+          "type": "textinput",
+          "api": "",
+          "inTable": true,
+          "isForm": true
+        }
+      ]
+    },
+
+    "specification_read": {
+      "id": "spec_001",
+      "title": "Specification",
+      "groups": {
+        "general": {
+          "id": "grp_001",
+          "title": "General",
+          "fields": [
+            {
+              "id": "gen_001",
+              "key": "brand",
+              "label": "Brand",
+              "type": "textinput",
+              "value": "Samsung"
+            },
+            {
+              "id": "gen_001",
+              "key": "model_name",
+              "label": "Model Name",
+              "type": "textinput",
+              "value": "QLED Q60C"
+            }
+          ]
+        },
+        "additional_features": {
+          "id": "grp_002",
+          "title": "Additional Features",
+          "fields": [
+            {
+              "id": "add_1",
+              "key": "features",
+              "label": "Features",
+              "type": "textarea",
+              "value": "Voice control, App store, Screen mirroring"
+            },
+            {
+              "id": "add_2",
+              "key": "features",
+              "label": "Features",
+              "type": "textarea",
+              "value": "Voice control, App store, Screen mirroring"
+            },
+            {
+              "id": "add_3",
+              "key": "features",
+              "label": "Features",
+              "type": "textarea",
+              "value": "Voice control, App store, Screen mirroring"
+            }
+          ]
+        },
+        "dimensions": {
+          "id": "grp_003",
+          "title": "Dimensions",
+          "fields": [
+            {
+              "id": "fld_004",
+              "key": "width",
+              "label": "Width",
+              "type": "textinput",
+              "value": "123 cm"
+            },
+            {
+              "id": "fld_005",
+              "key": "height",
+              "label": "Height",
+              "type": "textinput",
+              "value": "75 cm"
+            }
+          ]
+        },
+        "warranty": {
+          "id": "grp_004",
+          "title": "Warranty",
+          "fields": [
+            {
+              "id": "warenty_1",
+              "key": "duration",
+              "label": "Warranty Period",
+              "type": "textinput",
+              "value": "2 Years"
+            },
+            {
+              "id": "warenty_2",
+              "key": "warenty_2",
+              "label": "Warranty Coverage",
+              "type": "textarea",
+              "value": "Covers panel and internal components"
+            },
+            {
+              "id": "warenty_3",
+              "key": "warenty_3",
+              "label": "Warranty Coverage",
+              "type": "textarea",
+              "value": "Covers panel and internal components"
+            },
+            {
+              "id": "warenty_4",
+              "key": "warenty_4",
+              "label": "Warranty Coverage",
+              "type": "textarea",
+              "value": "Covers panel and internal components"
+            }
+          ]
+        },
+        "convenience_features": {
+          "id": "grp_005",
+          "title": "Convenience Features",
+          "fields": []
+        },
+        "services": {
+          "id": "grp_006",
+          "title": "Services",
+          "fields": []
+        },
+        "important_note": {
+          "id": "grp_007",
+          "title": "Important Note",
+          "fields": []
+        },
+        "display_features": {
+          "id": "grp_008",
+          "title": "Display Features",
+          "fields": [
+            {
+              "id": "fld_008",
+              "key": "screen_size",
+              "label": "Screen Size",
+              "type": "textinput",
+              "value": "55 inches"
+            },
+            {
+              "id": "fld_009",
+              "key": "resolution",
+              "label": "Resolution",
+              "type": "textinput",
+              "value": "4K UHD"
+            }
+          ]
+        },
+        "audio_video_features": {
+          "id": "grp_009",
+          "title": "Audio & Video Features",
+          "fields": [
+            {
+              "id": "fld_01",
+              "key": "screen_size",
+              "label": "Screen Size",
+              "type": "textinput",
+              "value": "55 inches"
+            },
+            {
+              "id": "fld_9",
+              "key": "resolution",
+              "label": "Resolution",
+              "type": "textinput",
+              "value": "4K UHD"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
