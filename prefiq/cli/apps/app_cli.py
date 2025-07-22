@@ -4,17 +4,10 @@ from prefiq.config.generate import (
     update_app_version,
     delete_app,
     add_app_to_config,
-    generate_all_configs,
 
 )
 
 app_cmd = typer.Typer(name="app", help="Manage applications")
-
-
-@app_cmd.command("init", help="Generate default config files if missing")
-def init_configs():
-    generate_all_configs()
-
 
 @app_cmd.command("list")
 def list_all_apps():

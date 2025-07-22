@@ -2,7 +2,7 @@ from typer.testing import CliRunner
 import configparser
 from pathlib import Path
 
-from prefiq.cli.config.app.app_cli import app_cmd
+from prefiq.cli.apps.app_cli import app_cmd
 from prefiq import CPATH
 
 runner = CliRunner()
