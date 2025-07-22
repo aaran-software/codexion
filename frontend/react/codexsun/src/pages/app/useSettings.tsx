@@ -29,8 +29,12 @@ export default function AppInitializer({ children }: { children: ReactNode }) {
         ? "/settings.json"
         : APP_CODE === "cortex"
         ? "/JSON/codexsun/menubar.json"
-        // : APP_CODE === "ecart"
-        // ? "/JSON/ecart/ecartSideManu.json"
+        : APP_CODE === "ecart"
+        ? "/JSON/ecart/menubar.json"
+        : APP_CODE === "mazsone"
+        ? "/JSON/mazsone/menubar.json"
+        : APP_CODE === "logicx"
+        ? "/JSON/mazsone/menubar.json"
         : "/settings.json";
 
     const loadSettings = async () => {

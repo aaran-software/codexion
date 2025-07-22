@@ -12,7 +12,7 @@ import Home from "./Home";
 import RouteLayout from "../../../RouteLayout";
 import Cart from "./Cart";
 
-const Ecart = () => [
+const Mazsone = () => [
   // ✅ Layout applied to these pages
   {
     path: "/",
@@ -41,4 +41,4 @@ const Ecart = () => [
   },
 ];
 
-export default Ecart;
+export default Mazsone;
