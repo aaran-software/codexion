@@ -1,9 +1,8 @@
 import os
 import json
 
-from prefiq.commands.utils.ui import print_success
+from prefiq.utils.cprint import cprint_success
 
-# Updated path: rootfolder/docker/docker.json
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../"))
 DOCKER_JSON_PATH = os.path.join(PROJECT_ROOT, "docker", "docker.json")
 MULTI_SITES_PATH = os.path.join(PROJECT_ROOT, "prefiq", "config", "multi_sites.json")
@@ -37,7 +36,7 @@ def gen_docker_json(key: str, file_path, domain: str = None, port: str = None):
     All others overwrite.
     """
 
-    multi_sites = load_multi_sites()
+    # multi_sites = load_multi_sites()
 
     # Ensure the docker directory exists
     os.makedirs(os.path.dirname(DOCKER_JSON_PATH), exist_ok=True)
@@ -64,12 +63,12 @@ def gen_docker_json(key: str, file_path, domain: str = None, port: str = None):
 
         if entry not in data[key]:
             data[key].append(entry)
-            print_success(f"docker.json updated: {key} += {entry}")
+            cprint_success(f"docker.json updated: {key} += {entry}")
         else:
-            print_success(f"docker.json already contains: {entry}")
+            cprint_success(f"docker.json already contains: {entry}")
     else:
         data[key] = safe_json_value(file_path)
-        print_success(f"docker.json updated: {key} = {file_path}")
+        cprint_success(f"docker.json updated: {key} = {file_path}")
 
     with open(DOCKER_JSON_PATH, "w") as f:
         json.dump(data, f, indent=4)
@@ -107,4 +106,4 @@ def remove_docker_domain_entry(domain_to_remove: str):
     with open(DOCKER_JSON_PATH, "w") as f:
         json.dump(data, f, indent=4)
 
-    print_success(f"Removed COMPOSE_FILE entry for domain: {domain_to_remove}")
+    cprint_success(f"Removed COMPOSE_FILE entry for domain: {domain_to_remove}")

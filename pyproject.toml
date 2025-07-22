@@ -14,3 +14,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
 packages = ["prefiq"]
+
+
+# usage
+# $ pip install -e .
