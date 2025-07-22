@@ -1,17 +1,15 @@
 import os
+from pathlib import Path
 
-from prefiq.core.commands.update_env import gen_env
-from prefiq.docker.gen_docker_json import gen_docker_json
-from prefiq.docker.generate_from_template import generate_from_template
-from prefiq.utils.cprint import cprint_success
+from prefiq.docker.prepare.generate_from_template import generate_from_template
+from prefiq.utils.cprint import cprint_success, cprint_error
+from prefiq import CPATH
 
-# Define paths
-TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), 'templates')
-OUTPUT_DIR = os.path.join(os.getcwd(), 'docker')
-os.makedirs(OUTPUT_DIR, exist_ok=True)
+TEMPLATE_NAME = "cloud.j2"
+OUTPUT_PATH = CPATH.DOCKER_DIR
 
 
-def gen_compose(domain: str, port: int):
+def create_compose(domain: str, port: int):
     # Sanitize name for docker usage
     name = domain.replace('.', '_').lower()
 
@@ -30,20 +28,29 @@ def gen_compose(domain: str, port: int):
     output_filename = f"docker-compose-{name}.yml"
 
     generate_from_template(
-        template_name='cloud.j2',
+        template_name=TEMPLATE_NAME,
         output_filename=output_filename,
         context=context,
-        output_dir=OUTPUT_DIR
+        output_dir=OUTPUT_PATH
     )
 
-    gen_env("DOMAIN", name)
-    gen_env("DOMAIN_PORT", str(port))
+    cprint_success(f"Compose written to: {os.path.join(OUTPUT_PATH, output_filename)}")
 
-    gen_docker_json(
-        key="COMPOSE_FILE",
-        file_path=os.path.join(OUTPUT_DIR, output_filename),
-        domain=name,
-        port=str(port)
-    )
 
-    cprint_success(f"Compose written to: {os.path.join(OUTPUT_DIR, output_filename)}")
+def remove_compose(domain: str):
+    """
+    Remove the generated docker-compose YAML file based on the domain.
+    """
+    name = domain.replace('.', '_').lower()
+    filename = os.path.join(OUTPUT_PATH, f"docker-compose-{name}.yml")
+
+    if os.path.exists(filename):
+        os.remove(filename)
+        cprint_success(f"Compose removed: {filename}")
+    else:
+        cprint_error(f"Compose file not found: {filename}")
+
+
+def list_compose_files():
+    files = list(Path(CPATH.DOCKER_DIR).glob("docker-compose-*.yml"))
+    return sorted(f.name for f in files)
