@@ -1,0 +1,197 @@
+{
+  "books": {
+    "accountheads": {
+      "details": {
+        "title": "Account Book Details",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "inTable": true,
+            "isForm": true
+          },
+          {
+            "key": "name",
+            "label": "Account Book Name",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "date",
+            "label": "Desc",
+            "type": "dropdown",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "date",
+            "label": "Opening",
+            "type": "dropdown",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "duedate",
+            "label": "Opening Date",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "duedate",
+            "label": "Current",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": true
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "inTable": true,
+            "isForm": true
+          }
+        ]
+      }
+    },
+    "ledgergroup": {
+      "details": {
+        "title": "Account Book Details",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "inTable": true,
+            "isForm": true
+          },
+          {
+            "key": "name",
+            "label": "Ledger Group",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "date",
+            "label": "Account Head",
+            "type": "dropdown",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "date",
+            "label": "Desc",
+            "type": "dropdown",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "date",
+            "label": "Opening",
+            "type": "dropdown",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "duedate",
+            "label": "Opening Date",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "duedate",
+            "label": "Current",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "inTable": true,
+            "isForm": true
+          }
+        ]
+      }
+    },
+    "ledger": {
+      "details": {
+        "title": "Account Book Details",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "inTable": true,
+            "isForm": true
+          },
+          {
+            "key": "name",
+            "label": "Ledger Name",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "name",
+            "label": "Ledger Group Name",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "date",
+            "label": "Desc",
+            "type": "dropdown",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "date",
+            "label": "Opening",
+            "type": "dropdown",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "duedate",
+            "label": "Opening Date",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "duedate",
+            "label": "Current",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "inTable": true,
+            "isForm": true
+          }
+        ]
+      }
+    }
+  }
+}

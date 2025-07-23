@@ -1,0 +1,536 @@
+{
+  "invoice": {
+    "sales": {
+      "details": {
+        "title": "Invoice Details",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": true
+          },
+          {
+            "key": "name",
+            "label": "Name",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "date",
+            "label": "Date",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "duedate",
+            "label": "Due Date",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          }
+        ]
+      },
+      "items": {
+        "title": "Items",
+        "fields": [
+          {
+            "key": "partyname",
+            "label": "Party Name",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "orderno",
+            "label": "Order No",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "stylename",
+            "label": "Style Name",
+            "type": "dropdown",
+            "options": [],
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "invoiceno",
+            "label": "Invoice No",
+            "type": "dropdown",
+            "options": [],
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "description",
+            "label": "Description",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "color",
+            "label": "Color",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "size",
+            "label": "Size",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "roll",
+            "label": "Rolls",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "quantity",
+            "label": "Quantity",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "price",
+            "label": "Price",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": false
+          }
+        ]
+      }
+    },
+    "purchase": {
+      "details": {
+        "title": "Invoice Details",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": true
+          },
+          {
+            "key": "name",
+            "label": "Name",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "date",
+            "label": "Date",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "duedate",
+            "label": "Due Date",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          }
+        ]
+      },
+      "items": {
+        "title": "Items",
+        "fields": [
+          {
+            "key": "partyname",
+            "label": "Party Name",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "orderno",
+            "label": "Order No",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "stylename",
+            "label": "Style Name",
+            "type": "dropdown",
+            "options": [],
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "invoiceno",
+            "label": "Invoice No",
+            "type": "dropdown",
+            "options": [],
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "description",
+            "label": "Description",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "color",
+            "label": "Color",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "size",
+            "label": "Size",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "roll",
+            "label": "Rolls",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "quantity",
+            "label": "Quantity",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "price",
+            "label": "Price",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": false
+          }
+        ]
+      }
+    },
+    "payment": {
+      "details": {
+        "title": "Invoice Details",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": true
+          },
+          {
+            "key": "name",
+            "label": "Name",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "date",
+            "label": "Date",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "duedate",
+            "label": "Due Date",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          }
+        ]
+      },
+      "items": {
+        "title": "Items",
+        "fields": [
+          {
+            "key": "partyname",
+            "label": "Party Name",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "orderno",
+            "label": "Order No",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "stylename",
+            "label": "Style Name",
+            "type": "dropdown",
+            "options": [],
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "invoiceno",
+            "label": "Invoice No",
+            "type": "dropdown",
+            "options": [],
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "description",
+            "label": "Description",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "color",
+            "label": "Color",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "size",
+            "label": "Size",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "roll",
+            "label": "Rolls",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "quantity",
+            "label": "Quantity",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "price",
+            "label": "Price",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": false
+          }
+        ]
+      }
+    },
+    "receipt": {
+      "details": {
+        "title": "Invoice Details",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": true
+          },
+          {
+            "key": "name",
+            "label": "Name",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "date",
+            "label": "Date",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "duedate",
+            "label": "Due Date",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          }
+        ]
+      },
+      "items": {
+        "title": "Items",
+        "fields": [
+          {
+            "key": "partyname",
+            "label": "Party Name",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "orderno",
+            "label": "Order No",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "stylename",
+            "label": "Style Name",
+            "type": "dropdown",
+            "options": [],
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "invoiceno",
+            "label": "Invoice No",
+            "type": "dropdown",
+            "options": [],
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "description",
+            "label": "Description",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "color",
+            "label": "Color",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "size",
+            "label": "Size",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "roll",
+            "label": "Rolls",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "quantity",
+            "label": "Quantity",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "price",
+            "label": "Price",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": false
+          }
+        ]
+      }
+    }
+  }
+}
