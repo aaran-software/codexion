@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "module": "CommonJS",
+    "outDir": "dist-node"
+  },
+  "include": ["node-entry.ts"] // or whatever entry you use for Node
+}
