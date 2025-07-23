@@ -8,10 +8,17 @@ import HeaderPortfolio from "./Components/Header/header-portfolio";
 import Footer from "./Components/footer/Footer";
 import FooterPortfolio from "./Components/footer/footer-portfolio";
 import EcartHeader from "./Components/Header/EcartHeader";
+import { useEffect } from "react";
 
 const RouteLayout = () => {
-  const { APP_CODE } = useAppContext();
 
+  const { APP_CODE, APP_TITLE } = useAppContext();
+
+  useEffect(() => {
+    if (APP_TITLE) {
+      document.title = APP_TITLE;
+    }
+  }, [APP_TITLE]);
   const getHeader = () => {
     switch (APP_CODE) {
       case "ecart":

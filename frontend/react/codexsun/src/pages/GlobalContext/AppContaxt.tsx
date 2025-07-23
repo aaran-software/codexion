@@ -19,9 +19,11 @@ type AppContextType = {
     updateSettings: (newSettings: Partial<Settings>) => void;
     APP_CODE: string; // Expose APP_CODE to the context
     API_URL: string; // Expose API_URL to the context
+    APP_TITLE:string
 };
 
 const APP_CODE = import.meta.env.APP_TYPE || 'billing'
+const APP_TITLE = import.meta.env.APP_TITLE || 'AARAN'
 const API_URL = import.meta.env.API_URL || 'http://127.0.0.1:4000'
 
 // console.log(APP_CODE)
@@ -56,6 +58,7 @@ export const AppProvider = ({
                 updateSettings,
                 APP_CODE, // Expose APP_CODE to the context
                 API_URL, // Expose APP_CODE to the context
+                APP_TITLE
             }}
         >
             {children}

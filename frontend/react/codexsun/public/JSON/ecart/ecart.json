@@ -1,22 +1,7 @@
 {
-  "theme": "system",
-  "recordsPerPage": 60,
-  "user": {
-    "name": "Tech Media",
-    "email": "Techmedia@gmail.com",
-    "avatar": "/avatars/shadcn.jpg"
+  "app": {
+    "title": "Tech Media"
   },
-
-  "logo": {
-    "path": "/assets/svg/logo.svg",
-    "position": "center",
-    "height": "20",
-    "font_size": "2",
-    "company_name": "",
-    "color": "",
-    "padding": "0"
-  },
-
   "Mainmenu": [
     {
       "menu": {
@@ -26,9 +11,18 @@
         "subMenu": {
           "title": "Laptop Types",
           "items": [
-            { "title": "Business Laptop", "path": "/" },
-            { "title": "Gaming Laptop", "path": "/" },
-            { "title": "Personal Laptop", "path": "/" }
+            {
+              "title": "Business Laptop",
+              "path": "/"
+            },
+            {
+              "title": "Gaming Laptop",
+              "path": "/"
+            },
+            {
+              "title": "Personal Laptop",
+              "path": "/"
+            }
           ]
         },
         "card": {
@@ -46,11 +40,26 @@
         "subMenu": {
           "title": "Desktop Types",
           "items": [
-            { "title": "Business Tower PCs", "path": "/" },
-            { "title": "Business All-In-One PCs", "path": "/" },
-            { "title": "Consumer Tower PCs", "path": "/" },
-            { "title": "Consumer All-In-One PCs", "path": "/" },
-            { "title": "Lenovo Smart Hub", "path": "/" }
+            {
+              "title": "Business Tower PCs",
+              "path": "/"
+            },
+            {
+              "title": "Business All-In-One PCs",
+              "path": "/"
+            },
+            {
+              "title": "Consumer Tower PCs",
+              "path": "/"
+            },
+            {
+              "title": "Consumer All-In-One PCs",
+              "path": "/"
+            },
+            {
+              "title": "Lenovo Smart Hub",
+              "path": "/"
+            }
           ]
         },
         "card": {
@@ -68,40 +77,82 @@
         "subMenu": {
           "title": "Processors & Boards",
           "items": [
-            { "title": "Intel Processors", "path": "/" },
-            { "title": "Motherboards For Intel", "path": "/" },
-            { "title": "Motherboards For AMD", "path": "/" }
+            {
+              "title": "Intel Processors",
+              "path": "/"
+            },
+            {
+              "title": "Motherboards For Intel",
+              "path": "/"
+            },
+            {
+              "title": "Motherboards For AMD",
+              "path": "/"
+            }
           ]
         },
         "subMenu2": {
           "title": "Hard Drives",
           "items": [
-            { "title": "SAS Hard Drives", "path": "/" },
-            { "title": "AV Hard Drives", "path": "/" },
-            { "title": "Enterprise Hard Drives", "path": "/" },
-            { "title": "External Hard Drives", "path": "/" }
+            {
+              "title": "SAS Hard Drives",
+              "path": "/"
+            },
+            {
+              "title": "AV Hard Drives",
+              "path": "/"
+            },
+            {
+              "title": "Enterprise Hard Drives",
+              "path": "/"
+            },
+            {
+              "title": "External Hard Drives",
+              "path": "/"
+            }
           ]
         },
         "subMenu3": {
           "title": "Brands",
           "items": [
-            { "title": "Logitech", "path": "/" },
-            { "title": "HP", "path": "/" },
-            { "title": "HP", "path": "/" }
+            {
+              "title": "Logitech",
+              "path": "/"
+            },
+            {
+              "title": "HP",
+              "path": "/"
+            },
+            {
+              "title": "HP",
+              "path": "/"
+            }
           ]
         },
         "subMenu4": {
           "title": "Memory",
           "items": [
-            { "title": "Notebook Memories", "path": "/" },
-            { "title": "Desktop Memories", "path": "/" },
-            { "title": "Server Memories", "path": "/" }
+            {
+              "title": "Notebook Memories",
+              "path": "/"
+            },
+            {
+              "title": "Desktop Memories",
+              "path": "/"
+            },
+            {
+              "title": "Server Memories",
+              "path": "/"
+            }
           ]
         },
         "subMenu5": {
           "title": "Power Backup",
           "items": [
-            { "title": "UPS", "path": "/" }
+            {
+              "title": "UPS",
+              "path": "/"
+            }
           ]
         },
         "card": {
@@ -111,8 +162,7 @@
         }
       }
     },
-  
-     {
+    {
       "menu": {
         "name": "Printer",
         "image": "/assets/products/printer.jpg",
@@ -120,46 +170,111 @@
         "subMenu": {
           "title": "Printer Type",
           "items": [
-            { "title": "Inkjet Printers", "path": "/" },
-            { "title": "Laser Printers", "path": "/" },
-            { "title": "All-in-One Printers", "path": "/" },
-            { "title": "Dot Matrix Printers", "path": "/" },
-            { "title": "Thermal Printers", "path": "/" },
-            { "title": "3D Printers", "path": "/" },
-            { "title": "Photo Printers", "path": "/" },
-            { "title": "Label Printers", "path": "/" }
+            {
+              "title": "Inkjet Printers",
+              "path": "/"
+            },
+            {
+              "title": "Laser Printers",
+              "path": "/"
+            },
+            {
+              "title": "All-in-One Printers",
+              "path": "/"
+            },
+            {
+              "title": "Dot Matrix Printers",
+              "path": "/"
+            },
+            {
+              "title": "Thermal Printers",
+              "path": "/"
+            },
+            {
+              "title": "3D Printers",
+              "path": "/"
+            },
+            {
+              "title": "Photo Printers",
+              "path": "/"
+            },
+            {
+              "title": "Label Printers",
+              "path": "/"
+            }
           ]
         },
         "subMenu2": {
           "title": "Use Case",
           "items": [
-            { "title": "Home Printers", "path": "/" },
-            { "title": "Office Printers", "path": "/" },
-            { "title": "Portable Printers", "path": "/" },
-            { "title": "Commercial/Enterprise Printers", "path": "/" }
+            {
+              "title": "Home Printers",
+              "path": "/"
+            },
+            {
+              "title": "Office Printers",
+              "path": "/"
+            },
+            {
+              "title": "Portable Printers",
+              "path": "/"
+            },
+            {
+              "title": "Commercial/Enterprise Printers",
+              "path": "/"
+            }
           ]
         },
-         "subMenu3": {
+        "subMenu3": {
           "title": "By Features",
           "items": [
-            { "title": "Wireless Printers", "path": "/" },
-            { "title": "Duplex (Double-Sided) Printers", "path": "/" },
-            { "title": "Color Printers", "path": "/" },
-            { "title": "Monochrome Printers", "path": "/" },
-            { "title": "Mobile Printing Support", "path": "/" },
-            { "title": "Cloud-Enabled Printers", "path": "/" }
+            {
+              "title": "Wireless Printers",
+              "path": "/"
+            },
+            {
+              "title": "Duplex (Double-Sided) Printers",
+              "path": "/"
+            },
+            {
+              "title": "Color Printers",
+              "path": "/"
+            },
+            {
+              "title": "Monochrome Printers",
+              "path": "/"
+            },
+            {
+              "title": "Mobile Printing Support",
+              "path": "/"
+            },
+            {
+              "title": "Cloud-Enabled Printers",
+              "path": "/"
+            }
           ]
         },
-         "subMenu4": {
+        "subMenu4": {
           "title": "Use Case",
           "items": [
-            { "title": "USB Printers", "path": "/" },
-            { "title": "Wi-Fi Printers", "path": "/" },
-            { "title": "Bluetooth Printers", "path": "/" },
-            { "title": "Ethernet Network Printers", "path": "/" }
+            {
+              "title": "USB Printers",
+              "path": "/"
+            },
+            {
+              "title": "Wi-Fi Printers",
+              "path": "/"
+            },
+            {
+              "title": "Bluetooth Printers",
+              "path": "/"
+            },
+            {
+              "title": "Ethernet Network Printers",
+              "path": "/"
+            }
           ]
         },
-    
         "card": {
           "title": "Choose Your Print Style",
           "description": "From ink to laser, print your way",
@@ -175,9 +290,18 @@
         "subMenu": {
           "title": "Camera Categories",
           "items": [
-            { "title": "Smartphones", "path": "/" },
-            { "title": "Accessories", "path": "/" },
-            { "title": "Tablets", "path": "/" }
+            {
+              "title": "Smartphones",
+              "path": "/"
+            },
+            {
+              "title": "Accessories",
+              "path": "/"
+            },
+            {
+              "title": "Tablets",
+              "path": "/"
+            }
           ]
         },
         "card": {
@@ -195,18 +319,35 @@
         "subMenu": {
           "title": "WiFi Devices",
           "items": [
-            { "title": "Routers", "path": "/" },
-            { "title": "Range Extenders", "path": "/" },
-            { "title": "Access Points", "path": "/" }
-            
+            {
+              "title": "Routers",
+              "path": "/"
+            },
+            {
+              "title": "Range Extenders",
+              "path": "/"
+            },
+            {
+              "title": "Access Points",
+              "path": "/"
+            }
           ]
         },
         "subMenu2": {
           "title": "Network Accessories",
           "items": [
-            { "title": "Switches", "path": "/" },
-            { "title": "Cables", "path": "/" },
-            { "title": "Adapters", "path": "/" }
+            {
+              "title": "Switches",
+              "path": "/"
+            },
+            {
+              "title": "Cables",
+              "path": "/"
+            },
+            {
+              "title": "Adapters",
+              "path": "/"
+            }
           ]
         },
         "card": {
@@ -216,7 +357,7 @@
         }
       }
     },
-      {
+    {
       "menu": {
         "name": "Server",
         "image": "/assets/products/server.png",
@@ -224,16 +365,31 @@
         "subMenu": {
           "title": "Server Types",
           "items": [
-            { "title": "Tower Servers", "path": "/" },
-            { "title": "Rack Servers", "path": "/" },
-            { "title": "Server Options", "path": "/" }
+            {
+              "title": "Tower Servers",
+              "path": "/"
+            },
+            {
+              "title": "Rack Servers",
+              "path": "/"
+            },
+            {
+              "title": "Server Options",
+              "path": "/"
+            }
           ]
         },
         "subMenu2": {
           "title": "Workstations",
           "items": [
-            { "title": "Tower Workstations", "path": "/" },
-            { "title": "Mobile Workstations", "path": "/" }
+            {
+              "title": "Tower Workstations",
+              "path": "/"
+            },
+            {
+              "title": "Mobile Workstations",
+              "path": "/"
+            }
           ]
         },
         "card": {
@@ -243,7 +399,6 @@
         }
       }
     },
-   
     {
       "menu": {
         "name": "Accessories",
@@ -252,15 +407,27 @@
         "subMenu": {
           "title": "Power Essentials",
           "items": [
-            { "title": "Charging Cables", "path": "/" },
-            { "title": "Wall Adapters", "path": "/" }
+            {
+              "title": "Charging Cables",
+              "path": "/"
+            },
+            {
+              "title": "Wall Adapters",
+              "path": "/"
+            }
           ]
         },
         "subMenu2": {
           "title": "Audio Accessories",
           "items": [
-            { "title": "Headphones", "path": "/" },
-            { "title": "Bluetooth Speakers", "path": "/" }
+            {
+              "title": "Headphones",
+              "path": "/"
+            },
+            {
+              "title": "Bluetooth Speakers",
+              "path": "/"
+            }
           ]
         },
         "card": {
@@ -271,13 +438,16 @@
       }
     }
   ],
-
-
   "product": {
     "details": {
       "title": "Product Details",
       "fields": [
-        { "key": "id", "label": "ID", "inTable": true, "isForm": true },
+        {
+          "key": "id",
+          "label": "ID",
+          "inTable": true,
+          "isForm": true
+        },
         {
           "key": "name",
           "label": "Product Name",
@@ -319,8 +489,12 @@
           "inTable": true,
           "isForm": true
         },
-
-        { "key": "action", "label": "Action", "inTable": true, "isForm": true }
+        {
+          "key": "action",
+          "label": "Action",
+          "inTable": true,
+          "isForm": true
+        }
       ]
     },
     "specification": {
@@ -352,7 +526,6 @@
         }
       ]
     },
-
     "specification_read": {
       "id": "spec_001",
       "title": "Specification",

@@ -63,7 +63,7 @@ useEffect(() => {
     },
     {
       id: "docker",
-      className: "w-[100%] min-h-full",
+      className: "w-[100%] flex justify-center items-center min-h-full",
       component: <Docker />,
     },
 
