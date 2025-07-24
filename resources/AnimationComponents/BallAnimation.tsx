@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import * as chroma from "chroma-js";
+import chroma from "chroma-js";
+
 
 interface BallType {
   x: number;

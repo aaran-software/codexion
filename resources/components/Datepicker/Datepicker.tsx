@@ -6,7 +6,7 @@ import React, {
   useImperativeHandle,
 } from "react";
 import { format } from "date-fns";
-import Error from "../../../frontend/react/codexsun/src/Components/Input/Error";
+import Error from "../error/Error"
 
 const monthNames = [
   "January",

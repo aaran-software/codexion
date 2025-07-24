@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import apiClient from "../../frontend/react/codexsun/src/pages/app/ecart/api/apiClients";
-import ImageButton from "../components/button/ImageBtn.tsx";
+import apiClient from "../../resources/global/api/apiClients";
+import ImageButton from "../components/button/ImageBtn";
 import type { ProductItem } from "./ProductCard";
 
 // export interface ProductItem {

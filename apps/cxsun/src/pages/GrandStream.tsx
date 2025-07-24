@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import fieldConfig from "../../../../frontend/react/codexsun/public/JSON/GrandStream/table.json";
-import table_data from "../../../../frontend/react/codexsun/public/JSON/GrandStream/grandstream.json";
-import type { ApiList, Field } from '@resources/components/common/commonform';
-import FormLayout from '@resources/components/common/FormLayout';
+import fieldConfig from "../../public/table.json";
+import table_data from "../../public/grandstream.json";
+import type { ApiList, Field } from '../../../../resources/components/common/commonform';
+import FormLayout from '../../../../resources/components/common/FormLayout';
 
 function GrandStream() {
   const fieldSection = fieldConfig.grandstream.calllog;

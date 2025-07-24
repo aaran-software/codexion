@@ -2,10 +2,10 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { cn } from "../../global/library/utils"
 import { Card, CardContent, CardHeader, CardTitle } from "../Chart/card"
-import PasswordInput from "../input/passwordInput.tsx"
-import Button from "../../../frontend/react/codexsun/src/Components/Input/Button"
-import FloatingInput from "../../../frontend/react/codexsun/src/Components/Input/FloatingInput"
+import PasswordInput from "../input/passwordInput"
 import { useAppContext } from "../../../apps/global/AppContaxt"
+import FloatingInput from "../../../resources/components/input/FloatingInput";
+import Button from "../../../resources/components/button/Button";
 
 export function SignupComponent({
   className,

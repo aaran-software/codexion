@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, forwardRef } from "react";
 import { Check, X, ChevronDown, PlusCircle } from "lucide-react";
-import Error from "../../../frontend/react/codexsun/src/Components/Input/Error";
+import Error from '../error/Error'
 import CreateMenu from "../common/CreateMenu";
 import apiClient from "@resources/global/api/apiClients";
 

@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Card } from '../Chart/card'
-import profit from '../../../frontend/react/codexsun/src/assets/logo.png'
 
 function AnalticsCard() {
     const [data]=useState([
@@ -8,28 +7,28 @@ function AnalticsCard() {
             title:"purchase",
             amount:1000,
             lastMonthAmt:0,
-            image:profit,
+            image:'/assets/logo.png',
             colors:"profit"
         },
           {
             title:"Sales",
             amount:1000,
             lastMonthAmt:0,
-            image:profit,
+            image:'/assets/logo.png',
             colors:"sales"
         },
           {
             title:"Payables",
             amount:1000,
             lastMonthAmt:0,
-            image:profit,
+            image:'/assets/logo.png',
             colors:"pay"
         },
           {
             title:"Receivables",
             amount:1000,
             lastMonthAmt:0,
-            image:profit,
+            image:'/assets/logo.png',
             colors:"receive"
         }
     ])

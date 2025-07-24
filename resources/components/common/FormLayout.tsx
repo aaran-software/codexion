@@ -1,5 +1,5 @@
-import ButtonDropdown from "../button/ButtonDropdown.tsx";
-import ImageButton from "../button/ImageBtn.tsx";
+import ButtonDropdown from "../button/ButtonDropdown";
+import ImageButton from "../button/ImageBtn";
 import CommonTable, {
   type ApiList,
   type Column,
@@ -8,9 +8,8 @@ import CommonTable, {
 import Filter from "./Filter";
 import Drawer from "../Drawer/Drawer";
 import { exportToCSV } from "../External/ExportToCSV";
-import AnimateButton from "../button/animatebutton.tsx";
-import Button from "../../../frontend/react/codexsun/src/Components/Input/Button";
-import DropdownRead from "../input/Dropdown-read.tsx";
+import AnimateButton from "../button/animatebutton";
+import DropdownRead from "../input/Dropdown-read";
 import Pagination from "../Pagination/Pagination";
 import { useEffect, useMemo, useRef, useState } from "react";
 import CommonForm, {
@@ -18,7 +17,8 @@ import CommonForm, {
 } from "./commonform";
 import { useReactToPrint } from "react-to-print";
 import Print from "../External/Print";
-import apiClient from "@resources/global/api/apiClients";
+import apiClient from "../../../resources/global/api/apiClients";
+import Button from "../../../resources/components/button/Button";
 type FormLayoutProps = {
   groupedFields: FieldGroup[];
   head: Column[];

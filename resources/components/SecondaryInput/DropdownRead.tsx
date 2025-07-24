@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, forwardRef } from "react";
 import { Check, X, ChevronDown } from "lucide-react";
-import Error from "../../../frontend/react/codexsun/src/Components/Input/Error";
+import Error from '../error/Error'
 
 interface DropdownProps {
   id: string;

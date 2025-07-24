@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react"
-import ImageButton from "../button/ImageBtn.tsx"
+import ImageButton from "../button/ImageBtn"
 
 export default function HelpMenu({
   onClose,

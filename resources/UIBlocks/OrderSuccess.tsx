@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { CheckCircle } from "lucide-react";
-import Button from "../../frontend/react/codexsun/src/Components/Input/Button";
-import confetti from "canvas-confetti"; // Ensure this is installed
+import confetti from "canvas-confetti";
+import Button from "../../resources/components/button/Button"; // Ensure this is installed
 
 interface OrderSuccessProps {
   orderId: string;

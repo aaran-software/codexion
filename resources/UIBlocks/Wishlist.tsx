@@ -1,7 +1,6 @@
 import { useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import vehicles from "../../frontend/react/codexsun/public/assets/category/vehicles.png";
-import ImageButton from "../components/button/ImageBtn.tsx";
+import ImageButton from "../components/button/ImageBtn";
 import { Heart } from "lucide-react";
 
 interface Product {
@@ -23,7 +22,7 @@ const initialData: Product[] = Array.from({ length: 15 }, (_, i) => ({
   id: i + 1,
   title: `Product ${i + 1}`,
   price: 29.99 + i,
-  image: vehicles,
+  image: '/assets/category/vehicles.png',
   category: "Category",
   quantity: 1,
 }));

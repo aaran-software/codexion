@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import Button from "../../../frontend/react/codexsun/src/Components/Input/Button";
-import FloatingInput from "../../../frontend/react/codexsun/src/Components/Input/FloatingInput";
+import Button from "../../../resources/components/button/Button";
+import FloatingInput from "../../../resources/components/input/FloatingInput";
 
 type CreateMenuProps = {
   onClose: () => void;

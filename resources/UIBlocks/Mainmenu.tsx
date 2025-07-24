@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createPortal } from "react-dom";
-import settings from "../../frontend/react/codexsun/public/JSON/ecart/ecart.json";
+import settings from "../../apps/ecart/public/ecart.json";
 
 interface SubMenuItems {
   title: string;

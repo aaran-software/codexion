@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import vehicles from "../../frontend/react/codexsun/public/assets/category/vehicles.png";
 
 interface Product {
   id: number;
@@ -14,21 +13,21 @@ const initialData: Product[] = [
     id: 1,
     title: "Wireless Headphones",
     price: 59.99,
-    image: vehicles,
+    image: '/category/vehicles.png',
     quantity: 1,
   },
   {
     id: 2,
     title: "Running Shoes",
     price: 89.49,
-    image: vehicles,
+    image: '/category/vehicles.png',
     quantity: 1,
   },
   {
     id: 3,
     title: "Cotton T-shirt",
     price: 19.99,
-    image: vehicles,
+    image: '/category/vehicles.png',
     quantity: 1,
   },
 ];

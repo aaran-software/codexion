@@ -6,14 +6,13 @@ import React, {
   useImperativeHandle,
 } from "react";
 import { format } from "date-fns";
-import Error from "../../../frontend/react/codexsun/src/Components/Input/Error";
 
 const monthNames = [
   "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
 const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
+import Error from '../error/Error'
 interface DatePickerProps {
   id?: string;
   label?: string;

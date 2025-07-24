@@ -1,7 +1,6 @@
-import ImageButton from "../../components/button/ImageBtn.tsx";
+import ImageButton from "../../components/button/ImageBtn";
 import React, { useState, useEffect, useRef } from "react";
-import Adbanner from "../../../frontend/react/codexsun/public/assets/adverthisment.png"
-import apiClient from "../../../frontend/react/codexsun/src/pages/app/ecart/api/apiClients";
+import apiClient from "../../../resources/global/api/apiClients";
 interface SlideContent {
   image: string;
   title: string;
@@ -150,7 +149,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
             <div className="w-full h-[350px] flex items-center justify-center">
               <img
                 // src={`https://dev.aaranerp.com/${slide.image}`}
-                src={Adbanner}
+                src={'/assets/adverthisment.png'}
                 alt={`Slide ${index} ${slide}`}
                 className={`h-full w-full object-fit`}
               />

@@ -1,5 +1,5 @@
-import Button from "../../frontend/react/codexsun/src/Components/Input/Button";
 import React, { useState } from "react";
+import Button from "../../resources/components/button/Button";
 
 interface Step {
   title: string;

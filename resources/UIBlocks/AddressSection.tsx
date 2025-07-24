@@ -1,9 +1,9 @@
-import ImageButton from "../components/button/ImageBtn.tsx";
-import Button from "../../frontend/react/codexsun/src/Components/Input/Button";
-import FloatingInput from "../../frontend/react/codexsun/src/Components/Input/FloatingInput";
-import { TextArea } from "../components/input/TextArea.tsx";
+import FloatingInput from "../../resources/components/input/FloatingInput";
+import ImageButton from "../components/button/ImageBtn";
+import { TextArea } from "../components/input/TextArea";
 import RadioGroup from "../components/RadioGroup/RadioGroup";
 import { useState } from "react";
+import Button from "../../resources/components/button/Button";
 
 function AddressSection() {
   const [address] = useState([

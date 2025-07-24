@@ -1,8 +1,8 @@
 import { useRef, useEffect, useState } from "react";
-import FloatingInput from "../../frontend/react/codexsun/src/Components/Input/FloatingInput";
 import RadioGroup from "../components/RadioGroup/RadioGroup";
-import DropdownRead from "../components/input/Dropdown-read.tsx";
-import Button from "../../frontend/react/codexsun/src/Components/Input/Button";
+import DropdownRead from "../components/input/Dropdown-read";
+import FloatingInput from "../../resources/components/input/FloatingInput";
+import Button from "../../resources/components/button/Button";
 
 function OrderPayment() {
   const [selectedMethod, setSelectedMethod] = useState<string | null>("UPI");

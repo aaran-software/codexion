@@ -24,22 +24,22 @@ export default function AppInitializer({ children }: { children: ReactNode }) {
     if (!APP_CODE) return;
 
     let jsonPath = "/settings.json";
-    switch (APP_CODE) {
-      case "cortex":
-        jsonPath = "/JSON/codexsun/menubar.json";
-        break;
-      case "ecart":
-        jsonPath = "/JSON/ecart/menubar.json";
-        break;
-      case "mazsone":
-      case "logicx":
-        jsonPath = "/JSON/mazsone/menubar.json";
-        break;
-      case "cxsun":
-      default:
-        jsonPath = "/settings.json";
-        break;
-    }
+    // switch (APP_CODE) {
+    //   case "cortex":
+    //     jsonPath = "/settings.json";
+    //     break;
+    //   case "ecart":
+    //     jsonPath = "/menubar.json";
+    //     break;
+    //   case "mazsone":
+    //   case "logicx":
+    //     jsonPath = "/JSON/mazsone/menubar.json";
+    //     break;
+    //   case "cxsun":
+    //   default:
+    //     jsonPath = "/settings.json";
+    //     break;
+    // }
 
     console.debug(`[AppInitializer] APP_CODE = ${APP_CODE}`);
     console.debug(`[AppInitializer] Loading settings from: ${jsonPath}`);

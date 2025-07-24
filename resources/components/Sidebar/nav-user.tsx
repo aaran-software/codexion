@@ -31,7 +31,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import HelpMenu from "./HelpMenu";
 import { useRef, useState } from "react";
-// import { useAuth } from "../../pages/auth/AuthContext";
 import { useAppContext } from "../../../apps/global/AppContaxt";
 import { logoutUser } from "../../../apps/global/auth/logout";
 

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import FileUpload from "../../../../../resources/components/input/FileInput";
-import FloatingInput from "../../../../../frontend/react/codexsun/src/Components/Input/FloatingInput";
 import DropdownRead from "../../../../../resources/components/input/Dropdown-read";
-import Button from "../../../../../frontend/react/codexsun/src/Components/Input/Button";
 import apiClient from "../../../../../resources/global/api/apiClients";
+import FloatingInput from "../../../../../resources/components/input/FloatingInput";
+import Button from "../../../../../resources/components/button/Button";
 
 function CustomizeLogo() {
   const [logoPath, setLogoPath] = useState<string>("");

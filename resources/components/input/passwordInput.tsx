@@ -1,5 +1,5 @@
 import { useState, useId, forwardRef } from "react";
-import Error from "../../../frontend/react/codexsun/src/Components/Input/Error";
+import Error from '../error/Error'
 
 interface PasswordInputProps {
   id?: string;

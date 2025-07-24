@@ -1,7 +1,5 @@
 import { useState, type KeyboardEvent } from "react";
-
-import Button from "../../../frontend/react/codexsun/src/Components/Input/Button";
-
+import Button from "../button/Button";
 interface FormField {
   label: string;
   input: "input" | "textarea" | "image";

@@ -1,6 +1,6 @@
 "use client";
 
-import Error from "../../../frontend/react/codexsun/src/Components/Input/Error";
+import Error from '../error/Error'
 
 interface CheckboxProps {
   id: string;

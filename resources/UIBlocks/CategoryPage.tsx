@@ -1,10 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import apiClient from "../../frontend/react/codexsun/src/pages/app/ecart/api/apiClients";
-import ImageButton from "../components/button/ImageBtn.tsx";
-import RangeSlider from "../components/input/RangeSlider.tsx";
-import DropdownRead from "../components/input/Dropdown-read.tsx";
-import Checkbox from "../components/input/checkbox.tsx";
+import apiClient from "../../resources/global/api/apiClients";
+import ImageButton from "../components/button/ImageBtn";
+import RangeSlider from "../components/input/RangeSlider";
+import DropdownRead from "../components/input/Dropdown-read";
+import Checkbox from "../components/input/checkbox";
 
 type ProductType = {
   id: number;

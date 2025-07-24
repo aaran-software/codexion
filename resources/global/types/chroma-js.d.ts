@@ -1,4 +1,3 @@
-import chroma from 'resources/global/types/chroma-js';
 
 declare module 'resources/global/types/chroma-js' {
   namespace chroma {
@@ -13,3 +12,4 @@ declare module 'resources/global/types/chroma-js' {
 
   export = chroma;
 }
+declare module 'react-scroll';

@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import AppRoutes from "./Routes";
-import "./theme.css";
+import "../theme.css";
 import {BrowserRouter} from "react-router-dom";
 import {AppProvider} from "../../global/AppContaxt";
 import {AuthProvider} from "../../global/auth/AuthContext";

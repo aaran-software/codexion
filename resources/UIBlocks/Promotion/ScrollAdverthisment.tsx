@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import ImageButton from "../../components/button/ImageBtn.tsx";
-import Button from "../../../frontend/react/codexsun/src/Components/Input/Button";
-import apiClient from "../../../frontend/react/codexsun/src/pages/app/ecart/api/apiClients";
+import ImageButton from "../../components/button/ImageBtn";
+import apiClient from "../../../resources/global/api/apiClients";
+import Button from "../../../resources/components/button/Button";
 
 export interface ScrollAdverthismentItem {
   id: string;

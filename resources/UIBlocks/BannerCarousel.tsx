@@ -1,8 +1,9 @@
 import BallCanvas from "../AnimationComponents/BallAnimation";
-import ImageButton from "../components/button/ImageBtn.tsx";
+import ImageButton from "../components/button/ImageBtn";
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import apiClient from "../../frontend/react/codexsun/src/pages/app/ecart/api/apiClients";
+import apiClient from "../../resources/global/api/apiClients";
+
 
 interface SlideContent {
   id: string;

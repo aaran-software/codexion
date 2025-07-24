@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
-import vehicle from "../../frontend/react/codexsun/public/assets/category/vehicles.png";
-import Carousel from "../components/Carousel.tsx";
+import { FaThumbsUp, FaThumbsDown } from "react-icons/fa"
+import Carousel from "../components/Carousel";
 
 interface Review {
   rating: number;
@@ -211,7 +210,7 @@ export default function RatingReviews() {
         {Array.from({ length: 20 }).map((_, i) => (
           <img
             key={i}
-            src={vehicle}
+            src={'/assets/category/vehicles.png'}
             alt={`bike ${i}`}
             className="h-20 w-auto object-contain rounded cursor-pointer flex-shrink-0"
             onClick={() => {
@@ -233,7 +232,7 @@ export default function RatingReviews() {
                 {Array.from({ length: 20 }).map((_, i) => (
                   <img
                     key={i}
-                    src={vehicle}
+                    src={'/assets/category/vehicles.png'}
                     alt={`bike ${i}`}
                     className="w-full h-[80vh] object-contain"
                   />

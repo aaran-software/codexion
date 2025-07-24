@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, forwardRef } from "react";
 import { Check, X, ChevronDown } from "lucide-react";
-import Error from "../../../frontend/react/codexsun/src/Components/Input/Error";
-import apiClient from "@resources/global/api/apiClients";
+import Error from '../error/Error'
+import apiClient from "../../../resources/global/api/apiClients";
 
 interface DropdownProps {
   id: string;

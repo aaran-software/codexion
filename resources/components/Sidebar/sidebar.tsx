@@ -22,7 +22,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../Tooltip/tooltip"
-import ImageButton from "../button/ImageBtn.tsx"
+import ImageButton from "../button/ImageBtn"
 import { useEffect, useState } from "react"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"

@@ -1,13 +1,13 @@
 // src/components/LoginForm.tsx
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import FloatingInput from "../../../frontend/react/codexsun/src/Components/Input/FloatingInput";
 import PasswordInput from "../SecondaryInput/PasswordInput";
-import Button from "../../../frontend/react/codexsun/src/Components/Input/Button";
 // import {useAuth} from "@/pages/auth/AuthContext";
 import {Card, CardContent, CardHeader, CardTitle} from "../Chart/card";
 import {useAuth} from "../../../apps/global/auth/AuthContext";
 import {useAppContext} from "../../../apps/global/AppContaxt";
+import FloatingInput from "../../../resources/components/input/FloatingInput";
+import Button from "../../../resources/components/button/Button";
 
 export function LoginForm({className}: { className?: string }) {
     const [usr, setUsr] = useState("");

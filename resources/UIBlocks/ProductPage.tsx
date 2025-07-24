@@ -1,17 +1,16 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import apiClient from "../../frontend/react/codexsun/src/pages/app/ecart/api/apiClients";
 import ProductCard from "./ProductCard";
-// import Tooltipcomp from "../../Components/Tooltip/tooltipcomp";
 import RatingReviews from "./RatingReviews";
-import Settings from "../../frontend/react/codexsun/public/JSON/ecart/ecart.json";
-import Button from "../../frontend/react/codexsun/src/Components/Input/Button";
+import Settings from "../../apps/ecart/public/ecart.json";
 import Stepper from "./Stepper";
 import OrderSummary from "./OrderSummary";
 import AddressSection from "./AddressSection";
 import OrderPayment from "./OrderPayment";
 import OrderSuccess from "./OrderSuccess";
 import VerticalImageList from "./Slider/VerticalImageList";
+import Button from "../../resources/components/button/Button";
+import apiClient from "../../resources/global/api/apiClients";
 
 // Define types
 interface Field {

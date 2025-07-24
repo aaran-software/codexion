@@ -1,4 +1,4 @@
-import ImageButton from "../../components/button/ImageBtn.tsx";
+import ImageButton from "../../components/button/ImageBtn";
 import { useRef } from "react";
 
 interface VerticalImageListProps {

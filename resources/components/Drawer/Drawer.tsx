@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import ImageButton from '../button/ImageBtn.tsx';
+import ImageButton from '../button/ImageBtn';
 
 type Position = 'top' | 'bottom' | 'left' | 'right';
 

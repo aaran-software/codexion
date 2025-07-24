@@ -1,8 +1,8 @@
 import { useState, useMemo } from "react";
-import ImageButton from "../button/ImageBtn.tsx";
+import ImageButton from "../button/ImageBtn";
 import ActionMenu from "./ActionMenu";
-import Warning from "../alert/Warning.tsx";
-import apiClient from "@resources/global/api/apiClients";
+import Warning from "../alert/Warning";
+import apiClient from "../../../resources/global/api/apiClients";
 
 export interface TableRowData {
   [key: string]: string | React.ReactNode;

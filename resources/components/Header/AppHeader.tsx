@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import ImageButton from "../button/ImageBtn.tsx";
+import ImageButton from "../button/ImageBtn";
 import { ModeToggle } from "../mode-toggle";
 import { useAppSettings } from "../../../apps/global/useSettings";
 

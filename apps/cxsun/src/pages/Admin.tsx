@@ -5,13 +5,13 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@resources/components/breadcrumb.tsx";
-import { Separator } from "@resources/components/separator.tsx";
+} from "../../../../resources/components/breadcrumb";
+import { Separator } from "../../../../resources/components/separator";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@resources/components/Sidebar/sidebar";
+} from "../../../../resources/components/Sidebar/sidebar";
 import { useEffect, useState } from "react";
 import { useAppContext } from "../../../global/AppContaxt";
 import { useNavigate, useParams } from "react-router-dom";
@@ -45,12 +45,12 @@ import GstPercent from "./Common/Gst-Percents";
 import ContactType from "./Common/Contact-Types";
 import PaymentMode from "./Common/Payment.Mode";
 import { useAuth } from "../../../global/auth/AuthContext";
-import Dashboard from "@resources/components/Dashboard/Dashboard";
-import AppHeader from "@resources/components/Header/AppHeader";
-import { AppSidebar } from "@resources/components/Sidebar/app-sidebar";
-import ScrollToTopButton from "@resources/components/common/scrolltotop";
-import Docker from "../../../../frontend/react/codexsun/src/pages/app/cortex/Docker";
-import GrandStream from "./GrandStream.tsx";
+import Dashboard from "../../../../resources/components/Dashboard/Dashboard";
+import AppHeader from "../../../../resources/components/Header/AppHeader";
+import { AppSidebar } from "../../../../resources/components/Sidebar/app-sidebar";
+import ScrollToTopButton from "../../../../resources/components/common/scrolltotop";
+import GrandStream from "./GrandStream";
+import Docker from "../../../cortex/src/pages/Docker";
 
 export default function Admin() {
 const { token } = useAuth();

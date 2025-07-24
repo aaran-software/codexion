@@ -1,8 +1,3 @@
-import morning from '../../../frontend/react/codexsun/src/assets/sample2.jpg'
-import afternoon from '../../../frontend/react/codexsun/src/assets/sample2.jpg'
-import evening from '../../../frontend/react/codexsun/src/assets/sample2.jpg'
-import night from '../../../frontend/react/codexsun/src/assets/sample2.jpg'
-import midnight from '../../../frontend/react/codexsun/src/assets/sample2.jpg'
 
 import { Card } from '../Chart/card'
 
@@ -15,23 +10,23 @@ function WelcomeCard() {
     let image1;
     
    if (hour >= 5 && hour < 12) {
-    image1=morning;
+    image1='/assets/sample2.jpg';
     greeting = "Good Morning";
     message = "Every invoice you send is a step closer to your goals. Start strong—today is your profit day.";
   } else if (hour >= 12 && hour < 17) {
-    image1=afternoon;
+    image1='/assets/sample2.jpg';
     greeting = "Good Afternoon";
     message = "Keep pushing—each task checked off brings more clarity and cash flow.";
   } else if (hour >= 17 && hour < 21) {
-    image1=evening;
+    image1='/assets/sample2.jpg';
     greeting = "Good Evening";
     message = "Greatness isn’t about when you start—it's about finishing with intent.";
   } else if (hour >= 21 || hour < 0) {
-    image1=night;
+    image1='/assets/sample2.jpg';
     greeting = "Good Night";
     message = "Late-night focus is the entrepreneur’s secret weapon.";
   } else {
-    image1=midnight;
+    image1='/assets/sample2.jpg';
     greeting = "Hello";
     message = "Working in silence while the world sleeps—this is what future legends do.";
   }

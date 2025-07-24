@@ -1,4 +1,4 @@
-import Error from "../../../frontend/react/codexsun/src/Components/Input/Error";
+import Error from '../error/Error'
 import { MdErrorOutline } from "react-icons/md";
 import React, { useId, forwardRef } from "react";
 

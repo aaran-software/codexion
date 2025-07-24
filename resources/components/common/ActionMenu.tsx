@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import ImageButton from '../button/ImageBtn.tsx';
+import ImageButton from '../button/ImageBtn';
 import {
   Edit, Trash2, Plus, Eye, ChevronDown, ChevronUp, X, Search,
   ArrowUpWideNarrow, ArrowDownWideNarrow, Menu

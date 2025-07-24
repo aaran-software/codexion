@@ -2,19 +2,19 @@
   "theme": "system",
   "recordsPerPage": 60,
   "user": {
-    "name": "Tech Media",
-    "email": "Techmedia@gmail.com",
+    "name": "Codexsun",
+    "email": "aaran@gmail.com",
     "avatar": "/avatars/shadcn.jpg"
   },
 
   "logo": {
-    "path": "/assets/svg/logo.svg",
+    "path": "/assets/svg/codexsun_logo.svg",
     "position": "center",
     "height": "20",
     "font_size": "2",
     "company_name": "",
     "color": "",
-    "padding": "0"
+    "padding": "2"
   },
 
   "sidemenu": {

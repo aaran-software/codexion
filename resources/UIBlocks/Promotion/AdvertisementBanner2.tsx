@@ -1,6 +1,4 @@
 import { useState } from "react";
-import vehicle from "../assets/products/laptop.webp";
-import ads from "../assets/adverthisment.png";
 export const AdvertisementBanner = () => {
   const [advertisment] = useState({
     title: "Discover Our New Collection",
@@ -9,16 +7,16 @@ export const AdvertisementBanner = () => {
     button: { label: "Shop Now", className: "" },
     bgimg: "",
     images: [
-      { src: vehicle, label: "Saree" },
-      { src: vehicle, label: "Saree" },
-      { src: vehicle, label: "Saree" },
-      { src: vehicle, label: "Saree" },
+      { src: '/assets/products/laptop.webp', label: "Saree" },
+      { src: '/assets/products/laptop.webp', label: "Saree" },
+      { src: '/assets/products/laptop.webp', label: "Saree" },
+      { src: '/assets/products/laptop.webp', label: "Saree" },
     ],
   });
   return (
     <div
       className="relative w-full h-[60vh] lg:h-[80vh] overflow-hidden bg-cover bg-center"
-      style={{ backgroundImage: `url(${ads})` }}
+      style={{ backgroundImage: `url('/assets/adverthisment.png')` }}
     >
       {/* Overlay for better text visibility */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent"></div>

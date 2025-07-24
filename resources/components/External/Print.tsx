@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import logo from '../../../frontend/react/codexsun/src/assets/svg/logo.svg';
 import { toWords } from 'number-to-words';
 
 interface PrintProps {
@@ -82,14 +81,14 @@ const shouldShowTotal = hasQuantity && (hasAmount || hasPrice);
   const grandTotal = totalAmount + cgst + sgst;
   const roundedTotal = Math.round(grandTotal);
   const roundOff = +(roundedTotal - grandTotal).toFixed(2);
-  const grandTotalInWords = toWords(roundedTotal).replace(/\b\w/g, l => l.toUpperCase()) + ' Rupees Only';
+  const grandTotalInWords = toWords(roundedTotal).replace(/\b\w/g, (l: string) => l.toUpperCase()) + ' Rupees Only';
 
 
   return (
     <div className="border border-ring w-full text-xs overflow-x-auto">
       {/* Header */}
       <div className="grid grid-cols-[20%_80%] gap-5 p-5">
-        <img className="w-full max-w-[120px] block m-auto" src={logo} alt="Logo" />
+        <img className="w-full max-w-[120px] block m-auto" src={'/assets/svg/logo.svg'} alt="Logo" />
         <div className="flex flex-col items-center justify-center text-center gap-1">
           <h1 className="text-3xl font-bold">{company.name}</h1>
           {Object.values(company.address).map((line, idx) => (

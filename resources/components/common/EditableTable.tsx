@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { DatePicker } from "../SecondaryInput/Datepicker";
-import MultiCheckbox from "../input/MultiCheckbox.tsx";
-import Switch from "../input/switch.tsx";
-import Checkbox from "../input/checkbox.tsx";
+import MultiCheckbox from "../input/MultiCheckbox";
+import Switch from "../input/switch";
+import Checkbox from "../input/checkbox";
 import { TextArea } from "../SecondaryInput/TextArea";
 import Dropdown from "../SecondaryInput/Dropdown";
 import PasswordInput from "../SecondaryInput/PasswordInput";
-import AnimateButton from "../button/animatebutton.tsx";
-import ImageButton from "../button/ImageBtn.tsx";
+import AnimateButton from "../button/animatebutton";
+import ImageButton from "../button/ImageBtn";
 import DropdownRead from "../SecondaryInput/DropdownRead";
-import FileUpload from "../input/FileInput.tsx"; // ✅ Ensure this path is correct
+import FileUpload from "../input/FileInput"; // ✅ Ensure this path is correct
 import { TextInput } from "../SecondaryInput/TextInput";
 
 export type FieldType =

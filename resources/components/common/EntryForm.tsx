@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import Button from "../../../frontend/react/codexsun/src/Components/Input/Button";
-import { TextArea } from "../input/TextArea.tsx";
-import Dropdown from "../input/Dropdown.tsx";
-import Switch from "../input/switch.tsx";
-import Checkbox from "../input/checkbox.tsx";
-import Alert from "../alert/Alert.tsx";
-import MultiCheckbox from "../input/MultiCheckbox.tsx";
-import PasswordInput from "../input/passwordInput.tsx";
+import { TextArea } from "../input/TextArea";
+import Dropdown from "../input/Dropdown";
+import Switch from "../input/switch";
+import Checkbox from "../input/checkbox";
+import Alert from "../alert/Alert";
+import MultiCheckbox from "../input/MultiCheckbox";
+import PasswordInput from "../input/passwordInput";
 import { DatePicker } from "../Datepicker/Datepicker";
-import FileUpload from "../input/FileInput.tsx";
-import DropdownRead from "../input/Dropdown-read.tsx";
-import FloatingInput from "../../../frontend/react/codexsun/src/Components/Input/FloatingInput";
-import ImageButton from "../button/ImageBtn.tsx";
+import FileUpload from "../input/FileInput";
+import DropdownRead from "../input/Dropdown-read";
+import ImageButton from "../button/ImageBtn";
 import EditableTable from "./EditableTable";
+import FloatingInput from "../input/FloatingInput";
+import Button from "../button/Button";
 
 type FieldType =
   | "textinput"
