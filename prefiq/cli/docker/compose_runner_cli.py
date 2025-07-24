@@ -1,44 +1,24 @@
-import subprocess
 import typer
+from typing import Optional, List
 from pathlib import Path
+from prefiq.docker.image.compose_runner import DockerComposeManager
 
 docker_run_cmd = typer.Typer()
 
-@docker_run_cmd.command("up", help="Start all Docker services from compose files in the given folder")
-def compose_up_from_folder(
-    folder: Path = typer.Option(
-        Path("docker"), "--folder", "-f",
-        file_okay=False,
-        readable=True,
-        help="Folder containing Docker Compose YAML files (default: ./docker)"
-    )
+@docker_run_cmd.command("up")
+def up(
+    sites: Optional[List[str]] = typer.Argument(None, help="Site names like site1.com"),
+    recreate: bool = typer.Option(False, "--recreate", help="Recreate compose files"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Preview actions without running"),
+    json_output: bool = typer.Option(False, "--json", help="Output in JSON format"),
 ):
-    """
-    Runs `docker compose -f <file> up -d` for each .yml/.yaml file in the folder.
-    """
-    if not folder.exists():
-        typer.secho(f"❌ Folder '{folder}' does not exist.", fg=typer.colors.RED)
-        raise typer.Exit(code=1)
+    from prefiq.docker.image.compose_runner import DockerComposeManager
 
-    compose_files = sorted([f for f in folder.iterdir() if f.is_file() and f.suffix in [".yml", ".yaml"]])
+    manager = DockerComposeManager(
+        sites=sites,
+        recreate=recreate,
+        dry_run=dry_run,
+        json_output=json_output
+    )
+    manager.run()
 
-    if not compose_files:
-        typer.secho("❌ No Docker Compose YAML files found in the folder.", fg=typer.colors.RED)
-        raise typer.Exit(code=1)
-
-    for compose_file in compose_files:
-        typer.secho(f"🔧 Running: docker compose -f {compose_file.name} up -d", fg=typer.colors.CYAN)
-        try:
-            result = subprocess.run(
-                ["docker", "compose", "-f", str(compose_file), "up", "-d"],
-                check=True,
-                capture_output=True,
-                text=True,
-            )
-            typer.secho(result.stdout.strip(), fg=typer.colors.GREEN)
-        except subprocess.CalledProcessError as e:
-            typer.secho(f"❌ Failed to start: {compose_file.name}", fg=typer.colors.RED)
-            typer.secho(e.stderr.strip(), fg=typer.colors.RED)
-            raise typer.Exit(code=2)
-
-    typer.secho("✅ All Docker Compose services started successfully!", fg=typer.colors.GREEN)

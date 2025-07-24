@@ -9,8 +9,8 @@ passlib[bcrypt]
 python-jose>=3.5.0
 bcrypt
 pymysql
-starlette
-pytest
+starlette~=0.47.2
+pytest~=8.4.1
 black
 ruff
 mypy
@@ -18,3 +18,5 @@ rich~=14.0.0
 Jinja2~=3.1.6
 typer~=0.16.0
 passlib
+prefiq~=0.1.0
+PyYAML~=6.0.2

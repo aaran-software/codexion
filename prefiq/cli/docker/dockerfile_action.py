@@ -1,6 +1,6 @@
 import typer
 
-from prefiq.docker.prepare.dockerfile import create_docker,update_docker, list_dockers, remove_docker
+from prefiq.docker.prepare.dockerfile_named import create_docker,update_docker, list_dockers, remove_docker
 
 docker_cmd = typer.Typer(help="Docker-related commands")
 
