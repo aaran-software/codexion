@@ -47,9 +47,11 @@ def create_all(
             db_pg_pass = typer.prompt("Db pass", default="DbPass1@@")
             create_postgres_compose(db_pg_name, db_pg_pass, output_dir=output_dir)
 
+
         if proxy_choice.lower() in ["t", "traefik"]:
             email = typer.prompt("Email for Let's Encrypt")
-            create_traefik_compose(email=email, site_name=site, output_dir=output_dir)
+            print(f"TRAFFIC OUTPUT DIR: {output_dir}")
+            create_traefik_compose(email=email, output_dir=output_dir)
 
         elif proxy_choice.lower() in ["n", "nginx"]:
             create_nginx_compose(service_name="nginx", service_port=80, output_dir=output_dir)
@@ -73,9 +75,8 @@ def create_all(
 
     elif component.lower() in ["t", "traefik"]:
         email = typer.prompt("Email for Let's Encrypt")
-        site_name = typer.prompt("Site name (e.g. sundar.com)")
+        print(f"TRAFFIC OUTPUT DIR: {output_dir}")
         create_traefik_compose(email=email, output_dir=output_dir)
-        create_traefik_compose(email=email, output_dir=output)
 
     elif component.lower() in ["n", "nginx"]:
         create_nginx_compose(service_name="nginx", service_port=80, output_dir=output_dir)

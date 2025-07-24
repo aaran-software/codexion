@@ -11,7 +11,7 @@ def test_traefik_create_basic(tmp_path: Path):
         "traefik", "create",
         "--email", test_email,
         "--output", str(tmp_path)
-    ])
+    ], input="\n")  # <- Sends blank input (defaults to False for Confirm)
 
     if result.exit_code != 0:
         print("STDOUT:", result.stdout)
@@ -19,7 +19,7 @@ def test_traefik_create_basic(tmp_path: Path):
         print("EXCEPTION:", result.exception)
 
     assert result.exit_code == 0, f"Exited with {result.exit_code}\nStdout:\n{result.stdout}\nStderr:\n{result.stderr}"
-
+    assert (tmp_path / "docker-compose-traefik.yml").exists(), "Compose file not created"
 
 
 def test_traefik_create_with_dashboard_auth(tmp_path: Path):
@@ -42,7 +42,7 @@ def test_traefik_create_with_dashboard_auth(tmp_path: Path):
 
     compose_file = tmp_path / "docker-compose-traefik.yml"
     assert compose_file.exists()
-
+    print(result.stdout)
     content = compose_file.read_text()
     assert email in content
     assert domain in content
@@ -64,7 +64,7 @@ def test_traefik_delete(tmp_path: Path):
         "--output", str(tmp_path),
         "--force"
     ])
-
+    print(result.stdout)
     assert result.exit_code == 0
     assert "Deleted" in result.stdout
     assert not (tmp_path / "docker-compose-traefik.yml").exists()
