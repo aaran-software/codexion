@@ -1,4 +1,3 @@
-"use client";
 
 import Error from '../error/Error'
 
