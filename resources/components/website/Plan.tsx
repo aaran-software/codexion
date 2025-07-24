@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Button from '../../../frontend/react/codexsun/src/Components/Input/Button';
+import Button from "../button/Button";
 
 type PlanType = {
   plan: string;
