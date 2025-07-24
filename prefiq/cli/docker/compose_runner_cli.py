@@ -69,12 +69,14 @@ def up(
             # DATABASE
             db = typer.prompt("💾 Select database (mariadb / postgres)?", default="mariadb")
             if db == "mariadb":
-                mariadb_name = typer.prompt("🔐 Enter MariaDB name", default="site.com")
-                mariadb_password = typer.prompt("🔐 Enter MariaDB password", default="secret")
+
+                mariadb_name = typer.prompt("🔐 MariaDB username", default="root")
+                mariadb_password = typer.prompt("🔐 Enter MariaDB password", default="secret", hide_input=True)
                 create_mariadb_compose(name=mariadb_name, password=mariadb_password, output_dir=compose_dir)
             else:
-                pg_name = typer.prompt("🔐 Enter Postgres name", default="site.com")
-                pg_password = typer.prompt("🔐 Enter Postgres password", default="secret")
+
+                pg_name = typer.prompt("🔐 Postgres username", default="root")
+                pg_password = typer.prompt("🔐 Enter Postgres password", default="secret", hide_input=True)
                 create_postgres_compose(name=pg_name, password=pg_password, output_dir=compose_dir)
 
             # REVERSE PROXY
