@@ -14,7 +14,7 @@ function Header() {
 
     const defaultLogo = {
         path: "/assets/logo.png",
-        height: 40,
+        height: 20,
         padding: 8,
         position: "center",
         font_size: 2,
