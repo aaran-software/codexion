@@ -1,84 +1,74 @@
-from pathlib import Path
-from typing import Optional
-
 import typer
-from prefiq.docker.utils.docker_checks import is_docker_running
-from prefiq.docker.utils.find_compose_files import find_compose_files
-from prefiq.docker.utils.preview_compose_services import preview_compose_services
-from prefiq.docker.utils.recreate_compose_files import recreate_compose_files
-from prefiq.docker.utils.start_docker_services import start_docker_services
-from prefiq.docker.utils.compare_and_show_service_diff import compare_and_show_service_diff
+import json
+from typing import Optional
+from pathlib import Path
+from prefiq.docker.utils.docker_manage_services import find_compose_files
 
 docker_run_cmd = typer.Typer()
 
-@docker_run_cmd.command("up")
-def up(
-    dryrun: bool = typer.Option(False, "--dryrun", help="Show planned actions without executing"),
-    recreate: bool = typer.Option(False, "--recreate", help="Recreate compose files"),
-    yes: bool = typer.Option(False, "--yes", "--no-input", help="Auto-confirm all prompts"),
-    json_output: bool = typer.Option(False, "--json-output", help="Output result in JSON format"),
-    compose_dir: Optional[Path] = typer.Option(None, "--compose-dir", help="Directory to scan for docker-compose files"),
-):
-    print("Hai from docker up")
-    print(f"dry_run: {dryrun}")
-    print(f"recreate: {recreate}")
-    print(f"json_output: {json_output}")
 
-    # Ask for compose_dir if not provided
-    if compose_dir is None:
-        prompt_msg = typer.style("Enter directory to scan for docker-compose files", fg=typer.colors.YELLOW)
-        user_input = typer.prompt(prompt_msg, default=".")
+@docker_run_cmd.command("up", help="Start Docker containers from compose files")
+def up(
+        dry_run: bool = typer.Option(False, "--dryrun", help="Preview actions without executing"),
+        recreate: bool = typer.Option(False, "--recreate", help="Recreate compose files before running"),
+        yes: bool = typer.Option(False, "--yes", "--no-input", help="Skip prompts and auto-confirm actions"),
+        compose_dir: Optional[Path] = typer.Option(None, "--compose-dir", help="Directory to look for compose files"),
+        output: Optional[str] = typer.Option(None, "--output", help="Output format (e.g., json)")
+):
+    typer.echo("👋 Hai from docker up")
+    typer.echo(f"dry_run: {dry_run}")
+    typer.echo(f"recreate: {recreate}")
+    typer.echo(f"json_output: {output == 'json'}")
+
+    # Ask for compose_dir if recreate is True or not provided
+    if recreate and not compose_dir:
+        prompt_msg = typer.style("Enter directory to recreate and scan for docker-compose files",
+                                 fg=typer.colors.YELLOW)
+        user_input = typer.prompt(prompt_msg, default="docker")
         compose_dir = Path(user_input).expanduser().resolve()
 
-    # Check if Docker is running
-    if not is_docker_running():
-        typer.echo("Docker is not running. Please start Docker and try again.")
-        raise typer.Exit(code=1)
+    # Default if still not set
+    compose_dir = compose_dir or Path("docker")
 
-    # --- Dry Run Mode ---
-    if dryrun:
-        if yes or typer.confirm(
-            typer.style("Do you want to recreate the compose files before dry run?", fg=typer.colors.YELLOW),
-            default=False
-        ):
-            typer.echo("Starting recreate compose files")
-            recreate_compose_files()
+    typer.echo(f"Searching compose files in: {compose_dir}")
 
-        typer.echo("finding compose files")
+    try:
         compose_files = find_compose_files(compose_dir)
-        if not compose_files:
-            typer.echo("No compose files found.")
-            raise typer.Exit(code=1)
+    except Exception as e:
+        typer.echo(typer.style(f"❌ {str(e)}", fg=typer.colors.RED))
+        raise typer.Exit(1)
 
-        typer.echo("previewing compose files")
-        preview_compose_services(compose_files, json_output=json_output)
+    # Output in JSON mode
+    if output == "json":
+        typer.echo(json.dumps({
+            "compose_dir": str(compose_dir),
+            "compose_files": [str(f) for f in compose_files],
+            "dry_run": dry_run,
+            "recreate": recreate
+        }, indent=2))
+    else:
+        typer.echo(typer.style("[list]", fg=typer.colors.BRIGHT_CYAN) + " Compose files found:")
 
-        if not yes and not typer.confirm(
-            typer.style("Proceed with this dry run summary?", fg=typer.colors.YELLOW),
-            default=True
-        ):
-            typer.echo("Aborted by user.")
-            raise typer.Exit()
-        return
+        for idx, file in enumerate(compose_files, start=1):
+            file_str = str(file).lower()
 
-    # --- Actual Execution ---
-    if recreate:
-        typer.echo("Recreating compose files...")
-        recreate_compose_files()
+            if "Dockerfile" in file_str:
+                color = typer.colors.MAGENTA
+                label = "DOCKERFILE"
+            elif "compose" in file_str or "site" in file_str:
+                color = typer.colors.GREEN
+                label = "SITE"
+            elif "mariadb" in file_str or "postgres" in file_str:
+                color = typer.colors.YELLOW
+                label = "DATABASE"
+            elif "nginx" in file_str or "traefik" in file_str:
+                color = typer.colors.CYAN
+                label = "PROXY"
+            else:
+                color = typer.colors.MAGENTA
+                label = "OTHER"
 
-    compose_files = find_compose_files(compose_dir)
-    if not compose_files:
-        typer.echo("No compose files found. Use --recreate to generate them.")
-        raise typer.Exit(code=1)
+            line = f" -[{idx}] [{label}] {file}"
+            typer.echo(typer.style(line, fg=color))
 
-    # Show diff between planned services and running containers
-    compare_and_show_service_diff(compose_files)
 
-    if not yes and not typer.confirm(
-        typer.style("Proceed to start the containers?", fg=typer.colors.YELLOW),
-        default=True
-    ):
-        typer.echo("Aborted by user.")
-        raise typer.Exit()
-
-    start_docker_services(compose_files)
