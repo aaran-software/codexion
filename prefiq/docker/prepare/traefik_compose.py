@@ -1,5 +1,5 @@
 from passlib.context import CryptContext
-from prefiq.docker.prepare.generate_from_template import generate_from_template
+from prefiq.docker.common.generate_from_template import generate_from_template
 from prefiq.utils.cprint import cprint_success
 from prefiq import CPATH
 from pathlib import Path
@@ -12,13 +12,17 @@ OUTPUT_PATH = CPATH.DOCKER_DIR
 bcrypt_ctx = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-def create_traefik_compose(email: str,
-                           dashboard_domain: str = None,
-                           admin_user: str = None,
-                           admin_password: str = None,
-                           output_dir=None):
+def create_traefik_compose(
+        email: str,
+        dashboard_domain: str = None,
+        admin_user: str = None,
+        admin_password: str = None,
+        output_dir: Path = None
+) -> None:
     context = {
         "email": email,
+        "dashboard_domain": dashboard_domain or "",
+        "dashboard_auth_user": "",
     }
 
     if dashboard_domain and admin_user and admin_password:
@@ -27,11 +31,14 @@ def create_traefik_compose(email: str,
         context["dashboard_domain"] = dashboard_domain
         context["dashboard_auth_user"] = f"{admin_user}:{bcrypt_hash}"
 
+    if output_dir is None:
+        output_dir = CPATH.DOCKER_DIR
+
     generate_from_template(
         template_name=TEMPLATE_NAME,
         output_filename="docker-compose-traefik.yml",
         context=context,
-        output_dir=output_dir or OUTPUT_PATH
+        output_dir=str(output_dir)
     )
 
     cprint_success("Traefik compose generated.")

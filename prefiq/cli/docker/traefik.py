@@ -9,7 +9,7 @@ traefik_cmd = typer.Typer(help="Manage Traefik Docker Compose")
 
 @traefik_cmd.command("create", help="Generate Traefik Docker Compose")
 def create(
-    email: str = typer.Option(..., "--email", "-e", help="Email for Let's Encrypt"),
+    email: Optional[str] = typer.Option ("info@admin.com",  "--email", "-e", help="Email for Let's Encrypt"),
     dashboard_domain: Optional[str] = typer.Option(None, "--dashboard-domain", "-d", help="Domain for Traefik dashboard (optional)"),
     admin_user: Optional[str] = typer.Option(None, "--admin-user", "-u", help="Dashboard admin username (optional)"),
     admin_password: Optional[str] = typer.Option(None, "--admin-password", "-p", hide_input=True, confirmation_prompt=True, help="Dashboard admin password (optional)"),
