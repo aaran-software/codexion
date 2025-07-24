@@ -107,12 +107,12 @@ def up(
             if typer.confirm("Create database compose?", default=True):
                 db = typer.prompt("💾 Select database (mariadb / postgres)?", default="mariadb")
                 if db == "mariadb":
-                    name = typer.prompt("🔐 Enter MariaDB name", default="site.com")
-                    pwd = typer.prompt("🔐 Enter MariaDB password", default="secret")
+                    name = typer.prompt("🔐 MariaDB username", default="root")
+                    pwd = typer.prompt("🔐 Enter MariaDB password", default="secret", hide_input=True)
                     create_mariadb_compose(name=name, password=pwd, output_dir=compose_dir)
                 else:
-                    name = typer.prompt("🔐 Enter Postgres name", default="site.com")
-                    pwd = typer.prompt("🔐 Enter Postgres password", default="secret")
+                    name = typer.prompt("🔐 Postgres username", default="root")
+                    pwd = typer.prompt("🔐 Enter Postgres password", default="secret", hide_input=True)
                     create_postgres_compose(name=name, password=pwd, output_dir=compose_dir)
 
             if typer.confirm("Create reverse proxy compose?", default=True):
