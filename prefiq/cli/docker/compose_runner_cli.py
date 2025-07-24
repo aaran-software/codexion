@@ -22,11 +22,11 @@ def up(
 ):
     typer.echo("👋 Hai from docker up")
 
+    # Ask for compose_dir if not provided
     if recreate and not compose_dir:
         prompt_msg = typer.style("Enter directory to recreate and scan for docker-compose files", fg=typer.colors.YELLOW)
         user_input = typer.prompt(prompt_msg, default="docker")
         compose_dir = Path(user_input).expanduser().resolve()
-
     compose_dir = compose_dir or Path("docker")
 
     typer.echo(f"🔍 Searching compose files in: {compose_dir}")
@@ -49,53 +49,78 @@ def up(
             ).lower()
 
         if choice == "a":
-            # --- Site ---
+            # SITE
             domain = typer.prompt("🌐 Enter site domain", default="site.com")
             port = typer.prompt("🔢 Enter site port", default=8000)
             create_site_compose(domain, port, compose_dir)
 
-            # --- Database ---
-            db = typer.prompt("Which database to use? (mariadb / postgres)", default="mariadb").lower()
-
+            # DATABASE
+            db = typer.prompt("💾 Select database (mariadb / postgres)?", default="mariadb")
             if db == "mariadb":
-                mariadb_name = typer.prompt("🛢️  MariaDB - DB name", default=domain)
-                mariadb_password = typer.prompt("🔑 MariaDB - Password", default="password123")
+                mariadb_name = typer.prompt("🔐 Enter MariaDB name", default="site.com")
+                mariadb_password = typer.prompt("🔐 Enter MariaDB password", default="secret")
                 create_mariadb_compose(name=mariadb_name, password=mariadb_password, output_dir=compose_dir)
             else:
-                pg_name = typer.prompt("🛢️  Postgres - DB name", default=domain)
-                pg_password = typer.prompt("🔑 Postgres - Password", default="password123")
+                pg_name = typer.prompt("🔐 Enter Postgres name", default="site.com")
+                pg_password = typer.prompt("🔐 Enter Postgres password", default="secret")
                 create_postgres_compose(name=pg_name, password=pg_password, output_dir=compose_dir)
 
-            # --- Proxy ---
-            proxy = typer.prompt("Which proxy to use? (traefik / nginx)", default="traefik").lower()
-            if proxy == "nginx":
-                create_nginx_compose(service_name=domain, service_port=port, output_dir=compose_dir)
-            else:
-                email = typer.prompt("📧 Admin email (for Let's Encrypt)", default="admin@example.com")
-                dash_domain = typer.prompt("🌐 Traefik dashboard domain", default=f"traefik.{domain}")
-                admin_user = typer.prompt("👤 Dashboard user", default="admin")
-                admin_pass = typer.prompt("🔐 Dashboard password", default="admin123")
+            # REVERSE PROXY
+            proxy = typer.prompt("🌐 Select reverse proxy (traefik / nginx)?", default="traefik")
+
+            if proxy == "traefik":
+                email = typer.prompt("📧 Enter admin email", default="admin@site.com")
+                dash_domain = typer.prompt("🌐 Dashboard domain (optional)", default="dashboard.site.com")
+                traefik_user = typer.prompt("👤 Admin user (optional)", default="admin")
+                traefik_pass = typer.prompt("🔐 Admin password (optional)", default="adminpass")
                 create_traefik_compose(
                     email=email,
                     dashboard_domain=dash_domain,
-                    admin_user=admin_user,
-                    admin_password=admin_pass,
+                    admin_user=traefik_user,
+                    admin_password=traefik_pass,
                     output_dir=compose_dir
                 )
+            else:
+                service_name = typer.prompt("🌍 Enter service name for NGINX", default=domain)
+                service_port = typer.prompt("🔢 Enter service port for NGINX", default=port)
+                create_nginx_compose(service_name, int(service_port), output_dir=compose_dir)
 
         elif choice == "s":
+            # Selective compose creation
             if typer.confirm("Create site compose?", default=True):
                 domain = typer.prompt("🌐 Enter site domain", default="site.com")
                 port = typer.prompt("🔢 Enter site port", default=8000)
                 create_site_compose(domain, port, compose_dir)
 
-            if typer.confirm("Create MariaDB compose?", default=True):
-                mariadb_name = typer.prompt("MariaDB name", default="site.com")
-                mariadb_password = typer.prompt("MariaDB password", default="secret")
-                create_mariadb_compose(name=mariadb_name, password=mariadb_password, output_dir=compose_dir)
+            if typer.confirm("Create database compose?", default=True):
+                db = typer.prompt("💾 Select database (mariadb / postgres)?", default="mariadb")
+                if db == "mariadb":
+                    name = typer.prompt("🔐 Enter MariaDB name", default="site.com")
+                    pwd = typer.prompt("🔐 Enter MariaDB password", default="secret")
+                    create_mariadb_compose(name=name, password=pwd, output_dir=compose_dir)
+                else:
+                    name = typer.prompt("🔐 Enter Postgres name", default="site.com")
+                    pwd = typer.prompt("🔐 Enter Postgres password", default="secret")
+                    create_postgres_compose(name=name, password=pwd, output_dir=compose_dir)
 
-            if typer.confirm("Create NGINX compose?", default=True):
-                create_nginx_compose(service_name=domain, service_port=port, output_dir=compose_dir)
+            if typer.confirm("Create reverse proxy compose?", default=True):
+                proxy = typer.prompt("🌐 Select reverse proxy (traefik / nginx)?", default="traefik")
+                if proxy == "traefik":
+                    email = typer.prompt("📧 Enter admin email", default="admin@site.com")
+                    dash_domain = typer.prompt("🌐 Dashboard domain (optional)", default="dashboard.site.com")
+                    traefik_user = typer.prompt("👤 Admin user (optional)", default="admin")
+                    traefik_pass = typer.prompt("🔐 Admin password (optional)", default="adminpass")
+                    create_traefik_compose(
+                        email=email,
+                        dashboard_domain=dash_domain,
+                        admin_user=traefik_user,
+                        admin_password=traefik_pass,
+                        output_dir=compose_dir
+                    )
+                else:
+                    service_name = typer.prompt("🌍 Enter service name for NGINX", default="site.com")
+                    service_port = typer.prompt("🔢 Enter service port for NGINX", default=8000)
+                    create_nginx_compose(service_name, int(service_port), output_dir=compose_dir)
 
         else:
             typer.echo("❌ No compose files to start. Exiting.")
@@ -103,6 +128,7 @@ def up(
 
         compose_files = find_compose_files(compose_dir)
 
+    # Final Output
     if output == "json":
         typer.echo(json.dumps({
             "compose_dir": str(compose_dir),
@@ -115,14 +141,13 @@ def up(
         for idx, file in enumerate(compose_files, start=1):
             file_str = str(file).lower()
             if "dockerfile" in file_str:
-                label, color = "DOCKERFILE", typer.colors.MAGENTA
+                color, label = typer.colors.MAGENTA, "DOCKERFILE"
             elif "mariadb" in file_str or "postgres" in file_str:
-                label, color = "DATABASE", typer.colors.YELLOW
+                color, label = typer.colors.YELLOW, "DATABASE"
             elif "nginx" in file_str or "traefik" in file_str:
-                label, color = "PROXY", typer.colors.CYAN
-            elif "compose" in file_str:
-                label, color = "SITE", typer.colors.GREEN
+                color, label = typer.colors.CYAN, "PROXY"
+            elif "site" in file_str:
+                color, label = typer.colors.GREEN, "SITE"
             else:
-                label, color = "OTHER", typer.colors.WHITE
-
+                color, label = typer.colors.WHITE, "OTHER"
             typer.echo(f" -[{idx}] {typer.style(f'[{label}]', fg=color, bold=True)} {file}")
