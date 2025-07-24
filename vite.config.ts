@@ -53,8 +53,8 @@ export default defineConfig(({ mode }) => {
       },
     },
     build: {
-      // outDir: path.resolve(appRoot, 'dist'),
-      outDir: path.resolve(__dirname, 'dist'),
+      outDir: path.resolve(appRoot, 'dist'),
+      // outDir: path.resolve(__dirname, 'dist'),
       emptyOutDir: true,
 
     },
