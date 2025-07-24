@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import apiClient from "../../resources/global/api/apiClients";
+import frappeBaseApi from "../../resources/global/api/frappeBaseApi";
 import ImageButton from "../components/button/ImageBtn";
 
 export interface ProductItem {
@@ -28,7 +28,7 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
 
   const fetchProducts = async () => {
     try {
-      const response = await apiClient.get(api);
+      const response = await frappeBaseApi.get(api);
       const items = response.data.data || [];
 
       // Get base URL before query params
@@ -37,7 +37,7 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
       const detailPromises = items.map((item: any) => {
         const itemName = encodeURIComponent(item.name);
         const detailUrl = `${baseApi}/${itemName}`;
-        return apiClient
+        return frappeBaseApi
           .get(detailUrl)
           .then((res) => res.data.data)
           .catch((err) => {

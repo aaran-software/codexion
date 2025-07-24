@@ -10,7 +10,7 @@ import OrderPayment from "./OrderPayment";
 import OrderSuccess from "./OrderSuccess";
 import VerticalImageList from "./Slider/VerticalImageList";
 import Button from "../../resources/components/button/Button";
-import apiClient from "../../resources/global/api/apiClients";
+import frappeBaseApi from "../../resources/global/api/frappeBaseApi";
 
 // Define types
 interface Field {
@@ -112,7 +112,7 @@ function ProductPage() {
   useEffect(() => {
     if (!id) return;
 
-    apiClient
+    frappeBaseApi
       .get(`/api/resource/Product/${id}`)
       .then((res) => {
         const data = res.data.data || res.data;

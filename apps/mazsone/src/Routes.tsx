@@ -12,6 +12,7 @@ import Wishlist from "../../../resources/UIBlocks/Wishlist";
 import Cart from "./pages/Cart";
 import Footer from "../../../resources/components/footer/Footer";
 import Header from "../../../resources/components/Header/Header";
+import {FrappeLoginForm} from "../../../resources/components/Auth/frappe-login";
 
 function AppRoutes() {
     const location = useLocation();
@@ -28,7 +29,7 @@ function AppRoutes() {
                 {/* <App /> */}
                 <Route path="/" element={<Home/>}/>
                 <Route path="/cart" element={<Cart/>}/>
-                <Route path="/login" element={<Login/>}/>
+                <Route path="/login" element={<FrappeLoginForm/>}/>
                 <Route path="/signup" element={<SignUp/>}/>
                 <Route path="/productpage/:id" element={<ProductPage/>}/>
                 <Route path="/category/:category" element={<CategoryPage/>}/>

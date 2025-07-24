@@ -2,7 +2,7 @@ import BallCanvas from "../AnimationComponents/BallAnimation";
 import ImageButton from "../components/button/ImageBtn";
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import apiClient from "../../resources/global/api/apiClients";
+import frappeBaseApi from "../../resources/global/api/frappeBaseApi";
 
 
 interface SlideContent {
@@ -39,7 +39,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
   const fetchProducts = async () => {
     try {
       // Step 1: Fetch all item names
-      const response = await apiClient.get(`${api}`);
+      const response = await frappeBaseApi.get(`${api}`);
 
       const items = response.data.data || [];
       const baseApi = api.split("?")[0];
@@ -48,7 +48,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
       const detailPromises = items.map((item: any) => {
         const itemName = encodeURIComponent(item.name);
         const detailUrl = `${baseApi}/${itemName}`;
-        return apiClient
+        return frappeBaseApi
           .get(detailUrl)
           .then((res) => res.data.data)
           .catch((err) => {

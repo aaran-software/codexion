@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import "../theme.css";
 import {BrowserRouter} from "react-router-dom";
 import {AppProvider} from "../../global/AppContaxt";
-import {AuthProvider} from "../../global/auth/AuthContext";
+import {AuthProvider} from "../../global/auth/frappeAuthContext";
 import settings from "../public/settings.json";
 import AppInitializer from "../../global/useSettings";
 import AppRoutes from "./Routes";
