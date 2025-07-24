@@ -27,7 +27,6 @@
 //
 // export { Separator }
 
-"use client"
 
 import * as React from "react"
 import { cn } from "../global/library/utils"

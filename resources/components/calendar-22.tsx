@@ -1,4 +1,4 @@
-"use client"
+
 import Error from "./error/Error"
 import * as React from "react"
 import { ChevronDownIcon } from "lucide-react"

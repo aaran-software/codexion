@@ -53,8 +53,9 @@ export default defineConfig(({ mode }) => {
       },
     },
     build: {
-      outDir: path.resolve(appRoot, 'dist'),
+      // outDir: path.resolve(appRoot, 'dist'),
       emptyOutDir: true,
+      outDir:'dist'
     },
     server: {
       port: Number(env.APP_PORT) || 5173,
