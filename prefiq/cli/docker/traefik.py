@@ -1,29 +1,29 @@
 import typer
-from pathlib import Path
-from typing import Optional
-
 from prefiq.docker.prepare.traefik_compose import create_traefik_compose, delete_traefik_compose
+from prefiq import CPATH
+from pathlib import Path
 
-traefik_cmd = typer.Typer(help="Manage Traefik Docker Compose")
+traefik_cmd = typer.Typer(help="Manage Traefik Docker Compose files.")
 
-
-@traefik_cmd.command("create", help="Generate Traefik Docker Compose")
+@traefik_cmd.command("create")
 def create(
-    email: Optional[str] = typer.Option ("info@admin.com",  "--email", "-e", help="Email for Let's Encrypt"),
-    dashboard_domain: Optional[str] = typer.Option(None, "--dashboard-domain", "-d", help="Domain for Traefik dashboard (optional)"),
-    admin_user: Optional[str] = typer.Option(None, "--admin-user", "-u", help="Dashboard admin username (optional)"),
-    admin_password: Optional[str] = typer.Option(None, "--admin-password", "-p", hide_input=True, confirmation_prompt=True, help="Dashboard admin password (optional)"),
-    output: Optional[Path] = typer.Option(None, "--output", "-o", help="Directory to write the file (default: docker/)"),
+    email: str = typer.Option(..., prompt=True, help="Email for Let's Encrypt notifications"),
+    dashboard: bool = typer.Option(False, "--dashboard", help="Enable the Traefik dashboard"),
+    dashboard_domain: str = typer.Option(None, help="Dashboard domain"),
+    admin_user: str = typer.Option(None, help="Admin username"),
+    admin_password: str = typer.Option(None, help="Admin password"),
+    output: Path = typer.Option(CPATH.DOCKER_DIR, help="Output directory"),
 ):
     """
-    Generate a docker-compose-traefik.yml with optional dashboard and basic auth.
+    Generate a docker-compose-traefik.yml file.
     """
-    if dashboard_domain and not admin_user:
-        admin_user = typer.prompt("Dashboard admin username")
-    if dashboard_domain and not admin_password:
-        admin_password = typer.prompt("Dashboard admin password", hide_input=True, confirmation_prompt=True)
-    if not output:
-        output = typer.prompt("Output directory", default="docker", type=Path)
+    if dashboard:
+        if not dashboard_domain:
+            dashboard_domain = typer.prompt("Dashboard domain", default="")
+        if not admin_user:
+            admin_user = typer.prompt("Admin username", default="")
+        if not admin_password:
+            admin_password = typer.prompt("Admin password", hide_input=True)
 
     create_traefik_compose(
         email=email,
@@ -33,21 +33,16 @@ def create(
         output_dir=output,
     )
 
-
-@traefik_cmd.command("delete", help="Delete generated Traefik files")
-def delete(
-    output: Path = typer.Option(..., "--output", "-o", help="Directory where Traefik files are located"),
-    force: bool = typer.Option(False, "--force", "-f", help="Skip confirmation prompt"),
+@traefik_cmd.command("delete")
+def delete_traefik(
+    output: Path = typer.Option(..., "--output", exists=True, file_okay=False, dir_okay=True),
+    force: bool = typer.Option(False, "--force")
 ):
     """
-    Delete docker-compose-traefik.yml and optional folders like 'letsencrypt' and 'dynamic'.
+    Delete the docker-compose-traefik.yml and related folders.
     """
-    if not force:
-        typer.confirm(f"Are you sure you want to delete files in {output}?", abort=True)
-
     deleted = delete_traefik_compose(output)
     if deleted:
-        typer.echo(f"[OK] Deleted: {', '.join(deleted)}")
+        typer.echo(f"Deleted: {', '.join(deleted)}")
     else:
-        typer.echo("[INFO] No files found to delete.")
-
+        typer.echo("No files found to delete.")

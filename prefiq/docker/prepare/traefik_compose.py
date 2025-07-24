@@ -34,6 +34,12 @@ def create_traefik_compose(
     if output_dir is None:
         output_dir = CPATH.DOCKER_DIR
 
+
+    if output_dir is None:
+        output_dir = Path.cwd()
+
+    print(f"[DEBUG] create_traefik_compose writing to: {output_dir}")
+
     generate_from_template(
         template_name=TEMPLATE_NAME,
         output_filename="docker-compose-traefik.yml",

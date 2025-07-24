@@ -17,6 +17,8 @@ def generate_from_template(template_name: str, output_filename: str, context: di
     output_path = os.path.join(output_dir, output_filename)
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
+    print(f"[DEBUG] Final write path: {output_path}")
+
     with open(output_path, "w") as f:
         f.write(final_output)
 
