@@ -14,8 +14,8 @@ commands.add_typer(config_cli, name="config")
 
 commands.add_typer(docker_cmd, name="dockfile")
 commands.add_typer(compose_cmd, name="compose-site")
-docker_cmd.add_typer(traefik_cmd, name="compose-traefik")
-docker_cmd.add_typer(generate_cmd, name="generate")
+commands.add_typer(traefik_cmd, name="traefik")
+commands.add_typer(generate_cmd, name="generate")
 
 
 def main():

@@ -17,7 +17,7 @@ def get_default_context() -> dict:
     }
 
 
-def create_docker(name: str) -> None:
+def create_docker(name: str, output_dir: Path = OUTPUT_PATH)-> None:
     """Create a Dockerfile for the given app name."""
     context = get_default_context()
     output_filename = f"Dockerfile_{name}"
@@ -26,13 +26,13 @@ def create_docker(name: str) -> None:
         template_name=TEMPLATE_NAME,
         output_filename=output_filename,
         context=context,
-        output_dir=OUTPUT_PATH,
+        output_dir=str(output_dir),
     )
 
-    cprint_success(f"Dockerfile written: {OUTPUT_PATH / output_filename}")
+    cprint_success(f"Dockerfile written: {output_dir / output_filename}")
 
 
-def update_docker(name: str) -> None:
+def update_docker(name: str, output_dir: Path = OUTPUT_PATH)-> None:
     """Remove existing Dockerfile and create a new one for the given app name."""
     output_filename = f"Dockerfile_{name}"
     output_file = OUTPUT_PATH / output_filename
@@ -53,7 +53,7 @@ def update_docker(name: str) -> None:
     cprint_success(f"Recreated: {output_file}")
 
 
-def remove_docker(name: str) -> None:
+def remove_docker(name: str, output_dir: Path = OUTPUT_PATH)-> None:
     """Delete Dockerfile for the given app name."""
     output_filename = f"Dockerfile_{name}"
     output_file = OUTPUT_PATH / output_filename
@@ -77,22 +77,22 @@ def list_dockers() -> None:
             cprint_info(f" - {file.name}")
 
 
-def build_docker(name: str) -> None:
-    """Build Docker image from the generated Dockerfile."""
-    dockerfile_path = OUTPUT_PATH / f"Dockerfile_{name}"
-    image_name = f"{name.lower()}:latest"
-
-    if not dockerfile_path.exists():
-        cprint_error(f"Dockerfile does not exist: {dockerfile_path}")
-        return
-
-    try:
-        subprocess.run(
-            ["docker", "build", "-f", str(dockerfile_path), "-t", image_name, str(OUTPUT_PATH)],
-            check=True,
-        )
-        cprint_success(f"Docker image '{image_name}' built successfully.")
-    except FileNotFoundError:
-        cprint_error("Docker is not installed or not found in PATH.")
-    except subprocess.CalledProcessError:
-        cprint_error("Docker build failed.")
+# def build_docker(name: str) -> None:
+#     """Build Docker image from the generated Dockerfile."""
+#     dockerfile_path = OUTPUT_PATH / f"Dockerfile_{name}"
+#     image_name = f"{name.lower()}:latest"
+#
+#     if not dockerfile_path.exists():
+#         cprint_error(f"Dockerfile does not exist: {dockerfile_path}")
+#         return
+#
+#     try:
+#         subprocess.run(
+#             ["docker", "build", "-f", str(dockerfile_path), "-t", image_name, str(OUTPUT_PATH)],
+#             check=True,
+#         )
+#         cprint_success(f"Docker image '{image_name}' built successfully.")
+#     except FileNotFoundError:
+#         cprint_error("Docker is not installed or not found in PATH.")
+#     except subprocess.CalledProcessError:
+#         cprint_error("Docker build failed.")
