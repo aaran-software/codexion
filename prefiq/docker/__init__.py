@@ -19,3 +19,5 @@ class CPATH:
     PREFIQ_APP = ROOT_DIR / "prefiq/app"
     PREFIQ_TEMPLATE = ROOT_DIR / "prefiq/templates"
     PREFIQ_DOCKER = ROOT_DIR / "prefiq/docker"
+
+
