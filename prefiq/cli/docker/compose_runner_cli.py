@@ -3,6 +3,7 @@ import json
 from typing import Optional
 from pathlib import Path
 
+from prefiq.docker.compose.manage import show_services_preview, run_docker_up
 from prefiq.docker.prepare.postgres_compose import create_postgres_compose
 from prefiq.docker.utils.docker_manage_services import find_compose_files
 from prefiq.docker.prepare.site_compose import create_site_compose
@@ -146,8 +147,19 @@ def up(
                 color, label = typer.colors.YELLOW, "DATABASE"
             elif "nginx" in file_str or "traefik" in file_str:
                 color, label = typer.colors.CYAN, "PROXY"
-            elif "site" in file_str:
+            elif "compose" in file_str:
                 color, label = typer.colors.GREEN, "SITE"
             else:
                 color, label = typer.colors.WHITE, "OTHER"
             typer.echo(f" -[{idx}] {typer.style(f'[{label}]', fg=color, bold=True)} {file}")
+
+
+    # show services preview
+    all_services = show_services_preview(compose_files)
+
+    # confirm
+    if typer.confirm("\nDo you want to start these containers?", default=True):
+        run_docker_up(compose_files)
+        typer.echo(typer.style("\n✅ Docker containers started.", fg=typer.colors.GREEN))
+    else:
+        typer.echo(typer.style("\n⏹️ Cancelled. No containers started.", fg=typer.colors.YELLOW))
