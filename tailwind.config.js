@@ -1,8 +1,10 @@
 /** @type {import('tailwindcss').Config} */
+// tailwind.config.js
 module.exports = {
   content: [
-      './apps/cxsun/index.html',
-      './apps/cxsun/src/**/*.{js,ts,jsx,tsx}'],
+    './apps/**/*.{html,js,ts,jsx,tsx}',
+    './sites/**/*.{html,js,ts,jsx,tsx}',
+  ],
   theme: {
     extend: {},
   },
