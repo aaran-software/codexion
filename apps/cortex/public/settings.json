@@ -1,0 +1,37 @@
+{
+  "theme": "system",
+  "recordsPerPage": 60,
+  "user": {
+    "name": "Cortex",
+    "email": "cortex@gmail.com",
+    "avatar": "/avatars/shadcn.jpg"
+  },
+
+  "logo": {
+    "path": "/assets/svg/codexsun_logo.svg",
+    "position": "center",
+    "height": "20",
+    "font_size": "2",
+    "company_name": "",
+    "color": "",
+    "padding": "2"
+  },
+
+  "sidemenu": {
+    "main": [
+      {
+        "title": "Dashboard",
+        "icon": "LayoutDashboard",
+        "url": ""
+      },
+      {
+        "title": "Docker",
+        "currentComponent": "docker",
+        "icon": "LayoutDashboard",
+        "url": "docker"
+      }
+    ],
+    "help": {},
+    "document": {}
+  }
+}
