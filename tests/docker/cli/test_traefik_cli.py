@@ -8,7 +8,7 @@ runner = CliRunner()
 def test_traefik_create_basic(tmp_path: Path):
     test_email = "admin@example.com"
     result = runner.invoke(commands, [
-        "docker", "traefik", "create",
+        "traefik", "create",
         "--email", test_email,
         "--output", str(tmp_path)
     ])
@@ -29,7 +29,7 @@ def test_traefik_create_with_dashboard_auth(tmp_path: Path):
     password = "s3cr3t"
 
     result = runner.invoke(commands, [
-        "docker", "traefik", "create",
+        "traefik", "create",
         "--email", email,
         "--dashboard-domain", domain,
         "--admin-user", username,
@@ -60,7 +60,7 @@ def test_traefik_delete(tmp_path: Path):
 
     # Then delete with --force
     result = runner.invoke(commands, [
-        "docker", "traefik", "delete",
+        "traefik", "delete",
         "--output", str(tmp_path),
         "--force"
     ])

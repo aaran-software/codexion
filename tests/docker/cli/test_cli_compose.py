@@ -9,7 +9,7 @@ def test_mariadb_compose(tmp_path, monkeypatch):
     # ✅ PATCH where the compose file is saved
     monkeypatch.setattr(prefiq.CPATH, "DOCKER_DIR", tmp_path)
 
-    cmd = ["compose", "mariadb", "--database", "test_db", "--port", "3307"]
+    cmd = ["compose-site", "mariadb", "--database", "test_db", "--port", "3307"]
     expected_file = tmp_path / "docker-compose-mariadb.yml"
 
     result = runner.invoke(commands, cmd)
@@ -25,7 +25,7 @@ def test_postgres_compose(tmp_path, monkeypatch):
     # ✅ PATCH where the compose file is saved
     monkeypatch.setattr(prefiq.CPATH, "DOCKER_DIR", tmp_path)
 
-    cmd = ["compose", "postgres", "--database", "test_pg", "--port", "5433"]
+    cmd = ["compose-site", "postgres", "--database", "test_pg", "--port", "5433"]
     expected_file = tmp_path / "docker-compose-postgres.yml"
 
     result = runner.invoke(commands, cmd)
