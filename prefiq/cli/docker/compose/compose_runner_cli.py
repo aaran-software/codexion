@@ -71,13 +71,13 @@ def up(
             db = typer.prompt("💾 Select database (mariadb / postgres)?", default="mariadb")
             if db == "mariadb":
 
-                mariadb_name = typer.prompt("🔐 MariaDB username", default="root")
-                mariadb_password = typer.prompt("🔐 Enter MariaDB password", default="secret", hide_input=True)
+                mariadb_name = typer.prompt("🔐 MariaDB username", default="codexion_db")
+                mariadb_password = typer.prompt("🔐 Enter MariaDB password", default="DbPass@@", hide_input=True)
                 create_mariadb_compose(name=mariadb_name, password=mariadb_password, output_dir=compose_dir)
             else:
 
-                pg_name = typer.prompt("🔐 Postgres username", default="root")
-                pg_password = typer.prompt("🔐 Enter Postgres password", default="secret", hide_input=True)
+                pg_name = typer.prompt("🔐 Postgres username", default="codexion_db")
+                pg_password = typer.prompt("🔐 Enter Postgres password", default="DbPass@@", hide_input=True)
                 create_postgres_compose(name=pg_name, password=pg_password, output_dir=compose_dir)
 
             # REVERSE PROXY
@@ -172,7 +172,7 @@ def up(
 
     # confirm
     if typer.confirm("\nDo you want to start these containers?", default=True):
-        run_docker_up(compose_files)
+        run_docker_up(compose_files, choice="one")
         typer.echo(typer.style("\n✓ Docker containers started.", fg=typer.colors.GREEN))
     else:
         typer.echo(typer.style("\nx Cancelled. No containers started.", fg=typer.colors.YELLOW))
