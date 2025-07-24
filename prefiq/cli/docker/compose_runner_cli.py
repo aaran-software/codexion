@@ -4,6 +4,7 @@ from typing import Optional
 from pathlib import Path
 
 from prefiq.docker.compose.manage import show_services_preview, run_docker_up
+from prefiq.docker.prepare.dockerfile_default import create_docker
 from prefiq.docker.prepare.postgres_compose import create_postgres_compose
 from prefiq.docker.utils.docker_manage_services import find_compose_files
 from prefiq.docker.prepare.site_compose import create_site_compose
@@ -13,22 +14,29 @@ from prefiq.docker.prepare.traefik_compose import create_traefik_compose
 
 docker_run_cmd = typer.Typer()
 
+
 @docker_run_cmd.command("up", help="Start Docker containers from compose files")
 def up(
-    dry_run: bool = typer.Option(False, "--dryrun", help="Preview actions without executing"),
-    recreate: bool = typer.Option(False, "--recreate", help="Recreate compose files before running"),
-    yes: bool = typer.Option(False, "--yes", "--no-input", help="Skip prompts and auto-confirm actions"),
-    compose_dir: Optional[Path] = typer.Option(None, "--compose-dir", help="Directory to look for compose files"),
-    output: Optional[str] = typer.Option(None, "--output", help="Output format (e.g., json)")
+        dry_run: bool = typer.Option(False, "--dryrun", help="Preview actions without executing"),
+        recreate: bool = typer.Option(False, "--recreate", help="Recreate compose files before running"),
+        yes: bool = typer.Option(False, "--yes", "--no-input", help="Skip prompts and auto-confirm actions"),
+        compose_dir: Optional[Path] = typer.Option(None, "--compose-dir", help="Directory to look for compose files"),
+        output: Optional[str] = typer.Option(None, "--output", help="Output format (e.g., json)")
 ):
     typer.echo("👋 Hai from docker up")
 
     # Ask for compose_dir if not provided
     if recreate and not compose_dir:
-        prompt_msg = typer.style("Enter directory to recreate and scan for docker-compose files", fg=typer.colors.YELLOW)
+        prompt_msg = typer.style("Enter directory to recreate and scan for docker-compose files",
+                                 fg=typer.colors.YELLOW)
         user_input = typer.prompt(prompt_msg, default="docker")
         compose_dir = Path(user_input).expanduser().resolve()
+
     compose_dir = compose_dir or Path("docker")
+
+    if not compose_dir.exists():
+        typer.echo(typer.style(f"📁 Creating directory: {compose_dir}", fg=typer.colors.BLUE))
+        compose_dir.mkdir(parents=True, exist_ok=True)
 
     typer.echo(f"🔍 Searching compose files in: {compose_dir}")
 
@@ -53,6 +61,9 @@ def up(
             # SITE
             domain = typer.prompt("🌐 Enter site domain", default="site.com")
             port = typer.prompt("🔢 Enter site port", default=8000)
+
+            create_docker(compose_dir)
+
             create_site_compose(domain, port, compose_dir)
 
             # DATABASE
@@ -152,7 +163,6 @@ def up(
             else:
                 color, label = typer.colors.WHITE, "OTHER"
             typer.echo(f" -[{idx}] {typer.style(f'[{label}]', fg=color, bold=True)} {file}")
-
 
     # show services preview
     all_services = show_services_preview(compose_files)

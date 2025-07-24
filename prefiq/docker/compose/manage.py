@@ -19,17 +19,46 @@ def parse_services_from_compose(file_path: Path) -> list[str]:
         typer.echo(typer.style(f"[ERROR] Failed to parse {file_path.name}: {e}", fg=typer.colors.RED))
         return []
 
-def show_services_preview(compose_files: list[Path]) -> list[str]:
+import yaml
+
+def show_services_preview(compose_files):
     all_services = []
-    typer.echo("\n🔍 Planned containers to run:")
-    for file in compose_files:
-        services = parse_services_from_compose(file)
-        if services:
-            typer.echo(typer.style(f"\n📦 {file.name}", fg=typer.colors.BRIGHT_BLUE))
+
+    for file_path in compose_files:
+        try:
+            if "dockerfile" in str(file_path).lower():
+                # Dockerfile is not YAML – skip parsing
+                print(f"[INFO] Skipping Dockerfile preview: {file_path}")
+                continue
+
+            with open(file_path, "r") as f:
+                content = f.read()
+                data = yaml.safe_load(content)
+
+            if not isinstance(data, dict):
+                print(f"[WARN] Ignored non-dict YAML in {file_path}")
+                continue
+
+            services = data.get("services", {})
+            if isinstance(services, dict):
+                all_services.append((file_path.name, list(services.keys())))
+            else:
+                print(f"[WARN] 'services' is not a dict in {file_path}")
+
+        except Exception as e:
+            print(f"[ERROR] Failed to parse {file_path}: {e}")
+
+    # Pretty-print service summary
+    if all_services:
+        print("\n🔍 Planned containers to run:\n")
+        for file_name, services in all_services:
+            print(f"📦 {file_name}")
             for svc in services:
-                typer.echo(typer.style(f"   - {svc}", fg=typer.colors.GREEN))
-                all_services.append(svc)
+                print(f"   - {svc}")
+            print("")
+
     return all_services
+
 
 def run_docker_up(compose_files: list[Path]):
     cmd = ["docker", "compose"]

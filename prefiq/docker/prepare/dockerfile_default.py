@@ -11,14 +11,17 @@ DEFAULT_OUTPUT_PATH = CPATH.DOCKER_DIR
 
 def get_default_context() -> dict:
     return {
-        "base_image": "ubuntu:24.04",
-        "packages": ["python3", "python3-pip", "curl", "nano"],
+        # "base_image": "ubuntu:24.04",
+        # "packages": ["python3", "python3-pip", "curl", "nano"],
         "cmd": "bash"
     }
 
 
 def create_docker(output_dir: Path = DEFAULT_OUTPUT_PATH) -> None:
-    """Create a Dockerfile for the given app name."""
+
+    if not isinstance(output_dir, Path):
+        raise TypeError(f"Expected Path, got {type(output_dir).__name__}")
+
     context = get_default_context()
     output_filename = f"Dockerfile"
     output_path = output_dir / output_filename

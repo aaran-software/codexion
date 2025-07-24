@@ -8,6 +8,10 @@ from prefiq.utils.j2template_formater import postprocess_rendered
 TEMPLATE_DIR = CPATH.PREFIQ_TEMPLATE  # Path object
 
 def generate_from_template(template_name: str, output_filename: str, context: dict, output_dir: str):
+
+    if not isinstance(context, dict):
+        raise TypeError(f"Expected context to be dict, got {type(context).__name__}")
+
     env = Environment(loader=FileSystemLoader(str(TEMPLATE_DIR)))  # <- fix here
     template = env.get_template(template_name)
 
