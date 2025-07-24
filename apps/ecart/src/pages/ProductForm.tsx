@@ -1,9 +1,9 @@
 import { useState } from "react";
-import settings from "../../../../../../codexion/frontend/react/codexsun/public/JSON/ecart/ecart.json";
+import settings from "../../public/ecart.json";
 import CommonForm, {
   type Field,
   type ApiList,
-} from "../../../../../../codexion/resources/components/common/commonform";
+} from "../../../../resources/components/common/commonform";
 
 function ProductForm() {
   const productSection = settings.product;
