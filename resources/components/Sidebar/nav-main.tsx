@@ -1,4 +1,4 @@
-"use client"
+
 
 import { useAppContext } from "../../../apps/global/AppContaxt"
 import { ChevronRight, type LucideIcon } from "lucide-react"
