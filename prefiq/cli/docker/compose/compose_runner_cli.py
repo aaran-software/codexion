@@ -3,7 +3,8 @@ import json
 from typing import Optional
 from pathlib import Path
 
-from prefiq.docker.compose.manage import show_services_preview, run_docker_up
+from prefiq.docker.compose.services import show_services_preview
+from prefiq.docker.compose.manage import run_docker_up
 from prefiq.docker.prepare.dockerfile_default import create_docker
 from prefiq.docker.prepare.postgres_compose import create_postgres_compose
 from prefiq.docker.utils.docker_manage_services import find_compose_files

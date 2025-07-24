@@ -1,14 +1,17 @@
+import os
+import re
 import time
 import json
 import yaml
 import subprocess
 import typer
+
 from pathlib import Path
 from typing import List
 
 
 # ─────────────────────────────────────────────────────────────
-# 🔍 Service Parsing and Preview
+# 🔍 Utility: Parse and preview services from Compose files
 # ─────────────────────────────────────────────────────────────
 
 def get_services_from_compose(compose_file: Path) -> List[str]:
@@ -27,34 +30,55 @@ def show_services_preview(compose_files):
     for file_path in compose_files:
         try:
             if "dockerfile" in str(file_path).lower():
-                typer.echo(f"[INFO] Skipping Dockerfile preview: {file_path}")
+                print(f"[INFO] Skipping Dockerfile preview: {file_path}")
                 continue
 
             with open(file_path, "r") as f:
                 data = yaml.safe_load(f)
 
             if not isinstance(data, dict):
-                typer.echo(f"[WARN] Ignored non-dict YAML in {file_path}")
+                print(f"[WARN] Ignored non-dict YAML in {file_path}")
                 continue
 
             services = data.get("services", {})
             if isinstance(services, dict):
                 all_services.append((file_path.name, list(services.keys())))
             else:
-                typer.echo(f"[WARN] 'services' is not a dict in {file_path}")
+                print(f"[WARN] 'services' is not a dict in {file_path}")
 
         except Exception as e:
-            typer.echo(f"[ERROR] Failed to parse {file_path}: {e}")
+            print(f"[ERROR] Failed to parse {file_path}: {e}")
 
     if all_services:
-        typer.echo("\n🔍 Planned containers to run:\n")
+        print("\n🔍 Planned containers to run:\n")
         for file_name, services in all_services:
-            typer.echo(f"📦 {file_name}")
+            print(f"📦 {file_name}")
             for svc in services:
-                typer.echo(f"   - {svc}")
-            typer.echo("")
+                print(f"   - {svc}")
+            print("")
 
     return all_services
+
+
+def preview_services(compose_files: list[Path]):
+    running = get_running_containers()
+    to_start = set()
+
+    typer.secho("\n[INFO] Planned services:", fg=typer.colors.CYAN, bold=True)
+
+    for file in compose_files:
+        typer.secho(f"  - File: {file.name}", fg=typer.colors.BLUE, bold=True)
+        services = get_services_from_compose(file)
+
+        for service in services:
+            is_running = service in running
+            status = "[✓ RUNNING]" if is_running else "[x STOPPED]"
+            color = typer.colors.GREEN if is_running else typer.colors.RED
+            typer.secho(f"      {status:<10} {service}", fg=color)
+            if not is_running:
+                to_start.add(service)
+
+    return to_start
 
 
 def get_running_containers() -> set:
@@ -145,31 +169,24 @@ def run_compose_file(compose_file: Path):
     input("⏸️ Press Enter to continue...")
 
 
-def run_docker_up(compose_files: list[Path]):
-    # ✅ Filter only YAML files
-    valid_files = [f for f in compose_files if f.suffix in [".yml", ".yaml"]]
+def run_docker_up(valid_files: list[Path]):
+    if not valid_files:
+        typer.secho("❌ No valid Docker Compose files found.", fg=typer.colors.RED)
+        raise typer.Exit(1)
 
-    typer.echo("\n📦 Planned compose files:")
+    typer.secho("\n📦 Planned compose files:", fg=typer.colors.CYAN)
     for file in valid_files:
         typer.echo(f"  - {file.name}")
 
-    # Prompt and run...
-    choice = typer.prompt("❓ Do you want to run all at once or one by one?", default="one")
+    mode = typer.prompt(
+        "\n❓ Do you want to run all at once or one by one? [all/one]",
+        default="one"
+    ).strip().lower()
 
-    if choice.lower() == "all":
+    if mode == "all":
         cmd = ["docker", "compose"]
         for file in valid_files:
             cmd.extend(["-f", str(file)])
-        cmd.extend(["up", "-d"])
-        typer.echo(f"\n🔧 Running: {' '.join(cmd)}")
-        subprocess.run(cmd)
-        typer.secho("✓ Docker containers started.", fg=typer.colors.GREEN)
-    else:
-        for file in valid_files:
-            confirm = typer.confirm(f"\n❓ Do you want to start: {file.name}?")
-            if confirm:
-                cmd = ["docker", "compose", "-f", str(file), "up", "-d"]
-                typer.echo(f"\n🔧 Running: {' '.join(cmd)}")
-                subprocess.run(cmd)
-                typer.secho(f"✓ Finished: {file.name}", fg=typer.colors.GREEN)
-                input("⏸️ Press Enter to continue...")
+        cmd += ["up", "-d"]
+
+        typer.echo("\n🚀 Running: " + " ".join(cmd))

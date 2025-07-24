@@ -3,11 +3,11 @@ import typer
 
 from prefiq.cli.apps import app_cli
 from prefiq.cli.config.commands import config_cli
-from prefiq.cli.docker.dockerfile_action import docker_cmd
-from prefiq.cli.docker.compose_action import compose_cmd
-from prefiq.cli.docker.traefik import traefik_cmd
-from prefiq.cli.docker.gen_dockit_cli import generate_cmd
-from prefiq.cli.docker.compose_runner_cli import docker_run_cmd
+from prefiq.cli.docker.prepare.dockerfile_action import docker_cmd
+from prefiq.cli.docker.prepare.compose_action import compose_cmd
+from prefiq.cli.docker.prepare.traefik import traefik_cmd
+from prefiq.cli.docker.prepare.gen_dockit_cli import generate_cmd
+from prefiq.cli.docker.compose.compose_runner_cli import docker_run_cmd
 
 commands = typer.Typer()
 commands.add_typer(app_cli.app_cmd, name="app")
