@@ -1,19 +1,22 @@
+version: "3.8"
+
 services:
   mariadb:
     image: mariadb:11.8
-    container_name: codexion-db
+    container_name: mariadb-{{ db_name }}
     restart: unless-stopped
     environment:
-      MARIADB_ROOT_PASSWORD: DbPass1@@
-    volumes:
-      - db_data:/var/lib/mysql
+      MARIADB_ROOT_PASSWORD: "{{ db_password }}"
+      MARIADB_DATABASE: "{{ db_name }}"
     ports:
       - "3306:3306"
+    volumes:
+      - db_data_{{ db_name }}:/var/lib/mysql
     networks:
       - codexion-network
 
 volumes:
-  db_data:
+  db_data_{{ db_name }}:
 
 networks:
   codexion-network:

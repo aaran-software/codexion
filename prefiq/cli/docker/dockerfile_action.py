@@ -1,6 +1,6 @@
 import typer
 
-from prefiq.docker.prepare.dockerfile import create_docker,update_docker, list_dockers, remove_docker, build_docker
+from prefiq.docker.prepare.dockerfile import create_docker,update_docker, list_dockers, remove_docker
 
 docker_cmd = typer.Typer(help="Docker-related commands")
 
@@ -47,11 +47,3 @@ def list_all():
         for app in lists:
             typer.echo(f"- {app}")
 
-
-@docker_cmd.command("build")
-def build(name: str = typer.Argument(None, help="Name of Dockerfile to build")):
-    """Build a Dockerfile for the specified app"""
-    if not name:
-        name = prompt_for_name()
-    build_docker(name)
-    typer.echo(f"Dockerfile for '{name}' built successfully.")
