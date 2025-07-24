@@ -48,8 +48,8 @@ def list_all():
             typer.echo(f"- {app}")
 
 
-@docker_cmd.command("build")
-def build(name: str = typer.Argument(None, help="Name of Dockerfile to build")):
+@docker_cmd.command("build-image")
+def build_image(name: str = typer.Argument(None, help="Name of Dockerfile to build")):
     """Build a Dockerfile for the specified app"""
     if not name:
         name = prompt_for_name()

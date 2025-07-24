@@ -9,7 +9,7 @@ TEMPLATE_NAME = "cloud.j2"
 OUTPUT_PATH = CPATH.DOCKER_DIR
 
 
-def create_compose(domain: str, port: int):
+def create_site_compose(domain: str, port: int):
     # Sanitize name for docker usage
     name = domain.replace('.', '_').lower()
 
@@ -37,7 +37,7 @@ def create_compose(domain: str, port: int):
     cprint_success(f"Compose written to: {os.path.join(OUTPUT_PATH, output_filename)}")
 
 
-def remove_compose(domain: str):
+def remove_site_compose(domain: str):
     """
     Remove the generated docker-compose YAML file based on the domain.
     """
