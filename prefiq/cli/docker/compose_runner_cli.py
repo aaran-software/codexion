@@ -172,6 +172,6 @@ def up(
     # confirm
     if typer.confirm("\nDo you want to start these containers?", default=True):
         run_docker_up(compose_files)
-        typer.echo(typer.style("\n✅ Docker containers started.", fg=typer.colors.GREEN))
+        typer.echo(typer.style("\n✓ Docker containers started.", fg=typer.colors.GREEN))
     else:
-        typer.echo(typer.style("\n⏹️ Cancelled. No containers started.", fg=typer.colors.YELLOW))
+        typer.echo(typer.style("\nx Cancelled. No containers started.", fg=typer.colors.YELLOW))

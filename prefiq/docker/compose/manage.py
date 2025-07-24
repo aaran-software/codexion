@@ -76,7 +76,7 @@ def preview_services(compose_files: list[Path]):
 
         for service in services:
             is_running = service in running
-            status = "[RUNNING]" if is_running else "[STOPPED]"
+            status = "[✓ RUNNING]" if is_running else "[x STOPPED]"
             color = typer.colors.GREEN if is_running else typer.colors.RED
             typer.secho(f"      {status:<10} {service}", fg=color)
             if not is_running:
