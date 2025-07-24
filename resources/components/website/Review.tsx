@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import sample1 from '../../../frontend/react/codexsun/src/assets/sample1.jpg';
 import Carousel from '../Carousel';
 
 type ReviewType = {
@@ -16,21 +15,21 @@ function Review() {
         'Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Cras ultricies ligula sed magna dictum porta. Proin eget tortor risus.',
       name: 'Amelia Abelo',
       designation: 'Manager',
-      image: sample1,
+      image: '/assets/sample1.jpg',
     },
     {
       review:
         'Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Cras ultricies ligula sed magna dictum porta. Proin eget tortor risus.',
       name: 'Noah Johnson',
       designation: 'CEO',
-      image: sample1,
+      image: '/assets/sample1.jpg',
     },
     {
       review:
         'Praesent sapien massa, convallis a pellentesque nec, egestas non nisi. Vivamus magna justo, lacinia eget consectetur sed, convallis at tellus. Cras ultricies ligula sed magna dictum porta. Proin eget tortor risus.',
       name: 'Amelia Abelo',
       designation: 'Manager',
-      image: sample1,
+      image: '/assets/sample1.jpg',
     },
   ]);
 

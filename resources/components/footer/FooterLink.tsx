@@ -1,17 +1,13 @@
-import facebook from '../../../frontend/react/codexsun/src/assets/svg/facebook.svg';
-import x from '../../../frontend/react/codexsun/src/assets/svg/x.svg';
-import pinterest from '../../../frontend/react/codexsun/src/assets/svg/pinterest.svg';
-import youtube from '../../../frontend/react/codexsun/src/assets/svg/youtube.svg';
-import linkedin from '../../../frontend/react/codexsun/src/assets/svg/linkedin.svg';
+
 import { useState } from 'react';
 
 function FooterLink() {
   const [link]=useState([
-    {link:"http://flipkart.com/",icon:facebook},
-    {link:"http://flipkart.com/",icon:x},
-    {link:"http://flipkart.com/",icon:pinterest},
-    {link:"http://flipkart.com/",icon:youtube},
-    {link:"http://flipkart.com/",icon:linkedin},
+    {link:"http://flipkart.com/",icon:'/assets/svg/facebook.svg'},
+    {link:"http://flipkart.com/",icon:'/assets/svg/x.svg'},
+    {link:"http://flipkart.com/",icon:'/assets/svg/pinterest.svg'},
+    {link:"http://flipkart.com/",icon:'/assets/svg/youtube.svg'},
+    {link:"http://flipkart.com/",icon:'/assets/svg/linkedin.svg'},
   ])
   return (
     <div className='flex justify-center gap-5 border-t border-gray-900'>

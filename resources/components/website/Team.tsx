@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import sample1 from '../../../frontend/react/codexsun/src/assets/sample1.jpg';
 
 type TeamMember = {
   image: string;
@@ -11,25 +10,25 @@ type TeamMember = {
 function Team() {
   const [team] = useState<TeamMember[]>([
     {
-      image: sample1,
+      image: '/assets/sample1.jpg',
       name: 'Desirae Dias',
       designation: 'CEO',
       bio: 'developer',
     },
     {
-      image: sample1,
+      image: '/assets/sample1.jpg',
       name: 'Madelyn Torff',
       designation: 'Marketing Head',
       bio: 'developer',
     },
     {
-      image: sample1,
+      image: '/assets/sample1.jpg',
       name: 'Tiana Gouse',
       designation: 'Project Manager',
       bio: 'developer',
     },
     {
-      image: sample1,
+      image: '/assets/sample1.jpg',
       name: 'Livia Passaquin',
       designation: 'Director',
       bio: 'developer',

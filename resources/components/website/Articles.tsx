@@ -1,7 +1,6 @@
 // Articles.tsx
 import { useState } from 'react';
-import sample1 from '../../../frontend/react/codexsun/src/assets/sample1.jpg';
-import Button from '../../../frontend/react/codexsun/src/Components/Input/Button';
+import Button from "../button/Button";
 
 type Article = {
   image: string;
@@ -13,25 +12,25 @@ type Article = {
 function Articles() {
   const [articles] = useState<Article[]>([
     {
-      image: sample1,
+      image: '/assets/sample1.jpg',
       title: 'The Best Place to Invest Your Money',
       description: 'Torem orem ipsum dolor sit amet, Tetur adipiscing elit. Atempor scelerisque olor sit mauris',
       path: '/blog',
     },
     {
-      image: sample1,
+      image: '/assets/sample1.jpg',
       title: 'The Best Place to Invest Your Money',
       description: 'Torem orem ipsum dolor sit amet, Tetur adipiscing elit. Atempor scelerisque olor sit mauris',
       path: '/blog',
     },
     {
-      image: sample1,
+      image: '/assets/sample1.jpg',
       title: 'The Best Place to Invest Your Money',
       description: 'Torem orem ipsum dolor sit amet, Tetur adipiscing elit. Atempor scelerisque olor sit mauris',
       path: '/blog',
     },
     {
-      image: sample1,
+      image: '/assets/sample1.jpg',
       title: 'The Best Place to Invest Your Money',
       description: 'Torem orem ipsum dolor sit amet, Tetur adipiscing elit. Atempor scelerisque olor sit mauris',
       path: '/blog',
