@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, forwardRef } from "react";
 import { Check, X, ChevronDown, PlusCircle } from "lucide-react";
 import Error from '../error/Error'
 import CreateMenu from "../common/CreateMenu";
-import apiClient from "@resources/global/api/apiClients";
+import apiClient from "../../../resources/global/api/apiClients";
 
 interface DropdownProps {
   id: string;
