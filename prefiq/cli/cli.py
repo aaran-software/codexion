@@ -8,7 +8,6 @@ from prefiq.cli.docker.compose_action import compose_cmd
 from prefiq.cli.docker.traefik import traefik_cmd
 from prefiq.cli.docker.gen_dockit_cli import generate_cmd
 from prefiq.cli.docker.compose_runner_cli import docker_run_cmd
-from prefiq.cli.docker.compose_list_cli import  list_docker_assets
 
 commands = typer.Typer()
 commands.add_typer(app_cli.app_cmd, name="app")
