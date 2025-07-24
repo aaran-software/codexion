@@ -6,7 +6,7 @@ SQLAlchemy>=2.0.41
 uvicorn>=0.35.0
 passlib>=1.7.4
 python-jose>=3.5.0
-bcrypt
+bcrypt==4.0.1
 pymysql
 starlette~=0.47.2
 pytest~=8.4.1
