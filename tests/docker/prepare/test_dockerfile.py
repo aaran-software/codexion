@@ -3,7 +3,7 @@ import pytest
 from pathlib import Path
 
 from prefiq import CPATH
-from prefiq.docker.prepare import dockerfile
+from prefiq.docker.prepare import dockerfile_named
 
 
 @pytest.fixture(autouse=True)
@@ -18,7 +18,7 @@ def cleanup_dockerfiles():
 
 def test_create_docker():
     name = "test_app"
-    dockerfile.create_docker(name)
+    dockerfile_named.create_docker(name)
     expected = CPATH.DOCKER_DIR / f"Dockerfile_{name}"
     assert expected.exists()
     content = expected.read_text()
@@ -32,7 +32,7 @@ def test_update_docker():
     file.write_text("dummy content")
     assert file.exists()
 
-    dockerfile.update_docker(name)
+    dockerfile_named.update_docker(name)
     assert file.exists()
     assert "ubuntu:24.04" in file.read_text()
 
@@ -43,7 +43,7 @@ def test_remove_docker():
     file.write_text("to be removed")
 
     assert file.exists()
-    dockerfile.remove_docker(name)
+    dockerfile_named.remove_docker(name)
     assert not file.exists()
 
 
@@ -53,7 +53,7 @@ def test_remove_nonexistent_docker(capfd):
     if file.exists():
         file.unlink()
 
-    dockerfile.remove_docker(name)
+    dockerfile_named.remove_docker(name)
     out = capfd.readouterr().out
     assert "not found" in out.lower()
 
@@ -63,7 +63,7 @@ def test_list_dockers(capfd):
     for n in names:
         (CPATH.DOCKER_DIR / f"Dockerfile_{n}").write_text("# Dummy")
 
-    dockerfile.list_dockers()
+    dockerfile_named.list_dockers()
     out = capfd.readouterr().out
     for n in names:
         assert f"Dockerfile_{n}" in out

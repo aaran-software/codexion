@@ -2,7 +2,7 @@ import typer
 from typing import Optional
 from pathlib import Path
 
-from prefiq.docker.prepare.dockerfile import create_docker
+from prefiq.docker.prepare.dockerfile_named import create_docker
 from prefiq.docker.prepare.site_compose import create_site_compose
 from prefiq.docker.prepare.mariadb_compose import create_mariadb_compose
 from prefiq.docker.prepare.postgres_compose import create_postgres_compose
