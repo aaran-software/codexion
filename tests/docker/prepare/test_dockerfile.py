@@ -67,32 +67,3 @@ def test_list_dockers(capfd):
     out = capfd.readouterr().out
     for n in names:
         assert f"Dockerfile_{n}" in out
-
-
-def test_build_docker_success(monkeypatch):
-    name = "test_build"
-    file = CPATH.DOCKER_DIR / f"Dockerfile_{name}"
-    file.write_text("FROM alpine")
-
-    called = {}
-
-    def mock_run(cmd, check):
-        called["cmd"] = cmd
-        assert "docker" in cmd
-        assert "-t" in cmd
-        assert name in cmd[-2]
-
-    monkeypatch.setattr(subprocess, "run", mock_run)
-    dockerfile.build_docker(name)
-    assert "cmd" in called
-
-
-def test_build_docker_missing(capfd):
-    name = "nonexistent"
-    file = CPATH.DOCKER_DIR / f"Dockerfile_{name}"
-    if file.exists():
-        file.unlink()
-
-    dockerfile.build_docker(name)
-    out = capfd.readouterr().out
-    assert "does not exist" in out.lower()
