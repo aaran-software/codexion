@@ -208,5 +208,4 @@ __marimo__/
 /.idea/
 /.venv/
 /database/
-/docker/
 node_modules/

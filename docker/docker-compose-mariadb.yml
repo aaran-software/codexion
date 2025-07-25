@@ -1,0 +1,21 @@
+services:
+  mariadb:
+    image: mariadb:11.7
+    container_name: mariadb-codexion_db
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: "DbPass1@@"
+      MARIADB_DATABASE: "codexion_db"
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data_codexion_db:/var/lib/mysql
+    networks:
+      - codexion-network
+
+volumes:
+  db_data_codexion_db:
+
+networks:
+  codexion-network:
+    external: true

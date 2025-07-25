@@ -9,12 +9,13 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - db_data_{{ db_name }}:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
+      - ./50-server.cnf:/etc/mysql/mariadb.conf.d/50-server.cnf:ro
     networks:
       - codexion-network
 
 volumes:
-  db_data_{{ db_name }}:
+  mariadb_data:
 
 networks:
   codexion-network:
