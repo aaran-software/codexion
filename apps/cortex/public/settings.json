@@ -6,7 +6,6 @@
     "email": "cortex@gmail.com",
     "avatar": "/avatars/shadcn.jpg"
   },
-
   "logo": {
     "path": "/assets/svg/codexsun_logo.svg",
     "position": "center",
@@ -16,7 +15,6 @@
     "color": "",
     "padding": "2"
   },
-
   "sidemenu": {
     "main": [
       {
@@ -29,6 +27,24 @@
         "currentComponent": "docker",
         "icon": "LayoutDashboard",
         "url": "docker"
+      },
+      {
+        "title": "Docker Build",
+        "currentComponent": "dockerbuild",
+        "icon": "LayoutDashboard",
+        "url": "dockerbuild"
+      },
+      {
+        "title": "Project Management",
+        "currentComponent": "projectmanagement",
+        "icon": "LayoutDashboard",
+        "url": "project"
+      },
+      {
+        "title": "Task Manager",
+        "currentComponent": "task",
+        "icon": "LayoutDashboard",
+        "url": "task"
       }
     ],
     "help": {},

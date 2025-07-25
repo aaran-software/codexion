@@ -50,7 +50,8 @@ import AppHeader from "../../../../resources/components/Header/AppHeader";
 import { AppSidebar } from "../../../../resources/components/Sidebar/app-sidebar";
 import ScrollToTopButton from "../../../../resources/components/common/scrolltotop";
 import GrandStream from "./GrandStream";
-import Docker from "../../../cortex/src/pages/Docker";
+import DockerCreate from "../../../cortex/src/pages/DockerCreate";
+import Task from "./AdminComponents/Task";
 
 export default function Admin() {
 const { token } = useAuth();
@@ -85,7 +86,8 @@ useEffect(() => {
         receipt: "Receipt",
         payment: "Payment",
         accountbook: "Account Books",
-        docker: "Docker",
+        docker: "DockerCreate",
+        task:"Task Manager"
       };
       document.title = titleMap[currentComponent];
     }
@@ -107,7 +109,12 @@ useEffect(() => {
     {
       id: "docker",
       className: "w-[100%] min-h-full",
-      component: <Docker />,
+      component: <DockerCreate />,
+    },
+     {
+      id: "task",
+      className: "w-[100%] min-h-full",
+      component: <Task />,
     },
      {
       id: "calllog",

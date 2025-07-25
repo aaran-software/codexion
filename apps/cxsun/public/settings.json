@@ -30,7 +30,13 @@
         "icon": "LayoutDashboard",
         "url": "docker"
       },
-        {
+      {
+        "title": "Task Manager",
+        "currentComponent": "task",
+        "icon": "LayoutDashboard",
+        "url": "task"
+      },
+      {
         "title": "GrandStream",
         "currentComponent": "calllog",
         "icon": "LayoutDashboard",

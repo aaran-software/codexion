@@ -1,134 +1,157 @@
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
 } from "../../../../resources/components/breadcrumb";
-import { Separator } from "../../../../resources/components/separator";
+import {Separator} from "../../../../resources/components/separator";
 import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
+    SidebarInset,
+    SidebarProvider,
+    SidebarTrigger,
 } from "../../../../resources/components/Sidebar/sidebar";
-import { useEffect, useState } from "react";
-import { useAppContext } from "../../../../apps/global/AppContaxt";
-import { useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "../../../../apps/global/auth/AuthContext";
+import {useEffect, useState} from "react";
+import {useAppContext} from "../../../../apps/global/AppContaxt";
+import {useNavigate, useParams} from "react-router-dom";
+import {useAuth} from "../../../../apps/global/auth/AuthContext";
 import Dashboard from "../../../../resources/components/Dashboard/Dashboard";
 import AppHeader from "../../../../resources/components/Header/AppHeader";
-import { AppSidebar } from "../../../../resources/components/Sidebar/app-sidebar";
+import {AppSidebar} from "../../../../resources/components/Sidebar/app-sidebar";
 import ScrollToTopButton from "../../../../resources/components/common/scrolltotop";
-import Docker from "./Docker";
+import DockerCreate from "./DockerCreate";
+import DockerBuild from "./DockerBuild";
+import Task from "./Task";
+import ProjectManagement from "./ProjectManagement";
 
 export default function Admin() {
-const { token } = useAuth();
-const navigate = useNavigate();
-useEffect(() => {
-  if (!token) {
-    navigate("/");
-  }
-}, [token]);
+    const {token} = useAuth();
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (!token) {
+            navigate("/");
+        }
+    }, [token]);
 
-  const { component } = useParams();
-  const { currentComponent, setCurrentComponent } = useAppContext();
+    const {component} = useParams();
+    const {currentComponent, setCurrentComponent} = useAppContext();
 
-  // On mount or when URL changes
-  useEffect(() => {
-    if (component === undefined) {
-      setCurrentComponent("admin");
-    } else if (component !== currentComponent) {
-      setCurrentComponent(component);
-    }
-  }, [component]);
+    // On mount or when URL changes
+    useEffect(() => {
+        if (component === undefined) {
+            setCurrentComponent("admin");
+        } else if (component !== currentComponent) {
+            setCurrentComponent(component);
+        }
+    }, [component]);
 
-  // Update browser tab title
-  useEffect(() => {
-    if (currentComponent) {
-      const titleMap: Record<string, string> = {
-        admin: "Dashboard",
-        docker: "Docker",
-      };
-      document.title = titleMap[currentComponent];
-    }
-  }, [currentComponent]);
+    // Update browser tab title
+    useEffect(() => {
+        if (currentComponent) {
+            const titleMap: Record<string, string> = {
+                admin: "Dashboard",
+                docker: "Docker Create",
+                dockerbuild: "Docker Build",
+                task: "Task Management",
+                project: "Project Management",
+            };
+            document.title = titleMap[currentComponent];
+        }
+    }, [currentComponent]);
 
-  const [compoent] = useState([
+    const [compoent] = useState([
 
-    {
-      id: "dashboard",
-      className: "w-[100%] min-h-full",
-      component: <Dashboard />,
-    },
-    {
-      id: "docker",
-      className: "w-[100%] min-h-full",
-      component: <Docker />,
-    },
+        {
+            id: "dashboard",
+            className: "w-[100%] min-h-full",
+            component: <Dashboard/>,
+        },
+        {
+            id: "docker",
+            className: "w-[100%] min-h-full",
+            component: <DockerCreate/>,
+        },
+        {
+            id: "dockerbuild",
+            className: "w-[100%] min-h-full",
+            component: <DockerBuild/>,
+        },
+        {
+            id: "projectmanagement",
+            className: "w-[100%] min-h-full",
+            component: <ProjectManagement/>,
+        },
+        {
+            id: "task",
+            className: "w-[100%] min-h-full",
+            component: <Task/>,
+        },
 
-  ]);
+    ]);
 
-  return (
-    <SidebarProvider className="flex flex-col min-h-screen bg-dashboard-background text-dashboard-foreground">
-      {/* Sticky App Header */}
-      <div className="sticky top-0 z-50 bg-background">
-        <AppHeader />
-      </div>
-
-      <div className="flex flex-1 min-h-0">
-        {/* Sidebar */}
-        <AppSidebar />
-
-        {/* Content Area */}
-        <SidebarInset className="flex flex-col flex-1 min-h-0 overflow-hidden bg-dashboard-background text-dashboard-foreground">
-          {/* Subheader with Breadcrumb */}
-          <header className="flex h-16 ml-2 md:ml-0 shrink-0 items-center justify-between gap-2 mr-5 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-            <div className="flex items-center gap-2">
-              <SidebarTrigger className="-ml-1 **:text-foreground" />
-              <Separator
-                orientation="vertical"
-                className="mr-2 bg-foreground text-background data-[orientation=vertical]:h-4"
-              />
-              <Breadcrumb>
-                <BreadcrumbList>
-                  <BreadcrumbItem className="block">
-                    <BreadcrumbLink onClick={() => setCurrentComponent("")}>
-                      Dashboard
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator className="block" />
-                  <BreadcrumbItem className="block">
-                    <BreadcrumbPage className="capitalize">
-                      {currentComponent === "admin" ? "" : currentComponent}
-                    </BreadcrumbPage>
-                  </BreadcrumbItem>
-                </BreadcrumbList>
-              </Breadcrumb>
+    return (
+        <SidebarProvider className="flex flex-col min-h-screen bg-dashboard-background text-dashboard-foreground">
+            {/* Sticky App Header */}
+            <div className="sticky top-0 z-50 bg-background">
+                <AppHeader/>
             </div>
-          </header>
 
-          {/* Scrollable Main Area */}
-          <main className="flex-1 overflow-auto">
-            {component === undefined ? (
-              // Render default component (Dashboard)
-              <div className="w-full min-h-full">
-                <Dashboard />
-              </div>
-            ) : (
-              compoent.map((comp, index) =>
-                currentComponent === comp.id ? (
-                  <div key={index} className={comp.className}>
-                    {comp.component}
-                  </div>
-                ) : null
-              )
-            )}
-          </main>
-        </SidebarInset>
-      </div>
+            <div className="flex flex-1 min-h-0">
+                {/* Sidebar */}
+                <AppSidebar/>
 
-      <ScrollToTopButton />
-    </SidebarProvider>
-  );
+                {/* Content Area */}
+                <SidebarInset
+                    className="flex flex-col flex-1 min-h-0 overflow-hidden bg-dashboard-background text-dashboard-foreground">
+                    {/* Subheader with Breadcrumb */}
+                    <header
+                        className="flex h-16 ml-2 md:ml-0 shrink-0 items-center justify-between gap-2 mr-5 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+                        <div className="flex items-center gap-2">
+                            <SidebarTrigger className="-ml-1 **:text-foreground"/>
+                            <Separator
+                                orientation="vertical"
+                                className="mr-2 bg-foreground text-background data-[orientation=vertical]:h-4"
+                            />
+                            <Breadcrumb>
+                                <BreadcrumbList>
+                                    <BreadcrumbItem className="block">
+                                        <BreadcrumbLink onClick={() => setCurrentComponent("")}>
+                                            Dashboard
+                                        </BreadcrumbLink>
+                                    </BreadcrumbItem>
+                                    <BreadcrumbSeparator className="block"/>
+                                    <BreadcrumbItem className="block">
+                                        <BreadcrumbPage className="capitalize">
+                                            {currentComponent === "admin" ? "" : currentComponent}
+                                        </BreadcrumbPage>
+                                    </BreadcrumbItem>
+                                </BreadcrumbList>
+                            </Breadcrumb>
+                        </div>
+                    </header>
+
+                    {/* Scrollable Main Area */}
+                    <main className="flex-1 overflow-auto">
+                        {component === undefined ? (
+                            // Render default component (Dashboard)
+                            <div className="w-full min-h-full">
+                                <Dashboard/>
+                            </div>
+                        ) : (
+                            compoent.map((comp, index) =>
+                                currentComponent === comp.id ? (
+                                    <div key={index} className={comp.className}>
+                                        {comp.component}
+                                    </div>
+                                ) : null
+                            )
+                        )}
+                    </main>
+                </SidebarInset>
+            </div>
+
+            <ScrollToTopButton/>
+        </SidebarProvider>
+    );
 }
