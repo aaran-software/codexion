@@ -25,7 +25,7 @@ def up(
         compose_dir: Optional[Path] = typer.Option(None, "--compose-dir", help="Directory to look for compose files"),
         output: Optional[str] = typer.Option(None, "--output", help="Output format (e.g., json)")
 ):
-    typer.echo("👋 Hai from docker up")
+    # typer.echo(" from docker up")
 
     # Ask for compose_dir if not provided
     if recreate and not compose_dir:
@@ -40,7 +40,7 @@ def up(
         typer.echo(typer.style(f"📁 Creating directory: {compose_dir}", fg=typer.colors.BLUE))
         compose_dir.mkdir(parents=True, exist_ok=True)
 
-    typer.echo(f"🔍 Searching compose files in: {compose_dir}")
+    typer.echo(f"🔍 Searching docker compose files: {compose_dir}")
 
     try:
         compose_files = find_compose_files(compose_dir)

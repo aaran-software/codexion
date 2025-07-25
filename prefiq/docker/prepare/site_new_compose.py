@@ -3,7 +3,7 @@ from prefiq.docker.common.generate_from_template import generate_from_template
 from prefiq.utils.cprint import cprint_success, cprint_error
 from prefiq import CPATH
 
-TEMPLATE_NAME = "sites.j2"
+TEMPLATE_NAME = "cloud.j2"
 DEFAULT_OUTPUT_PATH = CPATH.DOCKER_DIR
 
 
