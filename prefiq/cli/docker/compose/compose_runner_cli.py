@@ -3,6 +3,7 @@ import json
 from typing import Optional
 from pathlib import Path
 
+from prefiq.docker.common.getfiles import copy_files_to_docker
 from prefiq.docker.compose.services import show_services_preview
 from prefiq.docker.compose.manage import run_docker_up
 from prefiq.docker.prepare.dockerfile_default import create_docker
@@ -169,6 +170,8 @@ def up(
 
     # show services preview
     all_services = show_services_preview(compose_files)
+
+    copy_files_to_docker()
 
     # confirm
     if typer.confirm("\nDo you want to start these containers?", default=True):
