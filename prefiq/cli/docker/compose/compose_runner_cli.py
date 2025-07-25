@@ -72,12 +72,12 @@ def up(
             if db == "mariadb":
 
                 mariadb_name = typer.prompt("🔐 MariaDB username", default="codexion_db")
-                mariadb_password = typer.prompt("🔐 Enter MariaDB password", default="DbPass@@", hide_input=True)
+                mariadb_password = typer.prompt("🔐 Enter MariaDB password", default="DbPass1@@", hide_input=True)
                 create_mariadb_compose(name=mariadb_name, password=mariadb_password, output_dir=compose_dir)
             else:
 
                 pg_name = typer.prompt("🔐 Postgres username", default="codexion_db")
-                pg_password = typer.prompt("🔐 Enter Postgres password", default="DbPass@@", hide_input=True)
+                pg_password = typer.prompt("🔐 Enter Postgres password", default="DbPass1@@", hide_input=True)
                 create_postgres_compose(name=pg_name, password=pg_password, output_dir=compose_dir)
 
             # REVERSE PROXY
@@ -111,11 +111,11 @@ def up(
                 db = typer.prompt("💾 Select database (mariadb / postgres)?", default="mariadb")
                 if db == "mariadb":
                     name = typer.prompt("🔐 MariaDB username", default="root")
-                    pwd = typer.prompt("🔐 Enter MariaDB password", default="secret", hide_input=True)
+                    pwd = typer.prompt("🔐 Enter MariaDB password", default="DbPass1@@", hide_input=True)
                     create_mariadb_compose(name=name, password=pwd, output_dir=compose_dir)
                 else:
                     name = typer.prompt("🔐 Postgres username", default="root")
-                    pwd = typer.prompt("🔐 Enter Postgres password", default="secret", hide_input=True)
+                    pwd = typer.prompt("🔐 Enter Postgres password", default="DbPass1@@", hide_input=True)
                     create_postgres_compose(name=name, password=pwd, output_dir=compose_dir)
 
             if typer.confirm("Create reverse proxy compose?", default=True):
