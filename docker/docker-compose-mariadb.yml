@@ -1,11 +1,10 @@
 services:
   mariadb:
     image: mariadb:11.7
-    container_name: mariadb-{{ db_name }}
+    container_name: mariadb
     restart: unless-stopped
     environment:
-      MARIADB_ROOT_PASSWORD: "{{ db_password }}"
-      MARIADB_DATABASE: "{{ db_name }}"
+      MARIADB_ROOT_PASSWORD: "DbPass1@@"
     ports:
       - "3306:3306"
     volumes:
