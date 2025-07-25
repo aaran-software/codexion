@@ -1,6 +1,8 @@
 import os
 import shutil
 
+from prefiq import CPATH
+
 # 🔧 Config
 FILES_TO_COPY = [
     "init_frappe.py",
@@ -10,9 +12,8 @@ FILES_TO_COPY = [
 ]
 
 # Set paths
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-SOURCE_DIR = os.path.join(BASE_DIR, "prefiq", "templates")
-TARGET_DIR = os.path.join(BASE_DIR, "docker")
+SOURCE_DIR = CPATH.PREFIQ_TEMPLATE
+TARGET_DIR = CPATH.DOCKER_DIR
 
 def copy_files_to_docker():
     if not os.path.exists(TARGET_DIR):
