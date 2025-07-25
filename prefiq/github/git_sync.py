@@ -18,6 +18,12 @@ def pull_repo():
 
 def push_repo(commit_message="sync: update via API or script"):
     run("git add .")
+
+    # Check if anything is staged for commit
+    staged = run("git diff --cached --name-only")
+    if not staged:
+        return "ℹ️ Nothing to commit"
+
     run(f'git commit -m "{commit_message}"')
     return run(f"git push origin {BRANCH}")
 
