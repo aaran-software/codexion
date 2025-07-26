@@ -25,12 +25,6 @@
         "url": ""
       },
       {
-        "title": "Docker",
-        "currentComponent": "docker",
-        "icon": "LayoutDashboard",
-        "url": "docker"
-      },
-      {
         "title": "Task Manager",
         "currentComponent": "task",
         "icon": "LayoutDashboard",

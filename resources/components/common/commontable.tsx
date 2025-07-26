@@ -5,7 +5,7 @@ import Warning from "../alert/Warning";
 import apiClient from "../../../resources/global/api/apiClients";
 
 export interface TableRowData {
-  [key: string]: string | React.ReactNode;
+  [key: string]: string;
   id: string;
 }
 
