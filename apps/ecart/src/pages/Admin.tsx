@@ -47,7 +47,7 @@ useEffect(() => {
     if (currentComponent) {
       const titleMap: Record<string, string> = {
         admin: "Dashboard",
-        docker: "Docker",
+        docker: "DockerCreate",
       };
       document.title = titleMap[currentComponent];
     }

@@ -2,27 +2,25 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "./tooltip"
+} from "./tooltip";
 
-interface tooltipcomponentprops{
-  label:string;
-  tip:string;
-  className:string
+interface TooltipComponentProps {
+  tip: string;
+  content: React.ReactNode; // now accepts JSX (like <ImageBtn />)
+  className?: string;
 }
 
-function Tooltipcomp({label ,tip,className}:tooltipcomponentprops) {
+function Tooltipcomp({ tip, content, className = "" }: TooltipComponentProps) {
   return (
     <Tooltip>
-      <TooltipTrigger className={`w-max bg-backgrund text-foreground h-max ${className}`}>{label}</TooltipTrigger>
-      <TooltipContent>
-        <p className="bg-foreground text-background">{tip}</p>
-      </TooltipContent>
+      <TooltipTrigger asChild>
+        <div className={className}>
+          {content}
+        </div>
+      </TooltipTrigger>
+      <TooltipContent>{tip}</TooltipContent>
     </Tooltip>
-  )
+  );
 }
 
-export default Tooltipcomp
-
-
-// Usage:
-// <TooltipComponent label="Click Me" tip="Login Button" className=""/>
+export default Tooltipcomp;

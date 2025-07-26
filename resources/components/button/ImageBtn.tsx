@@ -4,12 +4,19 @@ import {
   ArrowUpWideNarrow, ArrowDownWideNarrow, EllipsisVertical, Filter,
   PrinterIcon, LucideFileJson2, LucideColumnsSettings,ExpandIcon,
   ChevronRight, ChevronLeft,
-  SortAsc,UserCircle2,LucideShoppingCart,Heart,LogIn,LogOut,UserPlus2Icon
+  SortAsc,UserCircle2,LucideShoppingCart,Heart,LogIn,LogOut,UserPlus2Icon,AlignCenter,AlignJustify,AlignLeft,AlignRight
 } from 'lucide-react';
 import { IoIosArrowUp } from "react-icons/io";
 import { IoChevronDown } from "react-icons/io5";
 import React from 'react';
-import { FiLink } from "react-icons/fi";
+import { FiLink  } from "react-icons/fi";
+import { LuCaseUpper } from "react-icons/lu";
+import { RxLetterCaseLowercase } from "react-icons/rx";
+import { GrUnderline } from "react-icons/gr";
+import { FaBold } from "react-icons/fa";
+import { FaItalic } from "react-icons/fa";
+import { FaListUl } from "react-icons/fa";
+import { FaListOl } from "react-icons/fa";
 type ButtonProps = {
   icon: string;
   path?: string;
@@ -52,9 +59,18 @@ const iconMap: Record<string, React.ReactNode> = {
    login: <LogIn  size={18}/>,
    logout: <LogOut  size={18}/>,
    register: <UserPlus2Icon  size={18}/>,
-  
+   alignleft: <AlignLeft  size={18}/>,
+   alignright: <AlignRight  size={18}/>,
+   alignjustify: <AlignJustify  size={18}/>,
+   aligncenter: <AlignCenter  size={18}/>,
+   italic: <FaItalic  size={18}/>,
+   bold: <FaBold  size={18}/>,
+   underline: <GrUnderline  size={18}/>,
+   uppercase: <LuCaseUpper  size={18}/>,
+   lowercase: <RxLetterCaseLowercase  size={18}/>,
+   listul: <FaListUl  size={18}/>,
+   listol: <FaListOl  size={18}/>,
 };
-
 function ImageButton({ icon, path, className = '', onClick, children, disabled, label, fontSize }: ButtonProps) {
   const IconComponent = iconMap[icon] ?? null;
 

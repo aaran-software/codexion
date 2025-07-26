@@ -13,6 +13,7 @@ import Contact from './Contact';
 import Industry from './Industry';
 import HeaderPortfolio from "../../../../resources/components/Header/header-portfolio";
 import FooterPortfolio from "../../../../resources/components/footer/footer-portfolio";
+import Editor from "../../../../resources/layouts/Editor";
 
 const Home: React.FC = () => {
     // Company About Card
@@ -294,6 +295,7 @@ const Home: React.FC = () => {
 
             <FooterPortfolio />
             <ScrollToTop/>
+
         </main>
     );
 };
