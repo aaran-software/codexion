@@ -7,7 +7,7 @@ from prefiq import CPATH
 FILES_TO_COPY = [
     "init_frappe.py",
     "supervisord.conf",
-    "cloud-nginx.conf"
+    "cloud-nginx.conf",
     "50-server.cnf"
 
 ]
