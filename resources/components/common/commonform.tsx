@@ -1,26 +1,22 @@
-// CommonForm.tsx
-import { useEffect, useRef, useState } from "react";
-import { TextArea } from "../input/TextArea";
-import Dropdown from "../input/Dropdown";
-import Switch from "../input/switch";
-import Checkbox from "../input/checkbox";
-import MultiCheckbox from "../input/MultiCheckbox";
-import PasswordInput from "../input/passwordInput";
-import { DatePicker } from "../Datepicker/Datepicker";
-import FileUpload from "../input/FileInput";
-import DropdownRead from "../input/Dropdown-read";
-import ImageButton from "../button/ImageBtn";
-import { format } from "date-fns";
-import EditableTable from "./EditableTable";
+import {useEffect, useRef, useState} from "react";
+import {TextArea} from "../Input/TextArea";
+import Dropdown from "../Input/Dropdown";
+import Switch from "../Input/switch";
+import Checkbox from "../Input/checkbox";
+import Alert from "../Alert/Alert";
+import MultiCheckbox from "../Input/MultiCheckbox";
+import {DatePicker} from "../Datepicker/Datepicker";
+import CommonTable, {type TableRowData} from "./commontable";
+import {format} from "date-fns";
 import apiClient from "../../../resources/global/api/apiClients";
-import FloatingInput from "../../../resources/components/input/FloatingInput";
-import Button from "../../../resources/components/button/Button";
+import ImageButton from "../button/ImageBtn";
+import FloatingInput from "../input/FloatingInput";
+import DropdownRead from "../input/Dropdown-read";
+import PasswordInput from "../SecondaryInput/PasswordInput";
+import FileUpload from "../input/FileInput";
+import Button from "../button/Button";
 
-export type Field = {
-  className: string;
-  id: string;
-  label: string;
-  type:
+type FieldType =
     | "textinput"
     | "textarea"
     | "dropdown"
@@ -34,347 +30,515 @@ export type Field = {
     | "dropdownread"
     | "dropdownreadmultiple"
     | "dropdownmultiple";
-  options?: string[];
-  errMsg: string;
-  readApi?: string;
-  updateApi?: string;
-  apiKey?: string;
-  createKey?: string;
-  multiple?: boolean;
+
+export type Field = {
+    className: string;
+    id: string;
+    label: string;
+    type: FieldType;
+    options?: string[];
+    errMsg: string;
+    readApi: string;
+    updateApi: string;
+    apiKey?: string;
+    createKey?: string
 };
 
 export type FieldGroup = {
-  title: string;
-  sectionKey?: string;
-  fields: Field[];
+    title: string;
+    sectionKey?: string;
+    fields: Field[];
+    // api:string;
+};
+
+type CommonFormProps = {
+    groupedFields: FieldGroup[];
+    isPopUp: boolean;
+    formName: string;
+    formOpen: boolean;
+    setFormOpen?: (open: boolean) => void;
+    successMsg: string;
+    faildMsg: string;
+    initialData?: Record<string, any>;
+    bulkData?: TableRowData[];
+    onSubmit?: (data: any) => void;
+    multipleEntry?: boolean;
+    api: ApiList;
 };
 
 export interface ApiList {
-  create: string;
-  read: string;
-  update: string;
-  delete: string;
+    create: string;
+    read: string;
+    update: string;
+    delete: string;
 }
 
-type CommonFormProps = {
-  groupedFields: FieldGroup[];
-  isPopUp: boolean;
-  formName: string;
-  formOpen: boolean;
-  setFormOpen?: (open: boolean) => void;
-  successMsg: string;
-  faildMsg: string;
-  initialData?: Record<string, any>;
-  onSubmit?: (data: any) => void;
-  api: ApiList;
-  editableTable?: boolean;
-  editableFields?: Field[];
-};
+
 
 function CommonForm({
-  groupedFields,
-  isPopUp,
-  formName,
-  formOpen,
-  setFormOpen,
-  faildMsg,
-  initialData = {},
-  onSubmit,
-  api,
-  editableTable = false,
-  editableFields=[]
-}: CommonFormProps) {
-  const [formData, setFormData] = useState(initialData);
-  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+                        groupedFields,
+                        isPopUp,
+                        formName,
+                        formOpen,
+                        setFormOpen,
+                        successMsg,
+                        faildMsg,
+                        initialData = {},
+                        bulkData,
+                        onSubmit,
+                        multipleEntry = true,
+                        api,
+                    }: CommonFormProps) {
+    const [formData, setFormData] = useState<Record<string, any>>(initialData);
+    const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertType, setAlertType] = useState<
+        "success" | "warning" | "update" | "delete"
+    >("success");
+    const [alertMessage, setAlertMessage] = useState("");
+    const [previewData, setPreviewData] = useState<TableRowData[]>([]);
+    const [, setEditPreviewIndex] = useState<number | null>(null);
 
-  const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
+    const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
-  useEffect(() => {
-    setFormData(initialData);
-  }, [initialData]);
+    useEffect(() => {
+        if (initialData) setFormData(initialData);
+    }, [initialData]);
 
-  const handleChange = (id: string, value: any) => {
-    setFormData((prev) => ({ ...prev, [id]: value }));
-  };
+    useEffect(() => {
+        setPreviewData(bulkData || []);
+    }, [bulkData]);
 
-  const validateField = (field: Field, value: any): string => {
-    if (
-      (Array.isArray(value) && value.length === 0) ||
-      value === "" ||
-      value === undefined ||
-      value === null ||
-      (typeof value === "boolean" && value === false)
-    )
-      return field.errMsg;
+    const handleChange = (id: string, value: any) => {
+        setFormData((prev) => ({...prev, [id]: value}));
+    };
 
-    if (
-      field.label.toLowerCase().includes("email") &&
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-    ) {
-      return field.errMsg;
-    }
-    if (
-      field.label.toLowerCase().includes("phone") &&
-      !/^[6-9]\d{9}$/.test(value)
-    ) {
-      return field.errMsg;
-    }
+    const validateField = (field: Field, value: any): string => {
+        const label = field.label.toLowerCase();
+        if (
+            (Array.isArray(value) && value.length === 0) ||
+            value === "" ||
+            value === undefined ||
+            value === null ||
+            (typeof value === "boolean" && value === false)
+        )
+            return field.errMsg;
 
-    return "";
-  };
+        if (label.includes("phone") && !/^[6-9]\d{9}$/.test(value))
+            return field.errMsg;
+        if (label.includes("email") && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+            return field.errMsg;
 
-  const handleSubmit = () => {
-    const allFields = groupedFields.flatMap((group) => group.fields);
-    const errors: Record<string, string> = {};
+        return "";
+    };
 
-    allFields.forEach((field) => {
-      const value = formData[field.id];
-      const error = validateField(field, value);
-      if (error) errors[field.id] = error;
-    });
+    const triggerAlert = (
+        type: "success" | "warning" | "update" | "delete",
+        message: string
+    ) => {
+        setAlertType(type);
+        setAlertMessage(message);
+        setAlertVisible(true);
+    };
 
-    setFormErrors(errors);
-    if (Object.keys(errors).length > 0) return;
+    const handleAdd = () => {
+        const itemsGroup = groupedFields.find(
+            (g) => g.title.toLowerCase() === "items"
+        );
+        if (!itemsGroup) return;
 
-    const cleaned = { ...formData };
-
-    for (const key in cleaned) {
-      const val = cleaned[key];
-      if (val instanceof Date) {
-        cleaned[key] = format(val, "yyyy-MM-dd");
-      }
-    }
-
-    const isUpdate = !!initialData?.id;
-    const endpoint = isUpdate ? `${api.update}/${initialData.id}` : api.create;
-    const method = isUpdate ? apiClient.put : apiClient.post;
-
-    const formDataToSend = new FormData();
-    Object.entries(cleaned).forEach(([key, val]) => {
-      const isImageField = key === "image" || key === "images";
-      const fieldKey = isImageField ? "images" : key;
-
-      if (Array.isArray(val)) {
-        val.forEach((item) => {
-          if (item instanceof File) {
-            formDataToSend.append(`${fieldKey}[]`, item); // ✅ appending each file
-          } else {
-            formDataToSend.append(`${fieldKey}[]`, item);
-          }
+        const errors: Record<string, string> = {};
+        itemsGroup.fields.forEach((field) => {
+            const value = formData[field.id];
+            const error = validateField(field, value);
+            if (error) errors[field.id] = error;
         });
-      } else if (val instanceof File) {
-        formDataToSend.append(`${fieldKey}[]`, val); // ✅ still appending, not setting
-      } else if (typeof val === "boolean") {
-        formDataToSend.append(fieldKey, val ? "1" : "0");
-      } else if (val !== undefined && val !== null && val !== "") {
-        formDataToSend.append(fieldKey, val);
-      }
-    });
-    // for (let pair of formDataToSend.entries()) {
-    //   console.log(pair[0], pair[1]);
-    // }
 
-    method(endpoint, formDataToSend, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-      .then((res) => {
-        const saved = res.data?.data || {};
-        const finalData = {
-          id: saved.name || `perm-${Date.now()}`,
-          ...cleaned,
+        setFormErrors(errors);
+        if (Object.keys(errors).length > 0) return;
+
+        const entryWithId: TableRowData = {
+            id: `temp-${Date.now()}`,
+            ...formData,
         };
-        onSubmit?.(finalData);
-        setFormOpen?.(false);
-      })
-      .catch((err) => {
-        const validationErrors = err.response?.data?.errors;
-        if (validationErrors) {
-          console.error("Validation errors:", validationErrors);
-          alert(Object.values(validationErrors).flat().join("\n"));
+
+        setPreviewData((prev) => [...prev, entryWithId]);
+
+        const cleared = {...formData};
+        itemsGroup.fields.forEach((field) => {
+            cleared[field.id] = "";
+        });
+        setFormData(cleared);
+        setFormErrors({});
+
+        setTimeout(() => {
+            const first = itemsGroup.fields[0]?.id;
+            if (first && inputRefs.current[first]) inputRefs.current[first]?.focus();
+        }, 10);
+    };
+
+    const handleKeyDown = (
+        e: React.KeyboardEvent<HTMLInputElement>,
+        currentId: string,
+        fields: Field[],
+        groupTitle: string
+    ) => {
+        if (e.key !== "Enter") return;
+
+        e.preventDefault();
+        const currentIndex = fields.findIndex((f) => f.id === currentId);
+        const nextField = fields[currentIndex + 1];
+
+        if (nextField) {
+            inputRefs.current[nextField.id]?.focus();
+        } else if (groupTitle.toLowerCase() === "items" && multipleEntry) {
+            handleAdd();
+        }
+    };
+
+
+    const handleSubmit = () => {
+        if (multipleEntry) {
+            if (previewData.length === 0) {
+                triggerAlert("warning", "Please add at least one item before submitting.");
+                return;
+            }
         } else {
-          console.error("Form submission failed:", err);
-          alert(err.response?.data?.message || faildMsg);
-        }
-      });
-  };
+            // ✅ Validate individual fields only for single-entry mode
+            const allFields = groupedFields.flatMap((group) => group.fields);
+            const errors: Record<string, string> = {};
 
-  if (!formOpen) return null;
+            allFields.forEach((field) => {
+                const value = formData[field.id];
+                const error = validateField(field, value);
+                if (error) errors[field.id] = error;
+            });
 
-  return (
-    <div
-      className={
-        isPopUp
-          ? "fixed inset-0 bg-black/60 z-50 flex items-center justify-center"
-          : ""
-      }
-    >
-      <div
-        className={
-          isPopUp
-            ? "w-full m-5 lg:w-[70%] max-h-[90vh] overflow-y-auto bg-background text-foreground p-2 rounded-md shadow-md border border-ring/30 flex flex-col gap-2"
-            : "bg-background h-full m-5 lg:my-10 text-foreground p-2 rounded-md shadow-lg border border-ring flex flex-col gap-5"
+            setFormErrors(errors);
+            if (Object.keys(errors).length > 0) return;
         }
-      >
-        <div className="flex justify-between mx-2">
-          <h1 className="text-md py-2 text-foreground/50">{formName} Form</h1>
-          {isPopUp && (
-            <ImageButton
-              icon="close"
-              className="text-delete w-max"
-              onClick={() => {
+
+        const fixed = {...formData};
+        for (const key in fixed) {
+            const value = fixed[key];
+            if (value instanceof Date) {
+                fixed[key] = format(value, "yyyy-MM-dd");
+            }
+        }
+
+        const cleaned = Object.fromEntries(
+            Object.entries(fixed).filter(([key]) => !["id", "action"].includes(key))
+        );
+
+        const payload = multipleEntry
+            ? previewData.map((item) => {
+                const cleanedItem = {...item};
+                for (const key in cleanedItem) {
+                    const val = cleanedItem[key];
+                    if (isDate(val)) {
+                        cleanedItem[key] = format(val, "yyyy-MM-dd");
+                    }
+                }
+                return cleanedItem;
+            })
+            : [cleaned]; // Always wrap single object in array
+
+        const apiCall = apiClient.post(api.create, payload);
+
+        apiCall
+            .then((res) => {
+                const savedData = res.data;
+                if (!multipleEntry && savedData.length > 0) {
+                    onSubmit?.(savedData[0]);
+                } else {
+                    onSubmit?.(savedData);
+                }
                 setFormData({});
                 setFormErrors({});
+                setPreviewData([]);
                 setFormOpen?.(false);
-              }}
-            />
-          )}
-        </div>
+                triggerAlert("success", successMsg);
+            })
+            .catch((err) => {
+                console.error("❌ Submission failed:", err);
 
-        <div className="flex flex-col gap-5 border border-ring/30 p-5 rounded-md">
-          {groupedFields.map((group) => (
-            <div key={group.title} className="flex flex-col gap-4">
-              <h2 className="text-md font-semibold text-primary pb-1">
-                {group.title}
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {group.fields.map((field) => {
-                  const err = formErrors[field.id] || "";
-                  const value = formData[field.id] || "";
-                  const isFileField = field.type === "file";
+                let msg = "Submission failed";
+                try {
+                    const serverMsg = err.response?.data?._server_messages;
+                    if (serverMsg) {
+                        const parsed = JSON.parse(serverMsg)[0];
+                        msg = JSON.parse(parsed)?.message || parsed;
+                    } else {
+                        msg =
+                            err.response?.data?.message ||
+                            err.response?.data?.exc_type ||
+                            faildMsg;
+                    }
+                } catch {
+                    msg = faildMsg;
+                }
 
-                  const commonProps = {
-                    key: field.id,
-                    id: field.id,
-                    value,
-                    err,
-                    onChange: (e: any) =>
-                      isFileField
-                        ? handleChange(field.id, e)
-                        : handleChange(field.id, e.target?.value ?? e),
-                    className: `${field.className} rounded-md`,
-                    ref: (el: any) => (inputRefs.current[field.id] = el),
-                  };
+                triggerAlert("warning", msg);
+            });
+    };
 
-                  switch (field.type) {
-                    case "textinput":
-                      return (
-                        <FloatingInput
-                          {...commonProps}
-                          label={field.label}
-                          type="text"
+
+    if (!formOpen) return null;
+function isDate(val: unknown): val is Date {
+    return Object.prototype.toString.call(val) === "[object Date]";
+}
+    return (
+        <div
+            className={
+                isPopUp
+                    ? "fixed inset-0 bg-black/60 z-50 flex items-center justify-center"
+                    : ""
+            }
+        >
+            <div
+                className={
+                    isPopUp
+                        ? "w-full m-5 lg:w-[70%] max-h-[90vh] overflow-y-auto bg-background text-foreground p-2 rounded-md shadow-md border border-ring/30 flex flex-col gap-2"
+                        : "bg-background h-full m-5 lg:my-10 text-foreground p-2 rounded-md shadow-lg border border-ring flex flex-col gap-5"
+                }
+            >
+                <div className="flex justify-between mx-2">
+                    <h1 className="text-md py-2 text-foreground/50">{formName} Form</h1>
+                    <ImageButton
+                        icon="close"
+                        className="text-delete w-max"
+                        onClick={() => {
+                            setFormData({});
+                            setFormErrors({});
+                            setPreviewData([]);
+                            triggerAlert("delete", faildMsg);
+                            setFormOpen?.(false);
+                        }}
+                    />
+                </div>
+
+                <div className="flex flex-col gap-5 border border-ring/30 p-5 rounded-md">
+                    {groupedFields.map((group) => (
+                        <div key={group.title} className="flex flex-col gap-4">
+                            <h2 className="text- font-semibold text-primary pb-1">
+                                {group.title}
+                            </h2>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {group.fields.map((field) => {
+                                    const err = formErrors[field.id] || "";
+                                    const value = formData[field.id] || "";
+
+                                    const commonProps = {
+                                        key: field.id,
+                                        id: field.id,
+                                        value,
+                                        err,
+                                        onChange: (e: any) =>
+                                            handleChange(field.id, e.target?.value ?? e),
+                                        onKeyDown: (e: any) =>
+                                            handleKeyDown(e, field.id, group.fields, group.title),
+                                        className: `${field.className} rounded-md`,
+                                        ref: (el: any) => (inputRefs.current[field.id] = el),
+                                    };
+
+                                    switch (field.type) {
+                                        case "textinput":
+                                            return (
+                                                <FloatingInput
+                                                    {...commonProps}
+                                                    label={field.label}
+                                                    type="text"
+                                                />
+                                            );
+                                        case "textarea":
+                                            return <TextArea {...commonProps} label={field.label}/>;
+                                        case "dropdown":
+                                            return (
+                                                <Dropdown
+                                                    {...commonProps}
+                                                    items={field.options || []}
+                                                    placeholder={field.label}
+                                                    readApi={field.readApi}
+                                                    updateApi={field.updateApi}
+                                                    apiKey={field.apiKey}
+                                                    createKey={field.createKey}
+
+                                                />
+                                            );
+                                        case "dropdownmultiple":
+                                            return (
+                                                <Dropdown
+                                                    {...commonProps}
+                                                    multiple
+                                                    items={field.options || []}
+                                                    placeholder={field.label}
+                                                    readApi={field.readApi}
+                                                    updateApi={field.updateApi}
+                                                    apiKey={field.apiKey}
+                                                    createKey={field.createKey}
+
+                                                />
+                                            );
+                                        case "dropdownread":
+                                            return (
+                                                <DropdownRead
+                                                    placeholder={""}
+                                                    {...commonProps}
+                                                    items={field.options || []}
+                                                    label={field.label}
+                                                    readApi={field.readApi}
+                                                    // updateApi={field.updateApi}
+                                                    apiKey={field.apiKey}
+                                                />
+                                            );
+                                        case "dropdownreadmultiple":
+                                            return (
+                                                <DropdownRead
+                                                    placeholder={""}
+                                                    {...commonProps}
+                                                    multiple
+                                                    items={field.options || []}
+                                                    label={field.label}
+                                                    readApi={field.readApi}
+                                                    // updateApi={field.updateApi}
+                                                    apiKey={field.apiKey}
+                                                />
+                                            );
+                                        case "switch":
+                                            return (
+                                                <Switch
+                                                    {...commonProps}
+                                                    agreed={!!value}
+                                                    label={!!value ? "Active" : "Inactive"}
+                                                />
+                                            );
+                                        case "checkbox":
+                                            return (
+                                                <Checkbox
+                                                    {...commonProps}
+                                                    agreed={!!value}
+                                                    label={field.label}
+                                                />
+                                            );
+                                        case "multicheckbox":
+                                            return (
+                                                <MultiCheckbox
+                                                    {...commonProps}
+                                                    label={field.label}
+                                                    options={field.options || []}
+                                                />
+                                            );
+                                        case "password":
+                                            return (
+                                                <PasswordInput {...commonProps} label={field.label}/>
+                                            );
+                                        case "date":
+                                            return (
+                                                <DatePicker
+                                                    {...commonProps}
+                                                    model={
+                                                        value instanceof Date
+                                                            ? value
+                                                            : value
+                                                                ? new Date(String(value))
+                                                                : undefined
+                                                    }
+                                                    label={field.label}
+                                                />
+                                            );
+                                        case "file":
+                                            return <FileUpload key={field.id} id={field.id}/>;
+                                        default:
+                                            return null;
+                                    }
+                                })}
+                                {multipleEntry && group.title.toLowerCase() === "items" && (
+                                    <div className="col-span-full flex justify-end">
+                                        <Button
+                                            label="Add"
+                                            className="bg-create text-create-foreground"
+                                            onClick={handleAdd}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    ))}
+
+                    {multipleEntry &&
+                        groupedFields.some((g) => g.title.toLowerCase() === "items") && (
+                            <CommonTable
+                                head={[
+                                    {key: "id", label: "ID"},
+                                    ...groupedFields
+                                        .find((g) => g.title.toLowerCase() === "items")!
+                                        .fields.map((f) => ({
+                                            key: f.id,
+                                            label: f.label,
+                                        })),
+                                    {key: "action", label: "Action"},
+                                ]}
+                                body={previewData.map((entry) => {
+                                    const fields = groupedFields.find(
+                                        (g) => g.title.toLowerCase() === "items"
+                                    )!.fields;
+                                    return {
+                                        ID: entry.id,
+                                        ...fields.reduce((acc, field) => {
+                                            const val = entry[field.id];
+                                            acc[field.id] = isDate(val) ? val.toLocaleDateString?.() ?? val : val ?? "";
+
+
+                                            return acc;
+                                        }, {} as TableRowData),
+                                    };
+                                })}
+                                onEdit={(row, index) => {
+                                    setFormData(row);
+                                    setEditPreviewIndex(index);
+                                }}
+                                onDelete={(index) => {
+                                    setPreviewData((prev) => prev.filter((_, i) => i !== index));
+                                }}
+                                currentPage={1}
+                                rowsPerPage={10}
+                                totalCount={previewData.length}
+                                onPageChange={() => {
+                                }}
+                            />
+                        )}
+
+                    <div className="flex justify-end gap-5 mt-4">
+                        <Button
+                            label="Cancel"
+                            className="bg-delete text-create-foreground"
+                            onClick={() => {
+                                setFormData({});
+                                setFormErrors({});
+                                setPreviewData([]);
+                                triggerAlert("delete", faildMsg);
+                                setFormOpen?.(false);
+                            }}
                         />
-                      );
-                    case "textarea":
-                      return <TextArea {...commonProps} label={field.label} />;
-                    case "dropdown":
-                    case "dropdownmultiple":
-                      return (
-                        <Dropdown
-                          readApi={""}
-                          updateApi={""}
-                          {...commonProps}
-                          items={field.options || []}
-                          multiple={field.type === "dropdownmultiple"}
-                          placeholder={field.label}
-                          apiKey={field.apiKey}
-                          createKey={field.createKey}
+                        <Button
+                            label="Submit"
+                            className="bg-create text-create-foreground"
+                            onClick={handleSubmit}
                         />
-                      );
-                    case "dropdownread":
-                    case "dropdownreadmultiple":
-                      return (
-                        <DropdownRead
-                          placeholder={""}
-                          {...commonProps}
-                          label={field.label}
-                          items={field.options || []}
-                          multiple={field.type === "dropdownreadmultiple"}
-                          readApi={field.readApi}
-                          apiKey={field.apiKey}
-                        />
-                      );
-                    case "switch":
-                      return (
-                        <Switch
-                          {...commonProps}
-                          agreed={!!value}
-                          label={!!value ? "Active" : "Inactive"}
-                        />
-                      );
-                    case "checkbox":
-                      return (
-                        <Checkbox
-                          {...commonProps}
-                          agreed={!!value}
-                          label={field.label}
-                        />
-                      );
-                    case "multicheckbox":
-                      return (
-                        <MultiCheckbox
-                          {...commonProps}
-                          label={field.label}
-                          options={field.options || []}
-                        />
-                      );
-                    case "password":
-                      return (
-                        <PasswordInput {...commonProps} label={field.label} />
-                      );
-                    case "date":
-                      return (
-                        <DatePicker
-                          {...commonProps}
-                          model={
-                            value instanceof Date
-                              ? value
-                              : value
-                              ? new Date(value)
-                              : undefined
-                          }
-                          label={field.label}
-                        />
-                      );
-                    case "file":
-                      return (
-                        <FileUpload
-                          key={field.id}
-                          id={field.id}
-                          onChange={(file) => handleChange(field.id, file)}
-                          multiple={field.multiple}
-                        />
-                      );
-                    default:
-                      return null;
-                  }
-                })}
-              </div>
+                    </div>
+                </div>
             </div>
-          ))}
 
-          {editableTable && <EditableTable fields={editableFields} />}
-          <div className="flex justify-end gap-5 mt-4">
-            <Button
-              label="Cancel"
-              className="bg-delete text-create-foreground"
-              onClick={() => {
-                setFormData({});
-                setFormErrors({});
-                setFormOpen?.(false);
-              }}
-            />
-            <Button
-              label="Submit"
-              className="bg-create text-create-foreground"
-              onClick={handleSubmit}
-            />
-          </div>
+            <div className="absolute top-0 right-0">
+                <Alert
+                    type={alertType}
+                    message={alertMessage}
+                    show={alertVisible}
+                    onClose={() => setAlertVisible(false)}
+                />
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default CommonForm;

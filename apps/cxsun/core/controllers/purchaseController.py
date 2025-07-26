@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 from typing import List
 
@@ -9,16 +9,24 @@ from cortex.DTO.dal import get_db
 router = APIRouter(prefix="/purchases", tags=["Purchases"])
 
 # Create Purchase
-@router.post("/", response_model=purchase_schema.Purchase)
-def create_purchase(
-    purchase: purchase_schema.PurchaseCreate,
+@router.post("/", response_model=List[purchase_schema.Purchase])
+async def create_purchases(
+    request: Request,
     db: Session = Depends(get_db)
 ):
-    db_purchase = Purchase(**purchase.dict())
-    db.add(db_purchase)
+    data = await request.json()
+
+    if isinstance(data, dict):
+        data = [data]  # wrap single item into a list
+
+    purchases = [purchase_schema.PurchaseCreate(**item) for item in data]
+    db_purchases = [Purchase(**purchase.dict()) for purchase in purchases]
+
+    db.add_all(db_purchases)
     db.commit()
-    db.refresh(db_purchase)
-    return db_purchase
+    for purchase in db_purchases:
+        db.refresh(purchase)
+    return db_purchases
 
 # Read single Purchase
 @router.get("/{purchase_id}", response_model=purchase_schema.Purchase)

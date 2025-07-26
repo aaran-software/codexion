@@ -1,22 +1,39 @@
-import React, { forwardRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { forwardRef } from "react";
+import { Link } from "react-router-dom";
 
-type ButtonProps = {
-  label: string;
-  path?: string;
+type CommonProps = {
+  label?: string;
   className?: string;
-  onClick?: () => void;
   children?: React.ReactNode;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+};
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ label, path, className = '', onClick, children, ...rest }, ref) => {
+type ButtonAsLink = {
+  path: string;
+  onClick?: () => void;
+} & CommonProps &
+  Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href">;
+
+type ButtonAsButton = {
+  path?: undefined;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+} & CommonProps &
+  React.ButtonHTMLAttributes<HTMLButtonElement>;
+
+type ButtonProps = ButtonAsLink | ButtonAsButton;
+
+// Main component
+const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
+  ({ label, path, className = "", onClick, children, ...rest }, ref) => {
+    const classes = `${className} px-4 py-2 rounded-md cursor-pointer`;
+
     if (path) {
       return (
         <Link
+          ref={ref as React.Ref<HTMLAnchorElement>}
           to={path}
           onClick={onClick}
-          className={`${className} px-4 py-2 rounded-md inline-block`}
+          className={classes}
+          {...(rest as Omit<ButtonAsLink, "path">)}
         >
           {children || label}
         </Link>
@@ -25,10 +42,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <button
-        ref={ref}
+        ref={ref as React.Ref<HTMLButtonElement>}
         onClick={onClick}
-        className={`${className} px-4 py-2 rounded-md cursor-pointer`}
-        {...rest}
+        className={classes}
+        {...(rest as Omit<ButtonAsButton, "path">)}
       >
         {children || label}
       </button>

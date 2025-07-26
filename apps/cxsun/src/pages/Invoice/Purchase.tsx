@@ -40,10 +40,10 @@ function Purchase() {
     section.fields.filter((field: any) => field.isPrint === true)
   );
   const [formApi] = useState<ApiList>({
-    create: "/api/purchase",
-    read: "/api/purchase",
-    update: "/api/purchase",
-    delete: "/api/purchase",
+    create: "/api/purchases",
+    read: "/api/purchases",
+    update: "/api/purchases",
+    delete: "/api/purchases",
   });
   return (
     <div>

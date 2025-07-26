@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { toWords } from 'number-to-words';
+import SafeToWords from "../../../resources/global/external/safeToWords";
 
 interface PrintProps {
   head: string[];
@@ -81,7 +81,7 @@ const shouldShowTotal = hasQuantity && (hasAmount || hasPrice);
   const grandTotal = totalAmount + cgst + sgst;
   const roundedTotal = Math.round(grandTotal);
   const roundOff = +(roundedTotal - grandTotal).toFixed(2);
-  const grandTotalInWords = toWords(roundedTotal).replace(/\b\w/g, (l: string) => l.toUpperCase()) + ' Rupees Only';
+  const grandTotalInWords = SafeToWords(roundedTotal).replace(/\b\w/g, (l: string) => l.toUpperCase()) + ' Rupees Only';
 
 
   return (

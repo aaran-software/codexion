@@ -5,7 +5,6 @@ import { PanelLeftIcon } from "lucide-react"
 
 import { useIsMobile } from "../../global/hooks/use-mobile"
 import { cn } from "../../global/library/utils"
-import { Button } from "../button"
 import { Input } from "../input"
 import { Separator } from "../separator"
 import {
@@ -24,6 +23,7 @@ import {
 } from "../Tooltip/tooltip"
 import ImageButton from "../button/ImageBtn"
 import { useEffect, useState } from "react"
+import Button from "../../../resources/components/button/Button";
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
@@ -257,30 +257,33 @@ function Sidebar({
   )
 }
 
-function SidebarTrigger({
+type SidebarTriggerProps = {
+  className?: string;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+
+export default function SidebarTrigger({
   className,
   onClick,
   ...props
-}: React.ComponentProps<typeof Button>) {
-  const { toggleSidebar } = useSidebar()
+}: SidebarTriggerProps) {
+  const { toggleSidebar } = useSidebar();
 
   return (
     <Button
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
-      variant="ghost"
-      size="icon"
-      className={cn("size-7", className)}
-      onClick={(event: any) => {
-        onClick?.(event)
-        toggleSidebar()
+      className={cn("w-2", className)}
+      onClick={(event) => {
+        onClick?.(event);
+        toggleSidebar();
       }}
       {...props}
     >
       <PanelLeftIcon />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
-  )
+  );
 }
 
 function SidePanelTrigger({

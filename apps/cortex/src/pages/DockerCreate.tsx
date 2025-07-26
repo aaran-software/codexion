@@ -45,7 +45,7 @@ function DockerCreate() {
                 value: "mariadb",
                 label: 'mariadb:5746'
             }]}/>
-            <FloatingInput err={""} id={"name"} label={"Site Name"}/>
+            <FloatingInput err={""} id={"name"} label={"Port"}/>
             <h3>Choose Server</h3>
 
             <RadioGroup name={"server"}
