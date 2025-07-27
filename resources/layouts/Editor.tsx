@@ -1,276 +1,317 @@
 import FloatingInput from "../../resources/components/input/FloatingInput";
 import Button from "../../resources/components/button/Button";
-import React, {useState, useRef, useEffect} from "react";
+import React, {useState, useRef, useEffect, useCallback} from "react";
 import ImageBtn from "../components/button/ImageBtn";
 import Tooltipcomp from "../components/Tooltip/tooltipcomp";
 import apiClient from "../../resources/global/api/apiClients";
 
-
 export default function Editor({apiPath}: { apiPath: string }) {
     const [title, setTitle] = useState("");
+    // rawMessage now holds the HTML content as the source of truth for saving/preview
     const [rawMessage, setRawMessage] = useState("");
-    const [formattedMessage, setFormattedMessage] = useState("");
-    const textAreaRef = useRef<HTMLTextAreaElement>(null);
-    const selectionStartRef = useRef<number | null>(null);
-    const selectionEndRef = useRef<number | null>(null);
+    // CORRECTED: editorRef type is HTMLDivElement
+    const editorRef = useRef<HTMLDivElement>(null);
+    // NEW: Separate ref for the font size input field
+    const fontSizeInputRef = useRef<HTMLInputElement>(null);
     const [fontSizeInput, setFontSizeInput] = useState("");
-    const inputRef = useRef<HTMLInputElement>(null);
-    const handleBold = () => styleSelectedText("font-weight: bold");
-    const handleItalic = () => styleSelectedText("font-style: italic");
-    const handleUnderline = () => styleSelectedText("text-decoration: underline");
     const [isPreviewMode, setIsPreviewMode] = useState(false);
     const [hasSelection, setHasSelection] = useState(false);
-    const isFormattingInputClick = useRef(false);
-
-    function styleSelectedText(newStyle: string) {
-        if (!textAreaRef.current) return;
-
-        const textarea = textAreaRef.current;
-        const start = textarea.selectionStart;
-        const end = textarea.selectionEnd;
-
-        if (start === end) return;
-
-        const before = rawMessage.slice(0, start);
-        const selectedRaw = rawMessage.slice(start, end);
-        const after = rawMessage.slice(end);
-
-        // Step 1: Remove any surrounding span and inline styles
-        let content = selectedRaw
-            .replace(/<\/?(b|strong|i|u)>/gi, "")
-            .replace(/<span style="[^"]*">/gi, "")
-            .replace(/<\/span>/gi, "")
-            .trim();
-
-        // Step 2: Extract existing inline styles
-        const styleMap: Record<string, string> = {};
-        const styleMatch = selectedRaw.match(/<span style="([^"]*)">/i);
-
-        if (styleMatch) {
-            const styleString = styleMatch[1];
-            styleString.split(";").forEach((pair) => {
-                const [key, value] = pair.split(":").map((s) => s.trim());
-                if (key && value) styleMap[key] = value;
-            });
-        }
-
-        // Step 3: Toggle the new style
-        const [newKey, newValue] = newStyle.split(":").map((s) => s.trim());
-
-        if (styleMap[newKey] === newValue) {
-            delete styleMap[newKey]; // Toggle OFF
-        } else {
-            styleMap[newKey] = newValue; // Toggle ON
-        }
-
-        // Step 4: Compose updated style string
-        const mergedStyle = Object.entries(styleMap)
-            .map(([k, v]) => `${k}: ${v}`)
-            .join("; ");
-
-        const wrapped = `<span style="${mergedStyle}">${content}</span>`;
-        const updated = before + wrapped + after;
-
-        setRawMessage(updated);
-        setFormattedMessage(updated);
-
-        // Restore focus and selection
-        textarea.focus();
-        textarea.setSelectionRange(start, start + wrapped.length);
-    }
-
 
     const [textColor, setTextColor] = useState("#000000");
     const [bgColor, setBgColor] = useState("#ffffff");
-    const selectionRef = useRef<Range | null>(null);
 
-    const saveSelection = () => {
-        const selection = window.getSelection();
-        if (selection && selection.rangeCount > 0) {
-            selectionRef.current = selection.getRangeAt(0).cloneRange();
-        }
+    // Function to apply formatting
+    const applyFormatting = (command: string, value: string | undefined = undefined) => {
+        if (!editorRef.current) return;
+        editorRef.current.focus(); // Ensure editor is focused
+        document.execCommand(command, false, value);
+        // After applying a format, immediately update the state from the DOM
+        setRawMessage(editorRef.current.innerHTML);
     };
-    const restoreSelection = () => {
+
+    const handleBold = () => applyFormatting("bold");
+    const handleItalic = () => applyFormatting("italic");
+    const handleUnderline = () => applyFormatting("underline");
+
+    // Helper function to transform selected text (for uppercase/lowercase)
+    const transformSelectedText = (transformFn: (text: string) => string) => {
         const selection = window.getSelection();
-        if (selection && selectionRef.current) {
-            selection.removeAllRanges();
-            selection.addRange(selectionRef.current);
-        }
+        if (!selection || selection.rangeCount === 0 || !editorRef.current) return;
+
+        const range = selection.getRangeAt(0);
+        // Ensure the selection is within our editable div
+        if (!editorRef.current.contains(range.commonAncestorContainer)) return;
+
+        if (range.collapsed) return; // no text selected
+
+        const selectedText = range.toString();
+        const transformedText = transformFn(selectedText);
+
+        // Replace the selected text. For complex styling, you'd insert a span.
+        // For simple text transformation, replacing with a text node is fine.
+        range.deleteContents();
+        range.insertNode(document.createTextNode(transformedText));
+
+        // After modification, update the rawMessage from the DOM
+        setRawMessage(editorRef.current.innerHTML);
+    };
+
+    const handleUppercase = () => {
+        transformSelectedText((text) => text.toUpperCase());
+    };
+
+    const handleLowercase = () => {
+        transformSelectedText((text) => text.toLowerCase());
     };
 
     const handleTextColorInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         const color = e.target.value;
         setTextColor(color);
-        restoreSelection(); // <-- important
-        styleSelectedText(`color: ${color}`);
+        applyFormatting("foreColor", color);
     };
 
     const handleBgColorInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         const color = e.target.value;
         setBgColor(color);
-        restoreSelection(); // <-- important
-        styleSelectedText(`background-color: ${color}`);
+        applyFormatting("backColor", color);
     };
 
-    useEffect(() => {
-        const handleSelectionChange = () => {
-            const textarea = textAreaRef.current;
-            if (!textarea) return;
+    const applyLinkToSelection = () => {
+        const url = prompt("Enter the URL:");
+        if (!url || !editorRef.current) return;
 
-            const selectionStart = textarea.selectionStart;
-            const selectionEnd = textarea.selectionEnd;
+        const selection = window.getSelection();
+        if (!selection || selection.rangeCount === 0) return;
 
-            selectionStartRef.current = selectionStart;
-            selectionEndRef.current = selectionEnd;
+        const range = selection.getRangeAt(0);
+        if (!editorRef.current.contains(range.commonAncestorContainer)) return;
 
-            // 🛑 Prevent clearing selection if input is clicked
-            if (!isFormattingInputClick.current) {
-                setHasSelection(selectionStart !== selectionEnd);
-            }
+        const selectedText = selection.toString();
+        if (!selectedText) return;
 
-            // reset the flag
-            isFormattingInputClick.current = false;
-        };
+        // Clean out any existing <a> tags from the selected text
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = selectedText;
+        const clean = tempDiv.textContent || tempDiv.innerText || "";
+
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.target = "_blank";
+        anchor.rel = "noopener noreferrer";
+        anchor.style.color = "blue";
+        anchor.style.textDecoration = "underline";
+        anchor.style.cursor = "pointer";
+        anchor.textContent = clean;
+
+        range.deleteContents();
+        range.insertNode(anchor);
+
+        // Move cursor after the inserted anchor
+        range.setStartAfter(anchor);
+        range.collapse(true);
+        selection.removeAllRanges();
+        selection.addRange(range);
+
+        setRawMessage(editorRef.current.innerHTML);
+    };
 
 
-        document.addEventListener("selectionchange", handleSelectionChange);
-        return () =>
-            document.removeEventListener("selectionchange", handleSelectionChange);
+    const toggleList = (type: "ul" | "ol") => {
+        const selection = window.getSelection();
+        if (!selection || selection.rangeCount === 0 || !editorRef.current) return;
+
+        const range = selection.getRangeAt(0);
+        if (!editorRef.current.contains(range.commonAncestorContainer)) return;
+
+        // Get the HTML of selected content
+        const container = document.createElement("div");
+        container.appendChild(range.cloneContents());
+
+        const selectedHTML = container.innerHTML.trim();
+        if (!selectedHTML) return;
+
+        const lines = selectedHTML
+            .split(/<br\s*\/?>|<\/div>|<\/p>/i)
+            .map((line) => line.replace(/<[^>]+>/g, "").trim())
+            .filter(Boolean);
+
+        const listItems = lines.map((line) => `<li>${line}</li>`).join("");
+        const style =
+            type === "ul"
+                ? ' style="list-style-type: disc; padding-left: 1.5rem;"'
+                : ' style="list-style-type: decimal; padding-left: 1.5rem;"';
+
+        const listHTML = `<${type}${style}>${listItems}</${type}>`;
+
+        // Create list element from HTML
+        const wrapper = document.createElement("div");
+        wrapper.innerHTML = listHTML;
+
+        // Clear original range and insert the list
+        range.deleteContents();
+        const fragment = document.createDocumentFragment();
+        while (wrapper.firstChild) {
+            fragment.appendChild(wrapper.firstChild);
+        }
+        range.insertNode(fragment);
+
+        // Move cursor after list
+        range.collapse(false);
+        selection.removeAllRanges();
+        selection.addRange(range);
+
+        // Sync content
+        setRawMessage(editorRef.current.innerHTML);
+    };
+
+
+    // This callback is crucial for capturing the content when the user types
+    const handleContentChange = useCallback(() => {
+        if (editorRef.current) {
+            // Update rawMessage whenever the contentEditable div's innerHTML changes
+            setRawMessage(editorRef.current.innerHTML);
+        }
     }, []);
 
     useEffect(() => {
         const checkSelection = () => {
             const selection = window.getSelection();
-            const text = selection?.toString();
-            setHasSelection(!!text);
+            const editor = editorRef.current;
+            if (!selection || !editor) {
+                setHasSelection(false);
+                return;
+            }
+
+            // Check if selection is within the editor
+            let node = selection.anchorNode;
+            let insideEditor = false;
+            while (node) {
+                if (node === editor) {
+                    insideEditor = true;
+                    break;
+                }
+                node = node.parentNode;
+            }
+
+            setHasSelection(!selection.isCollapsed && insideEditor);
         };
 
-        document.addEventListener("mouseup", checkSelection);
+        // Listen to selection changes for enabling/disabling buttons
+        document.addEventListener("selectionchange", checkSelection);
+        // Also listen to keyup and mouseup for more reliable selection detection
+        // when the selection changes but 'selectionchange' might not fire immediately.
         document.addEventListener("keyup", checkSelection);
+        document.addEventListener("mouseup", checkSelection);
 
         return () => {
-            document.removeEventListener("mouseup", checkSelection);
+            document.removeEventListener("selectionchange", checkSelection);
             document.removeEventListener("keyup", checkSelection);
+            document.removeEventListener("mouseup", checkSelection);
         };
     }, []);
 
 
-    // const [message] = useState([
-    //     {
-    //         date: "2025-07-22T09:30:00Z",
-    //         title: "New Comment on Task",
-    //         description: "Alice commented on the task 'Design Review'.",
-    //         user: {
-    //             name: "Alice Johnson",
-    //             avatar: "/avatars/alice.png",
-    //         },
-    //         icon: <i className="text-blue-500 ri-message-3-line"/>,
-    //     },
-    //     // ... (keep the rest as-is)
-    // ]);
+    useEffect(() => {
+        if (!isPreviewMode && editorRef.current) {
+            editorRef.current.innerHTML = rawMessage;
 
-    const saveTextareaSelection = () => {
-        const textarea = textAreaRef.current;
-        if (textarea) {
-            selectionStartRef.current = textarea.selectionStart;
-            selectionEndRef.current = textarea.selectionEnd;
+            // Move caret to the end after rehydrating
+            const range = document.createRange();
+            const selection = window.getSelection();
+            range.selectNodeContents(editorRef.current);
+            range.collapse(false); // false = end of the node
+            selection?.removeAllRanges();
+            selection?.addRange(range);
         }
-    };
-
-    const applyLinkToSelection = () => {
-        const url = prompt("Enter the URL:");
-        if (!url || !textAreaRef.current) return;
-
-        const textarea = textAreaRef.current;
-        const start = textarea.selectionStart;
-        const end = textarea.selectionEnd;
-
-        if (start === end) return;
-
-        const before = rawMessage.slice(0, start);
-        const selected = rawMessage.slice(start, end);
-        const after = rawMessage.slice(end);
-
-        const clean = selected.replace(/<a [^>]*>|<\/a>/gi, "");
-
-        const wrapped = `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color: blue; text-decoration: underline; cursor: pointer;">${clean}</a>`;
-
-        const updated = before + wrapped + after;
-
-        setRawMessage(updated);
-        setFormattedMessage(updated);
-
-        textarea.focus();
-        textarea.setSelectionRange(start, start + wrapped.length);
-    };
-
-    function toggleList(type: "ul" | "ol") {
-        const textarea = textAreaRef.current;
-        if (!textarea) return;
-
-        const start = textarea.selectionStart;
-        const end = textarea.selectionEnd;
-
-        const before = rawMessage.slice(0, start);
-        const selected = rawMessage.slice(start, end);
-        const after = rawMessage.slice(end);
-
-        const lines = selected.split("\n").map((line) => line.trim());
-
-        const isAlreadyList =
-            selected.trim().startsWith(`<${type}`) &&
-            selected.trim().endsWith(`</${type}>`);
-
-        let wrapped;
-        if (isAlreadyList) {
-            // Remove list tags and <li> elements
-            wrapped = selected
-                .replace(new RegExp(`<${type}[^>]*>`, "g"), "")
-                .replace(new RegExp(`</${type}>`, "g"), "")
-                .replace(/<li>/g, "")
-                .replace(/<\/li>/g, "")
-                .trim();
-        } else {
-            const style =
-                type === "ul"
-                    ? ' style="list-style-type: disc; padding-left: 1.5rem;"'
-                    : ' style="list-style-type: decimal; padding-left: 1.5rem;"';
-            const listItems = lines.map((line) => `<li>${line}</li>`).join("\n");
-            wrapped = `<${type}${style}>\n${listItems}\n</${type}>`;
-        }
-
-        const updated = before + wrapped + after;
-        setRawMessage(updated);
-        setFormattedMessage(updated);
-
-        setTimeout(() => {
-            textarea.focus();
-            textarea.setSelectionRange(start, start + wrapped.length);
-        }, 0);
-    }
+    }, [isPreviewMode, rawMessage]);
 
 
     const handleSubmit = async () => {
         try {
             const response = await apiClient.post(apiPath, {
                 task_title: title,
-                task_description: formattedMessage,
-                user_id: 1,
+                task_description: rawMessage, // rawMessage is now the HTML content
+                user_id: 1, // Ensure you have a valid user_id or remove if not needed
             });
 
-            console.log(response)
+            console.log(response);
             alert("Task submitted successfully!");
 
             // Clear the form
             setTitle("");
-            setRawMessage("");
-            setFormattedMessage("");
+            setRawMessage(""); // This will also clear the editorRef.current.innerHTML due to useEffect
+            if (editorRef.current) {
+                editorRef.current.innerHTML = ""; // Explicitly clear in case useEffect hasn't fired yet
+            }
         } catch (error: any) {
             console.error(error);
             alert("Error: " + (error.response?.data?.detail || "Failed to submit task"));
         }
     };
 
+    const insertHtmlAtCursor = (html: string, resetStyle: boolean = true) => {
+        const selection = window.getSelection();
+        if (!selection || !editorRef.current) return;
+
+        editorRef.current.focus();
+
+        let range: Range;
+        if (selection.rangeCount === 0 || !editorRef.current.contains(selection.getRangeAt(0).commonAncestorContainer)) {
+            range = document.createRange();
+            range.selectNodeContents(editorRef.current);
+            range.collapse(false);
+        } else {
+            range = selection.getRangeAt(0);
+        }
+
+        range.deleteContents();
+
+        const fragment = range.createContextualFragment(html);
+        let lastNode = fragment.lastChild;
+        range.insertNode(fragment);
+
+        // 🧼 Insert a span with "all: unset" to reset inherited styles
+        if (resetStyle) {
+            const resetSpan = document.createElement("span");
+            resetSpan.innerHTML = "\u200B"; // Zero-width space
+            resetSpan.style.all = "unset";
+            range.setStartAfter(lastNode as Node);
+            range.insertNode(resetSpan);
+            range.setStartAfter(resetSpan);
+        } else {
+            range.setStartAfter(lastNode as Node);
+        }
+
+        range.collapse(true);
+        selection.removeAllRanges();
+        selection.addRange(range);
+
+        setRawMessage(editorRef.current.innerHTML);
+    };
+
+    const applyFontSize = (pxSize: number) => {
+        const selection = window.getSelection();
+        if (!selection || selection.rangeCount === 0 || !editorRef.current) return;
+
+        const range = selection.getRangeAt(0);
+        if (!editorRef.current.contains(range.commonAncestorContainer)) return;
+
+        const selectedText = range.extractContents();
+        const span = document.createElement("span");
+        span.style.fontSize = `${pxSize}px`;
+        span.appendChild(selectedText);
+
+        range.insertNode(span);
+
+        // Move cursor after the inserted span
+        range.setStartAfter(span);
+        range.collapse(true);
+        selection.removeAllRanges();
+        selection.addRange(range);
+
+        // Sync with state
+        setRawMessage(editorRef.current.innerHTML);
+    };
 
     return (
         <div className="h-screen p-10 flex flex-col text-xl gap-5">
@@ -331,11 +372,12 @@ export default function Editor({apiPath}: { apiPath: string }) {
                                     />
                                 }
                             />
+
                             <Tooltipcomp
                                 tip={"Uppercase"}
                                 content={
                                     <ImageBtn
-                                        onClick={() => styleSelectedText("text-transform: uppercase")}
+                                        onClick={handleUppercase}
                                         className={`p-2 bg-gray-200 hover:bg-gray-300 rounded-md ${
                                             !hasSelection ? "opacity-50 pointer-events-none" : ""
                                         }`}
@@ -349,7 +391,7 @@ export default function Editor({apiPath}: { apiPath: string }) {
                                 tip={"Lowercase"}
                                 content={
                                     <ImageBtn
-                                        onClick={() => styleSelectedText("text-transform: lowercase")}
+                                        onClick={handleLowercase}
                                         className={`p-2 bg-gray-200 hover:bg-gray-300 rounded-md ${
                                             !hasSelection ? "opacity-50 pointer-events-none" : ""
                                         }`}
@@ -366,7 +408,6 @@ export default function Editor({apiPath}: { apiPath: string }) {
                                     <input
                                         type="color"
                                         value={textColor}
-                                        onMouseDown={saveSelection}
                                         onInput={handleTextColorInput}
                                         className="w-6"
                                         disabled={!hasSelection}
@@ -379,63 +420,44 @@ export default function Editor({apiPath}: { apiPath: string }) {
                                     <input
                                         type="color"
                                         value={bgColor}
-                                        onMouseDown={saveSelection}
                                         onInput={handleBgColorInput}
                                         className="w-6"
                                         disabled={!hasSelection}
                                     />
                                 }
                             />
-                            <input
-                                ref={inputRef}
-                                type="number"
-                                placeholder="8"
-                                min={8}
-                                max={72}
-                                value={fontSizeInput}
-                                onMouseDown={() => {
-                                    isFormattingInputClick.current = true;
-                                    saveTextareaSelection();
-                                }}
-                                onFocus={() => {
-                                    saveTextareaSelection();
-                                }}
-                                onBlur={() => {
-                                    const size = parseInt(fontSizeInput.trim());
-                                    if (!size || isNaN(size)) return;
-
-                                    styleSelectedText(`font-size: ${size}px`);
-                                    setFontSizeInput("");
-
-                                    // Restore focus to textarea after applying
-                                    setTimeout(() => {
-                                        textAreaRef.current?.focus();
-                                    }, 50);
-                                }}
-                                onKeyDown={(e) => {
-                                    if (e.key === "Enter") {
-                                        e.preventDefault();
-                                        const size = parseInt(fontSizeInput.trim());
-                                        if (!size || isNaN(size)) return;
-
-                                        styleSelectedText(`font-size: ${size}px`);
-                                        setFontSizeInput("");
-
-                                        // Restore focus to textarea after applying
-                                        setTimeout(() => {
-                                            textAreaRef.current?.focus();
-                                        }, 50);
+                            <select
+                                onChange={(e) => {
+                                    const size = parseInt(e.target.value);
+                                    if (!isNaN(size)) {
+                                        applyFontSize(size);
+                                        editorRef.current?.focus();
                                     }
                                 }}
-                                onChange={(e) => setFontSizeInput(e.target.value)}
-                                className="w-16 text-md border rounded-md px-2"
-                            />
+                                defaultValue=""
+                                className={`text-sm border rounded-md px-2 py-1 bg-white ${!hasSelection ? "opacity-30 pointer-events-none" : ""}`}
+                                disabled={!hasSelection}
+                            >
+                                <option value="" disabled>
+                                    Size
+                                </option>
+                                <option value="8">8</option>
+                                <option value="12">12</option>
+                                <option value="16">16</option>
+                                <option value="20">20</option>
+                                <option value="24">24</option>
+                                <option value="28">28</option>
+                                <option value="36">36</option>
+                                <option value="48">48</option>
+                                <option value="72">72</option>
+                            </select>
+
 
                             <Tooltipcomp
                                 tip={"Align Left"}
                                 content={
                                     <ImageBtn
-                                        onClick={() => styleSelectedText("text-align: left")}
+                                        onClick={() => applyFormatting("justifyLeft")}
                                         icon={"alignleft"}
                                         className={`p-2 bg-gray-200 hover:bg-gray-300 rounded-md ${
                                             !hasSelection ? "opacity-50 pointer-events-none" : ""
@@ -448,7 +470,7 @@ export default function Editor({apiPath}: { apiPath: string }) {
                                 tip={"Align Center"}
                                 content={
                                     <ImageBtn
-                                        onClick={() => styleSelectedText("text-align: center")}
+                                        onClick={() => applyFormatting("justifyCenter")}
                                         icon={"aligncenter"}
                                         className={`p-2 bg-gray-200 hover:bg-gray-300 rounded-md ${
                                             !hasSelection ? "opacity-50 pointer-events-none" : ""
@@ -461,7 +483,7 @@ export default function Editor({apiPath}: { apiPath: string }) {
                                 tip={"Align Right"}
                                 content={
                                     <ImageBtn
-                                        onClick={() => styleSelectedText("text-align: right")}
+                                        onClick={() => applyFormatting("justifyRight")}
                                         icon={"alignright"}
                                         className={`p-2 bg-gray-200 hover:bg-gray-300 rounded-md ${
                                             !hasSelection ? "opacity-50 pointer-events-none" : ""
@@ -474,7 +496,7 @@ export default function Editor({apiPath}: { apiPath: string }) {
                                 tip={"Align Justify"}
                                 content={
                                     <ImageBtn
-                                        onClick={() => styleSelectedText("text-align: justify")}
+                                        onClick={() => applyFormatting("justifyFull")}
                                         icon={"alignjustify"}
                                         className={`p-2 bg-gray-200 hover:bg-gray-300 rounded-md ${
                                             !hasSelection ? "opacity-50 pointer-events-none" : ""
@@ -534,7 +556,7 @@ export default function Editor({apiPath}: { apiPath: string }) {
                     <div className="flex gap-4 flex-wrap">
                         <ImageBtn
                             icon="edit"
-                            label="Edit"
+                            label="Write"
                             onClick={() => setIsPreviewMode(false)}
                             className={`px-4 p-1 text-sm font-medium transition-colors ${
                                 !isPreviewMode
@@ -556,44 +578,23 @@ export default function Editor({apiPath}: { apiPath: string }) {
                 </div>
 
                 {!isPreviewMode && (
-                    <textarea
-                        ref={textAreaRef}
-                        value={rawMessage}
-                        onSelect={(e) => {
-                            selectionStartRef.current = e.currentTarget.selectionStart;
-                            selectionEndRef.current = e.currentTarget.selectionEnd;
-                        }}
-                        onMouseDown={saveTextareaSelection}
-                        onChange={(e) => {
-                            setRawMessage(e.target.value);
-                            setFormattedMessage(e.target.value);
-                        }}
+                    <div
+                        ref={editorRef} // This ref should now correctly point to the div
+                        contentEditable="true"
+                        onInput={handleContentChange} // Listen for content changes
+                        className="min-h-[300px] p-3 border border-ring/30 rounded overflow-auto focus:outline-none"
+                        style={{whiteSpace: 'pre-wrap'}}
                         onKeyDown={(e) => {
-                            if (e.key === "Enter") {
+                            if (e.key === "Enter" && !e.shiftKey) {
                                 e.preventDefault();
-                                const textarea = textAreaRef.current;
-                                if (!textarea) return;
-
-                                const start = textarea.selectionStart;
-                                const end = textarea.selectionEnd;
-
-                                const before = rawMessage.slice(0, start);
-                                const after = rawMessage.slice(end);
-                                const updated = `${before}<br>${after}`;
-
-                                setRawMessage(updated);
-                                setFormattedMessage(updated);
-
-                                // move cursor after <br>
-                                setTimeout(() => {
-                                    textarea.focus();
-                                    textarea.setSelectionRange(start + 4, start + 4);
-                                }, 0);
+                                insertHtmlAtCursor("<br>"); // Shift+Enter = soft line break
+                            } else if (e.key === "Enter" && e.shiftKey) {
+                                e.preventDefault();
+                                insertHtmlAtCursor("<br><br>");  // Single line break, then move to next line
                             }
                         }}
 
-                        placeholder="Write your message here..."
-                        className="flex-1 min-h-[300px] p-3 border border-ring/30 rounded"
+
                     />
                 )}
                 {isPreviewMode && (
@@ -601,7 +602,7 @@ export default function Editor({apiPath}: { apiPath: string }) {
                         <h2 className="font-bold mb-2">Preview:</h2>
                         <div
                             className="p-4 border border-ring/30 rounded bg-gray-50 prose prose-sm max-w-none"
-                            dangerouslySetInnerHTML={{__html: formattedMessage}}
+                            dangerouslySetInnerHTML={{__html: rawMessage}}
                         ></div>
                     </div>
                 )}
@@ -611,22 +612,6 @@ export default function Editor({apiPath}: { apiPath: string }) {
                     onClick={handleSubmit}
                     className="border border-ring/40 w-max ml-auto bg-green-500 text-white rounded-md"
                 />
-            </div>
-
-            <div>
-                {/* show message with timeline */}
-                {/*<div className="w-full mt-10">*/}
-                {/*    <NotificationCard items={message}/>*/}
-                {/*</div>*/}
-
-                {/* reply section */}
-                {/*<div className="flex flex-col mt-5 gap-5 pb-20">*/}
-                {/*    <FloatingInput id={"title"} label={"reply"} err={""}/>*/}
-                {/*    <Button*/}
-                {/*        label={"Reply"}*/}
-                {/*        className="border border-ring/40 w-max ml-auto bg-update text-white rounded-md"*/}
-                {/*    />*/}
-                {/*</div>*/}
             </div>
         </div>
     );

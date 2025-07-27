@@ -65,7 +65,7 @@ function AppHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 sm:px-5 bg-background border-b border-ring/30 shadow-lg">
+    <header className="sticky top-0 z-50 sm:px-5 bg-background border-b border-ring/30">
       {/* --- Top Bar --- */}
       <div className="flex items-center justify-between gap-5">
         {/* Logo */}
