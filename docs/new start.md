@@ -21,6 +21,68 @@ Now, codexion-cloud:v1 is a full Docker image that you can use anywhere.
 docker network create codexion-network
 ```
 
+```
+ docker compose -f mariadb.yml up -d
+```
+```
+docker exec -it mariadb mariadb -u root -p
+```
+
+remote access for root user 
+
+```
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+```
+
+```
+SELECT user, host FROM mysql.user WHERE user = 'root';
+```
+You should see something like:
+
+```
++------+-----------+
+| user | host      |
++------+-----------+
+| root | localhost |
+| root | %         |
++------+-----------+
+```
+
+If 'root'@'%' exists and has privileges, you're ready to connect remotely.
+
+4. Allow access on your Ubuntu host (firewall):
+If using UFW:
+
+```
+sudo ufw allow 3306/tcp
+```
+```
+sudo ufw reload
+```
+```
+sudo ufw status
+```
+status : inactive
+
+
+
+
+
+```
+```
+
+
+
+
+
+
+
+
+
+
+
+
 To run a specific Docker Compose file
 ```
 docker compose -f docker-compose-soft_aaran_org.yml up -d
