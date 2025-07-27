@@ -4,12 +4,12 @@ import os
 import subprocess
 
 FRAPPE_BRANCH = "develop"
-SITE_NAME = "site1.com"
+SITE_NAME = "sukraa.codexsun.com"
 ADMIN_PASS = "admin"
 DB_USER = "root"
 DB_PASS = "DbPass1@@"
 DB_HOST = "mariadb"
-DB_NAME = "site1_db"
+DB_NAME = "sukraa_db"
 BENCH_DIR = "/home/devops/frappe-bench"
 SUPERVISOR_CONF = "/etc/supervisor/conf.d/frappe.conf"
 EMAIL = f"admin@{SITE_NAME}"
@@ -88,8 +88,8 @@ def create_site():
         run(f"bench drop-site {SITE_NAME} --force", cwd=BENCH_DIR)
     Log.print(f"🌐 Creating site: {SITE_NAME}")
 
-    run(f"bench new-site {SITE_NAME} --admin-password {ADMIN_PASS} --mariadb-root-username {DB_USER} --mariadb-root-password {DB_PASS} --db-host {DB_HOST} --mariadb-user-host-login-scope='%'",
-        cwd=BENCH_DIR)
+    # run(f"bench new-site {SITE_NAME} --admin-password {ADMIN_PASS} --mariadb-root-username {DB_USER} --mariadb-root-password {DB_PASS} --db-host {DB_HOST} --mariadb-user-host-login-scope='%'",
+    #     cwd=BENCH_DIR)
 
     run(
         f"bench new-site {SITE_NAME} "
