@@ -86,6 +86,20 @@ docker compose -f ganapathi-codexsun-com.yml up -d
 docker compose -f erp-lifeshoppy-com.yml up -d
 ```
 
+# 6 To open soft-aaran-org in bash
+```
+docker exec -it soft_aaran_org bash
+```
+
+```
+docker exec -it sukraa_codexsun_com bash
+```
+
+```
+docker exec -it flexcon_codexsun_com bash
+```
+
+
 
 Here's the direct one-liner bash command to zip and copy the frappe-bench directory to /home/devops/shared:
 ```
