@@ -117,6 +117,10 @@ Step 1: Install Certbot and Nginx plugin
 ```
 sudo apt install certbot python3-certbot-nginx -y
 ```
+```
+sudo certbot --nginx
+```
+
 
 ```
 server {
