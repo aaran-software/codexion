@@ -7,27 +7,91 @@ import apiClient from "../../resources/global/api/apiClients";
 
 export default function Editor({apiPath}: { apiPath: string }) {
     const [title, setTitle] = useState("");
-    // rawMessage now holds the HTML content as the source of truth for saving/preview
     const [rawMessage, setRawMessage] = useState("");
-    // CORRECTED: editorRef type is HTMLDivElement
     const editorRef = useRef<HTMLDivElement>(null);
-    // NEW: Separate ref for the font size input field
-    const fontSizeInputRef = useRef<HTMLInputElement>(null);
-    const [fontSizeInput, setFontSizeInput] = useState("");
     const [isPreviewMode, setIsPreviewMode] = useState(false);
     const [hasSelection, setHasSelection] = useState(false);
 
     const [textColor, setTextColor] = useState("#000000");
     const [bgColor, setBgColor] = useState("#ffffff");
 
+
+    const [isBold, setIsBold] = useState(false);
+    const [isItalic, setIsItalic] = useState(false);
+    const [isUnderline, setIsUnderline] = useState(false);
+    const [isJustifyLeft, setIsJustifyLeft] = useState(false);
+    const [isJustifyCenter, setIsJustifyCenter] = useState(false);
+    const [isJustifyRight, setIsJustifyRight] = useState(false);
+    const [isJustifyFull, setIsJustifyFull] = useState(false);
     // Function to apply formatting
-    const applyFormatting = (command: string, value: string | undefined = undefined) => {
+    const applyFormatting = (command: string, value?: string, persist?: boolean) => {
         if (!editorRef.current) return;
-        editorRef.current.focus(); // Ensure editor is focused
-        document.execCommand(command, false, value);
-        // After applying a format, immediately update the state from the DOM
+
+        editorRef.current.focus();
+
+        const selection = window.getSelection();
+        const hasTextSelected = selection && !selection.isCollapsed;
+
+        if (hasTextSelected) {
+            document.execCommand(command, false, value);
+        } else if (persist) {
+            document.execCommand(command, false, value);
+        }
+
         setRawMessage(editorRef.current.innerHTML);
     };
+
+    const toggleBold = () => {
+    const newVal = !isBold;
+    setIsBold(newVal);
+    applyFormatting("bold", undefined, true);
+};
+
+const toggleItalic = () => {
+    const newVal = !isItalic;
+    setIsItalic(newVal);
+    applyFormatting("italic", undefined, true);
+};
+
+const toggleUnderline = () => {
+    const newVal = !isUnderline;
+    setIsUnderline(newVal);
+    applyFormatting("underline", undefined, true);
+};
+
+const toggleAlignLeft = () => {
+    setIsJustifyLeft(true);
+    setIsJustifyCenter(false);
+    setIsJustifyRight(false);
+    setIsJustifyFull(false);
+    applyFormatting("justifyLeft", undefined, true);
+};
+
+const toggleAlignCenter = () => {
+    setIsJustifyLeft(false);
+    setIsJustifyCenter(true);
+    setIsJustifyRight(false);
+    setIsJustifyFull(false);
+    applyFormatting("justifyCenter", undefined, true);
+};
+
+const toggleAlignRight = () => {
+    setIsJustifyLeft(false);
+    setIsJustifyCenter(false);
+    setIsJustifyRight(true);
+    setIsJustifyFull(false);
+    applyFormatting("justifyRight", undefined, true);
+};
+
+const toggleAlignFull = () => {
+    setIsJustifyLeft(false);
+    setIsJustifyCenter(false);
+    setIsJustifyRight(false);
+    setIsJustifyFull(true);
+    applyFormatting("justifyFull", undefined, true);
+};
+
+
 
     const handleBold = () => applyFormatting("bold");
     const handleItalic = () => applyFormatting("italic");
@@ -168,10 +232,17 @@ export default function Editor({apiPath}: { apiPath: string }) {
     // This callback is crucial for capturing the content when the user types
     const handleContentChange = useCallback(() => {
         if (editorRef.current) {
-            // Update rawMessage whenever the contentEditable div's innerHTML changes
             setRawMessage(editorRef.current.innerHTML);
+
+            // Apply persistent styles
+            if (!window.getSelection()?.isCollapsed) return;
+
+            if (isBold) document.execCommand("bold");
+            if (isItalic) document.execCommand("italic");
+            if (isUnderline) document.execCommand("underline");
         }
-    }, []);
+    }, [isBold, isItalic, isUnderline]);
+
 
     useEffect(() => {
         const checkSelection = () => {
@@ -336,11 +407,10 @@ export default function Editor({apiPath}: { apiPath: string }) {
                                 tip="Bold"
                                 content={
                                     <ImageBtn
-                                        onClick={handleBold}
+                                        onClick={toggleBold}
                                         icon="bold"
-                                        disabled={!hasSelection}
-                                        className={`p-2 bg-gray-200 hover:bg-gray-300 rounded-md ${
-                                            !hasSelection ? "opacity-50 pointer-events-none" : ""
+                                        className={`p-2  hover:bg-gray-300 rounded-md ${
+                                            isBold ? "border border-ring/50 bg-foreground/20" : ""
                                         }`}
                                     />
                                 }
@@ -350,11 +420,10 @@ export default function Editor({apiPath}: { apiPath: string }) {
                                 tip={"Italic"}
                                 content={
                                     <ImageBtn
-                                        onClick={handleItalic}
-                                        className={`p-2 bg-gray-200 hover:bg-gray-300 rounded-md ${
-                                            !hasSelection ? "opacity-50 pointer-events-none" : ""
+                                        onClick={toggleItalic}
+                                        className={`p-2  hover:bg-gray-300 rounded-md ${
+                                            isItalic ? "border border-ring/50 bg-foreground/20" : ""
                                         }`}
-                                        disabled={!hasSelection}
                                         icon={"italic"}
                                     />
                                 }
@@ -363,11 +432,10 @@ export default function Editor({apiPath}: { apiPath: string }) {
                                 tip={"Underline"}
                                 content={
                                     <ImageBtn
-                                        onClick={handleUnderline}
-                                        className={`p-2 bg-gray-200 hover:bg-gray-300 rounded-md ${
-                                            !hasSelection ? "opacity-50 pointer-events-none" : ""
+                                        onClick={toggleUnderline}
+                                        className={`p-2  hover:bg-gray-300 rounded-md ${
+                                            isUnderline ? "border border-ring/50 bg-foreground/20" : ""
                                         }`}
-                                        disabled={!hasSelection}
                                         icon={"underline"}
                                     />
                                 }
@@ -378,10 +446,9 @@ export default function Editor({apiPath}: { apiPath: string }) {
                                 content={
                                     <ImageBtn
                                         onClick={handleUppercase}
-                                        className={`p-2 bg-gray-200 hover:bg-gray-300 rounded-md ${
+                                        className={`p-2 hover:bg-gray-300 rounded-md ${
                                             !hasSelection ? "opacity-50 pointer-events-none" : ""
                                         }`}
-                                        disabled={!hasSelection}
                                         icon={"uppercase"}
                                     />
                                 }
@@ -392,10 +459,9 @@ export default function Editor({apiPath}: { apiPath: string }) {
                                 content={
                                     <ImageBtn
                                         onClick={handleLowercase}
-                                        className={`p-2 bg-gray-200 hover:bg-gray-300 rounded-md ${
+                                        className={`p-2  hover:bg-gray-300 rounded-md ${
                                             !hasSelection ? "opacity-50 pointer-events-none" : ""
                                         }`}
-                                        disabled={!hasSelection}
                                         icon={"lowercase"}
                                     />
                                 }
@@ -410,7 +476,6 @@ export default function Editor({apiPath}: { apiPath: string }) {
                                         value={textColor}
                                         onInput={handleTextColorInput}
                                         className="w-6"
-                                        disabled={!hasSelection}
                                     />
                                 }
                             />
@@ -422,7 +487,6 @@ export default function Editor({apiPath}: { apiPath: string }) {
                                         value={bgColor}
                                         onInput={handleBgColorInput}
                                         className="w-6"
-                                        disabled={!hasSelection}
                                     />
                                 }
                             />
@@ -436,7 +500,6 @@ export default function Editor({apiPath}: { apiPath: string }) {
                                 }}
                                 defaultValue=""
                                 className={`text-sm border rounded-md px-2 py-1 bg-white ${!hasSelection ? "opacity-30 pointer-events-none" : ""}`}
-                                disabled={!hasSelection}
                             >
                                 <option value="" disabled>
                                     Size
@@ -457,12 +520,11 @@ export default function Editor({apiPath}: { apiPath: string }) {
                                 tip={"Align Left"}
                                 content={
                                     <ImageBtn
-                                        onClick={() => applyFormatting("justifyLeft")}
+                                        onClick={toggleAlignLeft}
                                         icon={"alignleft"}
-                                        className={`p-2 bg-gray-200 hover:bg-gray-300 rounded-md ${
-                                            !hasSelection ? "opacity-50 pointer-events-none" : ""
+                                        className={`p-2  hover:bg-gray-300 rounded-md ${
+                                            isJustifyLeft ? "border border-ring/50 bg-foreground/20" : ""
                                         }`}
-                                        disabled={!hasSelection}
                                     />
                                 }
                             />
@@ -470,12 +532,12 @@ export default function Editor({apiPath}: { apiPath: string }) {
                                 tip={"Align Center"}
                                 content={
                                     <ImageBtn
-                                        onClick={() => applyFormatting("justifyCenter")}
+                                        onClick={toggleAlignCenter}
                                         icon={"aligncenter"}
-                                        className={`p-2 bg-gray-200 hover:bg-gray-300 rounded-md ${
-                                            !hasSelection ? "opacity-50 pointer-events-none" : ""
+                                        className={`p-2  hover:bg-gray-300 rounded-md ${
+                                            isJustifyCenter ? "border border-ring/50 bg-foreground/20" : ""
                                         }`}
-                                        disabled={!hasSelection}
+
                                     />
                                 }
                             />
@@ -483,12 +545,11 @@ export default function Editor({apiPath}: { apiPath: string }) {
                                 tip={"Align Right"}
                                 content={
                                     <ImageBtn
-                                        onClick={() => applyFormatting("justifyRight")}
+                                        onClick={toggleAlignRight}
                                         icon={"alignright"}
-                                        className={`p-2 bg-gray-200 hover:bg-gray-300 rounded-md ${
-                                            !hasSelection ? "opacity-50 pointer-events-none" : ""
+                                        className={`p-2 hover:bg-gray-300 rounded-md ${
+                                            isJustifyRight ? "border border-ring/50 bg-foreground/20" : ""
                                         }`}
-                                        disabled={!hasSelection}
                                     />
                                 }
                             />
@@ -496,12 +557,12 @@ export default function Editor({apiPath}: { apiPath: string }) {
                                 tip={"Align Justify"}
                                 content={
                                     <ImageBtn
-                                        onClick={() => applyFormatting("justifyFull")}
+                                        onClick={toggleAlignFull}
                                         icon={"alignjustify"}
-                                        className={`p-2 bg-gray-200 hover:bg-gray-300 rounded-md ${
-                                            !hasSelection ? "opacity-50 pointer-events-none" : ""
+                                        className={`p-2 hover:bg-gray-300 rounded-md ${
+                                            isJustifyFull ? "border border-ring/50 bg-foreground/20" : ""
                                         }`}
-                                        disabled={!hasSelection}
+
                                     />
                                 }
                             />
@@ -510,11 +571,8 @@ export default function Editor({apiPath}: { apiPath: string }) {
                                 content={
                                     <ImageBtn
                                         onClick={applyLinkToSelection}
-                                        className={`p-2 bg-gray-200 hover:bg-gray-300 rounded-md ${
-                                            !hasSelection ? "opacity-50 pointer-events-none" : ""
-                                        }`}
+                                        className={`p-2  hover:bg-gray-300 rounded-md `}
                                         icon={"link"}
-                                        disabled={!hasSelection}
                                     />
                                 }
                             />
@@ -525,7 +583,7 @@ export default function Editor({apiPath}: { apiPath: string }) {
                                     <ImageBtn
                                         onClick={() => toggleList("ul")}
                                         icon={"listul"}
-                                        className={`p-2 bg-gray-200 hover:bg-gray-300 rounded-md ${
+                                        className={`p-2  hover:bg-gray-300 rounded-md ${
                                             !hasSelection ? "opacity-50 pointer-events-none" : ""
                                         }`}
                                         disabled={!hasSelection}
@@ -539,7 +597,7 @@ export default function Editor({apiPath}: { apiPath: string }) {
                                     <ImageBtn
                                         onClick={() => toggleList("ol")}
                                         icon={"listol"}
-                                        className={`p-2 bg-gray-200 hover:bg-gray-300 rounded-md ${
+                                        className={`p-2  hover:bg-gray-300 rounded-md ${
                                             !hasSelection ? "opacity-50 pointer-events-none" : ""
                                         }`}
                                         disabled={!hasSelection}
