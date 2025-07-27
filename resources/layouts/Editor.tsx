@@ -10,7 +10,6 @@ export default function Editor({apiPath}: { apiPath: string }) {
     const [rawMessage, setRawMessage] = useState("");
     const editorRef = useRef<HTMLDivElement>(null);
     const [isPreviewMode, setIsPreviewMode] = useState(false);
-    const [hasSelection, setHasSelection] = useState(false);
 
     const [textColor, setTextColor] = useState("#000000");
     const [bgColor, setBgColor] = useState("#ffffff");
@@ -42,60 +41,55 @@ export default function Editor({apiPath}: { apiPath: string }) {
     };
 
     const toggleBold = () => {
-    const newVal = !isBold;
-    setIsBold(newVal);
-    applyFormatting("bold", undefined, true);
-};
+        const newVal = !isBold;
+        setIsBold(newVal);
+        applyFormatting("bold", undefined, true);
+    };
 
-const toggleItalic = () => {
-    const newVal = !isItalic;
-    setIsItalic(newVal);
-    applyFormatting("italic", undefined, true);
-};
+    const toggleItalic = () => {
+        const newVal = !isItalic;
+        setIsItalic(newVal);
+        applyFormatting("italic", undefined, true);
+    };
 
-const toggleUnderline = () => {
-    const newVal = !isUnderline;
-    setIsUnderline(newVal);
-    applyFormatting("underline", undefined, true);
-};
+    const toggleUnderline = () => {
+        const newVal = !isUnderline;
+        setIsUnderline(newVal);
+        applyFormatting("underline", undefined, true);
+    };
 
-const toggleAlignLeft = () => {
-    setIsJustifyLeft(true);
-    setIsJustifyCenter(false);
-    setIsJustifyRight(false);
-    setIsJustifyFull(false);
-    applyFormatting("justifyLeft", undefined, true);
-};
+    const toggleAlignLeft = () => {
+        setIsJustifyLeft(true);
+        setIsJustifyCenter(false);
+        setIsJustifyRight(false);
+        setIsJustifyFull(false);
+        applyFormatting("justifyLeft", undefined, true);
+    };
 
-const toggleAlignCenter = () => {
-    setIsJustifyLeft(false);
-    setIsJustifyCenter(true);
-    setIsJustifyRight(false);
-    setIsJustifyFull(false);
-    applyFormatting("justifyCenter", undefined, true);
-};
+    const toggleAlignCenter = () => {
+        setIsJustifyLeft(false);
+        setIsJustifyCenter(true);
+        setIsJustifyRight(false);
+        setIsJustifyFull(false);
+        applyFormatting("justifyCenter", undefined, true);
+    };
 
-const toggleAlignRight = () => {
-    setIsJustifyLeft(false);
-    setIsJustifyCenter(false);
-    setIsJustifyRight(true);
-    setIsJustifyFull(false);
-    applyFormatting("justifyRight", undefined, true);
-};
+    const toggleAlignRight = () => {
+        setIsJustifyLeft(false);
+        setIsJustifyCenter(false);
+        setIsJustifyRight(true);
+        setIsJustifyFull(false);
+        applyFormatting("justifyRight", undefined, true);
+    };
 
-const toggleAlignFull = () => {
-    setIsJustifyLeft(false);
-    setIsJustifyCenter(false);
-    setIsJustifyRight(false);
-    setIsJustifyFull(true);
-    applyFormatting("justifyFull", undefined, true);
-};
+    const toggleAlignFull = () => {
+        setIsJustifyLeft(false);
+        setIsJustifyCenter(false);
+        setIsJustifyRight(false);
+        setIsJustifyFull(true);
+        applyFormatting("justifyFull", undefined, true);
+    };
 
-
-
-    const handleBold = () => applyFormatting("bold");
-    const handleItalic = () => applyFormatting("italic");
-    const handleUnderline = () => applyFormatting("underline");
 
     // Helper function to transform selected text (for uppercase/lowercase)
     const transformSelectedText = (transformFn: (text: string) => string) => {
@@ -249,7 +243,6 @@ const toggleAlignFull = () => {
             const selection = window.getSelection();
             const editor = editorRef.current;
             if (!selection || !editor) {
-                setHasSelection(false);
                 return;
             }
 
@@ -263,14 +256,10 @@ const toggleAlignFull = () => {
                 }
                 node = node.parentNode;
             }
-
-            setHasSelection(!selection.isCollapsed && insideEditor);
         };
 
         // Listen to selection changes for enabling/disabling buttons
         document.addEventListener("selectionchange", checkSelection);
-        // Also listen to keyup and mouseup for more reliable selection detection
-        // when the selection changes but 'selectionchange' might not fire immediately.
         document.addEventListener("keyup", checkSelection);
         document.addEventListener("mouseup", checkSelection);
 
@@ -446,9 +435,7 @@ const toggleAlignFull = () => {
                                 content={
                                     <ImageBtn
                                         onClick={handleUppercase}
-                                        className={`p-2 hover:bg-gray-300 rounded-md ${
-                                            !hasSelection ? "opacity-50 pointer-events-none" : ""
-                                        }`}
+                                        className={`p-2 hover:bg-gray-300 rounded-md `}
                                         icon={"uppercase"}
                                     />
                                 }
@@ -459,9 +446,7 @@ const toggleAlignFull = () => {
                                 content={
                                     <ImageBtn
                                         onClick={handleLowercase}
-                                        className={`p-2  hover:bg-gray-300 rounded-md ${
-                                            !hasSelection ? "opacity-50 pointer-events-none" : ""
-                                        }`}
+                                        className={`p-2  hover:bg-gray-300 rounded-md `}
                                         icon={"lowercase"}
                                     />
                                 }
@@ -499,7 +484,7 @@ const toggleAlignFull = () => {
                                     }
                                 }}
                                 defaultValue=""
-                                className={`text-sm border rounded-md px-2 py-1 bg-white ${!hasSelection ? "opacity-30 pointer-events-none" : ""}`}
+                                className={`text-sm border rounded-md px-2 py-1 bg-white`}
                             >
                                 <option value="" disabled>
                                     Size
@@ -583,10 +568,7 @@ const toggleAlignFull = () => {
                                     <ImageBtn
                                         onClick={() => toggleList("ul")}
                                         icon={"listul"}
-                                        className={`p-2  hover:bg-gray-300 rounded-md ${
-                                            !hasSelection ? "opacity-50 pointer-events-none" : ""
-                                        }`}
-                                        disabled={!hasSelection}
+                                        className={`p-2  hover:bg-gray-300 rounded-md `}
                                     />
                                 }
                             />
@@ -597,10 +579,7 @@ const toggleAlignFull = () => {
                                     <ImageBtn
                                         onClick={() => toggleList("ol")}
                                         icon={"listol"}
-                                        className={`p-2  hover:bg-gray-300 rounded-md ${
-                                            !hasSelection ? "opacity-50 pointer-events-none" : ""
-                                        }`}
-                                        disabled={!hasSelection}
+                                        className={`p-2  hover:bg-gray-300 rounded-md `}
                                     />
                                 }
                             />
