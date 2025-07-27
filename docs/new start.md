@@ -99,6 +99,117 @@ docker exec -it sukraa_codexsun_com bash
 docker exec -it flexcon_codexsun_com bash
 ```
 
+```
+docker exec -it smile_codexsun_com bash
+```
+
+```
+docker exec -it ganapathi_codexsun_com bash
+```
+
+```
+docker exec -it erp_lifeshoppy_com bash
+```
+
+# Step 1: Install SSL with Certbot (Recommended for Nginx)
+Step 1: Install Certbot and Nginx plugin
+
+```
+sudo apt install certbot python3-certbot-nginx -y
+```
+
+```
+server {
+    listen 80;
+    server_name soft.aaran.org;
+
+    location / {
+        proxy_pass http://127.0.0.1:8001;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+```
+server {
+    listen 80;
+    server_name sukraa.codexsun.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:8002;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+```
+server {
+    listen 80;
+    server_name flexcon.codexsun.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:8003;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+```
+server {
+    listen 80;
+    server_name smile.codexsun.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:8004;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+```
+server {
+    listen 80;
+    server_name ganapathi.codexsun.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:8005;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+```
+server {
+    listen 80;
+    server_name erp.lifeshoppy.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:8006;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+
+
 
 
 Here's the direct one-liner bash command to zip and copy the frappe-bench directory to /home/devops/shared:
