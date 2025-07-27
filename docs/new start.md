@@ -66,27 +66,26 @@ sudo ufw status
 status : inactive
 
 
-
-
-
+# 5 To run a specific Docker Compose file
+```
+docker compose -f soft-aaran-org.yml up -d
 ```
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-To run a specific Docker Compose file
+docker compose -f sukraa-codexsun-com.yml up -d
 ```
-docker compose -f docker-compose-soft_aaran_org.yml up -d
 ```
+docker compose -f flexcon-codexsun-com.yml up -d
+```
+```
+docker compose -f smile-codexsun-com.yml up -d
+```
+```
+docker compose -f ganapathi-codexsun-com.yml up -d
+```
+```
+docker compose -f erp-lifeshoppy-com.yml up -d
+```
+
 
 Here's the direct one-liner bash command to zip and copy the frappe-bench directory to /home/devops/shared:
 ```
