@@ -3,7 +3,7 @@ services:
     image: codexion-cloud:v1
     container_name: erp_logicx_in
     ports:
-      - "8001:8000"
+      - "8003:8000"
     volumes:
       - ./public/erp_logicx_in:/home/devops/shared
     networks:

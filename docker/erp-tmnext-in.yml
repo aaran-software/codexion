@@ -3,7 +3,7 @@ services:
     image: codexion-cloud:v1
     container_name: erp_tmnext_in
     ports:
-      - "8001:8000"
+      - "8002:8000"
     volumes:
       - ./public/erp_tmnext_in:/home/devops/shared
     networks:
