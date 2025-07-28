@@ -7,10 +7,12 @@ import {AppProvider} from "../../global/AppContaxt";
 import {AuthProvider} from "../../global/auth/AuthContext";
 import settings from "../public/settings.json";
 import AppInitializer from "../../global/useSettings";
+import {ThemeProvider} from "../../../resources/components/theme-provider";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-        <BrowserRouter>
+        <ThemeProvider defaultTheme="system">
+            <BrowserRouter>
             <AppProvider initialSettings={settings}>
                 <AuthProvider> {/* ✅ Add this wrapper */}
                     <AppInitializer>
@@ -19,5 +21,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 </AuthProvider>
             </AppProvider>
         </BrowserRouter>
+        </ThemeProvider>
+
     </React.StrictMode>
 );

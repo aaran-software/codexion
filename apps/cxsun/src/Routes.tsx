@@ -1,8 +1,5 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
-import Home from './pages/home'
-import About from './pages/about'
-import App from './App'
 import Login from "../../global/auth/Login";
 import SignUp from "../../global/auth/Signup";
 import ProtectedRoute from "../../global/auth/ProtectedRoute";
