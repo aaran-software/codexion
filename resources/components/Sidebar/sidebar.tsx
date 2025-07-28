@@ -23,7 +23,7 @@ import {
 } from "../Tooltip/tooltip"
 import ImageButton from "../button/ImageBtn"
 import { useEffect, useState } from "react"
-import Button from "../../../resources/components/button/Button";
+import {Button} from "../button";
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
@@ -257,33 +257,30 @@ function Sidebar({
   )
 }
 
-type SidebarTriggerProps = {
-  className?: string;
-  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
-
-export default function SidebarTrigger({
+function SidebarTrigger({
   className,
   onClick,
   ...props
-}: SidebarTriggerProps) {
-  const { toggleSidebar } = useSidebar();
+}: React.ComponentProps<typeof Button>) {
+  const { toggleSidebar } = useSidebar()
 
   return (
     <Button
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
-      className={cn("w-2", className)}
-      onClick={(event) => {
-        onClick?.(event);
-        toggleSidebar();
+      variant="ghost"
+      size="icon"
+      className={cn("size-7", className)}
+      onClick={(event: any) => {
+        onClick?.(event)
+        toggleSidebar()
       }}
       {...props}
     >
       <PanelLeftIcon />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
-  );
+  )
 }
 
 function SidePanelTrigger({
@@ -545,55 +542,64 @@ const sidebarMenuButtonVariants = cva(
   }
 )
 
-function SidebarMenuButton({
-  asChild = false,
-  isActive = false,
-  variant = "default",
-  size = "default",
-  tooltip,
-  className,
-  ...props
-}: React.ComponentProps<"button"> & {
-  asChild?: boolean
-  isActive?: boolean
-  tooltip?: string | React.ComponentProps<typeof TooltipContent>
-} & VariantProps<typeof sidebarMenuButtonVariants>) {
-  const Comp = asChild ? Slot : "button"
-  const { isMobile, state } = useSidebar()
+const SidebarMenuButton = React.forwardRef<
+  HTMLButtonElement,
+  React.ComponentProps<"button"> & {
+    asChild?: boolean;
+    isActive?: boolean;
+    tooltip?: string | React.ComponentProps<typeof TooltipContent>;
+  } & VariantProps<typeof sidebarMenuButtonVariants>
+>(
+  (
+    {
+      asChild = false,
+      isActive = false,
+      variant = "default",
+      size = "default",
+      tooltip,
+      className,
+      ...props
+    },
+    ref
+  ) => {
+    const Comp = asChild ? Slot : "button";
+    const { isMobile, state } = useSidebar();
 
-  const button = (
-    <Comp
-      data-slot="sidebar-menu-button"
-      data-sidebar="menu-button"
-      data-size={size}
-      data-active={isActive}
-      className={cn(sidebarMenuButtonVariants({ variant, size }),  className)}
-      {...props}
-    />
-  )
-
-  if (!tooltip) {
-    return button
-  }
-
-  if (typeof tooltip === "string") {
-    tooltip = {
-      children: tooltip,
-    }
-  }
-
-  return (
-    <Tooltip>
-      <TooltipTrigger className="w-full" asChild>{button}</TooltipTrigger>
-      <TooltipContent
-        side="right"
-        align="center"
-        hidden={state !== "collapsed" || isMobile}
-        {...tooltip}
+    const button = (
+      <Comp
+        ref={ref}
+        data-slot="sidebar-menu-button"
+        data-sidebar="menu-button"
+        data-size={size}
+        data-active={isActive}
+        className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
+        {...props}
       />
-    </Tooltip>
-  )
-}
+    );
+
+    if (!tooltip) {
+      return button;
+    }
+
+    if (typeof tooltip === "string") {
+      tooltip = { children: tooltip };
+    }
+
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild className="w-full">
+          {button}
+        </TooltipTrigger>
+        <TooltipContent
+          side="right"
+          align="center"
+          hidden={state !== "collapsed" || isMobile}
+          {...tooltip}
+        />
+      </Tooltip>
+    );
+  }
+);
 
 function SidebarMenuAction({
   className,
