@@ -114,12 +114,38 @@ docker exec -it erp_lifeshoppy_com bash
 # Step 1: Install SSL with Certbot (Recommended for Nginx)
 Step 1: Install Certbot and Nginx plugin
 
+
 ```
+sudo apt update
 sudo apt install certbot python3-certbot-nginx -y
+```
+```
+sudo systemctl status nginx
+```
+```
+sudo ufw allow 'Nginx Full'
+sudo ufw reload
 ```
 ```
 sudo certbot --nginx
 ```
+
+
+sudo ln -s /etc/nginx/sites-available/soft.aaran.org /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/sukraa.codexsun.com /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/flexcon.codexsun.com /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/smile.codexsun.com /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/ganapathi.codexsun.com /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/erp.lifeshoppy.com /etc/nginx/sites-enabled/
+
+
+
+sudo ln -s /etc/nginx/sites-available/software.aaran.org /etc/nginx/sites-enabled/
+
+sudo nginx -t
+sudo systemctl reload nginx
+
+
 
 
 ```
@@ -219,6 +245,32 @@ server {
 Here's the direct one-liner bash command to zip and copy the frappe-bench directory to /home/devops/shared:
 ```
 cd /home/devops && zip -r frappe-bench.zip frappe-bench && mkdir -p /home/devops/shared && mv frappe-bench.zip /home/devops/shared/
-```
+``
+
+ bench get-app https://github.com/frappe/lms --branch develop
+ bench --site soft.aaran.org install-app lms
+
+ bench get-app https://github.com/frappe/gameplan --branch develop
+ bench --site soft.aaran.org install-app gameplan
 
 
+yarn install
+
+yarn audit
+
+yarn audit fix
+
+cd apps/gameplan
+yarn build
+
+
+npm install @iconify-json/lucide
+# or if you're using yarn
+yarn add @iconify-json/lucide
+# or pnpm
+pnpm add @iconify-json/lucide
+
+
+rm -rf node_modules
+rm pnpm-lock.yaml # or yarn.lock
+pnpm install # or yarn install
