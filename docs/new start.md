@@ -149,6 +149,7 @@ sudo ln -s /etc/nginx/sites-available/erp.lifeshoppy.com /etc/nginx/sites-enable
 
 
 sudo ln -s /etc/nginx/sites-available/software.aaran.org /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/dev.aaranerp.com /etc/nginx/sites-enabled/
 
 sudo nginx -t
 sudo systemctl reload nginx
@@ -246,6 +247,21 @@ server {
 }
 ```
 
+```
+server {
+    listen 80;
+    server_name dev.aaranerp.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:8007;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
 
 
 
@@ -256,10 +272,13 @@ cd /home/devops && zip -r frappe-bench.zip frappe-bench && mkdir -p /home/devops
 ``
 
  bench get-app https://github.com/frappe/lms --branch develop
- bench --site soft.aaran.org install-app lms
+ bench --site dev.aaranerp.com install-app lms
 
- bench get-app https://github.com/frappe/gameplan --branch develop
- bench --site soft.aaran.org install-app gameplan
+
+ bench --site dev.aaranerp.org install-app gameplan
+ 
+ bench get-app https://github.com/frappe/wiki 
+ bench --site soft.aaranerp.com install-app wiki
 
 
 yarn install
