@@ -86,6 +86,10 @@ docker compose -f ganapathi-codexsun-com.yml up -d
 docker compose -f erp-lifeshoppy-com.yml up -d
 ```
 
+```
+docker compose -f dev-aaranerp-com.yml up -d
+```
+
 # 6 To open soft-aaran-org in bash
 ```
 docker exec -it soft_aaran_org bash
@@ -109,6 +113,10 @@ docker exec -it ganapathi_codexsun_com bash
 
 ```
 docker exec -it erp_lifeshoppy_com bash
+```
+
+```
+docker exec -it dev_aaranerp_com bash
 ```
 
 # Step 1: Install SSL with Certbot (Recommended for Nginx)
