@@ -1,11 +1,13 @@
-# Stop and remove running container (if exists)
+#!/bin/bash
+
+echo "🧼 Shutting down existing container..."
 docker compose -f docker/core/cortex.yml down --remove-orphans
 
-# Remove old image (if exists)
+echo "🧹 Removing old image..."
 docker rmi -f cortex-app:v1 || true
 
-# Rebuild image from Dockerfile
+echo "🔨 Rebuilding image..."
 docker build -t cortex-app:v1 -f docker/core/Dockerfile .
 
-# Start services using docker compose
+echo "🚀 Starting services..."
 docker compose -f docker/core/cortex.yml up -d
