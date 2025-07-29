@@ -219,7 +219,7 @@ function FormLayout({
 
     return (
         <div className="w-full p-2 lg:pr-5">
-            {/* Table header items */}
+            {/* Table Header items */}
             <div ref={printRef} className="hidden print:block p-5">
                 <Print
                     head={printHead}

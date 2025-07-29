@@ -104,7 +104,7 @@ function EntryForm({
   return (
     <div className={wrapperClass}>
       <div className={containerClass}>
-        {/* header */}
+        {/* Header */}
         <div className="flex justify-between mx-2">
           <h1 className="text-md py-2 text-foreground/50">{formName} Form</h1>
           <ImageButton

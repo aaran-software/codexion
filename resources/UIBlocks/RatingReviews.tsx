@@ -119,7 +119,7 @@ export default function RatingReviews() {
 
   return (
     <div className="bg-background p-6 rounded-md shadow-sm space-y-6">
-      {/* header */}
+      {/* Header */}
       <div className="flex justify-between items-start">
         <div>
           <h2 className="text-xl font-semibold mb-2">Ratings & Reviews</h2>

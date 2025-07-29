@@ -66,7 +66,7 @@ useEffect(() => {
 
   return (
     <SidebarProvider className="flex flex-col min-h-screen bg-dashboard-background text-dashboard-foreground">
-      {/* Sticky App header */}
+      {/* Sticky App Header */}
       <div className="sticky top-0 z-50 bg-background">
         <AppHeader />
       </div>

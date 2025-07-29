@@ -86,7 +86,7 @@ const shouldShowTotal = hasQuantity && (hasAmount || hasPrice);
 
   return (
     <div className="border border-ring w-full text-xs overflow-x-auto">
-      {/* header */}
+      {/* Header */}
       <div className="grid grid-cols-[20%_80%] gap-5 p-5">
         <img className="w-full max-w-[120px] block m-auto" src={'/assets/svg/logo.svg'} alt="Logo" />
         <div className="flex flex-col items-center justify-center text-center gap-1">

@@ -74,7 +74,7 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
 
   return (
     <div className="w-full p-4 bg-background/80 border border-ring/30 shadow rounded-md">
-      {/* header */}
+      {/* Header */}
       <div className="flex justify-between items-center px-2">
         <h1 className="mt-2 font-bold text-[25px]">{title}</h1>
         <p className="text-update text-lg mt-2 cursor-pointer hover:underline">
