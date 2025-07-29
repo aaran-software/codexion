@@ -274,12 +274,34 @@ cd /home/devops && zip -r frappe-bench.zip frappe-bench && mkdir -p /home/devops
  bench get-app https://github.com/frappe/lms --branch develop
  bench --site dev.aaranerp.com install-app lms
 
+npm install frappe-ui
 
  bench --site dev.aaranerp.org install-app gameplan
  
  bench get-app https://github.com/frappe/wiki 
  bench --site soft.aaranerp.com install-app wiki
+ 
+ 
+  bench get-app https://github.com/frappe/lending --branch develop
+  bench --site dev.aaranerp.com install-app lending
 
+  bench get-app https://github.com/frappe/helpdesk --branch develop
+  bench --site dev.aaranerp.com install-app helpdesk
+  
+  bench get-app https://github.com/frappe/print_designer  --branch develop
+  bench --site dev.aaranerp.com install-app print_designer 
+  
+  bench get-app https://github.com/frappe/education  --branch develop
+  bench --site dev.aaranerp.com install-app education 
+  
+  bench get-app https://github.com/frappe/blogs  --branch develop
+  bench --site dev.aaranerp.com install-app blogs 
+
+  bench get-app https://github.com/frappe/payments
+  bench --site dev.aaranerp.com install-app payments
+  
+  bench get-app https://github.com/frappe/webshop  --branch develop
+  bench --site dev.aaranerp.com install-app webshop 
 
 yarn install
 

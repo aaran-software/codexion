@@ -44,14 +44,16 @@ RUN if [ "$MODE" = "prod" ]; then npm run build; fi
 # Expose backend (4000) and frontend (3000) ports
 EXPOSE 4001 3001
 
-# Run backend + frontend dev or prod
-CMD bash -c "\
+CMD ["bash", "-c", "\
   if [ \"$MODE\" = \"prod\" ]; then \
     echo 'Starting FastAPI backend in production...'; \
     gunicorn cortex.main:app -k uvicorn.workers.UvicornWorker -b 0.0.0.0:4001 -w 4 --timeout 60; \
   else \
-    echo 'Starting frontend (port 3000) and backend (port 4001)...'; \
+    echo 'Starting frontend (port 3001) and backend (port 4001)...'; \
     concurrently \
-      \"uvicorn cortex.main:app --host 0.0.0.0 --port 4001 --reload\" \
-      \"npm run dev -- --host 0.0.0.0\"; \
-  fi"
+      \\\"uvicorn cortex.main:app --host 0.0.0.0 --port 4001 --reload\\\" \
+      \\\"npm run dev -- --host 0.0.0.0 --port 3001\\\"; \
+  fi"]
+
+
+
