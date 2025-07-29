@@ -1,4 +1,4 @@
-import Announcement from "../Advertisment/Announcement";
+import Announcement from "@resources/components/advertisment/Announcement";
 import Chart from "../Chart/bar-chart";
 import { NetIncomeChart } from "../Chart/NetProfitChart";
 import AnalticsCard from "./AnalticsCard";

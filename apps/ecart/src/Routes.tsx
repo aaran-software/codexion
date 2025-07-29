@@ -12,7 +12,7 @@ import Wishlist from "../../../resources/UIBlocks/Wishlist";
 import Cart from "./pages/Cart";
 import Footer from "../../../resources/components/footer/Footer";
 import Header from "../../../resources/components/Header/Header";
-import {FrappeLoginForm} from "../../../resources/components/Auth/frappe-login";
+import {FrappeLoginForm} from "@resources/components/auth/frappe-login";
 
 function AppRoutes() {
     const location = useLocation();

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import FileUpload from "../../../../../resources/components/input/FileInput";
-import DropdownRead from "../../../../../resources/components/input/Dropdown-read";
+import DropdownRead from "@resources/components/input/dropdown-read";
 import apiClient from "../../../../../resources/global/api/apiClients";
 import FloatingInput from "../../../../../resources/components/input/FloatingInput";
 import Button from "../../../../../resources/components/button/Button";

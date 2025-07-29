@@ -1,17 +1,17 @@
 import {useEffect, useRef, useState} from "react";
-import {TextArea} from "../input/TextArea";
-import Dropdown from "../input/Dropdown";
+import {TextArea} from "../input/textArea";
+import Dropdown from "../input/dropdown";
 import Switch from "../input/switch";
 import Checkbox from "../input/checkbox";
-import Alert from "../Alert/Alert";
-import MultiCheckbox from "../input/MultiCheckbox";
-import {DatePicker} from "../Datepicker/Datepicker";
+import Alert from "../alert/alert";
+import MultiCheckbox from "../input/multiCheckbox";
+import {Datepicker} from "../Datepicker/datepicker";
 import CommonTable, {type TableRowData} from "./commontable";
 import {format} from "date-fns";
 import apiClient from "../../../resources/global/api/apiClients";
 import ImageButton from "../button/ImageBtn";
 import FloatingInput from "../input/FloatingInput";
-import DropdownRead from "../input/Dropdown-read";
+import DropdownRead from "../input/dropdown-read";
 import PasswordInput from "../SecondaryInput/PasswordInput";
 import FileUpload from "../input/FileInput";
 import Button from "../button/Button";
@@ -434,7 +434,7 @@ function isDate(val: unknown): val is Date {
                                             );
                                         case "date":
                                             return (
-                                                <DatePicker
+                                                <Datepicker
                                                     {...commonProps}
                                                     model={
                                                         value instanceof Date

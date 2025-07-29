@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { TextArea } from "../input/TextArea";
-import Dropdown from "../input/Dropdown";
+import Dropdown from "../input/dropdown";
 import Switch from "../input/switch";
 import Checkbox from "../input/checkbox";
-import Alert from "../alert/Alert";
-import MultiCheckbox from "../input/MultiCheckbox";
+import Alert from "../alert/alert";
+import MultiCheckbox from "../input/multiCheckbox";
 import PasswordInput from "../input/passwordInput";
-import { DatePicker } from "../Datepicker/Datepicker";
+import { Datepicker } from "../Datepicker/datepicker";
 import FileUpload from "../input/FileInput";
-import DropdownRead from "../input/Dropdown-read";
+import DropdownRead from "../input/dropdown-read";
 import ImageButton from "../button/ImageBtn";
 import EditableTable from "./EditableTable";
 import FloatingInput from "../input/FloatingInput";
@@ -264,7 +264,7 @@ function EntryForm({
                               );
                             case "date":
                               return (
-                                <DatePicker
+                                <Datepicker
                                   id={field.id}
                                   label={field.label}
                                   model={

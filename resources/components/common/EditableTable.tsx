@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { DatePicker } from "../SecondaryInput/Datepicker";
-import MultiCheckbox from "../input/MultiCheckbox";
+import MultiCheckbox from "../input/multiCheckbox";
 import Switch from "../input/switch";
 import Checkbox from "../input/checkbox";
 import { TextArea } from "../SecondaryInput/TextArea";

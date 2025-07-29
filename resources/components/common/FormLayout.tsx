@@ -9,7 +9,7 @@ import Filter from "./Filter";
 import Drawer from "../drawer/Drawer";
 import {exportToCSV} from "../external/ExportToCSV";
 import AnimateButton from "../button/animatebutton";
-import DropdownRead from "../input/Dropdown-read";
+import DropdownRead from "../input/dropdown-read";
 import Pagination from "../Pagination/Pagination";
 import {useEffect, useMemo, useRef, useState} from "react";
 import CommonForm, {
