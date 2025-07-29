@@ -6,8 +6,8 @@ import CommonTable, {
     type TableRowData,
 } from "./commontable";
 import Filter from "./Filter";
-import Drawer from "../Drawer/Drawer";
-import {exportToCSV} from "../External/ExportToCSV";
+import Drawer from "../drawer/Drawer";
+import {exportToCSV} from "../external/ExportToCSV";
 import AnimateButton from "../button/animatebutton";
 import DropdownRead from "../input/Dropdown-read";
 import Pagination from "../Pagination/Pagination";
@@ -16,7 +16,7 @@ import CommonForm, {
     type FieldGroup,
 } from "./commonform";
 import {useReactToPrint} from "react-to-print";
-import Print from "../External/Print";
+import Print from "../external/Print";
 import apiClient from "../../../resources/global/api/apiClients";
 import Button from "../../../resources/components/button/Button";
 
