@@ -1,65 +1,57 @@
-FROM python:3.12 AS cortex
+FROM python:3.12-slim AS cortex
 
 LABEL maintainer="cortex"
 LABEL author="Sundar <sundar@sundar.com>"
 LABEL version="1.0"
 LABEL description="cortex - Dev image for Python FastAPI + React + Vite development"
 
-# Install system dependencies
-RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y \
-    sudo \
-    curl \
-    git \
-    build-essential \
-    libpq-dev \
-    gnupg \
-    ca-certificates && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    DEBIAN_FRONTEND=noninteractive \
+    PATH="/home/devops/.local/bin:$PATH" \
+    MODE=dev \
+    PYTHONPATH="/home/devops/codexion"
 
-# Install Node.js (v22) + npm
-RUN curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - && \
-    apt-get install -y nodejs && \
-    npm install -g yarn vite
-
-# Create non-root user
+# Create user
 RUN useradd -m -s /bin/bash devops && echo "devops:sundar" | chpasswd
 
-# Switch to non-root user and set working dir
+# Install system deps + Node.js (v22) and tools
+RUN apt-get update && apt-get upgrade -y && \
+    apt-get install -y sudo curl git build-essential libpq-dev gnupg ca-certificates && \
+    curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g yarn vite concurrently && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Switch to non-root user
 USER devops
+WORKDIR /home/devops
+
+# Clone repo
+RUN git clone --depth 1 https://github.com/AARAN-SOFTWARE/codexion.git
+
 WORKDIR /home/devops/codexion
 
-# Set PYTHONPATH
-ENV PYTHONPATH="/home/devops/codexion"
+# Create shared folder (prevents volume issues)
+RUN mkdir -p shared
 
-# Copy project files
-COPY --chown=devops:devops apps/ ./apps/
-COPY --chown=devops:devops sites/ ./sites/
-COPY --chown=devops:devops config/ ./config/
-COPY --chown=devops:devops cortex/ ./cortex/
-COPY --chown=devops:devops database/ ./database/
-COPY --chown=devops:devops prefiq/ ./prefiq/
-COPY --chown=devops:devops .env.sample ./
-COPY --chown=devops:devops LICENSE ./
-COPY --chown=devops:devops package.json ./
-COPY --chown=devops:devops postcss.config.js ./
-COPY --chown=devops:devops pyproject.toml ./
-COPY --chown=devops:devops README.md ./
-COPY --chown=devops:devops requirements.txt ./
-COPY --chown=devops:devops tailwind.config.js ./
-COPY --chown=devops:devops tsconfig.app.json ./
-COPY --chown=devops:devops tsconfig.json ./
-COPY --chown=devops:devops tsconfig.node.json ./
-COPY --chown=devops:devops vite.config.ts ./
+# Install backend and frontend deps
+RUN pip install --no-cache-dir -r requirements.txt && npm install
 
-# Install Python requirements
-RUN pip install --no-cache-dir -r requirements.txt
+# Prebuild frontend in prod
+RUN if [ "$MODE" = "prod" ]; then npm run build; fi
 
-# Install Node packages
-RUN npm install
+# Expose backend (4000) and frontend (3000) ports
+EXPOSE 4001 3001
 
-# Expose FastAPI backend port
-EXPOSE 4000
-
-# Start backend
-#CMD ["python", "cortex/main.py"]
+# Run backend + frontend dev or prod
+CMD bash -c "\
+  if [ \"$MODE\" = \"prod\" ]; then \
+    echo 'Starting FastAPI backend in production...'; \
+    gunicorn cortex.main:app -k uvicorn.workers.UvicornWorker -b 0.0.0.0:4001 -w 4 --timeout 60; \
+  else \
+    echo 'Starting frontend (port 3000) and backend (port 4001)...'; \
+    concurrently \
+      \"uvicorn cortex.main:app --host 0.0.0.0 --port 4001 --reload\" \
+      \"npm run dev -- --host 0.0.0.0\"; \
+  fi"

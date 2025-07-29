@@ -1,16 +1,21 @@
-
 services:
   cortex_app:
     image: cortex-app:v1
     container_name: cortex_app
+    build:
+      context: ../..
+      dockerfile: docker/core/Dockerfile
+    environment:
+      - MODE=dev
     ports:
-      - "4000:4000"
+      - "4001:4001"
+      - "3001:3001"
     volumes:
-       - ../../:/home/devops/codexion
+      - ./shared:/home/devops/codexion/shared
     networks:
       - codexion-network
-    restart: unless-stopped
     tty: true
+    restart: unless-stopped
 
 networks:
   codexion-network:
