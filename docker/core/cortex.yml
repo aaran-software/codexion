@@ -6,7 +6,7 @@ services:
     ports:
       - "4000:4000"
     volumes:
-      - ./:/home/devops/codexion
+       - ../../:/home/devops/codexion
     networks:
       - codexion-network
     restart: unless-stopped
