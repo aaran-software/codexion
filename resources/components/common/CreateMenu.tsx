@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Button from "../../../resources/components/button/Button";
-import FloatingInput from "../../../resources/components/input/FloatingInput";
+import FloatingInput from "../input/floating-input";
 
 type CreateMenuProps = {
   onClose: () => void;

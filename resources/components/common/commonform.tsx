@@ -1,19 +1,19 @@
 import {useEffect, useRef, useState} from "react";
-import {TextArea} from "../input/textArea";
+import {TextArea} from "../input/text-area";
 import Dropdown from "../input/dropdown";
 import Switch from "../input/switch";
 import Checkbox from "../input/checkbox";
 import Alert from "../alert/alert";
-import MultiCheckbox from "../input/multiCheckbox";
+import MultiCheckbox from "../input/multi-checkbox";
 import {Datepicker} from "../datepicker/datepicker";
 import CommonTable, {type TableRowData} from "./commontable";
 import {format} from "date-fns";
 import apiClient from "../../../resources/global/api/apiClients";
 import ImageButton from "../button/ImageBtn";
-import FloatingInput from "../input/FloatingInput";
+import FloatingInput from "../input/floating-input";
 import DropdownRead from "../input/dropdown-read";
 import Password_Input from "../secondary_input/password_Input";
-import FileUpload from "../input/FileInput";
+import FileUpload from "../input/fileInput";
 import Button from "../button/Button";
 
 type FieldType =

@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { SwitchComponent } from "./switchComponent";
+import { SwitchComponent } from "./switch-component";
 
 interface SwitchProps {
   id: string;

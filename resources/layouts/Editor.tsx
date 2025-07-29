@@ -1,4 +1,4 @@
-import FloatingInput from "../../resources/components/input/FloatingInput";
+import FloatingInput from "../components/input/floating-input";
 import Button from "../../resources/components/button/Button";
 import React, {useState, useRef, useEffect, useCallback} from "react";
 import ImageBtn from "../components/button/ImageBtn";

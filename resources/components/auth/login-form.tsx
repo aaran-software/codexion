@@ -6,7 +6,7 @@ import Password_Input from "@resources/components/secondary_input/password_Input
 import {Card, CardContent, CardHeader, CardTitle} from "@resources/components/chart/card";
 import {useAuth} from "../../../apps/global/auth/AuthContext";
 import {useAppContext} from "../../../apps/global/AppContaxt";
-import FloatingInput from "../../../resources/components/input/FloatingInput";
+import FloatingInput from "../input/floating-input";
 import Button from "../../../resources/components/button/Button";
 
 export function LoginForm({className}: { className?: string }) {

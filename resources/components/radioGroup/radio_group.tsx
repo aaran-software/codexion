@@ -13,7 +13,7 @@ interface RadioGroupProps {
   onChange?: (value: string) => void;
 }
 
-const RadioGroup: React.FC<RadioGroupProps> = ({
+const Radio_group: React.FC<RadioGroupProps> = ({
   name,
   options,
   defaultValue,
@@ -66,4 +66,4 @@ const RadioGroup: React.FC<RadioGroupProps> = ({
   );
 };
 
-export default RadioGroup;
+export default Radio_group;

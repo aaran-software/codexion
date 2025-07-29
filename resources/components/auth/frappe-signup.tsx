@@ -2,10 +2,10 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Card, CardContent, CardHeader, CardTitle } from "../chart/card"
 import Button from "../button/Button"
-import FloatingInput from "../input/FloatingInput"
+import FloatingInput from "../input/floating-input"
 import frappeBaseApi from "../../global/api/frappeBaseApi";
 import {cn} from "../../global/library/utils";
-import PasswordInput from "../input/passwordInput";
+import PasswordInput from "../input/password-input";
 
 export function SignupComponent({
   className,

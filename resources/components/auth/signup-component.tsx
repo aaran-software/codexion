@@ -2,9 +2,9 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { cn } from "../../global/library/utils"
 import { Card, CardContent, CardHeader, CardTitle } from "@resources/components/chart/card"
-import PasswordInput from "../input/passwordInput"
+import PasswordInput from "../input/password-input"
 import { useAppContext } from "../../../apps/global/AppContaxt"
-import FloatingInput from "../../../resources/components/input/FloatingInput";
+import FloatingInput from "../input/floating-input";
 import Button from "../../../resources/components/button/Button";
 
 export function SignupComponent({

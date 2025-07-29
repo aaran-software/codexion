@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import Button from "../../../../resources/components/button/Button";
-import FloatingInput from "../../../../resources/components/input/FloatingInput";
-import RadioGroup from "@resources/components/radioGroup/RadioGroup";
+import FloatingInput from "@resources/components/input/floating-input";
+import Radio_group from "@resources/components/radioGroup/radio_group";
 import DropdownRead from "@resources/components/input/dropdown-read";
 
 function DockerBuild() {
@@ -42,15 +42,15 @@ function DockerBuild() {
 
             <FloatingInput err={""} id={"name"} label={"Port"}/>
             <h3>Update Database</h3>
-            <RadioGroup name={"db"} options={[{value: "mariadb", label: 'mariadb:3306'}, {
+            <Radio_group name={"db"} options={[{value: "mariadb", label: 'mariadb:3306'}, {
                 value: "mariadb",
                 label: 'mariadb:5746'
             }]}/>
             <FloatingInput err={""} id={"name"} label={"Port"}/>
             <h3>Update Server</h3>
 
-            <RadioGroup name={"server"}
-                        options={[{value: "enginx", label: 'Enginx'}, {value: "traefik", label: 'Traefik'}]}/>
+            <Radio_group name={"server"}
+                         options={[{value: "enginx", label: 'Enginx'}, {value: "traefik", label: 'Traefik'}]}/>
             <FloatingInput err={""} id={"name"} label={"Dockerfile"}/>
             <Button label={"Build"} className="border border-ring/30 bg-update text-update-foreground"/>
         </div>

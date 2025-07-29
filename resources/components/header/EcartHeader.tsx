@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LucideShoppingCart, UserCircle2 } from "lucide-react";
-import GlobalSearch from "../input/SearchBox.tsx";
+import GlobalSearch from "../input/search-box.tsx";
 import ImageButton from "../button/ImageBtn.tsx";
 import { ModeToggle } from "../mode-toggle";
 import { useAppSettings } from "../../../apps/global/useSettings";

@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
-import RadioGroup from "@resources/components/radioGroup/RadioGroup";
+import Radio_group from "@resources/components/radioGroup/radio_group";
 import DropdownRead from "../components/input/dropdown-read";
-import FloatingInput from "../../resources/components/input/FloatingInput";
+import FloatingInput from "../components/input/floating-input";
 import Button from "../../resources/components/button/Button";
 
 function OrderPayment() {
@@ -170,7 +170,7 @@ function OrderPayment() {
               {/* NetBanking */}
               {isSelected && option.value === "netbanking" && (
                 <div className="mt-3 space-y-3">
-                  <RadioGroup
+                  <Radio_group
                     name="netbanking"
                     options={popularBanks}
                     defaultValue={selectedNetBank ?? undefined}

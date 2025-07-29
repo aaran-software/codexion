@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import frappeBaseApi from "../../resources/global/api/frappeBaseApi";
 import ImageButton from "../components/button/ImageBtn";
-import RangeSlider from "../components/input/RangeSlider";
+import RangeSlider from "../components/input/range-slider";
 import DropdownRead from "../components/input/dropdown-read";
 import Checkbox from "../components/input/checkbox";
 

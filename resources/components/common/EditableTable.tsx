@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Datepicker } from "../secondary_input/datepicker";
-import MultiCheckbox from "../input/multiCheckbox";
+import MultiCheckbox from "../input/multi-checkbox";
 import Switch from "../input/switch";
 import Checkbox from "../input/checkbox";
 import { Text_area } from "../secondary_input/text_area";
@@ -9,7 +9,7 @@ import Password_Input from "../secondary_input/password_Input";
 import AnimateButton from "../button/animatebutton";
 import ImageButton from "../button/ImageBtn";
 import Dropdown_read from "../secondary_input/dropdown_read";
-import FileUpload from "../input/FileInput"; // ✅ Ensure this path is correct
+import FileUpload from "../input/fileInput"; // ✅ Ensure this path is correct
 import { Text_Input } from "../secondary_input/text_Input";
 
 export type FieldType =

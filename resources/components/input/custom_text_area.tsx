@@ -9,7 +9,7 @@ interface CustomTextAreaProps {
   className?: string;
 }
 
-export default function CustomTextArea({
+export default function Custom_text_area({
   id,
   placeholder = "",
   value = "",
