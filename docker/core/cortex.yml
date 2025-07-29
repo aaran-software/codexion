@@ -1,0 +1,17 @@
+
+services:
+  cortex_app:
+    image: cortex-app:v1
+    container_name: cortex_app
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./:/home/devops/codexion
+    networks:
+      - codexion-network
+    restart: unless-stopped
+    tty: true
+
+networks:
+  codexion-network:
+    external: true
