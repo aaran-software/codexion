@@ -552,7 +552,7 @@ export default function Editor({apiPath}: { apiPath: string }) {
                                 }
                             />
                             <Tooltipcomp
-                                tip={"External Link"}
+                                tip={"external Link"}
                                 content={
                                     <ImageBtn
                                         onClick={applyLinkToSelection}

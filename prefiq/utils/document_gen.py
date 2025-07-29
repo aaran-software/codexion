@@ -35,7 +35,7 @@ def generate_header(file_path: Path, author: str, version: str = None) -> str:
         header_lines.append(f" Version: {version}")
         header_lines.append(f"{comment_end}")
 
-    header_lines.append("")  # Newline after header
+    header_lines.append("")  # Newline after Header
     return '\n'.join(header_lines)
 
 def add_header_to_file(file_path: Path, header: str):
