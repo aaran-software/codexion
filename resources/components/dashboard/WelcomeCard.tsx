@@ -1,5 +1,5 @@
 
-import { Card } from '../Chart/card'
+import { Card } from '@resources/components/chart/card'
 
 function WelcomeCard() {
     const now = new Date();

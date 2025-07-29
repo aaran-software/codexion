@@ -83,7 +83,7 @@ const DropdownRead = forwardRef<HTMLInputElement, DropdownProps>(
             setLocalItems(items); // fallback if key missing
           }
         } catch (error) {
-          console.error("DropdownRead API fetch failed:", error);
+          console.error("Dropdown_read API fetch failed:", error);
           setLocalItems(items); // fallback on error
         }
       };
@@ -130,7 +130,7 @@ const DropdownRead = forwardRef<HTMLInputElement, DropdownProps>(
             console.warn("No valid key found in API response:", data[0]);
           }
         } catch (error) {
-          console.error("DropdownRead API fetch failed:", error);
+          console.error("Dropdown_read API fetch failed:", error);
         }
       };
 

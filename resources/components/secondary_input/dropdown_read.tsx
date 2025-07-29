@@ -15,7 +15,7 @@ interface DropdownProps {
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-const DropdownRead = forwardRef<HTMLInputElement, DropdownProps>(
+const Dropdown_read = forwardRef<HTMLInputElement, DropdownProps>(
   (
     {
       id,
@@ -276,5 +276,5 @@ const DropdownRead = forwardRef<HTMLInputElement, DropdownProps>(
   }
 );
 
-DropdownRead.displayName = "DropdownRead";
-export default DropdownRead;
+Dropdown_read.displayName = "Dropdown_read";
+export default Dropdown_read;

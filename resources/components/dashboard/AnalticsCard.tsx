@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Card } from '../Chart/card'
+import { Card } from '@resources/components/chart/card'
 
 function AnalticsCard() {
     const [data]=useState([

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle } from "../Chart/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@resources/components/chart/card";
 import FloatingInput from "../input/FloatingInput";
 import Button from "../button/Button";
-import PasswordInput from "../SecondaryInput/PasswordInput";
+import Password_Input from "@resources/components/secondary_input/password_Input";
 import {useAuth} from "../../../apps/global/auth/frappeAuthContext";
 import {cn} from "../../global/library/utils";
 
@@ -66,7 +66,7 @@ export function FrappeLoginForm({ className }: LoginProps) {
                 />
               </div>
               <div className="grid gap-3">
-                <PasswordInput
+                <Password_Input
                   id="pwd"
                   value={pwd}
                   error={pwdError}

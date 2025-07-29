@@ -38,7 +38,7 @@ interface NetIncomeChartProps {
 }
 
 export function NetIncomeChart({
-  title = "Bar Chart",
+  title = "Bar chart",
   description = "",
   data,
   dataKey,

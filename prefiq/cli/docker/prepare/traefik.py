@@ -9,7 +9,7 @@ traefik_cmd = typer.Typer(help="Manage Traefik Docker Compose files.")
 def create(
     email: str = typer.Option(..., prompt=True, help="Email for Let's Encrypt notifications"),
     dashboard: bool = typer.Option(False, "--dashboard", help="Enable the Traefik dashboard"),
-    dashboard_domain: str = typer.Option(None, help="Dashboard domain"),
+    dashboard_domain: str = typer.Option(None, help="dashboard domain"),
     admin_user: str = typer.Option(None, help="Admin username"),
     admin_password: str = typer.Option(None, help="Admin password"),
     output: Path = typer.Option(CPATH.DOCKER_DIR, help="Output directory"),
@@ -19,7 +19,7 @@ def create(
     """
     if dashboard:
         if not dashboard_domain:
-            dashboard_domain = typer.prompt("Dashboard domain", default="")
+            dashboard_domain = typer.prompt("dashboard domain", default="")
         if not admin_user:
             admin_user = typer.prompt("Admin username", default="")
         if not admin_password:

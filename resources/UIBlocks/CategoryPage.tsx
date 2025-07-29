@@ -44,7 +44,7 @@ const CategoryPage: React.FC = () => {
     { id: "brand", label: "Brand", options: brands },
     {
       id: "rating",
-      label: "Rating",
+      label: "rating",
       options: ["4★ & Above", "3★ & Above", "2★ & Above", "1★ & Above"],
     },
     {

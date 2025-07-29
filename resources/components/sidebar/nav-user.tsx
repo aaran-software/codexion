@@ -29,7 +29,7 @@ import {
 } from "./sidebar";
 
 import { useNavigate } from "react-router-dom";
-import HelpMenu from "./HelpMenu";
+import HelpMenu from "./help-menu";
 import { useRef, useState } from "react";
 import { useAppContext } from "../../../apps/global/AppContaxt";
 import { logoutUser } from "../../../apps/global/auth/logout";

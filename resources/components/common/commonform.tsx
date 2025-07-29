@@ -5,14 +5,14 @@ import Switch from "../input/switch";
 import Checkbox from "../input/checkbox";
 import Alert from "../alert/alert";
 import MultiCheckbox from "../input/multiCheckbox";
-import {Datepicker} from "../Datepicker/datepicker";
+import {Datepicker} from "../datepicker/datepicker";
 import CommonTable, {type TableRowData} from "./commontable";
 import {format} from "date-fns";
 import apiClient from "../../../resources/global/api/apiClients";
 import ImageButton from "../button/ImageBtn";
 import FloatingInput from "../input/FloatingInput";
 import DropdownRead from "../input/dropdown-read";
-import PasswordInput from "../SecondaryInput/PasswordInput";
+import Password_Input from "../secondary_input/password_Input";
 import FileUpload from "../input/FileInput";
 import Button from "../button/Button";
 
@@ -430,7 +430,7 @@ function isDate(val: unknown): val is Date {
                                             );
                                         case "password":
                                             return (
-                                                <PasswordInput {...commonProps} label={field.label}/>
+                                                <Password_Input {...commonProps} label={field.label}/>
                                             );
                                         case "date":
                                             return (

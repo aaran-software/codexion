@@ -11,14 +11,14 @@ import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "../../../../resources/components/Sidebar/sidebar";
+} from "@resources/components/sidebar/sidebar";
 import { useEffect, useState } from "react";
 import { useAppContext } from "../../../../apps/global/AppContaxt";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../../../apps/global/auth/AuthContext";
-import Dashboard from "../../../../resources/components/Dashboard/Dashboard";
-import AppHeader from "../../../../resources/components/Header/AppHeader";
-import { AppSidebar } from "../../../../resources/components/Sidebar/app-sidebar";
+import Dashboard from "@resources/components/dashboard/Dashboard";
+import AppHeader from "@resources/components/header/AppHeader";
+import { AppSidebar } from "@resources/components/sidebar/app-sidebar";
 import ScrollToTopButton from "../../../../resources/components/common/scrolltotop";
 
 export default function Admin() {
@@ -66,13 +66,13 @@ useEffect(() => {
 
   return (
     <SidebarProvider className="flex flex-col min-h-screen bg-dashboard-background text-dashboard-foreground">
-      {/* Sticky App Header */}
+      {/* Sticky App header */}
       <div className="sticky top-0 z-50 bg-background">
         <AppHeader />
       </div>
 
       <div className="flex flex-1 min-h-0">
-        {/* Sidebar */}
+        {/* sidebar */}
         <AppSidebar />
 
         {/* Content Area */}
@@ -106,7 +106,7 @@ useEffect(() => {
           {/* Scrollable Main Area */}
           <main className="flex-1 overflow-auto">
             {component === undefined ? (
-              // Render default component (Dashboard)
+              // Render default component (dashboard)
               <div className="w-full min-h-full">
                 <Dashboard />
               </div>

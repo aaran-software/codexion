@@ -86,7 +86,7 @@ def up(
 
             if proxy == "traefik":
                 email = typer.prompt("📧 Enter admin email", default="admin@site.com")
-                dash_domain = typer.prompt("🌐 Dashboard domain (optional)", default="dashboard.site.com")
+                dash_domain = typer.prompt("🌐 dashboard domain (optional)", default="dashboard.site.com")
                 traefik_user = typer.prompt("👤 Admin user (optional)", default="admin")
                 traefik_pass = typer.prompt("🔐 Admin password (optional)", default="adminpass")
                 create_traefik_compose(
@@ -123,7 +123,7 @@ def up(
                 proxy = typer.prompt("🌐 Select reverse proxy (traefik / nginx)?", default="traefik")
                 if proxy == "traefik":
                     email = typer.prompt("📧 Enter admin email", default="admin@site.com")
-                    dash_domain = typer.prompt("🌐 Dashboard domain (optional)", default="dashboard.site.com")
+                    dash_domain = typer.prompt("🌐 dashboard domain (optional)", default="dashboard.site.com")
                     traefik_user = typer.prompt("👤 Admin user (optional)", default="admin")
                     traefik_pass = typer.prompt("🔐 Admin password (optional)", default="adminpass")
                     create_traefik_compose(

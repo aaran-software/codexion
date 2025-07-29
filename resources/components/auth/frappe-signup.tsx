@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { Card, CardContent, CardHeader, CardTitle } from "../Chart/card"
+import { Card, CardContent, CardHeader, CardTitle } from "../chart/card"
 import Button from "../button/Button"
 import FloatingInput from "../input/FloatingInput"
 import frappeBaseApi from "../../global/api/frappeBaseApi";

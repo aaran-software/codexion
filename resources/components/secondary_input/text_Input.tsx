@@ -8,7 +8,7 @@ interface TextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   err: string;
 }
 
-export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
+export const Text_Input = forwardRef<HTMLInputElement, TextInputProps>(
   ({ id, label, err, className = "", ...props }, ref) => {
     return (
       <div className="w-full items-start flex flex-col gap-1">
@@ -37,4 +37,4 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
   }
 );
 
-TextInput.displayName = "TextInput";
+Text_Input.displayName = "Text_Input";

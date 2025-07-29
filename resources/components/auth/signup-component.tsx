@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { cn } from "../../global/library/utils"
-import { Card, CardContent, CardHeader, CardTitle } from "../Chart/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@resources/components/chart/card"
 import PasswordInput from "../input/passwordInput"
 import { useAppContext } from "../../../apps/global/AppContaxt"
 import FloatingInput from "../../../resources/components/input/FloatingInput";

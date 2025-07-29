@@ -1,7 +1,7 @@
 import FloatingInput from "../../resources/components/input/FloatingInput";
 import ImageButton from "../components/button/ImageBtn";
 import { TextArea } from "../components/input/TextArea";
-import RadioGroup from "../components/RadioGroup/RadioGroup";
+import RadioGroup from "@resources/components/radioGroup/RadioGroup";
 import { useState } from "react";
 import Button from "../../resources/components/button/Button";
 

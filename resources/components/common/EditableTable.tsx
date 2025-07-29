@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from "react";
-import { DatePicker } from "../SecondaryInput/Datepicker";
+import { Datepicker } from "../secondary_input/datepicker";
 import MultiCheckbox from "../input/multiCheckbox";
 import Switch from "../input/switch";
 import Checkbox from "../input/checkbox";
-import { TextArea } from "../SecondaryInput/TextArea";
-import Dropdown from "../SecondaryInput/Dropdown";
-import PasswordInput from "../SecondaryInput/PasswordInput";
+import { Text_area } from "../secondary_input/text_area";
+import Dropdown from "../secondary_input/dropdown";
+import Password_Input from "../secondary_input/password_Input";
 import AnimateButton from "../button/animatebutton";
 import ImageButton from "../button/ImageBtn";
-import DropdownRead from "../SecondaryInput/DropdownRead";
+import Dropdown_read from "../secondary_input/dropdown_read";
 import FileUpload from "../input/FileInput"; // ✅ Ensure this path is correct
-import { TextInput } from "../SecondaryInput/TextInput";
+import { Text_Input } from "../secondary_input/text_Input";
 
 export type FieldType =
   | "textinput"
@@ -194,9 +194,9 @@ function EditableTable({
 
     switch (field.type) {
       case "textinput":
-        return <TextInput id={""} err={""} {...commonProps} label={field.label} type="text" />;
+        return <Text_Input id={""} err={""} {...commonProps} label={field.label} type="text" />;
       case "textarea":
-        return <TextArea err={""} {...commonProps} label={field.label} />;
+        return <Text_area err={""} {...commonProps} label={field.label} />;
       case "dropdown":
       case "dropdownmultiple":
         return (
@@ -214,7 +214,7 @@ function EditableTable({
       case "dropdownread":
       case "dropdownreadmultiple":
         return (
-          <DropdownRead
+          <Dropdown_read
             id={""} err={""} placeholder={""}
             {...commonProps}
             label={field.label}
@@ -246,12 +246,12 @@ function EditableTable({
           options={field.options || []}          />
         );
       case "password":
-        return <PasswordInput value={""} onChange={function (): void {
+        return <Password_Input value={""} onChange={function (): void {
           throw new Error("Function not implemented.");
         } } {...commonProps} label={field.label} />;
       case "date":
         return (
-          <DatePicker
+          <Datepicker
             {...commonProps}
             model={value instanceof Date ? value : value ? new Date(value) : undefined}
             label={field.label}

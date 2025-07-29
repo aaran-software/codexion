@@ -12,7 +12,7 @@ interface PasswordInputProps {
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
+const Password_Input = forwardRef<HTMLInputElement, PasswordInputProps>(
   (
     {
       id,
@@ -88,6 +88,6 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
   }
 );
 
-PasswordInput.displayName = "PasswordInput";
+Password_Input.displayName = "Password_Input";
 
-export default PasswordInput;
+export default Password_Input;

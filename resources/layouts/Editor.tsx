@@ -2,7 +2,7 @@ import FloatingInput from "../../resources/components/input/FloatingInput";
 import Button from "../../resources/components/button/Button";
 import React, {useState, useRef, useEffect, useCallback} from "react";
 import ImageBtn from "../components/button/ImageBtn";
-import Tooltipcomp from "../components/Tooltip/tooltipcomp";
+import Tooltipcomp from "@resources/components/tooltip/tooltipcomp";
 import apiClient from "../../resources/global/api/apiClients";
 
 export default function Editor({apiPath}: { apiPath: string }) {

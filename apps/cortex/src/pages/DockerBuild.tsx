@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import Button from "../../../../resources/components/button/Button";
 import FloatingInput from "../../../../resources/components/input/FloatingInput";
-import RadioGroup from "../../../../resources/components/RadioGroup/RadioGroup";
+import RadioGroup from "@resources/components/radioGroup/RadioGroup";
 import DropdownRead from "@resources/components/input/dropdown-read";
 
 function DockerBuild() {

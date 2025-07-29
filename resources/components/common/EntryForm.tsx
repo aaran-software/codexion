@@ -6,7 +6,7 @@ import Checkbox from "../input/checkbox";
 import Alert from "../alert/alert";
 import MultiCheckbox from "../input/multiCheckbox";
 import PasswordInput from "../input/passwordInput";
-import { Datepicker } from "../Datepicker/datepicker";
+import { Datepicker } from "../datepicker/datepicker";
 import FileUpload from "../input/FileInput";
 import DropdownRead from "../input/dropdown-read";
 import ImageButton from "../button/ImageBtn";
@@ -104,7 +104,7 @@ function EntryForm({
   return (
     <div className={wrapperClass}>
       <div className={containerClass}>
-        {/* Header */}
+        {/* header */}
         <div className="flex justify-between mx-2">
           <h1 className="text-md py-2 text-foreground/50">{formName} Form</h1>
           <ImageButton

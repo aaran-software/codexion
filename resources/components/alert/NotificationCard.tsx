@@ -45,7 +45,7 @@ const NotificationCard: React.FC<NotificationCardProps> = ({ items, onClose }) =
     >
       {visibleItems.map((item, index) => (
         <div key={`${item.date}-${index}`} className="flex gap-x-3 mb-3">
-          {/* Timeline indicator */}
+          {/* timeline indicator */}
           <div className="relative">
             <div className="relative z-10 size-7 flex justify-center items-center">
               <div className="size-2 rounded-full bg-gray-400 dark:bg-neutral-600"></div>

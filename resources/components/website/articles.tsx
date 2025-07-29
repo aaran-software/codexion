@@ -1,4 +1,4 @@
-// Articles.tsx
+// articles.tsx
 import { useState } from 'react';
 import Button from "../button/Button";
 

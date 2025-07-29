@@ -35,7 +35,7 @@ interface ChartLineProps {
 }
 
 export default function ChartLine({
-  title = "Area Chart",
+  title = "Area chart",
   description = "Showing visitors for",
   data,
   config,

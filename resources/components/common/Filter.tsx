@@ -1,6 +1,6 @@
 // Filter.tsx
 import React from "react";
-import { TextInput } from "../SecondaryInput/TextInput";
+import { Text_Input } from "@resources/components/secondary_input/text_Input";
 import FloatingInput from "../../../resources/components/input/FloatingInput";
 
 interface FilterProps {

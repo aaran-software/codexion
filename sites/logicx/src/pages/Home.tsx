@@ -1,17 +1,17 @@
 import React, {useState} from 'react';
 import Button from '../../../../resources/components/button/Button';
-import Plan from '../../../../resources/components/website/Plan';
-import Carousel from '../../../../resources/components/Carousel';
+import Plan from '../../../../resources/components/website/plan';
+import Carousel from '../../../../resources/components/carousel';
 import {Link as ScrollLink} from 'react-scroll';
 import ScrollToTop from '../../../../resources/components/common/scrolltotop';
-import Team from '../../../../resources/components/website/Team';
-import Articles from '../../../../resources/components/website/Articles';
-import Review from '../../../../resources/components/website/Review';
+import Team from '../../../../resources/components/website/team';
+import Articles from '../../../../resources/components/website/articles';
+import Review from '../../../../resources/components/website/review';
 import About from './About';
 import Services from './Services';
 import Contact from './Contact';
 import Industry from './Industry';
-import HeaderPortfolio from "../../../../resources/components/Header/header-portfolio";
+import HeaderPortfolio from "../../../../resources/components/header/header-portfolio";
 import FooterPortfolio from "../../../../resources/components/footer/footer-portfolio";
 import Editor from "../../../../resources/layouts/Editor";
 

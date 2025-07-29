@@ -41,7 +41,7 @@ export default function ChartCount({
   data,
   config,
   initialSelectedYear,
-  chartTitle = "Bar Chart",
+  chartTitle = "Bar chart",
   chartDescription = "Monthly data",
   barDataKey,
   barColor = "var(--chart-1)", // Default color

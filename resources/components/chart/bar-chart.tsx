@@ -36,7 +36,7 @@ interface ChartProps {
 export default function Chart({
   data,
   config,
-  title = "Bar Chart - Filter by Year",
+  title = "Bar chart - Filter by Year",
   description = "Showing total visitors for selected year",
 }: ChartProps) {
   const years = [...new Set(data.map((d) => d.year))].sort((a, b) => b - a);
