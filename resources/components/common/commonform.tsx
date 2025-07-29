@@ -1,10 +1,10 @@
 import {useEffect, useRef, useState} from "react";
-import {TextArea} from "../Input/TextArea";
-import Dropdown from "../Input/Dropdown";
-import Switch from "../Input/switch";
-import Checkbox from "../Input/checkbox";
+import {TextArea} from "../input/TextArea";
+import Dropdown from "../input/Dropdown";
+import Switch from "../input/switch";
+import Checkbox from "../input/checkbox";
 import Alert from "../Alert/Alert";
-import MultiCheckbox from "../Input/MultiCheckbox";
+import MultiCheckbox from "../input/MultiCheckbox";
 import {DatePicker} from "../Datepicker/Datepicker";
 import CommonTable, {type TableRowData} from "./commontable";
 import {format} from "date-fns";

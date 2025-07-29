@@ -60,7 +60,7 @@ def login(data: LoginRequest, db: Session = Depends(get_db)):
 @router.post("/logout")
 def logout(request: Request, db: Session = Depends(get_db)):
     try:
-        token = extract_token_from_request(request)  # From header/cookie
+        token = extract_token_from_request(request)  # From Header/cookie
         user_id = get_user_id_from_token(token, db, verify=False)  # skip strict verify
         db_token = Token(token=token, user_id=user_id)
         db.add(db_token)
@@ -73,7 +73,7 @@ def logout(request: Request, db: Session = Depends(get_db)):
 
 # logout purpose
 def extract_token_from_request(request: Request) -> str:
-    """Extracts the Bearer token from Authorization header."""
+    """Extracts the Bearer token from Authorization Header."""
     auth_header = request.headers.get("Authorization")
     if not auth_header or not auth_header.startswith("Bearer "):
         return None

@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { cropImageToSize } from "../External/cropImageToSize";
+import { cropImageToSize } from "../external/cropImageToSize";
 
 interface FilePreview {
   file: File;

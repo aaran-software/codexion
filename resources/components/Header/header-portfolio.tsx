@@ -2,7 +2,6 @@ import {useState} from 'react';
 import {Link as ScrollLink} from 'react-scroll';
 import {IoMdMenu} from "react-icons/io";
 import {IoClose} from "react-icons/io5";
-import Button from '../../../frontend/react/codexsun/src/Components/Input/Button';
 import {useAppSettings} from "../../../apps/global/useSettings";
 import {useNavigate} from "react-router-dom";
 
