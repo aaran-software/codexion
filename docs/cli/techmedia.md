@@ -37,6 +37,7 @@ bench new-site erp.techmedia.co.in \
   --mariadb-root-username root \
   --mariadb-root-password DbPass1@@ \
   --db-host mariadb \
+  --db-name erp_techmedia_co_in_db \
   --mariadb-user-host-login-scope='%'
 
 
@@ -53,44 +54,52 @@ bench get-app erpnext --branch version-15
 bench --site erp.techmedia.co.in install-app erpnext
 ```
 
-```sh
+```
 bench start
 ```
-```sh
+
+```
 npm install frappe-ui
 ```
-```sh
+
+```
 bench get-app payments
 ```
-```sh
+
+```
 bench --site erp.techmedia.co.in install-app payments
 ```
-```sh
+
+```
 bench get-app hrms
 ```
-```sh
+
+```
 bench --site erp.techmedia.co.in install-app hrms
 ```
-```sh
-```sh
+
+```
 bench get-app crm
 ```
-```sh
+
+```
 bench --site erp.techmedia.co.in install-app crm
 ```
-```sh
+
+```
 bench get-app builder
 ```
-```sh
+
+```
 bench --site erp.techmedia.co.in install-app builder
 ```
-```sh
+```
 bench get-app --branch version-15 https://github.com/resilient-tech/india-compliance.git
 ```
-```sh
+```
 bench --site erp.techmedia.co.in install-app india_compliance
 ```
-```sh
+```
 bench use erp.techmedia.co.in
 ```
 

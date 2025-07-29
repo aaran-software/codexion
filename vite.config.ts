@@ -59,7 +59,7 @@ export default defineConfig(({ mode }) => {
 
     },
     server: {
-      port: Number(env.APP_PORT) || 5173,
+      port: Number(env.APP_PORT) || 3001,
     },
   }
 })

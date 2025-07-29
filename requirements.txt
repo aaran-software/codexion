@@ -19,3 +19,4 @@ typer~=0.16.0
 passlib
 bcrypt
 PyYAML~=6.0.2
+gunicorn>=21.2.0
