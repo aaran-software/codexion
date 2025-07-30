@@ -8,7 +8,7 @@ interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement
   err: string;
 }
 
-export const Text_area = forwardRef<HTMLTextAreaElement, TextAreaProps>(
+export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   ({ id, label, err, className = "", rows = 4, ...props }, ref) => {
     const generatedId = useId();
     const textareaId = id || generatedId;
@@ -41,4 +41,4 @@ export const Text_area = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   }
 );
 
-Text_area.displayName = "Text_area";
+TextArea.displayName = "TextArea";

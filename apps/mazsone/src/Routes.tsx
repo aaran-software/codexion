@@ -1,6 +1,5 @@
 import React from 'react'
 import {Routes, Route, useLocation} from 'react-router-dom'
-import Login from "../../global/auth/Login";
 import SignUp from "../../global/auth/Signup";
 import ProtectedRoute from "../../global/auth/ProtectedRoute";
 import Admin from "./pages/Admin";
@@ -11,8 +10,8 @@ import CategoryPage from "../../../resources/UIBlocks/CategoryPage";
 import Wishlist from "../../../resources/UIBlocks/Wishlist";
 import Cart from "./pages/Cart";
 import Footer from "../../../resources/components/footer/Footer";
-import Header from "@resources/components/header/Header";
-import {FrappeLoginForm} from "@resources/components/auth/frappe-login";
+import Header from "../../../resources/components/header/Header";
+import {FrappeLoginForm} from "../../../resources/components/auth/frappe-login";
 
 function AppRoutes() {
     const location = useLocation();
@@ -22,7 +21,7 @@ function AppRoutes() {
         location.pathname.startsWith('/dashboard');
     return (
         <div>
-                {!hideLayout && <Header/>}
+            {!hideLayout && <Header/>}
 
             <Routes>
 

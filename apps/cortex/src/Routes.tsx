@@ -1,29 +1,3 @@
-// import Login from "../../../../../../../apps/global/auth/Login";
-// import ProtectedRoute from "../../../../../../../apps/global/auth/ProtectedRoute";
-// import SignUp from "../../../../../../../apps/global/auth/Signup";
-// import Admin from "./pages/Admin";
-//
-// const Cortex = () => [
-//   {
-//     path: "/",
-//     element: <Login />
-//   },
-//   {
-//     path: "/signup",
-//     element: <SignUp />
-//   },
-//    {
-//     path: "/dashboard/:component?",
-//     element: (
-//       <ProtectedRoute>
-//         <Admin />
-//       </ProtectedRoute>
-//     ),
-//   },
-// ];
-//
-// export default Cortex;
-
 
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'

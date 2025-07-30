@@ -24,7 +24,7 @@ type AppContextType = {
 
 const APP_CODE = 'cxsun';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:4000';
+const API_URL = import.meta.env.API_URL || 'http://127.0.0.1:4001';
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
