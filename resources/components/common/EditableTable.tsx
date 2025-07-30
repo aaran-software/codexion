@@ -3,14 +3,14 @@ import { Datepicker } from "../secondary_input/datepicker";
 import MultiCheckbox from "../input/multi-checkbox";
 import Switch from "../input/switch";
 import Checkbox from "../input/checkbox";
-import { Text_area } from "../secondary_input/text_area";
 import Dropdown from "../secondary_input/dropdown";
 import Password_Input from "../secondary_input/password_Input";
 import AnimateButton from "../button/animatebutton";
 import ImageButton from "../button/ImageBtn";
 import Dropdown_read from "../secondary_input/dropdown_read";
-import FileUpload from "../input/fileInput"; // ✅ Ensure this path is correct
-import { Text_Input } from "../secondary_input/text_Input";
+import FileUpload from "../input/fileInput";
+import {TextInput} from "../secondary_input/TextInput";
+import {TextArea} from "../secondary_input/TextArea"; // ✅ Ensure this path is correct
 
 export type FieldType =
   | "textinput"
@@ -194,9 +194,9 @@ function EditableTable({
 
     switch (field.type) {
       case "textinput":
-        return <Text_Input id={""} err={""} {...commonProps} label={field.label} type="text" />;
+        return <TextInput id={""} err={""} {...commonProps} label={field.label} type="text" />;
       case "textarea":
-        return <Text_area err={""} {...commonProps} label={field.label} />;
+        return <TextArea err={""} {...commonProps} label={field.label} />;
       case "dropdown":
       case "dropdownmultiple":
         return (

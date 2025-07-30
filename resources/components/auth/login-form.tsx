@@ -1,9 +1,8 @@
 // src/components/LoginForm.tsx
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import Password_Input from "@resources/components/secondary_input/password_Input";
-// import {useAuth} from "@/pages/auth/AuthContext";
-import {Card, CardContent, CardHeader, CardTitle} from "@resources/components/chart/card";
+import Password_Input from "../../../resources/components/secondary_input/password_Input";
+import {Card, CardContent, CardHeader, CardTitle} from "../../../resources/components/chart/card";
 import {useAuth} from "../../../apps/global/auth/AuthContext";
 import {useAppContext} from "../../../apps/global/AppContaxt";
 import FloatingInput from "../input/floating-input";

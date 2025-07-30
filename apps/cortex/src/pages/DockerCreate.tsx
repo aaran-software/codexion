@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import Button from "../../../../resources/components/button/Button";
-import FloatingInput from "@resources/components/input/floating-input";
-import Radio_group from "@resources/components/radioGroup/radio_group";
+import FloatingInput from "../../../../resources/components/input/floating-input";
+import Radio_group from "../../../../resources/components/radioGroup/radio_group";
 
 function DockerCreate() {
     const API_URL = "http://127.0.0.1:4000";

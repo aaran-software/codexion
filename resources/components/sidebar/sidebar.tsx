@@ -20,7 +20,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@resources/components/tooltip/tooltip"
+} from "../../../resources/components/tooltip/tooltip"
 import ImageButton from "../button/ImageBtn"
 import { useEffect, useState } from "react"
 import {Button} from "../button";
