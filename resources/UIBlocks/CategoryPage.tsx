@@ -2,8 +2,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import frappeBaseApi from "../../resources/global/api/frappeBaseApi";
 import ImageButton from "../components/button/ImageBtn";
-import RangeSlider from "../components/input/RangeSlider";
-import DropdownRead from "../components/input/Dropdown-read";
+import RangeSlider from "../components/input/range-slider";
+import DropdownRead from "../components/input/dropdown-read";
 import Checkbox from "../components/input/checkbox";
 
 type ProductType = {
@@ -44,7 +44,7 @@ const CategoryPage: React.FC = () => {
     { id: "brand", label: "Brand", options: brands },
     {
       id: "rating",
-      label: "Rating",
+      label: "rating",
       options: ["4★ & Above", "3★ & Above", "2★ & Above", "1★ & Above"],
     },
     {

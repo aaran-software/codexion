@@ -12,7 +12,7 @@ from cortex.models.user import User
 
 router = APIRouter()
 
-router.include_router(auth_controller.router, prefix="", tags=["Auth"])
+router.include_router(auth_controller.router, prefix="", tags=["auth"])
 router.include_router(api.router, prefix="", tags=["purchases"])
 
 

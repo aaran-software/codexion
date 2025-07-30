@@ -1,7 +1,7 @@
-import FloatingInput from "../../resources/components/input/FloatingInput";
+import FloatingInput from "../components/input/floating-input";
 import ImageButton from "../components/button/ImageBtn";
-import { TextArea } from "../components/input/TextArea";
-import RadioGroup from "../components/RadioGroup/RadioGroup";
+import { TextArea } from "../components/input/text-area";
+import Radio_group from "@resources/components/radioGroup/radio_group";
 import { useState } from "react";
 import Button from "../../resources/components/button/Button";
 
@@ -91,7 +91,7 @@ Phone: +91 9876543210`,
             onClick={() => setShowForm(true)}
             className="border bg-update/20 w-full p-2 text-update border-update/90"
           />
-          <RadioGroup
+          <Radio_group
             name="address"
             defaultValue={choosenAddress}
             options={address}
@@ -178,7 +178,7 @@ Phone: +91 9876543210`,
             />
           </div>
 
-          <RadioGroup
+          <Radio_group
             name="timing"
             options={[
               { label: "Home (Every Day)", value: "home" },

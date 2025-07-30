@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import Button from "../../../../resources/components/button/Button";
-import FloatingInput from "../../../../resources/components/input/FloatingInput";
-import RadioGroup from "../../../../resources/components/RadioGroup/RadioGroup";
+import FloatingInput from "@resources/components/input/floating-input";
+import Radio_group from "@resources/components/radioGroup/radio_group";
 
 function DockerCreate() {
     const API_URL = "http://127.0.0.1:4000";
@@ -41,15 +41,15 @@ function DockerCreate() {
 
             <FloatingInput err={""} id={"name"} label={"Port"}/>
             <h3>Choose Database</h3>
-            <RadioGroup name={"db"} options={[{value: "mariadb", label: 'mariadb:3306'}, {
+            <Radio_group name={"db"} options={[{value: "mariadb", label: 'mariadb:3306'}, {
                 value: "mariadb",
                 label: 'mariadb:5746'
             }]}/>
             <FloatingInput err={""} id={"name"} label={"Port"}/>
             <h3>Choose Server</h3>
 
-            <RadioGroup name={"server"}
-                        options={[{value: "enginx", label: 'Enginx'}, {value: "traefik", label: 'Traefik'}]}/>
+            <Radio_group name={"server"}
+                         options={[{value: "enginx", label: 'Enginx'}, {value: "traefik", label: 'Traefik'}]}/>
             <FloatingInput err={""} id={"name"} label={"Dockerfile"}/>
             <Button label={"Submit"} className="border border-ring/30 bg-create text-create-foreground"/>
         </div>

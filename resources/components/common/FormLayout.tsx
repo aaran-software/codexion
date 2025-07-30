@@ -9,8 +9,8 @@ import Filter from "./Filter";
 import Drawer from "../drawer/Drawer";
 import {exportToCSV} from "../external/ExportToCSV";
 import AnimateButton from "../button/animatebutton";
-import DropdownRead from "../input/Dropdown-read";
-import Pagination from "../Pagination/Pagination";
+import DropdownRead from "../input/dropdown-read";
+import Pagination from "@resources/components/pagination/pagination";
 import {useEffect, useMemo, useRef, useState} from "react";
 import CommonForm, {
     type FieldGroup,
@@ -219,7 +219,7 @@ function FormLayout({
 
     return (
         <div className="w-full p-2 lg:pr-5">
-            {/* Table Header items */}
+            {/* Table header items */}
             <div ref={printRef} className="hidden print:block p-5">
                 <Print
                     head={printHead}

@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import { TextArea } from "../input/TextArea";
-import Dropdown from "../input/Dropdown";
+import { TextArea } from "../input/text-area";
+import Dropdown from "../input/dropdown";
 import Switch from "../input/switch";
 import Checkbox from "../input/checkbox";
-import Alert from "../alert/Alert";
-import MultiCheckbox from "../input/MultiCheckbox";
-import PasswordInput from "../input/passwordInput";
-import { DatePicker } from "../Datepicker/Datepicker";
-import FileUpload from "../input/FileInput";
-import DropdownRead from "../input/Dropdown-read";
+import Alert from "../alert/alert";
+import MultiCheckbox from "../input/multi-checkbox";
+import PasswordInput from "../input/password-input";
+import { Datepicker } from "../datepicker/datepicker";
+import FileUpload from "../input/fileInput";
+import DropdownRead from "../input/dropdown-read";
 import ImageButton from "../button/ImageBtn";
 import EditableTable from "./EditableTable";
-import FloatingInput from "../input/FloatingInput";
+import FloatingInput from "../input/floating-input";
 import Button from "../button/Button";
 
 type FieldType =
@@ -104,7 +104,7 @@ function EntryForm({
   return (
     <div className={wrapperClass}>
       <div className={containerClass}>
-        {/* Header */}
+        {/* header */}
         <div className="flex justify-between mx-2">
           <h1 className="text-md py-2 text-foreground/50">{formName} Form</h1>
           <ImageButton
@@ -264,7 +264,7 @@ function EntryForm({
                               );
                             case "date":
                               return (
-                                <DatePicker
+                                <Datepicker
                                   id={field.id}
                                   label={field.label}
                                   model={

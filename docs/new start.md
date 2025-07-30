@@ -276,7 +276,9 @@ cd /home/devops && zip -r frappe-bench.zip frappe-bench && mkdir -p /home/devops
 
 npm install frappe-ui
 
- bench --site dev.aaranerp.org install-app gameplan
+ 
+ bench get-app https://github.com/frappe/gameplan --branch develop
+ bench --site erp.logicx.in install-app gameplan
  
  bench get-app https://github.com/frappe/wiki 
  bench --site soft.aaranerp.com install-app wiki
@@ -287,6 +289,8 @@ npm install frappe-ui
 
   bench get-app https://github.com/frappe/helpdesk --branch develop
   bench --site dev.aaranerp.com install-app helpdesk
+  
+  bench --site erp.tmnext.in install-app helpdesk
   
   bench get-app https://github.com/frappe/print_designer  --branch develop
   bench --site dev.aaranerp.com install-app print_designer 

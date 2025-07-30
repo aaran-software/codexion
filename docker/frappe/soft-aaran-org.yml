@@ -6,6 +6,8 @@ services:
       - "8001:8000"
     volumes:
       - ./public/soft_aaran_org:/home/devops/shared
+      - ./apps:/home/frappe/frappe-bench/apps
+      - ./sites:/home/frappe/frappe-bench/sites
     networks:
       - codexion-network
     restart: unless-stopped

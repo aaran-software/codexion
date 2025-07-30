@@ -51,9 +51,10 @@ CMD ["bash", "-c", "\
   else \
     echo 'Starting frontend (port 3001) and backend (port 4001)...'; \
     concurrently \
-      \\\"uvicorn cortex.main:app --host 0.0.0.0 --port 4001 --reload\\\" \
-      \\\"npm run dev -- --host 0.0.0.0 --port 3001\\\"; \
+      'uvicorn cortex.main:app --host 0.0.0.0 --port 4001 --reload' \
+      'npm run dev -- --host 0.0.0.0 --port 3001'; \
   fi"]
+
 
 
 
