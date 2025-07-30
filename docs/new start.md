@@ -2,19 +2,19 @@
 🧱 1. Build Docker and Tag the Image
 Even though you named the stage codexion-cloud, Docker won’t tag it by default. You need to build and tag it manually:
 
+if not in root folder
+
+```
+docker build -t codexion-cloud:v1 -f docker/frappe/Dockerfile  docker/frappe
+```
+
+if in server at docker folder
+
 ```
 docker build -t codexion-cloud:v1 .
 ```
 
-if not in root folder
-
-```
-docker build -t codexion-cloud:v1 -f docker/Dockerfile  docker/
-```
-
 Now, codexion-cloud:v1 is a full Docker image that you can use anywhere.
-
-
 
 ### Step 2 : To create custom network to share between containers 
 ```
