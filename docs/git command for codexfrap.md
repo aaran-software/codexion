@@ -32,3 +32,6 @@ git fetch origin
 git diff origin/develop..develop
 
 git pull --rebase origin develop
+
+
+ git reset --soft HEAD~1
