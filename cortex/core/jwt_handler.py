@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
 
 from cortex.models.token import Token
-from cortex.core.config import get_settings
+from cortex.core.settings import get_settings
 
 
 # Exception for invalid credentials

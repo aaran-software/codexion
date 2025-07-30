@@ -1,6 +1,10 @@
+# cortex/core/settings.py
+
 from pydantic_settings import BaseSettings
 from functools import lru_cache
+import os
 
+ENV_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".env"))
 
 class Settings(BaseSettings):
     DB_ENGINE: str = "sqlite"
@@ -19,9 +23,8 @@ class Settings(BaseSettings):
         return get_database_url()
 
     class Config:
-        env_file = "../.env"
+        env_file = ENV_PATH
         extra = "allow"
-
 
 @lru_cache()
 def get_settings():

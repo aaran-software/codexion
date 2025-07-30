@@ -17,7 +17,7 @@ RUN useradd -m -s /bin/bash devops && echo "devops:sundar" | chpasswd
 
 # Install system deps + Node.js (v22) and tools
 RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y sudo curl git build-essential libpq-dev gnupg ca-certificates && \
+    apt-get install -y sudo curl git build-essential libpq-dev gnupg ca-certificates nano && \
     curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
     apt-get install -y nodejs && \
     npm install -g yarn vite concurrently && \
@@ -54,7 +54,4 @@ CMD ["bash", "-c", "\
       'uvicorn cortex.main:app --host 0.0.0.0 --port 4001 --reload' \
       'npm run dev -- --host 0.0.0.0 --port 3001'; \
   fi"]
-
-
-
 

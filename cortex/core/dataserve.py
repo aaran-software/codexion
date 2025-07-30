@@ -1,7 +1,7 @@
 from pathlib import Path
 
 def get_database_url():
-    from cortex.core.config import get_settings
+    from cortex.core.settings import get_settings
     settings = get_settings()
 
     db_engine = settings.DB_ENGINE.lower()

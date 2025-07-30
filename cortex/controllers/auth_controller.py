@@ -10,7 +10,7 @@ from cortex.database.schemas.auth import LoginRequest
 from cortex.core.hashing import verify_password  # Make sure this is imported
 from cortex.core.jwt_handler import create_access_token
 from cortex.core.logger import logger
-from cortex.core.config import get_settings
+from cortex.core.settings import get_settings
 from sqlalchemy.orm import Session
 from cortex.database.schemas import user
 from cortex.core import hashing

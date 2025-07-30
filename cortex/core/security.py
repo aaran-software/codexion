@@ -5,7 +5,7 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 
 from cortex.DTO.dal import get_db
-from cortex.core.config import get_settings
+from cortex.core.settings import get_settings
 from cortex.models.token import Token
 from cortex.models.user import User  # ✅ Add this import
 
