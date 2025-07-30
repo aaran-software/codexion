@@ -39,7 +39,7 @@ def on_startup():
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to sundar Codexion API"}
+    return {"message": "Welcome to sundar asfsdfsdf Codexion API"}
 
 if __name__ == "__main__":
     import uvicorn
