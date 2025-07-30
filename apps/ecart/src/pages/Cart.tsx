@@ -1,6 +1,5 @@
 import { useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import vehicles from "../../public/assets/category/vehicles.png";
 import AnimateButton from "../../../../resources/components/button/animatebutton";
 import ImageButton from "../../../../resources/components/button/ImageBtn";
 import Button from "../../../../resources/components/button/Button";

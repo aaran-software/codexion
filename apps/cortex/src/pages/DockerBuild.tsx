@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
 import Button from "../../../../resources/components/button/Button";
-import FloatingInput from "@resources/components/input/floating-input";
-import Radio_group from "@resources/components/radioGroup/radio_group";
-import DropdownRead from "@resources/components/input/dropdown-read";
+import FloatingInput from "../../../../resources/components/input/floating-input";
+import Radio_group from "../../../../resources/components/radioGroup/radio_group";
+import DropdownRead from "../../../../resources/components/input/dropdown-read";
 
 function DockerBuild() {
     const API_URL = "http://127.0.0.1:4000";

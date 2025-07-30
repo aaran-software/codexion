@@ -11,14 +11,14 @@ import {
     SidebarInset,
     SidebarProvider,
     SidebarTrigger,
-} from "@resources/components/sidebar/sidebar";
+} from "../../../../resources/components/sidebar/sidebar";
 import {useEffect, useState} from "react";
 import {useAppContext} from "../../../../apps/global/AppContaxt";
 import {useNavigate, useParams} from "react-router-dom";
 import {useAuth} from "../../../../apps/global/auth/AuthContext";
-import Dashboard from "@resources/components/dashboard/Dashboard";
-import AppHeader from "@resources/components/header/AppHeader";
-import {AppSidebar} from "@resources/components/sidebar/app-sidebar";
+import Dashboard from "../../../../resources/components/dashboard/Dashboard";
+import AppHeader from "../../../../resources/components/header/AppHeader";
+import {AppSidebar} from "../../../../resources/components/sidebar/app-sidebar";
 import ScrollToTopButton from "../../../../resources/components/common/scrolltotop";
 import DockerCreate from "./DockerCreate";
 import DockerBuild from "./DockerBuild";
