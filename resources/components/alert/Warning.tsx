@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Card, CardAction, CardContent, CardHeader } from '@resources/components/chart/card';
+import { Card, CardAction, CardContent, CardHeader } from '../../../resources/components/chart/card';
 import AnimateButton from '../button/animatebutton';
 
 interface WarningProps {
