@@ -13,3 +13,5 @@ copy all from root folder as it is  for further development
 
 package.json at root folder
 .env.sample after install copy this and create .env
+
+git updates are working
