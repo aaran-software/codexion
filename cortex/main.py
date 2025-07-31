@@ -2,6 +2,7 @@
 
 import logging
 from fastapi import FastAPI
+from fastapi.routing import APIRoute
 from fastapi.middleware.cors import CORSMiddleware
 
 # Ensure .env exists before loading settings
@@ -24,6 +25,9 @@ app = FastAPI(
 settings = get_settings()
 
 app.include_router(api.router, prefix="/api")
+for route in app.routes:
+    if isinstance(route, APIRoute):
+        print(f"{route.path} -> {route.name}")
 
 app.add_middleware(
     CORSMiddleware,

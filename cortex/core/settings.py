@@ -16,11 +16,17 @@ class Settings(BaseSettings):
     JWT_SECRET_KEY: str = "your-super-secret-key"
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
+    # git_url: str = "https://github.com/AARAN-SOFTWARE/codexion.git"
+
+    @property
+    def git_url(self) -> str:
+        return "E:/Workspace/codexion"
 
     @property
     def DATABASE_URL(self) -> str:
         from cortex.core.dataserve import get_database_url
         return get_database_url()
+
 
     class Config:
         env_file = ENV_PATH
