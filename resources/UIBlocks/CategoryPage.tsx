@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import frappeBaseApi from "../../resources/global/api/frappeBaseApi";
+import apiClient from "../../resources/global/api/apiClients";
 import ImageButton from "../components/button/ImageBtn";
 import RangeSlider from "../components/input/range-slider";
 import DropdownRead from "../components/input/dropdown-read";
@@ -57,12 +57,12 @@ const CategoryPage: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await frappeBaseApi.get("/api/resource/Product");
+        const res = await apiClient.get("/api/resource/Product");
         const items = res.data.data || [];
 
         const detailPromises = items.map((item: any) => {
           const itemName = encodeURIComponent(item.name);
-          return frappeBaseApi
+          return apiClient
             .get(`/api/resource/Product/${itemName}`)
             .then((r) => r.data.data)
             .catch(() => null);
@@ -135,8 +135,8 @@ const CategoryPage: React.FC = () => {
   useEffect(() => {
     const fetchDropdownData = async () => {
       try {
-        const categoryRes = await frappeBaseApi.get("/api/resource/Category");
-        const brandRes = await frappeBaseApi.get("/api/resource/Brand");
+        const categoryRes = await apiClient.get("/api/resource/Category");
+        const brandRes = await apiClient.get("/api/resource/Brand");
 
         setCategories(categoryRes.data.data.map((item: any) => item.name));
         setBrands(brandRes.data.data.map((item: any) => item.name));

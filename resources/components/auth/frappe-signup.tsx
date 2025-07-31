@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { Card, CardContent, CardHeader, CardTitle } from "../chart/card"
 import Button from "../button/Button"
 import FloatingInput from "../input/floating-input"
-import frappeBaseApi from "../../global/api/frappeBaseApi";
+import apiClient from "../../global/api/apiClients";
 import {cn} from "../../global/library/utils";
 import PasswordInput from "../input/password-input";
 
@@ -28,9 +28,9 @@ export function SignupComponent({
     }
 
     try {
-      await frappeBaseApi.get("/sanctum/csrf-cookie")
+      await apiClient.get("/sanctum/csrf-cookie")
 
-      await frappeBaseApi.post("/api/register", {
+      await apiClient.post("/api/register", {
         name,
         email,
         password,
