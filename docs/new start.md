@@ -293,7 +293,7 @@ npm install frappe-ui
   bench --site erp.tmnext.in install-app helpdesk
   
   bench get-app https://github.com/frappe/print_designer  --branch develop
-  bench --site dev.aaranerp.com install-app print_designer 
+  bench --site erp.aaranerp.com install-app print_designer 
   
   bench get-app https://github.com/frappe/education  --branch develop
   bench --site dev.aaranerp.com install-app education 
