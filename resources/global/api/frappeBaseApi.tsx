@@ -7,7 +7,7 @@ const frappeBaseApi = axios.create({
 
 frappeBaseApi.interceptors.request.use(
   (config) => {
-    const token = "token 8e530899aabab95:3849b71bc4a019d";
+    const token = "token 952cb80a43294ad:664a957650e7386";
     if (token) {
       config.headers["Authorization"] = token;
       config.headers["Content-Type"] = "application/json";

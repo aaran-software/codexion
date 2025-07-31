@@ -1,10 +1,12 @@
-# cortex/core/settings.py
-
 from pydantic_settings import BaseSettings
 from functools import lru_cache
 import os
 
-ENV_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".env"))
+# Path to .env file (2 levels up from this file)
+env_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".env"))
+
+# Compute project root from env_path
+project_root = os.path.dirname(env_path)
 
 class Settings(BaseSettings):
     DB_ENGINE: str = "sqlite"
@@ -18,12 +20,16 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
 
     @property
+    def git_url(self) -> str:
+        return project_root
+
+    @property
     def DATABASE_URL(self) -> str:
         from cortex.core.dataserve import get_database_url
         return get_database_url()
 
     class Config:
-        env_file = ENV_PATH
+        env_file = env_path
         extra = "allow"
 
 @lru_cache()

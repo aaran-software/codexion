@@ -2,7 +2,9 @@
 
 import logging
 from fastapi import FastAPI
+from fastapi.routing import APIRoute
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import false
 
 # Ensure .env exists before loading settings
 from cortex.core.startup import ensure_env_file
@@ -24,6 +26,9 @@ app = FastAPI(
 settings = get_settings()
 
 app.include_router(api.router, prefix="/api")
+for route in app.routes:
+    if isinstance(route, APIRoute):
+        print(f"{route.path} -> {route.name}")
 
 app.add_middleware(
     CORSMiddleware,
@@ -39,8 +44,8 @@ def on_startup():
 
 @app.get("/")
 async def root():
-    return {"message": "Welcome to Codexion API"}
+    return {"message": "Welcome to sundar asfsdfsdf Codexion API"}
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="127.0.0.1", port=4001, reload=True)
+    uvicorn.run("main:app", host="127.0.0.1", port=4001, reload=False)

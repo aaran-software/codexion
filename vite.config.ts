@@ -5,7 +5,9 @@ import * as path from 'path'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
+
   const appName = env.APP_TYPE || 'cxsun' // e.g., 'cxsun', 'landing', 'admin'
+
   const appCategory = env.APP_CATEGORY || 'apps' // 'apps' or 'sites'
 
   // 🔥 Dynamic root

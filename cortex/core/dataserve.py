@@ -1,4 +1,5 @@
 from pathlib import Path
+from urllib.parse import quote_plus
 
 def get_database_url():
     from cortex.core.settings import get_settings
@@ -20,10 +21,14 @@ def get_database_url():
 
         return f"sqlite:///{db_path.as_posix()}"
 
+    # Encode username and password
+    user = quote_plus(settings.DB_USER)
+    password = quote_plus(settings.DB_PASS)
+
     if db_engine == "mysql":
-        return f"mysql+pymysql://{settings.DB_USER}:{settings.DB_PASS}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}"
+        return f"mysql+pymysql://{user}:{password}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}"
 
     if db_engine == "postgresql":
-        return f"postgresql://{settings.DB_USER}:{settings.DB_PASS}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}"
+        return f"postgresql://{user}:{password}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}"
 
     raise ValueError(f"Unsupported DB_ENGINE: {db_engine}")
