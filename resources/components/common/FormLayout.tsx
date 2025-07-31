@@ -10,7 +10,7 @@ import Drawer from "../drawer/Drawer";
 import {exportToCSV} from "../external/ExportToCSV";
 import AnimateButton from "../button/animatebutton";
 import DropdownRead from "../input/dropdown-read";
-import Pagination from "@resources/components/pagination/pagination";
+import Pagination from "../../../resources/components/pagination/pagination";
 import {useEffect, useMemo, useRef, useState} from "react";
 import CommonForm, {
     type FieldGroup,

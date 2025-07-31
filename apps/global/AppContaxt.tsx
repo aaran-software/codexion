@@ -18,13 +18,16 @@ type AppContextType = {
 
   settings: Settings | null;
   updateSettings: (newSettings: Partial<Settings>) => void;
-  APP_CODE: string;
+  APP_TYPE: string;
   API_URL: string;
 };
 
-const APP_CODE = 'cxsun';
+const APP_TYPE = import.meta.env.APP_TYPE || 'cxsun';
 
-const API_URL = import.meta.env.API_URL || 'http://127.0.0.1:4001';
+const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:4001';
+
+console.log('APP_TYPE', API_URL);
+console.log('ENV', import.meta.env);
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
@@ -54,7 +57,7 @@ export const AppProvider = ({
         setCurrentComponent,
         settings,
         updateSettings,
-        APP_CODE,
+        APP_TYPE,
         API_URL,
       }}
     >
