@@ -4,7 +4,9 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@resources/*": ["/resources/*"]
+      "@resources/*": [
+        "/resources/*"
+      ]
     },
     "jsx": "react-jsx",
     "module": "ESNext",
@@ -12,7 +14,12 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "types": ["node", "vite/client"]
+    "types": [
+      "node",
+      "vite/client"
+    ]
   },
-  "include": ["apps/*/src"]
+  "include": [
+    "apps/*/src"
+  ]
 }

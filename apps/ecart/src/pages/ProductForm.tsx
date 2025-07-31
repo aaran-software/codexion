@@ -83,7 +83,7 @@ function ProductForm() {
       {formOpen && (
         <CommonForm
           groupedFields={groupedFields}
-          editableFields={editableFields}
+          // editableFields={editableFields}
           isPopUp={false}
           formOpen={formOpen}
           setFormOpen={setFormOpen}
@@ -92,7 +92,7 @@ function ProductForm() {
           faildMsg="Form submission failed"
           initialData={{}}
           onSubmit={handleFormSubmit}
-          editableTable={true}
+          // editableTable={true}
           api={productApi}
           
         />

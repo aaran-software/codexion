@@ -18,10 +18,10 @@ export function useAppSettings() {
 
 export default function AppInitializer({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<any>(null);
-  const { APP_CODE } = useAppContext();
+  const { APP_TYPE } = useAppContext();
 
   useEffect(() => {
-    if (!APP_CODE) return;
+    if (!APP_TYPE) return;
 
     let jsonPath = "/settings.json";
     // switch (APP_CODE) {
@@ -41,7 +41,7 @@ export default function AppInitializer({ children }: { children: ReactNode }) {
     //     break;
     // }
 
-    console.debug(`[AppInitializer] APP_CODE = ${APP_CODE}`);
+    console.debug(`[AppInitializer] APP_CODE = ${APP_TYPE}`);
     console.debug(`[AppInitializer] Loading settings from: ${jsonPath}`);
 
     const loadSettings = async () => {
@@ -61,10 +61,10 @@ export default function AppInitializer({ children }: { children: ReactNode }) {
     };
 
     loadSettings();
-  }, [APP_CODE]);
+  }, [APP_TYPE]);
 
   if (!settings)
-    return <div>Loading settings for <strong>{APP_CODE}</strong>...</div>;
+    return <div>Loading settings for <strong>{APP_TYPE}</strong>...</div>;
 
   return (
     <SettingsContext.Provider value={settings}>
