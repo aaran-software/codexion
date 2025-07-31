@@ -1,18 +1,24 @@
-// vite.config.ts
 import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import * as path from 'path'
 
 export default defineConfig(({ mode }) => {
+  // ✅ Load from project root
   const env = loadEnv(mode, process.cwd(), '')
 
-  const appName = env.APP_TYPE || 'cxsun' // e.g., 'cxsun', 'landing', 'admin'
+  const appName = env.VITE_APP_TYPE || 'CODEXSUN'
+  const appCategory = env.VITE_APP_CATEGORY || 'APPS'
 
-  const appCategory = env.APP_CATEGORY || 'apps' // 'apps' or 'sites'
-
-  // 🔥 Dynamic root
   const appRoot = path.resolve(__dirname, `${appCategory}/${appName}`)
   const appSrc = path.resolve(appRoot, 'src')
+
+  // ✅ Pick all VITE_ envs
+  const viteEnvVars = Object.keys(env)
+    .filter((key) => key.startsWith('VITE_'))
+    .reduce((acc, key) => {
+      acc[`import.meta.env.${key}`] = JSON.stringify(env[key])
+      return acc
+    }, {} as Record<string, string>)
 
   return {
     root: appRoot,
@@ -23,11 +29,12 @@ export default defineConfig(({ mode }) => {
         '@resources': path.resolve(__dirname, 'resources'),
       },
     },
+    define: {
+      ...viteEnvVars, // ✅ expose all VITE_ variables manually
+    },
     build: {
-      // outDir: path.resolve(appRoot, 'dist'),
       outDir: path.resolve(__dirname, 'dist'),
       emptyOutDir: true,
-
     },
     server: {
       port: Number(env.APP_PORT) || 3001,

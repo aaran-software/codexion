@@ -37,19 +37,6 @@ export function LoginForm({className}: { className?: string }) {
         }
 
         try {
-            // const form = new URLSearchParams();
-            // form.append("username", usr);
-            // form.append("password", pwd);
-            // form.append("grant_type", "password");
-            //
-            // const response = await fetch(`${API_URL}/api/login`, {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/x-www-form-urlencoded",
-            //     },
-            //     body: form.toString(),
-            //     credentials: "include",
-            // });
             const response = await fetch(`${API_URL}/api/login`, {
                 method: "POST",
                 headers: {
@@ -59,14 +46,12 @@ export function LoginForm({className}: { className?: string }) {
                 credentials: "include",
             });
 
-
             if (!response.ok) {
                 throw new Error("Login failed");
             }
 
             const data = await response.json();
 
-            // If FastAPI returns `access_token` and `token_type`, use this
             const token = data.access_token;
             const user = {username: usr}; // Adjust this if your API returns user info
 

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ImageButton from "../../components/button/ImageBtn";
-import frappeBaseApi from "../../../resources/global/api/frappeBaseApi";
+import apiClient from "../../../resources/global/api/apiClients";
 import Button from "../../../resources/components/button/Button";
 
 export interface ScrollAdverthismentItem {
@@ -29,7 +29,7 @@ const ScrollAdverthisment: React.FC<ScrollAdverthismentProps> = ({
   const fetchProducts = async () => {
     try {
       // Step 1: Fetch all item names
-      const response = await frappeBaseApi.get(`${api}`);
+      const response = await apiClient.get(`${api}`);
       const items = response.data.data || [];
 
       // Step 2: Fetch full details for each item
@@ -39,7 +39,7 @@ const ScrollAdverthisment: React.FC<ScrollAdverthismentProps> = ({
       const detailPromises = items.map((item: any) => {
         const itemName = encodeURIComponent(item.name);
         const detailUrl = `${baseApi}/${itemName}`;
-        return frappeBaseApi
+        return apiClient
           .get(detailUrl)
           .then((res) => res.data.data)
           .catch((err) => {

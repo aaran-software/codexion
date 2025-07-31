@@ -1,6 +1,6 @@
-import Announcement from "@resources/components/advertisment/Announcement";
-import Chart from "@resources/components/chart/bar-chart";
-import { NetIncomeChart } from "@resources/components/chart/NetProfitChart";
+import Announcement from "../../../resources/components/advertisment/Announcement";
+import Chart from "../../../resources/components/chart/bar-chart";
+import { NetIncomeChart } from "../../../resources/components/chart/NetProfitChart";
 import AnalticsCard from "./AnalticsCard";
 import WelcomeCard from "./WelcomeCard";
 function Dashboard() {

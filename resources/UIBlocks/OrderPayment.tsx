@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import Radio_group from "@resources/components/radioGroup/radio_group";
+import Radio_group from "../../resources/components/radioGroup/radio_group";
 import DropdownRead from "../components/input/dropdown-read";
 import FloatingInput from "../components/input/floating-input";
 import Button from "../../resources/components/button/Button";
