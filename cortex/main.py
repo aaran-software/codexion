@@ -4,6 +4,7 @@ import logging
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import false
 
 # Ensure .env exists before loading settings
 from cortex.core.startup import ensure_env_file
@@ -47,4 +48,4 @@ async def root():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="127.0.0.1", port=4001, reload=True)
+    uvicorn.run("main:app", host="127.0.0.1", port=4001, reload=False)

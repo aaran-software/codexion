@@ -2,27 +2,36 @@ import os
 import subprocess
 from cortex.core.settings import get_settings
 
+
 class GitSync:
     def __init__(self):
-        settings = get_settings()
-        self.repo_path = settings.git_url
-
-        # 🔒 Validate repo path
-        if not os.path.isdir(self.repo_path):
-            raise ValueError(f"Invalid repo path: {self.repo_path}")
+        self.repo_path = get_settings.git_url
 
     def run_git_command(self, *args):
         try:
             result = subprocess.run(
                 ["git", *args],
                 cwd=self.repo_path,
-                capture_output=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
                 text=True,
-                check=True
+                check=True,
             )
-            return {"success": True, "output": result.stdout.strip()}
+            return result.stdout.strip()
         except subprocess.CalledProcessError as e:
-            return {"success": False, "error": e.stderr.strip()}
+            return {"error": e.stderr.strip()}
 
     def sync(self):
-        return self.run_git_command("pull")
+        if not os.path.isdir(self.repo_path):
+            return {"error": f"Invalid repo path: {self.repo_path}"}
+
+        pull_output = self.run_git_command("pull")
+        if isinstance(pull_output, dict) and "error" in pull_output:
+            return pull_output
+
+        last_commit = self.run_git_command("log", "-1", "--pretty=format:%h %s")
+        return {
+            "success": True,
+            "updated_to": last_commit,
+            "pull_output": pull_output,
+        }
