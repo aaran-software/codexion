@@ -4,6 +4,7 @@ module.exports = {
   content: [
     './apps/**/*.{html,js,ts,jsx,tsx}',
     './sites/**/*.{html,js,ts,jsx,tsx}',
+    './cortex/**/*.{html,j2,js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {},

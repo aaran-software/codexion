@@ -33,8 +33,9 @@ export default defineConfig(({ mode }) => {
       ...viteEnvVars, // ✅ expose all VITE_ variables manually
     },
     build: {
-      outDir: path.resolve(__dirname, 'dist'),
+      outDir: path.resolve(__dirname, 'public/build'),
       emptyOutDir: true,
+      manifest: true,
     },
     server: {
       port: Number(env.APP_PORT) || 3001,

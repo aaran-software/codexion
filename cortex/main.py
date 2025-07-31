@@ -1,10 +1,10 @@
 # app/main.py
 
 import logging
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+from fastapi.templating import Jinja2Templates
 from fastapi.routing import APIRoute
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy import false
 
 # Ensure .env exists before loading settings
 from cortex.core.startup import ensure_env_file
@@ -14,14 +14,19 @@ from cortex.core.settings import get_settings
 from cortex.DTO.dal import engine, Base
 import cortex.models.user
 from cortex.routes import api
+from cortex.core.context import mount_vite, template_context  # ✅ Corrected import order
 
 logging.basicConfig(level=logging.DEBUG)
 
+# ✅ Define FastAPI app first
 app = FastAPI(
     title="Codexion API",
     version="1.0.0",
     description="Welcome to the Codexion Backend"
 )
+
+# ✅ Now mount Vite build directory after app is defined
+mount_vite(app)
 
 settings = get_settings()
 
@@ -42,9 +47,12 @@ app.add_middleware(
 def on_startup():
     Base.metadata.create_all(bind=engine)
 
+# ✅ Define templates directory
+templates = Jinja2Templates(directory="cortex/templates")
+
 @app.get("/")
-async def root():
-    return {"message": "Welcome to sundar asfsdfsdf Codexion API"}
+def home(context: dict = Depends(template_context)):
+    return templates.TemplateResponse("pages/home.j2", context)
 
 if __name__ == "__main__":
     import uvicorn

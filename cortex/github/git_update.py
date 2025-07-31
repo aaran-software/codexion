@@ -5,7 +5,7 @@ from cortex.core.settings import get_settings
 
 class GitSync:
     def __init__(self):
-        self.repo_path = get_settings().git_url
+        self.repo_path = get_settings().project_root
 
     def run_git_command(self, *args):
         try:

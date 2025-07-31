@@ -1,0 +1,36 @@
+<!-- cortex/templates/base.j2 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Home | {{ settings.APP_NAME or "Codexion" }}{% endblock %}</title>
+  <link rel="icon" href="/public/favicon.ico" type="image/x-icon" />
+
+  {# ✅ Load compiled CSS dynamically from manifest #}
+    {% set css_assets = vite.vite_asset('../resources/css/app.css') %}
+    {% for css in css_assets.css_files %}
+        <link rel="stylesheet" href="{{ css }}">
+    {% endfor %}
+        <link rel="stylesheet" href="../public/backend/build/assets/main-B9Cs_1s2.css">
+</head>
+<body class="bg-gray-100 text-gray-900">
+
+  {# ✅ Main Navigation Menu #}
+  {% include "partials/menu.j2" %}
+
+  <main id="root" class="p-4">
+    {% block content %}
+    <h1 class="text-3xl font-bold text-center text-blue-600">Welcome to {{ settings.APP_NAME or 'Codexion' }}</h1>
+    {% endblock %}
+  </main>
+
+  <footer class="text-center py-4 text-sm text-gray-600">&copy; {{ year }} {{ settings.APP_NAME }}</footer>
+
+  {# ✅ Load compiled JS dynamically from manifest #}
+  {% set js_assets = vite.vite_asset('../resources/js/app.ts') %}
+  {% if js_assets.js_file %}
+    <script type="module" src="{{ js_assets.js_file }}"></script>
+  {% endif %}
+</body>
+</html>

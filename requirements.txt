@@ -15,6 +15,7 @@ ruff
 mypy
 rich~=14.0.0
 Jinja2~=3.1.6
+python-multipart
 typer~=0.16.0
 passlib
 bcrypt
