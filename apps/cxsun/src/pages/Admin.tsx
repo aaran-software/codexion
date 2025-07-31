@@ -51,6 +51,7 @@ import {AppSidebar} from "../../../../resources/components/sidebar/app-sidebar";
 import ScrollToTopButton from "../../../../resources/components/common/scrolltotop";
 import GrandStream from "./GrandStream";
 import Task from "./AdminComponents/Task";
+import AppFooter from "../../../../resources/components/footer/AppFooter";
 
 export default function Admin() {
     const {token} = useAuth();
@@ -336,6 +337,7 @@ export default function Admin() {
             </div>
 
             <ScrollToTopButton/>
+            <AppFooter />
         </SidebarProvider>
     );
 }
