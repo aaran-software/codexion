@@ -214,69 +214,69 @@ function Header() {
                         )}
 
                         {/* Authenticated UI */}
-                        {user ? (
-                            <>
-                                {/* Cart */}
-                                <div
-                                    className="flex items-center gap-2 text-md text-foreground/80 cursor-pointer"
-                                    onClick={() => navigate("/cart")}
-                                >
-                                    <LucideShoppingCart size={25}/>
-                                    {showLabel && "Cart"}
-                                </div>
+                        {/*{user ? (*/}
+                        {/*    <>*/}
+                        {/*        /!* Cart *!/*/}
+                        {/*        <div*/}
+                        {/*            className="flex items-center gap-2 text-md text-foreground/80 cursor-pointer"*/}
+                        {/*            onClick={() => navigate("/cart")}*/}
+                        {/*        >*/}
+                        {/*            <LucideShoppingCart size={25}/>*/}
+                        {/*            {showLabel && "Cart"}*/}
+                        {/*        </div>*/}
 
-                                {/* User Dropdown */}
-                                <div
-                                    className="relative flex items-center gap-2 text-md text-foreground/80 cursor-pointer"
-                                    ref={loginRef}
-                                    onMouseEnter={handleLoginMouseEnter}
-                                    onMouseLeave={handleLoginMouseLeave}
-                                >
-                                    <UserCircle2 size={30}/>
+                        {/*        /!* User Dropdown *!/*/}
+                        {/*        <div*/}
+                        {/*            className="relative flex items-center gap-2 text-md text-foreground/80 cursor-pointer"*/}
+                        {/*            ref={loginRef}*/}
+                        {/*            onMouseEnter={handleLoginMouseEnter}*/}
+                        {/*            onMouseLeave={handleLoginMouseLeave}*/}
+                        {/*        >*/}
+                        {/*            <UserCircle2 size={30}/>*/}
 
-                                    <UserSubMenu
-                                        anchorRef={loginRef}
-                                        visible={showLoginDropdown}
-                                        content={
-                                            <div
-                                                className="w-[220px] flex flex-col rounded-md bg-background shadow-xl ring-1 ring-ring/30 p-2 space-y-1 text-sm transform duration-500">
-                                                {menu.map((item, idx) => (
-                                                    <ImageButton
-                                                        key={idx}
-                                                        className="hover:bg-accent p-2 rounded cursor-pointer"
-                                                        icon={item.icon}
-                                                        label={item.label}
-                                                        onClick={async () => {
-                                                            if (item.label === "Logout") {
-                                                                await logout();
-                                                                navigate("/");
-                                                            } else {
-                                                                navigate(item.path);
-                                                                setShowLoginDropdown(false);
-                                                            }
-                                                        }}
-                                                    />
-                                                ))}
-                                            </div>
-                                        }
-                                    />
-                                </div>
-                            </>
-                        ) : (
-                            // If not authenticated
-                            <div
-                                className="flex items-center gap-2 text-md text-foreground/80 cursor-pointer"
-                                onClick={() => navigate("/login")}
-                            >
-                                <UserCircle2 size={25}/>
-                                {showLabel && "Login"}
-                            </div>
-                        )}
+                        {/*            <UserSubMenu*/}
+                        {/*                anchorRef={loginRef}*/}
+                        {/*                visible={showLoginDropdown}*/}
+                        {/*                content={*/}
+                        {/*                    <div*/}
+                        {/*                        className="w-[220px] flex flex-col rounded-md bg-background shadow-xl ring-1 ring-ring/30 p-2 space-y-1 text-sm transform duration-500">*/}
+                        {/*                        {menu.map((item, idx) => (*/}
+                        {/*                            <ImageButton*/}
+                        {/*                                key={idx}*/}
+                        {/*                                className="hover:bg-accent p-2 rounded cursor-pointer"*/}
+                        {/*                                icon={item.icon}*/}
+                        {/*                                label={item.label}*/}
+                        {/*                                onClick={async () => {*/}
+                        {/*                                    if (item.label === "Logout") {*/}
+                        {/*                                        await logout();*/}
+                        {/*                                        navigate("/");*/}
+                        {/*                                    } else {*/}
+                        {/*                                        navigate(item.path);*/}
+                        {/*                                        setShowLoginDropdown(false);*/}
+                        {/*                                    }*/}
+                        {/*                                }}*/}
+                        {/*                            />*/}
+                        {/*                        ))}*/}
+                        {/*                    </div>*/}
+                        {/*                }*/}
+                        {/*            />*/}
+                        {/*        </div>*/}
+                        {/*    </>*/}
+                        {/*) : (*/}
+                        {/*    // If not authenticated*/}
+                        {/*    <div*/}
+                        {/*        className="flex items-center gap-2 text-md text-foreground/80 cursor-pointer"*/}
+                        {/*        onClick={() => navigate("/login")}*/}
+                        {/*    >*/}
+                        {/*        <UserCircle2 size={25}/>*/}
+                        {/*        {showLabel && "Login"}*/}
+                        {/*    </div>*/}
+                        {/*)}*/}
 
                         {/* Dark Mode Toggle */}
-                        <div className="hidden sm:block">
-                            <ModeToggle/>
-                        </div>
+                        {/*<div className="hidden sm:block">*/}
+                        {/*    <ModeToggle/>*/}
+                        {/*</div>*/}
                     </div>
                 </div>
             )}
