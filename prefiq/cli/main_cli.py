@@ -12,7 +12,7 @@ from prefiq.cli.docker.prepare.traefik import traefik_cmd
 from prefiq.cli.docker.prepare.gen_dockit_cli import generate_cmd
 from prefiq.cli.docker.compose.compose_runner_cli import docker_run_cmd
 from prefiq.cli.git.update import git_sync_cmd
-from prefiq.cli.cortex.sever import server_cmd
+from prefiq.cli.cortex.server import server_cmd
 
 commands = typer.Typer()
 commands.add_typer(app_cli.app_cmd, name="app")

@@ -8,7 +8,7 @@ def run_command(cmd: str):
     print(f"[~] Running: {cmd}")
     subprocess.run(cmd, shell=True, check=True)
 
-@server_cmd.command("server")
+@server_cmd.command()
 def run_server(mode: str = typer.Argument(..., help="Mode: dev or prod")):
     """
     Run backend and frontend servers.
