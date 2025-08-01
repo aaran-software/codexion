@@ -1,4 +1,4 @@
-[[project]
+[project]
 name = "prefiq"
 version = "0.1.0"
 description = "Prefiq App CLI"
@@ -19,8 +19,3 @@ include = ["prefiq", "prefiq.*"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
-
-
-
-# usage
-# $ pip install -e .
