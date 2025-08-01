@@ -1,30 +1,223 @@
 import PortfolioProduct1 from "../../../../resources/UIBlocks/portfolioProducts/PortfolioProduct1";
+import Button from "../../../../resources/components/button/Button";
 
 function Product() {
-  const portfolioData = [
-    {
-      image: "/assets/sample1.jpg",
-      title: "Creative Design",
-      description: "Modern and minimal portfolio layout for agencies.",
-    },
-    {
-      image: "/assets/sample2.jpg",
-      title: "Tech Landing",
-      description: "Landing page optimized for SaaS and startups.",
-    },
-    {
-      image: "/assets/sample3.jpg",
-      title: "E-commerce Showcase",
-      description: "Product-focused layout for online stores.",
-    },
-  ];
-  return (
-    <div>
-      <div className="px-[10%]">
-        <PortfolioProduct1 items={portfolioData} />
-      </div>
-    </div>
-  );
+    const product = [
+        {
+            image: "/assets/product/Cocopeat5kgBlock.png",
+            title: "Coco Peat 5KG Blocks",
+            description:
+                "Link Agro Exports provides the best Coco Peat in 5kg blocks, for horticulture & agriculture sectors. These Coco Peat Blocks are specially compressed for commercial greenhouses and Nurseries. This soil conditioner is suitable for all types of garden plants, lawns, flowers, orchids, bonsais and vegetables in pots or on the ground.",
+            tables: [
+                {
+                    title: "COCO PEAT 5KG BLOCK SPECIFICATION",
+                    // columns: ["Property", "Value"],
+                    data: [
+                        ["Size", "30 x 30 x14CM"],
+                        ["Weight", "4.5Kg-5.0Kg (+/-3%)"],
+                        ["Electrical Conductivity", "< 0.50 ms/cm (Washed)\n" +
+                        ">1.00 ms/cm (Unwashed)\n"],
+                        ["pH Value", "5.8 – 6.8"],
+                        ["Water Holding", "15 litre per KG (Approx.)"],
+                    ]
+                },
+                {
+                    title: "COCO PEAT BLOCKS PACKING & SHIPMENT",
+                    columns: ["Compressed Block \n" +
+                    "Weight: 4.5Kg - 5Kg Blocks (+/-3%)\n", "Palletised:", "Non-palletised:"],
+                    data: [
+                        ["Palletising ", "Blocks assembled in pallet and stretch wrapped", "Blocks assembled loose within the containter"],
+                        ["Container Loadability", "240 Blocks/Pallet, 20pallets/40ft. | HQ Container (24MT)", "5200 Blocks/40ft. HQ Container (26 MT)"],
+                    ]
+                },
+            ],
+            note: "The sizes and packing details mentioned above are customizable on request."
+        },
+        {
+            image: "/assets/product/Cocopeat5kgBlock.png",
+            title: "COCO PEAT BRIQUETTE (650Grams)",
+            description: "Link Agro Exports delivers Coco Peat Bricks which weighs 650 Grams. These bricks are applied in various processes like landscaping, seed rising, soil conditioning, potting mixes, etc., Coco Bricks are ideal for using hydroponic growing, potting media. We export Coco peat bricks in pallets or by wrapping individually with or without labels as per customer requirements.",
+            tables: [
+                {
+                    title: "COCO PEAT 650 GRAM BRIQUETTE SPECIFICATIONS",
+                    // columns: ["Property", "Value"],
+                    data: [
+                        ["Size", "20 x 10 x5CM"],
+                        ["Weight", "650g (+/-3%)"],
+                        ["Electrical Conductivity", "< 0.50 ms/cm (Washed)\n" +
+                        ">1.00 ms/cm (Unwashed)\n"],
+                        ["pH Value", "5.8 – 6.8"],
+                        ["Water Holding", "10 – 11.5 per brick (Approx.)"],
+                    ]
+                },
+                {
+                    title: "COCO PEAT BRICKS PACKING & SHIPMENT",
+                    columns: ["Compressed Block \n" +
+                    "Weight: 4.5Kg - 5Kg Blocks (+/-3%)\n", "Palletised:", "Non-palletised:"],
+                    data: [
+                        ["Palletising ", "Blocks assembled in pallet and stretch wrapped", "Blocks assembled loose within the containter"],
+                        ["Container Loadability", "2000 Bricks (+/- 50)/Pallet, 20pallet / 40Ft HQ Container (24MT)", "Alternate Packing options like carton / bundle packing etc. as per client requirements."],
+                    ]
+                },
+            ],
+            note: "The sizes and packing details mentioned above are customizable on request."
+
+        },
+        {
+            image: "/assets/product/Coco husk chips block 1.jpg",
+            title: "COCO HUSK CHIPS",
+            description: "These compressed blocks of coconut Husk chips are widely used for growing roses and orchids in pots. We deliver these husk chips in various sizes weights and dimensions to fulfill the demands of different types of customers requirements.\n" +
+                "Water holding capacity of husk chips makes this product irresistible to plant growth. And it also act as a mulch to maintain the soil conditions and prevents weed growth\n",
+            tables: [
+                {
+                    title: "COCO HUSK CHIPS BLOCKS PACKING & SHIPMENT",
+                    columns: ["Compressed Coco Husk chips Compressed Coco Husk chips  (+/-3%)\n", "Palletised:", "Non-palletised:"],
+                    data: [
+                        ["Palletising ", "Blocks assembled in pallet and stretch wrapped", "Blocks assembled loose within the containter"],
+                        ["Container Loadability", "240 Blocks/Pallet, 20pallets/40ft. | HQ Container (24MT)", "Alternate Packing options like carton / bundle packing etc. as per client requirements."],
+                    ]
+                },
+            ],
+            note: "The sizes and packing details mentioned above are customizable on request."
+        },
+        {
+            image: "/assets/product/coco-coins.jpg",
+            title: "COCOPEAT GROW BAGS & DISCS",
+            description: "Link Agro Grow bags are offered in UV treated poly bags and these bags are available in various sizes and grades in a variety of porosity combinations, which allows water content to the plants on daily or periodical basis.\n" +
+                "The seeds can be sown and grown directly in coco-peat grow bags. Pre-drilled holes are given in the upper surface of the grow bags to plant the seeds or seedling. Required numbers of drainage holes are made in grow bags for avoiding excessive water storage. Grow bags are more suitable for the plants that don’t grow long roots like cucumbers, chilly plants and tomatoes.",
+            tables: [
+                {
+                    title: "GROW BAGS SPECIFICATIONS",
+                    // columns: ["Property", "Value"],
+                    data: [
+                        ["Compressed Growbag Block Dimension", "100 x 18 x 4CM"],
+                        ["Dimension after Expansion", "100 x 18 x 16CM"],
+                        ["pH Value", "5.8 – 6.8"],
+                        ["Electrical Conductivity", "<0.5 ms/cm"],
+                        ["Water Holding", "55 Liters / bag (Approx)"],
+                        ["Compression ratio", "5:1"],
+                        ["Grow Bag", "Poly bag (UV treated) – upto 3 years"],
+                    ]
+                },
+                {
+                    title: "GROW BAG PACKING & SHIPMENT",
+                    // columns: ["Property", "Value"],
+                    data: [
+                        ["Grow bags in a 40ft Container", "7000bags (Approx)"],
+                        ["Number of Pallets in 40Ft container", "20 pallets"],
+                        ["Number of bags per pallet", "350 Approx"],
+                    ]
+                },
+            ],
+            note: "Growbags size and dimension can be modified and manufactured as per client requirements"
+        },
+        {
+            image: "/assets/product/CoirFiber.jpeg",
+            title: "COCO COIR FIBER",
+            description: "We deliver coir fiber which has enormous applications across various industries like mattress, erosion seating and packaging.  Fibers are naturally short, coarse, and extracted from the outer husk of the coconut. While comparing fibres with cotton and flax, fiber appears to be more lignin and less cellulose. We produce two types of coir fiber that are brown and white fibers.",
+            tables: [
+                {
+                    title: "Coir Fiber Specification and Shipment Packing",
+                    columns: ["DESCRIPTION", "COCO-COIR FIBER"],
+                    data: [
+                        ["Colour fiber", "White / Brown"],
+                        ["Impurity", "<5%"],
+                        ["Moisture", ", 15%"],
+                        ["Length of Fiber", "8-10CM Approx (20%) to 10 – 20CM Approx (80%)"],
+                        ["Bale weight", "105Kg (+/-3kgs)"],
+                        ["Packing", "Steel Strap"],
+                        ["40Ft Container Loadability", "200 Bales"],
+                    ]
+                },
+
+            ],
+        },
+    ];
+
+    return (
+        <div className="mt-20">
+            <div className="relative h-[80vh] w-full">
+                {/* Background Image */}
+                <img
+                    src="/assets/Homepage1.jpg"
+                    alt="Sample"
+                    className="h-full w-full object-fit"
+                />
+
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-foreground/60"></div>
+
+                {/* Text Content */}
+                <div className="absolute inset-0 flex items-center">
+                    <div className="md:w-1/2 px-[10%] text-white space-y-4">
+                        <h1 className="text-4xl font-bold">Our Premium Coco Peat Products</h1>
+                        <p className="text-lg">Discover Link Agro Exports' diverse range of high-quality coco peat
+                            products, including 5KG blocks, briquettes, grow bags, husk chips, and coir fiber.
+                            Engineered for superior water retention, low EC, and eco-friendly applications, our products
+                            are ideal for horticulture, greenhouse farming, and hydroponics. Each product comes with
+                            detailed specifications and global shipping options to suit your agricultural needs.</p>
+                        <Button
+                            label="Contact Now"
+                            path="/contact"
+                            className="border border-ring/40"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div className="px-[10%]">
+                {product.map((item, index) => (
+                    <div key={index} className="mt-10">
+                        <PortfolioProduct1 item={item} reverse={index % 2 === 0}/>
+
+                        {item.tables?.map((table, tIndex) => (
+                            <div key={tIndex} className="my-6">
+                                <h3 className="text-lg font-semibold mb-2">{table.title}</h3>
+                                <table className="w-full border border-gray-300">
+                                    {table.columns && table.columns.length > 0 && (
+                                        <thead>
+                                        <tr className="bg-gray-100">
+                                            {table.columns.map((col, cIndex) => (
+                                                <th
+                                                    key={cIndex}
+                                                    className="px-4 py-2 text-left border-b border-gray-300"
+                                                >
+                                                    {col}
+                                                </th>
+                                            ))}
+                                        </tr>
+                                        </thead>
+                                    )}
+                                    <tbody>
+                                    {table.data.map((row, rIndex) => (
+                                        <tr key={rIndex} className="border-b border-gray-200">
+                                            {row.map((cell, cIndex) => (
+                                                <td key={cIndex} className="px-4 py-2 text-sm">
+                                                    {cell}
+                                                </td>
+                                            ))}
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        ))}
+
+                        {
+                            item.note && (
+                                <div>
+                                    <span className="font-bold">NOTE : </span>{item.note}
+                                </div>
+                            )
+                        }
+                    </div>
+                ))}
+            </div>
+
+        </div>
+
+
+    );
 }
 
 export default Product;

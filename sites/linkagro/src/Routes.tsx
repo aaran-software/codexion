@@ -13,7 +13,7 @@ function AppRoutes() {
           { label: "Home", path: "/" },
           { label: "About Us", path: "/about" },
           { label: "Product", path: "/product" },
-          { label: "Industry", path: "/industry" },
+          { label: "Manufacture", path: "/manufacture" },
           { label: "Contact", path: "/contact" },
         ]}
       />
