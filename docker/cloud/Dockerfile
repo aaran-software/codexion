@@ -96,8 +96,8 @@ RUN chmod +x /home/devops/setup/ifrappe.py \
     && ln -s /home/devops/setup/ifrappe.py /usr/local/bin/ifrappe
 
 COPY install_cortex.py /home/devops/setup/icortex.py
-RUN chmod +x /home/devops/setup/icortex.py \
-    && ln -s /home/devops/setup/icortex.py /usr/local/bin/icortex
+RUN chmod +x /home/devops/icortex.py \
+    && ln -s /home/devops/icortex.py /usr/local/bin/icortex
 
 USER devops
 WORKDIR /home/devops
