@@ -3,7 +3,7 @@
 #### 1. Build Docker and Tag the Image
 
 ```
-docker build -t codexion-cloud:v1 -f docker/cloud/Dockerfile  docker/cloud
+docker build -t codexion-cloud:v2 -f docker/cloud/Dockerfile  docker/cloud
 ```
 
 ### 2. create network for codexion
@@ -40,3 +40,8 @@ docker compose -f docker/cloud/dev-software-com.yml up -d
 ```
 docker exec -it dev_software_com bash
 ```
+
+
+docker compose -f docker/cloud/site-aaranerp-com.yml up -d
+
+docker exec -it dev_software_com bash
