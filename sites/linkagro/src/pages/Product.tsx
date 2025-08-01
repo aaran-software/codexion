@@ -139,7 +139,7 @@ function Product() {
             <div className="relative h-[80vh] w-full">
                 {/* Background Image */}
                 <img
-                    src="/assets/Homepage1.jpg"
+                    src="/assets/Benefits Application.jpg"
                     alt="Sample"
                     className="h-full w-full object-fit"
                 />

@@ -6,9 +6,12 @@ import Footer from "../../../resources/components/footer/Footer";
 import Product from "./pages/Product";
 import Contact from "./pages/Contact";
 import About from "./pages/about";
+import Manufacture from "./pages/Manufacture";
+import ScrollToTop from "../../../resources/components/common/scrolltotop";
 function AppRoutes() {
   return (
     <div>
+      <ScrollToTop />
       <HeaderPortfolio2
         menu={[
           { label: "Home", path: "/" },
@@ -24,6 +27,7 @@ function AppRoutes() {
         <Route path="/product" element={<Product />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/about" element={<About />} />
+        <Route path="/manufacture" element={<Manufacture />} />
       </Routes>
       <Footer />
     </div>
