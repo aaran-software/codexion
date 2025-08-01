@@ -37,7 +37,3 @@ def run_server(mode: str = typer.Argument(..., help="Mode: dev or prod")):
             'concurrently "uvicorn cortex.main:app --host 0.0.0.0 --port 4001 --reload" '
             '"npm run dev -- --host 0.0.0.0 --port 3001"'
         )
-
-
-if __name__ == "__main__":
-    app()
