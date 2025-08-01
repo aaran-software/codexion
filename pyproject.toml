@@ -6,19 +6,16 @@ authors = [{ name = "Sundar", email = "aaransoftware@gmail.com" }]
 dependencies = []
 
 [project.scripts]
-prefiq = "prefiq.__main__:main"
+prefiq = "prefiq.cli.main_cli:main"
 
 [build-system]
 requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-packages = ["prefiq"]
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["prefiq", "prefiq.*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
-
-
-# usage
-# $ pip install -e .

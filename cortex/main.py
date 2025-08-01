@@ -5,6 +5,8 @@ from fastapi import FastAPI, Depends
 from fastapi.templating import Jinja2Templates
 from fastapi.routing import APIRoute
 from fastapi.middleware.cors import CORSMiddleware
+
+from cortex.core.db_init import ensure_database_exists
 from cortex.core.startup import ensure_env_file
 ensure_env_file()
 from cortex.core.settings import get_settings
@@ -42,6 +44,7 @@ app.add_middleware(
 
 @app.on_event("startup")
 def on_startup():
+    ensure_database_exists()
     Base.metadata.create_all(bind=engine)
 
 # ✅ Define templates directory

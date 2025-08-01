@@ -4,9 +4,9 @@ import typer
 
 from prefiq.github.git_sync import sync_repo
 
-git_sync = typer.Typer(help="Git-related commands")
+git_sync_cmd = typer.Typer(help="Git-related commands")
 
-@git_sync.command("update")
+@git_sync_cmd.command("update")
 def update_cmd():
     """Sync the local repo with remote (pull, commit, push)"""
     try:
