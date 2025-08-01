@@ -3,7 +3,7 @@ FROM ubuntu:24.04 AS codexion-cloud
 
 LABEL maintainer="codexion"
 LABEL author="Sundar < sundar@sundar.com >"
-LABEL version="1.0"
+LABEL version="2.0"
 LABEL description="Codexion - Custom Ubuntu 24.04 image for ERP + FastAPI + React development"
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -95,7 +95,7 @@ COPY init_frappe.py /home/devops/setup/ifrappe.py
 RUN chmod +x /home/devops/setup/ifrappe.py \
     && ln -s /home/devops/setup/ifrappe.py /usr/local/bin/ifrappe
 
-COPY install_cortex.py /home/devops/setup/icortex.py
+COPY install_cortex.py /home/devops/icortex.py
 RUN chmod +x /home/devops/icortex.py \
     && ln -s /home/devops/icortex.py /usr/local/bin/icortex
 

@@ -3,7 +3,7 @@
 #### 1. Build Docker and Tag the Image
 
 ```
-docker build -t codexion-cloud:v1 -f docker/cloud/Dockerfile  docker/cloud
+docker build -t codexion-cloud:v2 -f docker/cloud/Dockerfile  docker/cloud
 ```
 
 ### 2. create network for codexion
