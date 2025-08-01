@@ -5,6 +5,7 @@ import HeaderPortfolio2 from "../../../resources/components/header/HeaderPortfol
 import Footer from "../../../resources/components/footer/Footer";
 import Product from "./pages/Product";
 import Contact from "./pages/Contact";
+import About from "./pages/about";
 function AppRoutes() {
   return (
     <div>
@@ -22,6 +23,7 @@ function AppRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/product" element={<Product />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/about" element={<About />} />
       </Routes>
       <Footer />
     </div>
