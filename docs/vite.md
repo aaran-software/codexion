@@ -65,3 +65,5 @@ export default defineConfig(({mode}) => {
         }
     }
 )
+
+want to fix this
