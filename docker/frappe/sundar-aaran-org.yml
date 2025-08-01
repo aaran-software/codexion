@@ -4,6 +4,8 @@ services:
     container_name: sundar_aaran_org
     ports:
       - "8001:8000"
+      - "4001:4001"
+      - "3001:3001"
     volumes:
       - ./public/sundar_aaran_org:/home/devops/shared
     networks:

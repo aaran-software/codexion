@@ -7,12 +7,12 @@ env_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "
 
 
 class Settings(BaseSettings):
-    DB_ENGINE: str = "sqlite"
-    DB_NAME: str = "codexion.db"
-    DB_USER: str = ""
-    DB_PASS: str = ""
-    DB_HOST: str = "localhost"
+    DB_ENGINE: str = "mysql"
+    DB_HOST: str = "mariadb"
     DB_PORT: int = 3306
+    DB_USER: str = "root"
+    DB_PASS: str = "DbPass1@@"
+    DB_NAME: str = "codexion_db"
     JWT_SECRET_KEY: str = "your-super-secret-key"
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60

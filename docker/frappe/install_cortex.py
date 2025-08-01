@@ -102,6 +102,9 @@ def main():
     install_prefiq_editable()
     verify_prefiq_installation()
 
+    print("[+] Installing assets for backend...")
+    run_command(" npm run build:cortex")
+
     # Step 6: Build or run
     if MODE == "prod":
         print("[+] Building frontend for production...")
