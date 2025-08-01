@@ -43,3 +43,5 @@ docker exec -it dev_software_com bash
 
 
 docker compose -f docker/cloud/site-aaranerp-com.yml up -d
+
+docker exec -it dev_software_com bash
