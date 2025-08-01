@@ -5,11 +5,8 @@ from fastapi import FastAPI, Depends
 from fastapi.templating import Jinja2Templates
 from fastapi.routing import APIRoute
 from fastapi.middleware.cors import CORSMiddleware
-
-# Ensure .env exists before loading settings
 from cortex.core.startup import ensure_env_file
 ensure_env_file()
-
 from cortex.core.settings import get_settings
 from cortex.DTO.dal import engine, Base
 import cortex.models.user
@@ -48,7 +45,12 @@ def on_startup():
     Base.metadata.create_all(bind=engine)
 
 # ✅ Define templates directory
-templates = Jinja2Templates(directory="cortex/templates")
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
+templates = Jinja2Templates(directory=TEMPLATE_DIR)
+
 
 @app.get("/")
 def home(context: dict = Depends(template_context)):

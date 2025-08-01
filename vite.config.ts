@@ -6,8 +6,8 @@ export default defineConfig(({ mode }) => {
   // ✅ Load from project root
   const env = loadEnv(mode, process.cwd(), '')
 
-  const appName = env.VITE_APP_TYPE || 'CODEXSUN'
-  const appCategory = env.VITE_APP_CATEGORY || 'APPS'
+  const appName = env.VITE_APP_TYPE || 'cxsun'
+  const appCategory = env.VITE_APP_CATEGORY || 'apps'
 
   const appRoot = path.resolve(__dirname, `${appCategory}/${appName}`)
   const appSrc = path.resolve(appRoot, 'src')
