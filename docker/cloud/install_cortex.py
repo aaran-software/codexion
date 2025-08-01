@@ -111,11 +111,11 @@ def main():
         run_command("npm run build")
 
         print("[🚀] Starting FastAPI backend in production...")
-        run_command("gunicorn cortex.main:app -k uvicorn.workers.UvicornWorker -b 0.0.0.0:4001 -w 4 --timeout 60")
+        run_command("gunicorn cortex.main:app -k uvicorn.workers.UvicornWorker -b 0.0.0.0:5001 -w 4 --timeout 60")
     else:
         print("[🚀] Starting backend and frontend in development...")
         run_command(
-            'concurrently "uvicorn cortex.main:app --host 0.0.0.0 --port 4001 --reload" '
+            'concurrently "uvicorn cortex.main:app --host 0.0.0.0 --port 5001 --reload" '
             '"npm run dev -- --host 0.0.0.0 --port 3001"'
         )
 
