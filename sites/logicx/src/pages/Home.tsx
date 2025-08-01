@@ -3,7 +3,7 @@ import Button from '../../../../resources/components/button/Button';
 import Plan from '../../../../resources/components/website/plan';
 import Carousel from '../../../../resources/components/carousel';
 import {Link as ScrollLink} from 'react-scroll';
-import ScrollToTop from '../../../../resources/components/common/scrolltotop';
+import ScrollToTop from '../../../../resources/components/common/scrolltotopbutton';
 import Team from '../../../../resources/components/website/team';
 import Articles from '../../../../resources/components/website/articles';
 import Review from '../../../../resources/components/website/review';

@@ -19,7 +19,7 @@ import { useAuth } from "../../../../apps/global/auth/AuthContext";
 import Dashboard from "../../../../resources/components/dashboard/Dashboard";
 import AppHeader from "../../../../resources/components/header/AppHeader";
 import { AppSidebar } from "../../../../resources/components/sidebar/app-sidebar";
-import ScrollToTopButton from "../../../../resources/components/common/scrolltotop";
+import ScrollToTopButton from "@resources/components/common/scrolltotopbutton";
 
 export default function Admin() {
 const { token } = useAuth();

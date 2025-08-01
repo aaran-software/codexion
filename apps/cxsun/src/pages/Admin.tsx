@@ -48,7 +48,7 @@ import {useAuth} from "../../../global/auth/AuthContext";
 import Dashboard from "../../../../resources/components/dashboard/Dashboard";
 import AppHeader from "../../../../resources/components/header/AppHeader";
 import {AppSidebar} from "../../../../resources/components/sidebar/app-sidebar";
-import ScrollToTopButton from "../../../../resources/components/common/scrolltotop";
+import ScrollToTopButton from "@resources/components/common/scrolltotopbutton";
 import GrandStream from "./GrandStream";
 import Task from "./AdminComponents/Task";
 import AppFooter from "../../../../resources/components/footer/AppFooter";
