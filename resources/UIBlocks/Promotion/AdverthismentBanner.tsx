@@ -149,7 +149,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
             <div className="w-full h-[350px] flex items-center justify-center">
               <img
                 // src={`https://dev.aaranerp.com/${slide.image}`}
-                src={'/assets/adverthisment.png'}
+                src={'/assets/Promotion/image2.png'}
                 alt={`Slide ${index} ${slide}`}
                 className={`h-full w-full object-fit`}
               />
@@ -157,41 +157,41 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
 
             {/* Right: Text Content */}
               {/* Circular Timer */}
-              <div className="absolute bottom-4 right-4">
-                <svg width="50" height="50" className="text-black">
-                  <circle
-                    cx="25"
-                    cy="25"
-                    r={radius}
-                    stroke="#e5e7eb"
-                    strokeWidth="4"
-                    fill="none"
-                  />
-                  <circle
-                    cx="25"
-                    cy="25"
-                    r={radius}
-                    stroke="#3b82f6"
-                    strokeWidth="4"
-                    fill="none"
-                    strokeDasharray={circumference}
-                    strokeDashoffset={strokeDashoffset}
-                    strokeLinecap="round"
-                    style={{ transition: "stroke-dashoffset 0.05s linear" }}
-                  />
-                  <text
-                    x="50%"
-                    y="50%"
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                    fontSize="12"
-                    fill="currentColor"
-                    fontWeight="bold"
-                  >
-                    {Math.ceil(remainingTime)}s
-                  </text>
-                </svg>
-              </div>
+              {/*<div className="absolute bottom-4 right-4">*/}
+              {/*  <svg width="50" height="50" className="text-black">*/}
+              {/*    <circle*/}
+              {/*      cx="25"*/}
+              {/*      cy="25"*/}
+              {/*      r={radius}*/}
+              {/*      stroke="#e5e7eb"*/}
+              {/*      strokeWidth="4"*/}
+              {/*      fill="none"*/}
+              {/*    />*/}
+              {/*    <circle*/}
+              {/*      cx="25"*/}
+              {/*      cy="25"*/}
+              {/*      r={radius}*/}
+              {/*      stroke="#3b82f6"*/}
+              {/*      strokeWidth="4"*/}
+              {/*      fill="none"*/}
+              {/*      strokeDasharray={circumference}*/}
+              {/*      strokeDashoffset={strokeDashoffset}*/}
+              {/*      strokeLinecap="round"*/}
+              {/*      style={{ transition: "stroke-dashoffset 0.05s linear" }}*/}
+              {/*    />*/}
+              {/*    <text*/}
+              {/*      x="50%"*/}
+              {/*      y="50%"*/}
+              {/*      textAnchor="middle"*/}
+              {/*      dominantBaseline="central"*/}
+              {/*      fontSize="12"*/}
+              {/*      fill="currentColor"*/}
+              {/*      fontWeight="bold"*/}
+              {/*    >*/}
+              {/*      {Math.ceil(remainingTime)}s*/}
+              {/*    </text>*/}
+              {/*  </svg>*/}
+              {/*</div>*/}
             </div>
         ))}
       </div>
