@@ -13,7 +13,7 @@ docker network create codexion-network
 ```
 
 ```
- docker compose -f mariadb.yml up -d
+ docker compose -f docker/frappe/mariadb.yml up -d
 ```
 ```
 docker exec -it mariadb mariadb -u root -p
@@ -28,10 +28,10 @@ FLUSH PRIVILEGES;
 
 # 5 To run a specific Docker Compose file
 ```
-docker compose -f soft-aaran-org.yml up -d
+docker compose -f docker/frappe/dev-software-com.yml up -d
 ```
 
 # 6 To open soft-aaran-org in bash
 ```
-docker exec -it soft_aaran_org bash
+docker exec -it dev_software_com bash
 ```
