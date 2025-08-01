@@ -1,5 +1,8 @@
 # prefiq/cli.py
 import typer
+from prefiq.cli.context import get_codexion_root
+
+CODEXION_HOME = get_codexion_root()
 
 from prefiq.cli.apps import app_cli
 from prefiq.cli.config.commands import config_cli
