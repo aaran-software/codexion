@@ -3,7 +3,7 @@ services:
     image: codexion-cloud:v1
     container_name: tmnext_in
     ports:
-      - "4001:4001"
+      - "4002:4002"
       - "3001:3001"
     volumes:
       - ./public/tmnext_in:/home/devops/shared
