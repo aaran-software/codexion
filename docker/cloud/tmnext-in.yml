@@ -1,6 +1,6 @@
 services:
   tmnext_in:
-    image: codexion-cloud:v2
+    image: codexion-cloud:v1
     container_name: tmnext_in
     ports:
       - "4001:4001"
