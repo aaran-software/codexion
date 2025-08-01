@@ -1,20 +1,25 @@
 
-🧱 1. Build Docker and Tag the Image
-Even though you named the stage codexion-cloud, Docker won’t tag it by default. You need to build and tag it manually:
 
-if not in root folder
+#### 1. Build Docker and Tag the Image
 
 ```
 docker build -t codexion-cloud:v1 -f docker/frappe/Dockerfile  docker/frappe
 ```
 
+#### 2. create network for codexion
+
 ```
 docker network create codexion-network
 ```
 
+#### 3. create container for mariadb
+
 ```
  docker compose -f docker/frappe/mariadb.yml up -d
 ```
+
+#### 4. Check mariadb is installed
+
 ```
 docker exec -it mariadb mariadb -u root -p
 ```
