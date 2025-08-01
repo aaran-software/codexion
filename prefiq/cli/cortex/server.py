@@ -1,3 +1,5 @@
+# prefiq/cli/cortex/server.py
+
 import typer
 import subprocess
 import os
@@ -9,13 +11,13 @@ def run_command(cmd: str):
     subprocess.run(cmd, shell=True, check=True)
 
 @server_cmd.command()
-def run_server(mode: str = typer.Argument(..., help="Mode: dev or prod")):
+def run(mode: str = typer.Argument(..., help="Mode: dev or prod")):
     """
     Run backend and frontend servers.
 
-    Example:
-      prefiq run server dev
-      prefiq run server prod
+    Examples:
+      prefiq server dev
+      prefiq server prod
     """
     mode = mode.lower()
 
