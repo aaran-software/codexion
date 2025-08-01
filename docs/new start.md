@@ -151,6 +151,12 @@ sudo ln -s /etc/nginx/sites-available/erp.lifeshoppy.com /etc/nginx/sites-enable
 sudo ln -s /etc/nginx/sites-available/software.aaran.org /etc/nginx/sites-enabled/
 sudo ln -s /etc/nginx/sites-available/dev.aaranerp.com /etc/nginx/sites-enabled/
 
+
+
+sudo ln -s /etc/nginx/sites-available/dev.aaranerp.com /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/shop.aaranerp.com /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/server.aaranerp.com /etc/nginx/sites-enabled/
+
 sudo nginx -t
 sudo systemctl reload nginx
 
@@ -261,7 +267,34 @@ server {
     }
 }
 ```
+```
+server {
+    listen 80;
+    server_name shop.aaranerp.com;
 
+    location / {
+        proxy_pass http://127.0.0.1:4001;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+```
+server {
+    listen 80;
+    server_name server.aaranerp.com;
+
+    location / {
+        proxy_pass http://127.0.0.1:3001;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
 
 
 
