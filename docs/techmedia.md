@@ -126,14 +126,18 @@ sudo systemctl reload nginx
 
 
 
+# tmnext.in
+```
+sudo nano tmnext.in
+```
 
 ```
 server {
     listen 80;
-    server_name soft.aaran.org;
+    server_name tmnext.in;
 
     location / {
-        proxy_pass http://127.0.0.1:8001;
+        proxy_pass http://127.0.0.1:3001;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -142,10 +146,16 @@ server {
 }
 ```
 
+# erp.tmnext.in
+
+```
+sudo nano erp.tmnext.in
+```
+
 ```
 server {
     listen 80;
-    server_name sukraa.codexsun.com;
+    server_name erp.tmnext.in;
 
     location / {
         proxy_pass http://127.0.0.1:8002;
@@ -157,10 +167,44 @@ server {
 }
 ```
 
+
+
+# logicx.in
+
+
+
+```
+sudo nano logicx.in
+```
+
 ```
 server {
     listen 80;
-    server_name flexcon.codexsun.com;
+    server_name logicx.in;
+
+    location / {
+        proxy_pass http://127.0.0.1:3003;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+
+# erp.logicx.in
+
+
+
+```
+sudo nano erp.logicx.in
+```
+
+```
+server {
+    listen 80;
+    server_name erp.logicx.in;
 
     location / {
         proxy_pass http://127.0.0.1:8003;
@@ -172,84 +216,34 @@ server {
 }
 ```
 
-```
-server {
-    listen 80;
-    server_name smile.codexsun.com;
 
-    location / {
-        proxy_pass http://127.0.0.1:8004;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
-```
+sudo ln -s /etc/nginx/sites-available/tmnext.in /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/erp.tmnext.in /etc/nginx/sites-enabled/
+
+sudo ln -s /etc/nginx/sites-available/logicx.in /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/erp.logicx.in /etc/nginx/sites-enabled/
+
+sudo nginx -t
+sudo systemctl reload nginx
+
+
+
+# 5 To run a specific Docker Compose file
 
 ```
-server {
-    listen 80;
-    server_name ganapathi.codexsun.com;
-
-    location / {
-        proxy_pass http://127.0.0.1:8005;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
+docker compose -f tmnext-in.yml up -d
 ```
 
 ```
-server {
-    listen 80;
-    server_name erp.lifeshoppy.com;
-
-    location / {
-        proxy_pass http://127.0.0.1:8006;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
+docker compose -f logicx-in.yml up -d
 ```
 
+# 6 To open soft-aaran-org in bash
 
-
-
-
-Here's the direct one-liner bash command to zip and copy the frappe-bench directory to /home/devops/shared:
 ```
-cd /home/devops && zip -r frappe-bench.zip frappe-bench && mkdir -p /home/devops/shared && mv frappe-bench.zip /home/devops/shared/
-``
+docker exec -it tmnext_in bash
+```
 
- bench get-app https://github.com/frappe/lms --branch develop
- bench --site soft.aaran.org install-app lms
-
- bench get-app https://github.com/frappe/gameplan --branch develop
- bench --site soft.aaran.org install-app gameplan
-
-
-yarn install
-
-yarn audit
-
-yarn audit fix
-
-cd apps/gameplan
-yarn build
-
-
-npm install @iconify-json/lucide
-# or if you're using yarn
-yarn add @iconify-json/lucide
-# or pnpm
-pnpm add @iconify-json/lucide
-
-
-rm -rf node_modules
-rm pnpm-lock.yaml # or yarn.lock
-pnpm install # or yarn install
+```
+docker exec -it logicx_in bash
+```

@@ -1,0 +1,17 @@
+services:
+  tmnext_in:
+    image: codexion-cloud:v2
+    container_name: tmnext_in
+    ports:
+      - "4001:4001"
+      - "3001:3001"
+    volumes:
+      - ./public/tmnext_in:/home/devops/shared
+    networks:
+      - codexion-network
+    restart: unless-stopped
+    tty: true
+
+networks:
+  codexion-network:
+    external: true

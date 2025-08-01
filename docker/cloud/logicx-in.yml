@@ -1,0 +1,17 @@
+services:
+  logicx_in:
+    image: codexion-cloud:v2
+    container_name: logicx_in
+    ports:
+      - "4003:4001"
+      - "3003:3001"
+    volumes:
+      - ./public/logicx_in:/home/devops/shared
+    networks:
+      - codexion-network
+    restart: unless-stopped
+    tty: true
+
+networks:
+  codexion-network:
+    external: true
