@@ -33,7 +33,7 @@ function Home() {
           api={`api/resource/Product?fields=["name"]&filters=[["is_discount", "=", 1]]`}
         />
       </div>
-      <div className="px-[5%] py-5">
+      <div className=" py-5">
         <AdverthismentBanner
           api={`api/resource/Product?fields=["name"]&filters=[["is_slider", "=", 1]]`}
           delay={6000}
