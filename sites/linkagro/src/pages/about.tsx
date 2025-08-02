@@ -12,11 +12,11 @@ function About() {
         />
         <div className="absolute inset-0 bg-foreground/60" />
         <div className="absolute inset-0 flex items-center">
-          <div className="md:w-1/2 px-[10%] text-white space-y-4">
-            <h1 className="text-4xl font-bold">
+          <div className="md:w-2/3 px-[10%] text-white space-y-4">
+            <h1 className="text-2xl md:text-4xl font-bold">
               Our Premium Coco Peat Products
             </h1>
-            <p className="text-lg">
+            <p className="text-sm md:text-md">
               Discover Link Agro Exports' diverse range of high-quality coco
               peat products, including 5KG blocks, briquettes, grow bags, husk
               chips, and coir fiber. Engineered for superior water retention,
