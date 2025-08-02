@@ -1,19 +1,21 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import Login from "../../global/auth/Login";
-import SignUp from "../../global/auth/Signup";
-import ProtectedRoute from "../../global/auth/ProtectedRoute";
-import Admin from "./pages/Admin";
-import Home from "./pages/Home";
-import ProductForm from "./pages/ProductForm";
-import ProductPage from "../../../resources/UIBlocks/ProductPage";
-import CategoryPage from "../../../resources/UIBlocks/CategoryPage";
-import Wishlist from "../../../resources/UIBlocks/Wishlist";
-import Cart from "./pages/Cart";
-import Footer from "../../../resources/components/footer/Footer";
-import Header from "../../../resources/components/header/Header";
-import { FrappeLoginForm } from "../../../resources/components/auth/frappe-login";
 
+const SignUp = lazy(() => import("../../global/auth/Signup"));
+const ProtectedRoute = lazy(() => import("../../global/auth/ProtectedRoute"));
+const Admin = lazy(() => import("./pages/Admin"));
+const Home = lazy(() => import("./pages/Home"));
+const ProductForm = lazy(() => import("./pages/ProductForm"));
+const ProductPage = lazy(() => import("../../../resources/UIBlocks/ProductPage"));
+const CategoryPage = lazy(() => import("../../../resources/UIBlocks/CategoryPage"));
+const Wishlist = lazy(() => import("../../../resources/UIBlocks/Wishlist"));
+const Cart = lazy(() => import("./pages/Cart"));
+const Footer = lazy(() => import("../../../resources/components/footer/Footer"));
+const Header = lazy(() => import("../../../resources/components/header/Header"));
+const FrappeLoginForm = lazy(() => import("../../../resources/components/auth/frappe-login"));
+// import { FrappeLoginForm } from "../../../resources/components/auth/frappe-login";
+// ✅ Optional: import your custom loader
+import LoadingScreen from "../../../resources/components/loading/LoadingScreen"
 function AppRoutes() {
   const location = useLocation();
   const hideLayout =
@@ -21,7 +23,13 @@ function AppRoutes() {
     location.pathname === "/signup" ||
     location.pathname.startsWith("/dashboard");
   return (
-    <div>
+      <Suspense
+        fallback={
+          <LoadingScreen image={"/assets/svg/logo.svg"} />
+        }
+      >
+        <div>
+     
       {!hideLayout && <Header />}
 
       <Routes>
@@ -45,6 +53,8 @@ function AppRoutes() {
       </Routes>
       {!hideLayout && <Footer />}
     </div>
+      </Suspense>
+    
   );
 }
 
