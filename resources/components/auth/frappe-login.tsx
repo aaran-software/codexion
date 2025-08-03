@@ -10,7 +10,7 @@ import {cn} from "../../global/library/utils";
 interface LoginProps {
   className?: string;
 }
-export function FrappeLoginForm({ className }: LoginProps) {
+export default function FrappeLoginForm({ className }: LoginProps) {
   const [usr, setUsr] = useState("");
   const [pwd, setPwd] = useState("");
   const [error, setError] = useState("");
