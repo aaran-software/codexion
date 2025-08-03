@@ -54,8 +54,8 @@ const steps = [
 
 function Manufacture() {
   return (
-    <div className="mt-20">
-      <div className="relative h-[80vh] w-full">
+    <div className="">
+      <div className="relative h-[50vh] md:h-[70vh] w-full">
         {/* Background Image */}
         <img
           src="/assets/Benefits Application 2.jpg"
@@ -68,11 +68,11 @@ function Manufacture() {
 
         {/* Text Content */}
         <div className="absolute inset-0 flex items-center">
-          <div className="md:w-1/2 px-[10%] text-white space-y-4">
-            <h1 className="text-4xl font-bold">
-              From Husk to Harvest: Inside Our Cocopeat Manufacturing Process
+          <div className="md:w-2/3 px-[10%] text-white space-y-4">
+            <h1 className="text-2xl lg:text-4xl font-bold">
+              Our Cocopeat Manufacturing Process
             </h1>
-            <p className="text-lg">
+            <p className="text-sm sm:text-md lg:text-lg text-justify">
               At Link Agro Exports, our cocopeat production journey is a careful
               blend of tradition, innovation, and sustainability. Explore each
               stage of our manufacturing process — from sourcing premium coconut
