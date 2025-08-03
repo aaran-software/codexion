@@ -2,9 +2,10 @@ import { Routes, Route } from "react-router-dom";
 import ScrollToTop from "../../../resources/components/common/scrolltotop";
 import { FaInstagram } from "react-icons/fa";
 import { CiFacebook } from "react-icons/ci";
-import { FiTwitter } from "react-icons/fi";
+import { RiTwitterXLine } from "react-icons/ri";
 import React, { lazy, Suspense } from "react";
 import LoadingScreen from "../../../resources/components/loading/LoadingScreen";
+import FooterLayout2 from "../../../resources/UIBlocks/footer/FooterLayout2";
 const Home = lazy(() => import("./pages/Home"));
 const Product = lazy(() => import("./pages/Product"));
 const Contact = lazy(() => import("./pages/Contact"));
@@ -13,9 +14,7 @@ const Manufacture = lazy(() => import("./pages/Manufacture"));
 const HeaderPortfolio2 = lazy(
   () => import("../../../resources/components/header/HeaderPortfolio2")
 );
-const FooterLayout1 = lazy(
-  () => import("../../../resources/UIBlocks/footer/FooterLayout1")
-);
+
 const BlogLayout1 = lazy(
   () => import("../../../resources/layouts/blog/BlogLayout1")
 );
@@ -23,7 +22,7 @@ const BlogLayout1 = lazy(
 const Blog = React.lazy(() => import("./pages/Blog"));
 function AppRoutes() {
   return (
-    <div>
+    <div className="overflow-y-hidden">
       <ScrollToTop />
       <Suspense
         fallback={
@@ -50,9 +49,11 @@ function AppRoutes() {
           <Route path="/about" element={<About />} />
           <Route path="/manufacture" element={<Manufacture />} />
         </Routes>
-        <FooterLayout1
+       
+        <FooterLayout2
+        companyName="Link Agro Exports"
           about={{
-            title: "Link Agro",
+            title: "Quick links",
             items: [
               { label: "Home", href: "/" },
               { label: "About Us", href: "/about" },
@@ -61,13 +62,7 @@ function AppRoutes() {
               { label: "Manufacture", href: "/manufacture" },
             ],
           }}
-          help={{
-            title: "Help",
-            items: [
-              { label: "FAQs", href: "/faq" },
-              { label: "Contact", href: "/contact" },
-            ],
-          }}
+          
           consumerPolicy={{
             title: "Consumer Policy",
             phone: "+91 98765 43210",
@@ -82,7 +77,7 @@ function AppRoutes() {
             socialLinks: [
               { href: "https://instagram.com/linkagro", icon: <FaInstagram /> },
               { href: "https://facebook.com/linkagro", icon: <CiFacebook /> },
-              { href: "https://twitter.com/linkagro", icon: <FiTwitter /> },
+              { href: "https://twitter.com/linkagro", icon: <RiTwitterXLine /> },
             ],
           }}
           updateConfig={{
@@ -91,6 +86,7 @@ function AppRoutes() {
             description: "Click to check if you're on the latest version.",
             api: "/api/check-version", // Replace with your actual endpoint or mock
           }}
+          mapLink="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d126257.61579297607!2d77.4701604!3d8.5429436!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1754183509920!5m2!1sen!2sin"
           version="1.0.0"
           copyrights="2025 Link Agro Exports. All Rights Reserved. Powered by Aaran Software"
         />

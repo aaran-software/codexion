@@ -5,7 +5,8 @@ import {
   useContext,
   type ReactNode,
 } from "react";
-import { useAppContext } from "./AppContaxt"; // Ensure the file name is correct
+import { useAppContext } from "./AppContaxt"; 
+import LoadingSpinner from '../../resources/components/loading/LoadingSpinner'
 const SettingsContext = createContext<any>(null);
 
 export function useAppSettings() {
@@ -24,23 +25,7 @@ export default function AppInitializer({ children }: { children: ReactNode }) {
     if (!APP_TYPE) return;
 
     let jsonPath = "/settings.json";
-    // switch (APP_CODE) {
-    //   case "cortex":
-    //     jsonPath = "/settings.json";
-    //     break;
-    //   case "ecart":
-    //     jsonPath = "/menubar.json";
-    //     break;
-    //   case "mazsone":
-    //   case "logicx":
-    //     jsonPath = "/JSON/mazsone/menubar.json";
-    //     break;
-    //   case "cxsun":
-    //   default:
-    //     jsonPath = "/settings.json";
-    //     break;
-    // }
-
+    
     console.debug(`[AppInitializer] APP_CODE = ${APP_TYPE}`);
     console.debug(`[AppInitializer] Loading settings from: ${jsonPath}`);
 
@@ -64,7 +49,7 @@ export default function AppInitializer({ children }: { children: ReactNode }) {
   }, [APP_TYPE]);
 
   if (!settings)
-    return <div>Loading settings for <strong>{APP_TYPE}</strong>...</div>;
+    return <div><LoadingSpinner /></div>;
 
   return (
     <SettingsContext.Provider value={settings}>

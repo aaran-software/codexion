@@ -12,7 +12,8 @@
     "position": "center",
     "height": "20",
     "font_size": "2",
-    "company_name": "",
+    "company_name": "Link Agro",
+    "mode":"logo",
     "color": "",
     "padding": "2"
   },

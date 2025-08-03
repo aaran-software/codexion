@@ -6,16 +6,26 @@ const ProtectedRoute = lazy(() => import("../../global/auth/ProtectedRoute"));
 const Admin = lazy(() => import("./pages/Admin"));
 const Home = lazy(() => import("./pages/Home"));
 const ProductForm = lazy(() => import("./pages/ProductForm"));
-const ProductPage = lazy(() => import("../../../resources/UIBlocks/ProductPage"));
-const CategoryPage = lazy(() => import("../../../resources/UIBlocks/CategoryPage"));
+const ProductPage = lazy(
+  () => import("../../../resources/UIBlocks/ProductPage")
+);
+const CategoryPage = lazy(
+  () => import("../../../resources/UIBlocks/CategoryPage")
+);
 const Wishlist = lazy(() => import("../../../resources/UIBlocks/Wishlist"));
 const Cart = lazy(() => import("./pages/Cart"));
-const Footer = lazy(() => import("../../../resources/components/footer/Footer"));
-const Header = lazy(() => import("../../../resources/components/header/Header"));
-const FrappeLoginForm = lazy(() => import("../../../resources/components/auth/frappe-login"));
+const Footer = lazy(
+  () => import("../../../resources/components/footer/Footer")
+);
+const Header = lazy(
+  () => import("../../../resources/components/header/Header")
+);
+const FrappeLoginForm = lazy(
+  () => import("../../../resources/components/auth/frappe-login")
+);
 // import { FrappeLoginForm } from "../../../resources/components/auth/frappe-login";
 // ✅ Optional: import your custom loader
-import LoadingScreen from "../../../resources/components/loading/LoadingScreen"
+import LoadingScreen from "../../../resources/components/loading/LoadingScreen";
 function AppRoutes() {
   const location = useLocation();
   const hideLayout =
@@ -23,38 +33,32 @@ function AppRoutes() {
     location.pathname === "/signup" ||
     location.pathname.startsWith("/dashboard");
   return (
-      <Suspense
-        fallback={
-          <LoadingScreen image={"/assets/svg/logo.svg"} />
-        }
-      >
-        <div>
-     
-      {!hideLayout && <Header />}
+    <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
+      <div>
+        {!hideLayout && <Header />}
 
-      <Routes>
-        {/* <App /> */}
-        <Route path="/" element={<Home />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/login" element={<FrappeLoginForm />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/productpage/:id" element={<ProductPage />} />
-        <Route path="/category/:category" element={<CategoryPage />} />
-        <Route path="/wishlist" element={<Wishlist />} />
-        <Route path="/productform" element={<ProductForm />} />
-        <Route
-          path="/dashboard/:component?"
-          element={
-            <ProtectedRoute>
-              <Admin />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-      {!hideLayout && <Footer />}
-    </div>
-      </Suspense>
-    
+        <Routes>
+          {/* <App /> */}
+          <Route path="/" element={<Home />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/login" element={<FrappeLoginForm />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/productpage/:id" element={<ProductPage />} />
+          <Route path="/category/:category" element={<CategoryPage />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/productform" element={<ProductForm />} />
+          <Route
+            path="/dashboard/:component?"
+            element={
+              <ProtectedRoute>
+                <Admin />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+        {!hideLayout && <Footer />}
+      </div>
+    </Suspense>
   );
 }
 
