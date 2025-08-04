@@ -4,7 +4,7 @@ services:
     container_name: dev_software_com
     ports:
       - "8001:8000"
-      - "4001:4001"
+      - "5001:5001"
       - "3001:3001"
     volumes:
       - ./public/dev_software_com:/home/devops/shared
