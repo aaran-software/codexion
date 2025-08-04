@@ -32,12 +32,6 @@
         "url": "task"
       },
       {
-        "title": "GrandStream",
-        "currentComponent": "calllog",
-        "icon": "LayoutDashboard",
-        "url": "calllog"
-      },
-      {
         "title": "Invoice",
         "icon": "LucideNotepadText",
         "url": "#",

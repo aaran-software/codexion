@@ -121,7 +121,7 @@ function Product() {
       note: "The sizes and packing details mentioned above are customizable on request.",
     },
     {
-      image: "/assets/product/coco-coins.png",
+      image: "/assets/product/discs.png",
       title: "COCOPEAT GROW BAGS & DISCS",
       description:
         "Link Agro Grow bags are offered in UV treated poly bags and these bags are available in various sizes and grades in a variety of porosity combinations, which allows water content to the plants on daily or periodical basis.\n" +

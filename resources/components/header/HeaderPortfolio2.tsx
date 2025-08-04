@@ -72,7 +72,7 @@ function HeaderPortfolio2({ menu }: HeaderProps) {
   return (
     <div
       className={`${
-        scrolled ? "bg-background" : "bg-background/50"
+        scrolled ? "bg-background" : "bg-background/20"
       } flex flex-row justify-between h-20 items-center px-5 py-2 md:py-4 w-full fixed top-0 left-0 z-50 shadow-lg transition-colors duration-300`}
     >
       {/* Logo */}

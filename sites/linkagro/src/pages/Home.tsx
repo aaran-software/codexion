@@ -8,6 +8,9 @@ function Home() {
     "/assets/Benefits Application 2.jpg",
     "/assets/tomato-3919426_1280.jpg",
     "/assets/Homepage4.jpg",
+    "/assets/banner1.jpg",
+    "/assets/banner2.jpg",
+    "/assets/banner3.jpg",
     "/assets/Benefits Application.jpg",
   ];
 
@@ -84,7 +87,7 @@ packing options.`,
             key={index}
             src={src}
             alt={`Slide ${index + 1}`}
-            className="w-full h-[50vh] md:h-[70vh] object-fit"
+            className="w-full h-[60vh] md:h-[80vh] object-fit"
           />
         ))}
       </Carousel>

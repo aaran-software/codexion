@@ -22,11 +22,11 @@ type AppContextType = {
   API_URL: string;
 };
 
-const APP_TYPE = import.meta.env.VITE_APP_TYPE || 'CODEXSUN';
+// const APP_TYPE = import.meta.env.VITE_APP_TYPE || 'CODEXSUN';
 
 const env = import.meta.env;
-const appType = (import.meta.env.VITE_APP_TYPE || 'cxsun').toUpperCase();
-const API_URL = env[`VITE_${appType}_API_URL`] || env.VITE_API_URL;
+const APP_TYPE = (import.meta.env.VITE_APP_TYPE).toUpperCase();
+const API_URL = env[`VITE_${APP_TYPE}_API_URL`];
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 

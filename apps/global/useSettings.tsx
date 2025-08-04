@@ -5,8 +5,8 @@ import {
   useContext,
   type ReactNode,
 } from "react";
-import { useAppContext } from "./AppContaxt"; 
-import LoadingSpinner from '../../resources/components/loading/LoadingSpinner'
+import { useAppContext } from "./AppContaxt";
+import LoadingSpinner from "../../resources/components/loading/LoadingSpinner";
 const SettingsContext = createContext<any>(null);
 
 export function useAppSettings() {
@@ -25,9 +25,6 @@ export default function AppInitializer({ children }: { children: ReactNode }) {
     if (!APP_TYPE) return;
 
     let jsonPath = "/settings.json";
-    
-    console.debug(`[AppInitializer] APP_CODE = ${APP_TYPE}`);
-    console.debug(`[AppInitializer] Loading settings from: ${jsonPath}`);
 
     const loadSettings = async () => {
       try {
@@ -38,7 +35,7 @@ export default function AppInitializer({ children }: { children: ReactNode }) {
           );
         }
         const data = await res.json();
-        console.debug("[AppInitializer] Settings loaded successfully:", data);
+        // console.debug("[AppInitializer] Settings loaded successfully:", data);
         setSettings(data);
       } catch (error) {
         console.error("[AppInitializer] Error loading settings:", error);
@@ -48,8 +45,19 @@ export default function AppInitializer({ children }: { children: ReactNode }) {
     loadSettings();
   }, [APP_TYPE]);
 
+  if (!APP_TYPE) {
+    return (
+      <div className="flex items-center justify-center h-screen w-screen text-red-600 text-lg font-semibold">
+        Missing APP_TYPE environment variable
+      </div>
+    );
+  }
   if (!settings)
-    return <div><LoadingSpinner /></div>;
+    return (
+      <div>
+        <LoadingSpinner />
+      </div>
+    );
 
   return (
     <SettingsContext.Provider value={settings}>
