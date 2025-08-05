@@ -1,18 +1,22 @@
-# cortex/db/drivers/sqlite.py
+import mariadb
 
-import sqlite3
 from cortex.core.settings import get_settings
 from cortex.db.base_engine import BaseDBEngine
 
-class SQLiteDBEngine(BaseDBEngine):
+class MariaDBEngine(BaseDBEngine):
     def __init__(self):
         self.settings = get_settings()
         self.conn = None
 
     def connect(self):
         if self.conn is None:
-            self.conn = sqlite3.connect(self.settings.DB_NAME)
-            self.conn.row_factory = sqlite3.Row
+            self.conn = mariadb.connect(
+                host=self.settings.DB_HOST,
+                user=self.settings.DB_USER,
+                password=self.settings.DB_PASS,
+                database=self.settings.DB_NAME,
+                port=self.settings.DB_PORT
+            )
         return self.conn
 
     def test_connection(self) -> bool:
@@ -23,5 +27,5 @@ class SQLiteDBEngine(BaseDBEngine):
             result = cursor.fetchone()
             return result is not None
         except Exception as e:
-            print(f"❌ SQLite connection failed: {e}")
+            print(f"❌ MariaDB connection failed: {e}")
             return False

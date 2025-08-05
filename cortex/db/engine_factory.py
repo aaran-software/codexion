@@ -5,7 +5,11 @@ def get_db_engine():
     settings = get_settings()
     db_engine = settings.DB_ENGINE.lower()
 
-    if db_engine == "mysql":
+    if db_engine == "mariadb":
+        from cortex.db.engines.mariadb import MariaDBEngine
+        return MariaDBEngine()
+
+    elif db_engine == "mysql":
         from cortex.db.engines.mysql import MySQLDBEngine
         return MySQLDBEngine()
 

@@ -1,13 +1,13 @@
 pydantic>=2.11.7
 fastapi>=0.116.1
-pydantic-settings>=2.10.1
+pydantic-settings~=2.10.1
 python-dotenv>=1.1.1
 SQLAlchemy>=2.0.41
 uvicorn>=0.35.0
 passlib>=1.7.4
 python-jose>=3.5.0
 bcrypt==4.0.1
-pymysql
+pymysql~=1.1.1
 starlette~=0.47.2
 pytest~=8.4.1
 black
@@ -20,5 +20,8 @@ typer~=0.16.0
 passlib
 bcrypt
 PyYAML~=6.0.2
-gunicorn>=21.2.0
+gunicorn>=23.0.0
 cryptography
+pymongo
+psycopg2-binary
+mariadb
