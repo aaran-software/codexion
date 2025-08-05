@@ -8,6 +8,7 @@ import { useAppSettings } from "../../../apps/global/useSettings"
 
 export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   const settings = useAppSettings()
+  
   if (!settings) return null
 
   const navMain = settings.sidemenu.main.map((item: any) => ({

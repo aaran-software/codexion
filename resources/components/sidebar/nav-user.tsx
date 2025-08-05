@@ -1,5 +1,3 @@
-;
-
 import {
   ChevronsUpDown,
   UserCircle2,
@@ -44,15 +42,15 @@ export function NavUser({
   };
 }) {
   const { isMobile } = useSidebar();
-  const navigate = useNavigate();
   const [showHelpMenu, setShowHelpMenu] = useState(false);
-  // const { logout } = useAuth();
   const { API_URL } = useAppContext();
-   const handleLogout = () => {
+    const handleLogout = () => {
     logoutUser(API_URL);
     // logout();
-    navigate("/");
+    // navigate("/");
   };
+  const LoggedInUser = JSON.parse(localStorage.getItem("user") || "{}");
+
   const helpTimeout = useRef<NodeJS.Timeout | null>(null);
   return (
     <SidebarMenu className="relative">
@@ -65,13 +63,15 @@ export function NavUser({
             >
               <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg bg-foreground/20">
-                  CN
+                <AvatarFallback className="rounded-lg uppercase font-bold">
+                  {LoggedInUser.username.charAt(0)}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+                <span className="truncate font-medium">
+                  {LoggedInUser.username}
+                </span>
+                <span className="truncate text-xs">{LoggedInUser.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -86,12 +86,16 @@ export function NavUser({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  {/* <AvatarImage src={user.avatar} alt={user.name} /> */}
+                  <AvatarFallback className="rounded-lg uppercase font-bold">
+                    {LoggedInUser.username.charAt(0)}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
+                  <span className="truncate font-medium">
+                    {LoggedInUser.username}
+                  </span>
+                  <span className="truncate text-xs">{LoggedInUser.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>

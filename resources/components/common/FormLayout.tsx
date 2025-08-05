@@ -184,17 +184,6 @@ function FormLayout({
         setTableData(updated);
     };
 
-    // const generatePageSizeOptions = (total: number): number[] => {
-    //     const base = Math.max(Math.floor(total * 0.1), 1);
-    //     const steps = [1, 5, 10, 15, 20];
-    //     const options: number[] = [];
-    //     for (const step of steps) {
-    //         const val = base * step;
-    //         if (val <= total) options.push(val);
-    //     }
-    //     return options;
-    // };
-
     const printRef = useRef<HTMLDivElement>(null);
     const handlePrint = useReactToPrint({
         contentRef: printRef,
@@ -213,9 +202,6 @@ function FormLayout({
             printColumn.map((key) => String(row[key] ?? ""))
         );
     }, [paginatedData, printColumn]);
-
-    // console.log("🔍 tableData row sample:", tableData[0]);
-    // console.log("🧠 head keys:", head.map(h => h.key));
 
     return (
         <div className="w-full p-2 lg:pr-5">
@@ -308,6 +294,7 @@ function FormLayout({
                     faildMsg="Form submission failed"
                     initialData={Array.isArray(editData) ? {} : editData}
                     onSubmit={handleFormSubmit}
+                    multipleEntry={true}
                     api={formApi}
                 />
             )}
