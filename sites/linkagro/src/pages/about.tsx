@@ -24,7 +24,7 @@ function About() {
   return (
     <div className="">
       {/* Hero Section */}
-      <div className="relative h-[50vh] md:h-[70vh] w-full">
+      <div className="relative h-[50vh] sm:h-[70vh] w-full">
         <img
           src="/assets/Homepage1.jpg"
           alt="Sample"
@@ -32,25 +32,21 @@ function About() {
         />
         <div className="absolute inset-0 bg-foreground/60" />
         <div className="absolute inset-0 flex items-center">
-          <div className="md:w-2/3 px-[10%] text-white space-y-4">
-            <h1 className="text-2xl md:text-4xl font-bold">
-              Our Premium Coco Peat Products
+          <div className="md:w-2/3 px-5 lg:px-[10%] text-white space-y-4">
+            <h1 className="text-2xl lg:text-4xl font-bold animate__animated animate__fadeIn animate__fast">
+              Committed to Quality. Driven by Nature.
             </h1>
-            <p className="text-sm sm:text-md md:text-lg text-justify">
-              Discover Link Agro Exports' diverse range of high-quality coco
-              peat products, including 5KG blocks, briquettes, grow bags, husk
-              chips, and coir fiber. Engineered for superior water retention,
-              low EC, and eco-friendly applications, our products are ideal for
-              horticulture, greenhouse farming, and hydroponics. Each product
-              comes with detailed specifications and global shipping options to
-              suit your agricultural needs.
+            <p className="text-sm lg:text-lg text-justify animate__animated animate__fadeIn animate__slow">
+              From South India to the World.
+Founded in 2014, Link Agro Exports stands for quality, consistency, and customer satisfaction.
+We manufacture and export premium coco peat products designed to enrich agriculture and horticulture practices.
             </p>
           </div>
         </div>
       </div>
 
       {/* About Content Section */}
-      <div className="text-gray-800 py-16 px-4 md:px-12 lg:px-[10%]">
+      <div className="text-gray-800 py-16 px-5 lg:px-[10%]">
         <div className="mx-auto">
           <p
             className={`text-lg leading-relaxed first-letter:text-2xl first-letter:font-bold ${
@@ -64,7 +60,7 @@ function About() {
             are emerging globally by exporting.
           </p>
 
-          <div className="container px-5 py-10">
+          <div className="container px-5 lg:px-[10%] mb-10">
             <Card2
               items={company}
               containerStyle={"grid-cols-1 sm:grid-cols-2"}

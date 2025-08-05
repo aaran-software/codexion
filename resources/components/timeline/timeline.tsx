@@ -15,18 +15,28 @@ interface TimelineItem {
 interface TimelineProps {
   items: TimelineItem[];
   showCollapse?: boolean;
+  isHeading?: boolean;
 }
 
-const Timeline: React.FC<TimelineProps> = ({ items, showCollapse = false }) => {
-  const groupedByDate = items.reduce<Record<string, TimelineItem[]>>((acc, item) => {
-    acc[item.date] = acc[item.date] || [];
-    acc[item.date].push(item);
-    return acc;
-  }, {});
+const Timeline: React.FC<TimelineProps> = ({
+  items,
+  showCollapse = false,
+  isHeading = true,
+}) => {
+  const groupedByDate = items.reduce<Record<string, TimelineItem[]>>(
+    (acc, item) => {
+      acc[item.date] = acc[item.date] || [];
+      acc[item.date].push(item);
+      return acc;
+    },
+    {}
+  );
 
   const [collapsed, setCollapsed] = React.useState(true);
 
-  const dates = Object.keys(groupedByDate).sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
+  const dates = Object.keys(groupedByDate).sort(
+    (a, b) => new Date(b).getTime() - new Date(a).getTime()
+  );
   const visibleDates = showCollapse && collapsed ? dates.slice(0, 2) : dates;
 
   return (
@@ -42,20 +52,25 @@ const Timeline: React.FC<TimelineProps> = ({ items, showCollapse = false }) => {
           {groupedByDate[date].map((item, idx) => (
             <div key={`${date}-${idx}`} className="flex gap-x-3">
               {/* Icon line */}
-              <div className="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-gray-200 dark:after:bg-neutral-700">
+              <div className="relative last:after:hidden after:absolute after:top-7 after:bottom-0 after:start-3.5 after:w-px after:-translate-x-[0.5px] after:bg-ring/50">
                 <div className="relative z-10 size-7 flex justify-center items-center">
-                  <div className="size-2 rounded-full bg-gray-400 dark:bg-neutral-600"></div>
+                  <div className="size-2 rounded-full bg-ring"></div>
                 </div>
               </div>
 
               {/* Content */}
               <div className="grow pt-0.5 pb-8">
-                <h3 className="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
-                  {item.icon && <span className="mt-1">{item.icon}</span>}
-                  {item.title}
-                </h3>
+                {isHeading && (
+                  <h3 className="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
+                    {item.icon && <span className="mt-1">{item.icon}</span>}
+                    {item.title}
+                  </h3>
+                )}
+
                 {item.description && (
-                  <p className="mt-1 text-sm text-gray-600 dark:text-neutral-400">{item.description}</p>
+                  <p className="mt-1 text-sm text-gray-600 dark:text-neutral-400">
+                    {item.description}
+                  </p>
                 )}
                 {item.user && (
                   <button
@@ -89,8 +104,18 @@ const Timeline: React.FC<TimelineProps> = ({ items, showCollapse = false }) => {
             className="text-start inline-flex items-center gap-x-1 text-sm text-blue-600 font-medium hover:underline dark:text-blue-500"
             onClick={() => setCollapsed(!collapsed)}
           >
-            <svg className="shrink-0 size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="m6 9 6 6 6-6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <svg
+              className="shrink-0 size-3.5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+            >
+              <path
+                d="m6 9 6 6 6-6"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
             {collapsed ? "Show older" : "Show less"}
           </button>

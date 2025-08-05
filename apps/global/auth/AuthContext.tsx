@@ -4,6 +4,7 @@ import {useAppContext} from "../AppContaxt";
 
 type User = {
   username: string;
+  email?:string
 };
 
 type AuthContextType = {
@@ -46,17 +47,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             },
           });
 
-          console.log("Token verification response:", res.status);
-
           if (res.ok) {
             setToken(savedToken);
-            setUser(JSON.parse(savedUser));
           } else {
             localStorage.removeItem("token");
             localStorage.removeItem("user");
           }
         } catch (err) {
-          console.error("Network error during token check:", err);
+          console.error("Token verification failed:", err);
         }
       }
 
@@ -67,6 +65,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [API_URL]);
 
   const login = (user: User, token: string) => {
+    console.log(user)
     setUser(user);
     setToken(token);
     localStorage.setItem("user", JSON.stringify(user));

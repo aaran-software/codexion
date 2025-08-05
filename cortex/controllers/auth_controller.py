@@ -28,7 +28,7 @@ def signup(user: user.UserCreate, db: Session = Depends(get_db)):
         )
 
     hashed_pw = hashing.hash_password(user.password)
-    new_user = User(username=user.username, password=hashed_pw)
+    new_user = User(username=user.username, password=hashed_pw,email=user.email)
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
@@ -46,10 +46,17 @@ def login(data: LoginRequest, db: Session = Depends(get_db)):
             logger.warning("Login failed: wrong password for %s", data.username)
             raise HTTPException(401, "Invalid credentials")
 
-        token = create_access_token({"sub": user.username})
+        token = create_access_token({"sub": str(user.id)})
 
         print(token)
-        return {"access_token": token, "token_type": "bearer"}
+        return {
+            "access_token": token,
+            "token_type": "bearer",
+            "user": {
+                "username": user.username,
+                "email": user.email
+            }
+        }
 
     except HTTPException:
         raise
@@ -80,17 +87,18 @@ def extract_token_from_request(request: Request) -> str:
     return auth_header.split(" ")[1]
 
 
-def get_user_id_from_token(token: str, db: Session, verify: bool = True):
+def get_user_id_from_token(token: str, db: Session, verify: bool = True) -> int:
     try:
         payload = jwt.decode(
             token,
             settings.JWT_SECRET_KEY,
             algorithms=[settings.JWT_ALGORITHM],
-            options={"verify_signature": verify} if not verify else None,
+            options={"verify_signature": not verify} if not verify else None,
         )
-        return payload.get("sub")  # or however you store user_id
+        return int(payload.get("sub"))
     except ExpiredSignatureError:
+        # Token expired, but we want to extract the user ID anyway
         payload = jwt.get_unverified_claims(token)
-        return payload.get("sub")  # fallback for expired but valid tokens
-    except JWTError:
+        return int(payload.get("sub"))
+    except (JWTError, ValueError, TypeError):
         raise HTTPException(status_code=401, detail="Invalid token")

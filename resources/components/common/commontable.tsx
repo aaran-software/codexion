@@ -17,7 +17,7 @@ export interface Column {
 interface CommonTableProps {
   head: Column[];
   body: TableRowData[];
-  onEdit: (row: TableRowData | TableRowData[], index: number) => void;
+  onEdit: (row: TableRowData, index: number) => void;
   onCreate?: () => void;
   currentPage: number;
   rowsPerPage: number;
@@ -27,7 +27,6 @@ interface CommonTableProps {
   onDeleteSelected?: (ids: string[]) => void;
   onCellClick?: (key: string, value: string) => void;
   filterOnColumnClick?: boolean;
-  multipleEntry?: boolean;
   api?: ApiList;
 }
 export interface ApiList {
@@ -45,7 +44,6 @@ function CommonTable({
   onDeleteSelected,
   onCellClick,
   filterOnColumnClick,
-  multipleEntry = true,
   api,
 }: CommonTableProps) {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -97,49 +95,40 @@ function CommonTable({
     setActionMenuVisible(false);
   };
 
-  const handleBulkEdit = () => {
-    if (selectedIds.length === 1) {
-      const index = body.findIndex((r) => r.id === selectedIds[0]);
-      onEdit?.(getRowById(selectedIds[0])!, index);
-      setSelectedIds([]);
-    } else {
-      setPendingAction({ type: "edit", ids: selectedIds });
-      setWarningOpen(true);
-    }
-    setActionMenuVisible(false);
-  };
-
   const handleWarningConfirm = () => {
-  if (!pendingAction) return;
+    if (!pendingAction) return;
 
-  if (pendingAction.type === "delete") {
-    const deletePromises = pendingAction.ids.map((id) =>
-      apiClient
-        .delete(`${api?.delete}/${encodeURIComponent(id)}`)
-        .then(() => console.log(`✅ Deleted ${id}`))
-        .catch((err) => {
-          console.error(`❌ Failed to delete ${id}`, err);
-        })
-    );
+    if (pendingAction.type === "delete") {
+      const deletePromises = pendingAction.ids.map((id) =>
+        apiClient
+          .delete(`${api?.delete}/${encodeURIComponent(id)}`)
+          .then(() => console.log(`✅ Deleted ${id}`))
+          .catch((err) => {
+            console.error(`❌ Failed to delete ${id}`, err);
+          })
+      );
 
-    Promise.all(deletePromises).then(() => {
-      onDeleteSelected?.(pendingAction.ids);
-    });
-  } else if (pendingAction.type === "edit") {
-    const rowsToEdit = pendingAction.ids
-      .map((id) => getRowById(id))
-      .filter((row): row is TableRowData => !!row);
+      Promise.all(deletePromises).then(() => {
+        onDeleteSelected?.(pendingAction.ids);
+      });
+    } else if (pendingAction.type === "edit") {
+      if (pendingAction.ids.length > 1) {
+        console.warn("Multi-row editing is disabled.");
+        setWarningOpen(false);
+        setPendingAction(null);
+        return;
+      }
 
-    if (rowsToEdit.length > 0) {
-      onEdit(rowsToEdit, -1);
+      const row = getRowById(pendingAction.ids[0]);
+      if (row) {
+        onEdit(row, -1);
+      }
     }
-  }
 
-  setSelectedIds([]);
-  setPendingAction(null);
-  setWarningOpen(false);
-};
-
+    setSelectedIds([]);
+    setPendingAction(null);
+    setWarningOpen(false);
+  };
 
   const handleWarningCancel = () => {
     setWarningOpen(false);
@@ -157,7 +146,7 @@ function CommonTable({
     }
 
     if (pendingAction.type === "edit") {
-      return `You are trying to edit ${count} rows. Proceed?`;
+      return `You are editing this row. Proceed?`;
     }
 
     return "";
@@ -171,15 +160,6 @@ function CommonTable({
           onClick={() => setActionMenuVisible(!actionMenuVisible)}
           isVisible={actionMenuVisible}
           menuItems={[
-            ...(multipleEntry
-              ? [
-                  {
-                    label: "Edit",
-                    icon: "edit" as const, // ✅ cast to literal
-                    onClick: handleBulkEdit,
-                  },
-                ]
-              : []),
             {
               label: "Delete",
               icon: "delete" as const, // ✅ cast to literal
@@ -359,6 +339,7 @@ function CommonTable({
                               className="bg-update text-update-foreground p-2"
                               onClick={() => onEdit(item, rowIndex)}
                             />
+
                             <ImageButton
                               icon="delete"
                               className="bg-delete text-delete-foreground p-2"

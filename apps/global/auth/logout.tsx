@@ -16,8 +16,9 @@ export async function logoutUser(API_URL: string) {
       await response.json();
 
       localStorage.removeItem("token");
-      console.log("Logout successful");
-      window.location.href = "/"; // ✅ AFTER everything finishes
+      localStorage.removeItem("user");
+      localStorage.removeItem("editor-draft");
+      window.location.href = "/"; 
     } else {
       console.error("Logout failed");
     }

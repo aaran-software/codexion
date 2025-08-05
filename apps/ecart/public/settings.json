@@ -11,6 +11,7 @@
     "position": "center",
     "height": "20",
     "font_size": "2",
+    "mode":"logo",
     "company_name": "",
     "color": "",
     "padding": "0"

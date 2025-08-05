@@ -7,40 +7,41 @@ function Home() {
   const images = [
     "/assets/Benefits Application 2.jpg",
     "/assets/Homepage4.jpg",
-    // "/assets/Homepage2.JPG",
-    "/assets/Benefits Application.jpg",
+    "/assets/banner1.jpg",
+    "/assets/banner2.jpg",
+    "/assets/banner3.jpg",
   ];
 
   const product = [
     {
-      image: "/assets/product/bb6501.jpg",
-      title: "Creative Design",
+      image: "/assets/product/bb6501.png",
+      title: "COCO PEAT BRIQUETTE (650Grams)",
       animate: "animate__animated animate__fadeInDown animate__faster",
     },
     {
-      image: "/assets/product/coco-coins.jpg",
-      title: "Tech Landing",
+      image: "/assets/product/coco-coins.png",
+      title: "COCOPEAT GROW BAGS & DISCS",
       animate: "animate__animated animate__fadeInDown animate__fast",
     },
     {
       image: "/assets/product/CoirFiber.jpeg",
-      title: "E-commerce Showcase",
+      title: "COCO COIR FIBER",
       animate: "animate__animated animate__fadeInDown animate__slow",
     },
     {
       image: "/assets/product/Cocopeat5kgBlock.png",
-      title: "E-commerce Showcase",
+      title: "Coco Peat 5KG Blocks",
+      animate: "animate__animated animate__fadeInUp animate__slow",
+    },
+    {
+      image: "/assets/product/Coco husk chips block 1.png",
+      title: "COCO HUSK CHIPS",
       animate: "animate__animated animate__fadeInUp animate__fast",
     },
     {
-      image: "/assets/product/Cocohuskchipsblock.jpeg",
-      title: "E-commerce Showcase",
-      animate: "animate__animated animate__fadeInUp animate__fast",
-    },
-    {
-      image: "/assets/product/Cocodiscsseedling.jpg",
-      title: "E-commerce Showcase",
-      animate: "animate__animated animate__fadeInUp animate__fast",
+      image: "/assets/product/Cocodiscsseedling.png",
+      title: "Coco disc seedling",
+      animate: "animate__animated animate__fadeInUp animate__faster",
     },
   ];
 
@@ -77,14 +78,14 @@ packing options.`,
     },
   ];
   return (
-    <div className="mt-20 md:mt-0">
+    <div className="">
       <Carousel autoSlide autoSlideInterval={4000} startIndex={0}>
         {images.map((src, index) => (
           <img
             key={index}
             src={src}
             alt={`Slide ${index + 1}`}
-            className="w-full h-[50vh] md:h-[70vh] object-fit"
+            className="w-full h-[60vh] md:h-[80vh] object-fit"
           />
         ))}
       </Carousel>
@@ -130,7 +131,7 @@ packing options.`,
         </div>
       </div>
 
-      <div className="px-[10%]">
+      <div className="px-5 lg:px-[10%]">
         <h1 className="text-center font-bold text-4xl my-5">Our Products</h1>
         <DynamicCard
           Card={product}

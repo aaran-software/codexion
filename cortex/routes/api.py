@@ -34,8 +34,14 @@ async def get_update():
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, HTTPException, Depends, Request
 
+# @router.get("/protected")
+# def protected_route(current_user: User = Depends(get_current_user)):
+#     return {"message": f"Hello, {current_user.username},{current_user.email}"}
+
 @router.get("/protected")
 def protected_route(current_user: User = Depends(get_current_user)):
-    return {"message": f"Hello, {current_user.username}"}
-
+    return {
+        "username": current_user.username,
+        "email": current_user.email,
+    }
 

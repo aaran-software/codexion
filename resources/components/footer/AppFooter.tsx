@@ -1,7 +1,4 @@
-import {Link} from "react-router-dom";
-import {CiFacebook} from "react-icons/ci";
-import {FiTwitter} from "react-icons/fi";
-import {FaInstagram} from "react-icons/fa";
+
 import NewUpdate from "../../../resources/components/advertisment/NewUpdate";
 import {useState} from "react";
 
@@ -25,7 +22,7 @@ const AppFooter: React.FC = () => {
         setTimeout(() => setSuccessMessage(""), 3000); // auto-clear
     };
     return (
-        <footer className="bg-neutral-900  text-white text-sm mt-5">
+        <footer className="bg-dashboard-background  text-foreground text-sm mt-5">
             {showUpdate && (
                 <NewUpdate
                     key={resetKey}
@@ -43,9 +40,9 @@ const AppFooter: React.FC = () => {
                     {successMessage}
                 </div>
             )}
-            <div className="flex flex-row justify-between border-t border-white/10">
+             <div className="flex flex-row justify-between border-t border-white/10">
                 <div></div>
-                <div className="text-center py-3 bg-neutral-900 ">
+                <div className="text-center py-3 bg-background text-foreground ">
                     &copy; 2024 Tech Media. All Rights Reserved.
                 </div>
                 <div className="block my-auto text-background/50 pr-5 cursor-pointer" onClick={handleVisible}>
