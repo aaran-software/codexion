@@ -4,7 +4,7 @@
 git config --global user.name "Sundar"
 git config --global user.email "Sundar@aaransoftware.com"
 
-git init -b develop
+git init -b main
 
 
 
