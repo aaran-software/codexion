@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from apps.cxsun.core.database.schemas import purchase_schema
-from apps.cxsun.core.models.purchase import Purchase
+from apps.cxsun.core.models.Purchase import Purchase
 from cortex.DTO.dal import get_db
 
 router = APIRouter(prefix="/purchases", tags=["Purchases"])

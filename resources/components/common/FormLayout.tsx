@@ -24,6 +24,8 @@ type FormLayoutProps = {
   formApi: ApiList;
   printableFields: string[];
   data?: any[];
+  multipleEntry: boolean;
+  formName: string;
 };
 
 function FormLayout({
@@ -31,6 +33,8 @@ function FormLayout({
   head,
   formApi,
   printableFields,
+  multipleEntry,
+  formName,
 }: FormLayoutProps) {
   useEffect(() => {
     const fetchData = async () => {
@@ -281,20 +285,19 @@ function FormLayout({
       {/* form for create and edit */}
       {formOpen && (
         <CommonForm
-  groupedFields={groupedFields}
-  isPopUp
-  formOpen={formOpen}
-  setFormOpen={setFormOpen}
-  formName="Client"
-  successMsg="Form submitted successfully"
-  faildMsg="Form submission failed"
-  initialData={editData}
-  onSubmit={handleFormSubmit}
-  multipleEntry={true}
-  api={formApi}
-  mode={editId ? "edit" : "create"} // ✅ dynamic mode
-/>
-
+          groupedFields={groupedFields}
+          isPopUp
+          formOpen={formOpen}
+          setFormOpen={setFormOpen}
+          formName={formName}
+          successMsg="Form submitted successfully"
+          faildMsg="Form submission failed"
+          initialData={editData}
+          onSubmit={handleFormSubmit}
+          multipleEntry={multipleEntry}
+          api={formApi}
+          mode={editId ? "edit" : "create"} // ✅ dynamic mode
+        />
       )}
 
       {/* Purchase Table */}

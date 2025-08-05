@@ -98,6 +98,8 @@ function Purchase() {
           head={head}
           formApi={formApi}
           printableFields={printableFields}
+          multipleEntry={true}
+          formName="Payment"
         />
       )}
     </div>
