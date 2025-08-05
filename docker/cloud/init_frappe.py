@@ -10,7 +10,7 @@ DB_USER = "root"
 DB_PASS = "DbPass1@@"
 DB_HOST = "mariadb"
 DB_NAME = "dev_software_db"
-BENCH_DIR = "/home/devops/frappe-bench"
+BENCH_DIR = "/home/devops/cloud/frappe-bench"
 SUPERVISOR_CONF = "/etc/supervisor/conf.d/frappe.conf"
 EMAIL = f"admin@{SITE_NAME}"
 LOG_DIR = "/home/devops/logs"
@@ -70,16 +70,28 @@ def confirm_bench_running():
 # SETUP FUNCTIONS
 # ------------------
 def setup_bench():
+    parent_dir = os.path.dirname(BENCH_DIR)
+    bench_name = os.path.basename(BENCH_DIR)
+
     if os.path.exists(BENCH_DIR):
         Log.warn("⚠️ Bench already exists.")
         if not confirm("🔁 Reinstall bench? This will delete existing one."):
             return
-        run(f"rm -rf {BENCH_DIR}")
+        run(f"rm -rf '{BENCH_DIR}'")
+
     Log.print("🌀 Installing Frappe Bench...")
-    run(f"bench init frappe-bench --frappe-branch {FRAPPE_BRANCH}", cwd="/home/devops")
+    os.makedirs(parent_dir, exist_ok=True)
+    run(f"bench init {bench_name} --frappe-branch {FRAPPE_BRANCH}", cwd=parent_dir)
 
 
 def create_site():
+    global SITE_NAME, DB_NAME
+    site_name = input(f"Site Name (default: {SITE_NAME}): ").strip().lower()
+
+    if site_name:
+        SITE_NAME = site_name
+        DB_NAME = SITE_NAME.replace('.', '_') + "_db"
+
     site_path = os.path.join(BENCH_DIR, "sites", SITE_NAME)
     if os.path.exists(site_path):
         Log.warn(f"⚠️ Site {SITE_NAME} already exists.")
@@ -148,8 +160,16 @@ def build_and_config():
     run("bench build --force", cwd=BENCH_DIR)
     run("bench set-config -g developer_mode 1", cwd=BENCH_DIR)
     run("bench set-config -g host_name http://0.0.0.0:8000", cwd=BENCH_DIR)
-    run(f"bench set-nginx-port {SITE_NAME} 8000", cwd=BENCH_DIR)
-    run("bench setup nginx", cwd=BENCH_DIR)
+    # run(f"bench set-nginx-port {SITE_NAME} 8000", cwd=BENCH_DIR)
+    # run("bench setup nginx", cwd=BENCH_DIR)
+
+
+def configure_site():
+    Log.print("🔧 Setting site configurations...")
+    run(f"bench --site {SITE_NAME} set-config allow_cors http://127.0.0.1:3001", cwd=BENCH_DIR)
+    run(f"bench --site {SITE_NAME} set-config allow_signup true", cwd=BENCH_DIR)
+    run(f"bench --site {SITE_NAME} set-config cookie_samesite Lax", cwd=BENCH_DIR)
+    run(f"bench --site {SITE_NAME} set-config cookie_secure true", cwd=BENCH_DIR)
 
 
 # ------------------
@@ -189,6 +209,7 @@ if __name__ == '__main__':
     install_india_compliance()
 
     build_and_config()
+    configure_site()
     setup_supervisor()
 
     Log.success("✅ Frappe setup complete!")

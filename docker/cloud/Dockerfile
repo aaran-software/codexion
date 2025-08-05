@@ -90,10 +90,10 @@ RUN git clone --depth 1 -b v5.x https://github.com/frappe/bench ~/.bench && \
 USER root
 RUN ln -sf /home/devops/.local/bin/bench /usr/local/bin/bench
 
-RUN mkdir -p /home/devops/setup
-COPY init_frappe.py /home/devops/setup/ifrappe.py
-RUN chmod +x /home/devops/setup/ifrappe.py \
-    && ln -s /home/devops/setup/ifrappe.py /usr/local/bin/ifrappe
+RUN mkdir -p /home/devops
+COPY init_frappe.py /home/devops/ifrappe.py
+RUN chmod +x /home/devops/ifrappe.py \
+    && ln -s /home/devops/ifrappe.py /usr/local/bin/ifrappe
 
 COPY install_cortex.py /home/devops/icortex.py
 RUN chmod +x /home/devops/icortex.py \
