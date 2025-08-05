@@ -48,7 +48,7 @@ function Product() {
       note: "The sizes and packing details mentioned above are customizable on request.",
     },
     {
-      image: "/assets/product/bb6501.jpg",
+      image: "/assets/product/bb6501.png",
       title: "COCO PEAT BRIQUETTE (650Grams)",
       description:
         "Link Agro Exports delivers Coco Peat Bricks which weighs 650 Grams. These bricks are applied in various processes like landscaping, seed rising, soil conditioning, potting mixes, etc., Coco Bricks are ideal for using hydroponic growing, potting media. We export Coco peat bricks in pallets or by wrapping individually with or without labels as per customer requirements.",
@@ -91,7 +91,7 @@ function Product() {
       note: "The sizes and packing details mentioned above are customizable on request.",
     },
     {
-      image: "/assets/product/Coco husk chips block 1.jpg",
+      image: "/assets/product/Coco husk chips block 1.png",
       title: "COCO HUSK CHIPS",
       description:
         "These compressed blocks of coconut Husk chips are widely used for growing roses and orchids in pots. We deliver these husk chips in various sizes weights and dimensions to fulfill the demands of different types of customers requirements.\n" +
@@ -121,7 +121,7 @@ function Product() {
       note: "The sizes and packing details mentioned above are customizable on request.",
     },
     {
-      image: "/assets/product/coco-coins.jpg",
+      image: "/assets/product/discs.png",
       title: "COCOPEAT GROW BAGS & DISCS",
       description:
         "Link Agro Grow bags are offered in UV treated poly bags and these bags are available in various sizes and grades in a variety of porosity combinations, which allows water content to the plants on daily or periodical basis.\n" +
@@ -193,10 +193,10 @@ export-grade packing every time.`,
 
   return (
     <div className="">
-      <div className="relative h-[50vh] md:h-[70vh] w-full">
+      <div className="relative h-[50vh] sm:h-[70vh] w-full">
         {/* Background Image */}
         <img
-          src="/assets/p"
+          src="/assets/IMG_8034[1].JPG"
           alt="Sample"
           className="h-full w-full object-fit"
         />
@@ -206,18 +206,12 @@ export-grade packing every time.`,
 
         {/* Text Content */}
         <div className="absolute inset-0 flex items-center">
-          <div className="md:w-2/3 px-[10%] text-white space-y-4">
-            <h1 className="text-4xl font-bold">
+          <div className="md:w-2/3 px-5 lg:px-[10%] text-white space-y-4">
+            <h1 className="text-2xl lg:text-4xl font-bold animate__animated animate__fadeIn animate__fast">
               Our Premium Coco Peat Products
             </h1>
-            <p className="text-sm sm:text-md md:text-lg text-justify">
-              Discover Link Agro Exports' diverse range of high-quality coco
-              peat products, including 5KG blocks, briquettes, grow bags, husk
-              chips, and coir fiber. Engineered for superior water retention,
-              low EC, and eco-friendly applications, our products are ideal for
-              horticulture, greenhouse farming, and hydroponics. Each product
-              comes with detailed specifications and global shipping options to
-              suit your agricultural needs.
+            <p className="text-sm lg:text-lg text-justify animate__animated animate__fadeIn animate__slow">
+              Our involvement in the coconut and coconut fiber industry began when our ancestors farmed and harvested coconuts on their traditional farmland. We continue this ancestral legacy in the name of Link Agro Exports by modernizing to meet current global requirements. Now our facility is equipped to produce 5Kg cocopeat blocks both in low EC and high EC varieties. With several decades of experience, we are now capable of manufacturing and exporting cocopeat products worldwide.
             </p>
             <Button
               label="Contact Now"
@@ -227,7 +221,7 @@ export-grade packing every time.`,
           </div>
         </div>
       </div>
-      <div className="px-[10%]">
+      <div className="px-5 lg:px-[10%]">
         {product.map((item, index) => (
           <div key={index} className="">
             <PortfolioProduct1 item={item} reverse={index % 2 === 0} />
@@ -250,7 +244,7 @@ export-grade packing every time.`,
                   <table className="w-full border border-ring/30">
                     {table.columns && table.columns.length > 0 && (
                       <thead>
-                        <tr className="bg-gray-100">
+                        <tr className="bg-green-100">
                           {table.columns.map((col, cIndex) => (
                             <th
                               key={cIndex}

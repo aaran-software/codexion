@@ -108,21 +108,40 @@ function EcartHeader() {
       ) : (
         <div className="flex items-center justify-between gap-5">
           {/* Logo */}
-          <div className={`flex items-${logo.position}`}>
-            {logo.company_name === "" ? (
+          <div
+            className={`flex items-${logo.position} gap-2 cursor-pointer`}
+            onClick={() => navigate("/")}
+          >
+            {/* Mode 1: Only Logo */}
+            {logo.mode === "logo" && (
               <img
                 src={logo.path}
-                alt="Mazsone Logo"
-                className={`h-${logo.height} p-${logo.padding} cursor-pointer`}
-                onClick={() => navigate("/")}
+                alt="Logo"
+                className={`h-${logo.height} p-${logo.padding}`}
               />
-            ) : (
+            )}
+
+            {/* Mode 2: Only Company Name */}
+            {logo.mode === "name" && (
               <h3
-                className={`text-${logo.font_size}xl p-${logo.padding} flex items-${logo.position} cursor-pointer font-bold`}
-                onClick={() => navigate("/")}
+                className={`text-${logo.font_size}xl p-${logo.padding} font-bold`}
               >
                 {logo.company_name}
               </h3>
+            )}
+
+            {/* Mode 3: Both Logo + Company Name */}
+            {logo.mode === "both" && (
+              <>
+                <img
+                  src={logo.path}
+                  alt="Logo"
+                  className={`h-${logo.height} p-${logo.padding}`}
+                />
+                <span className={`text-${logo.font_size}xl font-bold`}>
+                  {logo.company_name}
+                </span>
+              </>
             )}
           </div>
 

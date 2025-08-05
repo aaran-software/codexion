@@ -29,11 +29,11 @@ function DynamicCard({ Card, rounded = false, containerStyle }: DynamicCardProps
             <img
               src={card.image}
               alt={card.title}
-              className={`object-cover ${
+              className={`object-scale-down ${
                 rounded ? 'w-64 h-64 rounded-full' : 'w-full h-64 rounded'
               }`}
             />
-            <h1 className="text-xl text-center font-semibold mt-2">{card.title}</h1>
+            <h1 className="text-xl text-center font-semibold mt-2 uppercase">{card.title}</h1>
           </div>
         );
       })}

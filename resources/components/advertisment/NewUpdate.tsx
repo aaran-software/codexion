@@ -50,7 +50,7 @@ function NewUpdate({id, title, description, api, onClose, onStatus}: NewUpdatePr
                 className={`
           w-[90vw] max-w-[450px] px-5 py-4 rounded-lg shadow-xl border
           ring-1 ring-blue-300 dark:ring-blue-800
-          bg-blue-50 dark:bg-blue-950
+           dark:bg-blue-950
           text-foreground bg-background
           animate-fade-in
         `}

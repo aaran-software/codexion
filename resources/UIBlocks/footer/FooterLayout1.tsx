@@ -153,3 +153,50 @@ const FooterLayout1: React.FC<FooterLayoutProps> = ({
 };
 
 export default FooterLayout1;
+
+
+// usage
+{/* <FooterLayout1
+          about={{
+            title: "Quick links",
+            items: [
+              { label: "Home", href: "/" },
+              { label: "About Us", href: "/about" },
+              { label: "Product", href: "/product" },
+              { label: "Blogs", href: "/blog" },
+              { label: "Manufacture", href: "/manufacture" },
+            ],
+          }}
+          help={{
+            title: "Help",
+            items: [
+              { label: "FAQs", href: "/faq" },
+              { label: "Contact", href: "/contact" },
+            ],
+          }}
+          consumerPolicy={{
+            title: "Consumer Policy",
+            phone: "+91 98765 43210",
+            email: "info@linkagro.com",
+            items: [
+              { label: "Privacy Policy", href: "/privacy" },
+              { label: "Terms of Service", href: "/terms" },
+            ],
+          }}
+          address={{
+            lines: ["123 Agro Street", "Tamil Nadu, India", "PIN - 600001"],
+            socialLinks: [
+              { href: "https://instagram.com/linkagro", icon: <FaInstagram /> },
+              { href: "https://facebook.com/linkagro", icon: <CiFacebook /> },
+              { href: "https://twitter.com/linkagro", icon: <FiTwitter /> },
+            ],
+          }}
+          updateConfig={{
+            id: "version-check",
+            title: "Version Update",
+            description: "Click to check if you're on the latest version.",
+            api: "/api/check-version", // Replace with your actual endpoint or mock
+          }}
+          version="1.0.0"
+          copyrights="2025 Link Agro Exports. All Rights Reserved. Powered by Aaran Software"
+        /> */}

@@ -1,15 +1,42 @@
-import ProductCard from "../../../../resources/UIBlocks/ProductCard";
-import BannerCarousel from "../../../../resources/UIBlocks/BannerCarousel";
-import GroupProductCard from "../../../../resources/UIBlocks/GroupProductCard";
-import ProductCard2 from "../../../../resources/UIBlocks/ProductCard2";
-import AdverthismentBanner from "../../../../resources/UIBlocks/Promotion/AdverthismentBanner";
-import PromotionSection from "../../../../resources/UIBlocks/Promotion/PromotionSection";
-import ScrollAdverthisment from "../../../../resources/UIBlocks/Promotion/ScrollAdverthisment";
-import Mainmenu from "../../../../resources/UIBlocks/Mainmenu";
+// import ProductCard from "../../../../resources/UIBlocks/ProductCard";
+// import BannerCarousel from "../../../../resources/UIBlocks/BannerCarousel";
+// import GroupProductCard from "../../../../resources/UIBlocks/GroupProductCard";
+// import ProductCard2 from "../../../../resources/UIBlocks/ProductCard2";
+// import AdverthismentBanner from "../../../../resources/UIBlocks/Promotion/AdverthismentBanner";
+// import PromotionSection from "../../../../resources/UIBlocks/Promotion/PromotionSection";
+// import ScrollAdverthisment from "../../../../resources/UIBlocks/Promotion/ScrollAdverthisment";
+// import Mainmenu from "../../../../resources/UIBlocks/Mainmenu";
 
+import React, { Suspense, lazy } from "react";
+import LoadingScreen from "../../../../resources/components/loading/LoadingScreen";
+
+// Lazy imports
+const ProductCard = lazy(
+  () => import("../../../../resources/UIBlocks/ProductCard")
+);
+const BannerCarousel = lazy(
+  () => import("../../../../resources/UIBlocks/BannerCarousel")
+);
+const GroupProductCard = lazy(
+  () => import("../../../../resources/UIBlocks/GroupProductCard")
+);
+const ProductCard2 = lazy(
+  () => import("../../../../resources/UIBlocks/ProductCard2")
+);
+const AdverthismentBanner = lazy(
+  () => import("../../../../resources/UIBlocks/Promotion/AdverthismentBanner")
+);
+const PromotionSection = lazy(
+  () => import("../../../../resources/UIBlocks/Promotion/PromotionSection")
+);
+const ScrollAdverthisment = lazy(
+  () => import("../../../../resources/UIBlocks/Promotion/ScrollAdverthisment")
+);
+const Mainmenu = lazy(() => import("../../../../resources/UIBlocks/Mainmenu"));
 function Home() {
   return (
-    <div>
+        <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
+
       <Mainmenu />
       <BannerCarousel
         api={`api/resource/Product?fields=["name"]&filters=[["is_slider", "=", 1]]`}
@@ -68,7 +95,7 @@ function Home() {
         title="Popular Items"
         api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
       />
-    </div>
+    </Suspense>
   );
 }
 
