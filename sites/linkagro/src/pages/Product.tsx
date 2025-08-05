@@ -244,7 +244,7 @@ export-grade packing every time.`,
                   <table className="w-full border border-ring/30">
                     {table.columns && table.columns.length > 0 && (
                       <thead>
-                        <tr className="bg-gray-100">
+                        <tr className="bg-green-100">
                           {table.columns.map((col, cIndex) => (
                             <th
                               key={cIndex}

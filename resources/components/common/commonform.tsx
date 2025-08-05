@@ -48,7 +48,6 @@ export type FieldGroup = {
   title: string;
   sectionKey?: string;
   fields: Field[];
-  // api:string;
 };
 
 type CommonFormProps = {
@@ -60,10 +59,10 @@ type CommonFormProps = {
   successMsg: string;
   faildMsg: string;
   initialData?: Record<string, any>;
-  bulkData?: TableRowData[];
   onSubmit?: (data: any) => void;
   multipleEntry?: boolean;
   api: ApiList;
+  mode: "create" | "edit";
 };
 
 export interface ApiList {
@@ -82,10 +81,10 @@ function CommonForm({
   successMsg,
   faildMsg,
   initialData = {},
-  bulkData,
   onSubmit,
   multipleEntry = true,
   api,
+  mode
 }: CommonFormProps) {
   const [formData, setFormData] = useState<Record<string, any>>(initialData);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
@@ -103,9 +102,6 @@ function CommonForm({
     if (initialData) setFormData(initialData);
   }, [initialData]);
 
-  useEffect(() => {
-    setPreviewData(bulkData || []);
-  }, [bulkData]);
 
   const handleChange = (id: string, value: any) => {
     setFormData((prev) => ({ ...prev, [id]: value }));
@@ -195,92 +191,78 @@ function CommonForm({
   };
 
   const handleSubmit = () => {
+  const fixed = { ...formData };
+  for (const key in fixed) {
+    const value = fixed[key];
+    if (isDate(value)) {
+      fixed[key] = format(value, "yyyy-MM-dd");
+    }
+  }
+
+  const cleaned = Object.fromEntries(
+    Object.entries(fixed).filter(([key]) => !["action"].includes(key))
+  );
+
+  let apiCall;
+
+  if (mode === "edit") {
+    const { id, ...dataToUpdate } = cleaned;
+    apiCall = apiClient.put(`${api.update}/${id}`, dataToUpdate);
+  } else {
     if (multipleEntry) {
       if (previewData.length === 0) {
-        triggerAlert(
-          "warning",
-          "Please add at least one item before submitting."
-        );
+        triggerAlert("warning", "Please add at least one item before submitting.");
         return;
       }
+
+      const payload = previewData.map((item) => {
+        const cleanedItem = { ...item };
+        for (const key in cleanedItem) {
+          const val = cleanedItem[key];
+          if (isDate(val)) {
+            cleanedItem[key] = format(val, "yyyy-MM-dd");
+          }
+        }
+        return cleanedItem;
+      });
+
+      apiCall = apiClient.post(api.create, payload);
     } else {
-      // ✅ Validate individual fields only for single-entry mode
-      const allFields = groupedFields.flatMap((group) => group.fields);
-      const errors: Record<string, string> = {};
-
-      allFields.forEach((field) => {
-        const value = formData[field.id];
-        const error = validateField(field, value);
-        if (error) errors[field.id] = error;
-      });
-
-      setFormErrors(errors);
-      if (Object.keys(errors).length > 0) return;
+      apiCall = apiClient.post(api.create, [cleaned]);
     }
+  }
 
-    const fixed = { ...formData };
-    for (const key in fixed) {
-      const value = fixed[key];
-      if (value instanceof Date) {
-        fixed[key] = format(value, "yyyy-MM-dd");
-      }
-    }
-
-    const cleaned = Object.fromEntries(
-      Object.entries(fixed).filter(([key]) => !["id", "action"].includes(key))
-    );
-
-    const payload = multipleEntry
-      ? previewData.map((item) => {
-          const cleanedItem = { ...item };
-          for (const key in cleanedItem) {
-            const val = cleanedItem[key];
-            if (isDate(val)) {
-              cleanedItem[key] = format(val, "yyyy-MM-dd");
-            }
-          }
-          return cleanedItem;
-        })
-      : [cleaned]; // Always wrap single object in array
-
-    const apiCall = apiClient.post(api.create, payload);
-
-    apiCall
-      .then((res) => {
-        const savedData = res.data;
-        if (!multipleEntry && savedData.length > 0) {
-          onSubmit?.(savedData[0]);
+  apiCall
+    .then((res) => {
+      const savedData = res.data;
+      onSubmit?.(Array.isArray(savedData) ? savedData[0] : savedData);
+      setFormData({});
+      setFormErrors({});
+      setPreviewData([]);
+      setFormOpen?.(false);
+      triggerAlert("success", successMsg);
+    })
+    .catch((err) => {
+      console.error("❌ Submission failed:", err);
+      let msg = "Submission failed";
+      try {
+        const serverMsg = err.response?.data?._server_messages;
+        if (serverMsg) {
+          const parsed = JSON.parse(serverMsg)[0];
+          msg = JSON.parse(parsed)?.message || parsed;
         } else {
-          onSubmit?.(savedData);
+          msg =
+            err.response?.data?.message ||
+            err.response?.data?.exc_type ||
+            faildMsg;
         }
-        setFormData({});
-        setFormErrors({});
-        setPreviewData([]);
-        setFormOpen?.(false);
-        triggerAlert("success", successMsg);
-      })
-      .catch((err) => {
-        console.error("❌ Submission failed:", err);
+      } catch {
+        msg = faildMsg;
+      }
+      triggerAlert("warning", msg);
+    });
+};
 
-        let msg = "Submission failed";
-        try {
-          const serverMsg = err.response?.data?._server_messages;
-          if (serverMsg) {
-            const parsed = JSON.parse(serverMsg)[0];
-            msg = JSON.parse(parsed)?.message || parsed;
-          } else {
-            msg =
-              err.response?.data?.message ||
-              err.response?.data?.exc_type ||
-              faildMsg;
-          }
-        } catch {
-          msg = faildMsg;
-        }
-
-        triggerAlert("warning", msg);
-      });
-  };
 
   if (!formOpen) return null;
   function isDate(val: unknown): val is Date {
@@ -449,7 +431,8 @@ function CommonForm({
                       return null;
                   }
                 })}
-                {multipleEntry && group.title.toLowerCase() === "items" && (
+                {mode === "create" && multipleEntry && group.title.toLowerCase() === "items" && (
+
                   <div className="col-span-full flex justify-end">
                     <Button
                       label="Add"
@@ -462,7 +445,7 @@ function CommonForm({
             </div>
           ))}
 
-          {multipleEntry &&
+          {mode === "create" && multipleEntry &&
             groupedFields.some((g) => g.title.toLowerCase() === "items") && (
               <CommonTable
                 head={[

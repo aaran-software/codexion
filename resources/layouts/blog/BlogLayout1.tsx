@@ -7,7 +7,7 @@ const samplePost = {
   title: "How to Build a Responsive Blog Layout with Tailwind CSS",
   description:
     "In this guide, we’ll walk you through the steps to build a clean, responsive blog layout using Tailwind CSS and React. You'll learn how to structure components, apply spacing, and ensure mobile-first responsiveness...",
-  coverImage: "/assets/product/bb6501.png",
+  coverImage: "/assets/tomato-3919426_1280.jpg",
   author: {
     name: "John Doe",
     avatar: "/assets/product/bb6501.png",
@@ -22,7 +22,7 @@ const recentPosts = [
     title: "10 Tips for Writing Clean React Code",
     author: "Jane Smith",
     date: "July 30, 2025",
-    thumbnail: "/assets/product/bb6501.png",
+    thumbnail: "/assets/tomato-3919426_1280.jpg",
   },
   // Add more recent post objects here...
 ];

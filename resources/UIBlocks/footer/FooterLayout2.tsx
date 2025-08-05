@@ -23,9 +23,10 @@ interface FooterLayoutProps {
     description: string;
     api: string;
   };
-  mapLink:string
+  mapLink: string;
   version: string;
   copyrights: string;
+  copyrights_company:string
 }
 
 const FooterLayout1: React.FC<FooterLayoutProps> = ({
@@ -36,7 +37,8 @@ const FooterLayout1: React.FC<FooterLayoutProps> = ({
   updateConfig,
   version,
   copyrights,
-  mapLink
+  copyrights_company,
+  mapLink,
 }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [showUpdate, setShowUpdate] = useState(false);
@@ -87,14 +89,20 @@ const FooterLayout1: React.FC<FooterLayoutProps> = ({
             ))}
           </p>
           <p className="my-3">
-            <a href={`tel:${consumerPolicy.phone}`} className="underline flex items-center gap-1">
-             <FaPhone className="rotate-90"/> {consumerPolicy.phone}
+            <a
+              href={`tel:${consumerPolicy.phone}`}
+              className="underline flex items-center gap-1"
+            >
+              <FaPhone className="rotate-90" /> {consumerPolicy.phone}
             </a>
             <br />
-            <a href={`mailto:${consumerPolicy.email}`} className="underline flex items-center gap-1">
-             <MdEmail /> {consumerPolicy.email}
+            <a
+              href={`mailto:${consumerPolicy.email}`}
+              className="underline flex items-center gap-1"
+            >
+              <MdEmail /> {consumerPolicy.email}
             </a>
-            </p>
+          </p>
           <div className="flex gap-3 mt-1">
             {address.socialLinks.map((link, idx) => (
               <a
@@ -116,7 +124,12 @@ const FooterLayout1: React.FC<FooterLayoutProps> = ({
         {/* Consumer Policy */}
         <div>
           <h1 className="font-bold mb-2 text-xl">Visit Us</h1>
-          <iframe src={mapLink} className="w-[100%] md:w-[80%]" height="max"   loading="lazy"></iframe>
+          <iframe
+            src={mapLink}
+            className="w-[100%] md:w-[80%]"
+            height="max"
+            loading="lazy"
+          ></iframe>
         </div>
       </div>
 
@@ -141,15 +154,14 @@ const FooterLayout1: React.FC<FooterLayoutProps> = ({
       <div className="flex flex-row gap-3 justify-between border-t border-white/10">
         <div></div>
         <div className="text-center py-3 bg-neutral-900">
-          &copy; {copyrights}
+          &copy; {copyrights} <a href="https://my.codexsun.com/" className="underline">{copyrights_company}</a>
         </div>
         <div
-  className="block my-auto text-background/50 pr-5 cursor-pointer whitespace-nowrap"
-  onClick={handleVisible}
->
-  V {version}
-</div>
-
+          className="block my-auto text-background/50 pr-5 cursor-pointer whitespace-nowrap"
+          onClick={handleVisible}
+        >
+          V {version}
+        </div>
       </div>
     </footer>
   );

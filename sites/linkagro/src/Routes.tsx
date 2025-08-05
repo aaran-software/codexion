@@ -88,7 +88,8 @@ function AppRoutes() {
           }}
           mapLink="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d126257.61579297607!2d77.4701604!3d8.5429436!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1754183509920!5m2!1sen!2sin"
           version="1.0.0"
-          copyrights="2025 Link Agro Exports. All Rights Reserved. Powered by Aaran Software"
+          copyrights="2025 Link Agro Exports. All Rights Reserved. Powered by"
+          copyrights_company="Aaran Software"
         />
       </Suspense>
     </div>

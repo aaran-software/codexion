@@ -48,10 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           });
 
           if (res.ok) {
-            const data = await res.json(); // { username, email }
-            setUser(data);                // ✅ use actual API return
-            setToken(data);
-            localStorage.setItem("user", JSON.stringify(data)); // Optional
+            setToken(savedToken);
           } else {
             localStorage.removeItem("token");
             localStorage.removeItem("user");

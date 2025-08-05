@@ -34,16 +34,12 @@ function About() {
         <div className="absolute inset-0 flex items-center">
           <div className="md:w-2/3 px-5 lg:px-[10%] text-white space-y-4">
             <h1 className="text-2xl lg:text-4xl font-bold animate__animated animate__fadeIn animate__fast">
-              Our Premium Coco Peat Products
+              Committed to Quality. Driven by Nature.
             </h1>
             <p className="text-sm lg:text-lg text-justify animate__animated animate__fadeIn animate__slow">
-              Discover Link Agro Exports' diverse range of high-quality coco
-              peat products, including 5KG blocks, briquettes, grow bags, husk
-              chips, and coir fiber. Engineered for superior water retention,
-              low EC, and eco-friendly applications, our products are ideal for
-              horticulture, greenhouse farming, and hydroponics. Each product
-              comes with detailed specifications and global shipping options to
-              suit your agricultural needs.
+              From South India to the World.
+Founded in 2014, Link Agro Exports stands for quality, consistency, and customer satisfaction.
+We manufacture and export premium coco peat products designed to enrich agriculture and horticulture practices.
             </p>
           </div>
         </div>

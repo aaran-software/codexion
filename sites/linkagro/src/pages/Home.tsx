@@ -6,12 +6,10 @@ import Card2 from "../../../../resources/components/card/Card2";
 function Home() {
   const images = [
     "/assets/Benefits Application 2.jpg",
-    "/assets/tomato-3919426_1280.jpg",
     "/assets/Homepage4.jpg",
     "/assets/banner1.jpg",
     "/assets/banner2.jpg",
     "/assets/banner3.jpg",
-    "/assets/Benefits Application.jpg",
   ];
 
   const product = [
