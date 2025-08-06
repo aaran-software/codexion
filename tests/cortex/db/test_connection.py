@@ -1,10 +1,6 @@
-import pytest
+from cortex.database.engines.mariadb.mariadb import MariaDBEngine
+from cortex.database.engines.sqlite.sqlite import SQLiteDBEngine
 
-from cortex.db.engines.mysql import MySQLDBEngine
-from cortex.db.engines.mariadb import MariaDBEngine
-from cortex.db.engines.postgres import PostgresDBEngine
-from cortex.db.engines.sqlite import SQLiteDBEngine
-from cortex.db.engines.mongo import MongoDBEngine
 
 # def test_mysql_connection():
 #     engine = MySQLDBEngine()

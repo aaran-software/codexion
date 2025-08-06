@@ -3,7 +3,7 @@
 import psycopg2
 from psycopg2.extras import RealDictCursor
 from cortex.core.settings import get_settings
-from cortex.db.base_engine import BaseDBEngine
+from cortex.db import BaseDBEngine
 
 class PostgresDBEngine(BaseDBEngine):
     def __init__(self):
