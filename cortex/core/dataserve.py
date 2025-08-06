@@ -25,7 +25,7 @@ def get_database_url():
     user = quote_plus(settings.DB_USER)
     password = quote_plus(settings.DB_PASS)
 
-    if db_engine == "mysql":
+    if db_engine == "mariadb":
         return f"mysql+pymysql://{user}:{password}@{settings.DB_HOST}:{settings.DB_PORT}/{settings.DB_NAME}"
 
     if db_engine == "postgresql":

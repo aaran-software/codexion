@@ -46,7 +46,7 @@ app.add_middleware(
 
 @app.on_event("startup")
 def on_startup():
-    boot_providers()
+    # boot_providers()
     ensure_database_exists()
     Base.metadata.create_all(bind=engine)
     run_startup_tasks()

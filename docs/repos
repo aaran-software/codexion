@@ -1,0 +1,43 @@
+core/
+├── database/
+│   ├── config_loader/
+│   │   ├── __init__.py
+│   │   ├── base.py               # Thread-safe config loader
+│   │   └── drivers/
+│   │       ├── mariadb.py
+│   │       ├── postgresql.py     # (stub)
+│   │       ├── sqlite.py         # (stub)
+│   │       └── mongodb.py        # (stub)
+│   │
+│   ├── engines/
+│   │   ├── abstract_engine.py    # Base DB engine interface
+│   │   └── mariadb/
+│   │       ├── sync_engine.py
+│   │       ├── async_engine.py
+│   │       ├── pool.py
+│   │       ├── retry.py
+│   │       └── logger.py
+│   │
+│   ├── hooks.py                  # Before/after hook logic
+│   ├── health.py                 # `is_healthy()` utility
+│   │
+│   ├── schema/
+│   │   ├── builder.py            # `create()` / `dropIfExists()` helpers
+│   │   └── blueprint.py          # `TableBlueprint` fluent interface
+│   │
+│   ├── migrations/
+│   │   ├── __init__.py
+│   │   ├── migration_tracker.py  # Handles `migrations` table tracking
+│   │   ├── runner.py             # BaseMigrationRunner (OOP style)
+│   │   ├── service_provider.py   # Optional registrar (integrates into app)
+│   │   └── files/
+│   │       ├── user_table.py     # Example migration
+│   │       └── ...               # Other migration scripts
+│   │
+│   └── table_order.py            # Optional ordered execution for dependencies
+│
+tests/
+├── test_create_users_table.py    # Migration test sample
+
+scripts/
+├── migrate.py                    # CLI script to run/rollback migrations

@@ -6,13 +6,13 @@ from starlette import status
 from cortex.models.token import Token
 from cortex.models.user import User
 from cortex.DTO.dal import get_db
-from cortex.database.schemas.auth import LoginRequest
+from cortex.auth.auth import LoginRequest
 from cortex.core.hashing import verify_password  # Make sure this is imported
 from cortex.core.jwt_handler import create_access_token
 from cortex.core.logger import logger
 from cortex.core.settings import get_settings
 from sqlalchemy.orm import Session
-from cortex.database.schemas import user
+from cortex.auth import user
 from cortex.core import hashing
 
 router = APIRouter()
