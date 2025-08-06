@@ -1,0 +1,75 @@
+{
+  "blog": {
+    "blogs": {
+      "details": {
+        "title": "Blog Details",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": true
+          },
+          {
+            "key": "blog_title",
+            "label": "Blog Title",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "blog_image",
+            "label": "Image",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "blog_description",
+            "label": "Description",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "blog_author",
+            "label": "Author",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "blog_category",
+            "label": "Category",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "blog_tags",
+            "label": "Tags",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "blog_post_date",
+            "label": "Post Date",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          }
+        ]
+      }
+    }
+  }
+}

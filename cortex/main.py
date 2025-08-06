@@ -6,8 +6,10 @@ from fastapi.templating import Jinja2Templates
 from fastapi.routing import APIRoute
 from fastapi.middleware.cors import CORSMiddleware
 
+from apps.dynamic.core.startup import run_startup_tasks
 from cortex.core.db_init import ensure_database_exists
 from cortex.core.startup import ensure_env_file
+
 ensure_env_file()
 from cortex.core.settings import get_settings
 from cortex.DTO.dal import engine, Base
@@ -42,10 +44,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 @app.on_event("startup")
 def on_startup():
     ensure_database_exists()
     Base.metadata.create_all(bind=engine)
+    run_startup_tasks()
+
 
 # ✅ Define templates directory
 import os
@@ -59,6 +64,8 @@ templates = Jinja2Templates(directory=TEMPLATE_DIR)
 def home(context: dict = Depends(template_context)):
     return templates.TemplateResponse("pages/home.j2", context)
 
+
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run("main:app", host="127.0.0.1", port=4001, reload=False)

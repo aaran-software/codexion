@@ -165,7 +165,7 @@
             "key": "date",
             "label": "Date",
             "type": "date",
-            "inTable": true,
+            "inTable": false,
             "isForm": false,
             "isPrint": false
           },
@@ -173,7 +173,7 @@
             "key": "duedate",
             "label": "Due Date",
             "type": "date",
-            "inTable": true,
+            "inTable": false,
             "isForm": false,
             "isPrint": false
           }
@@ -186,7 +186,7 @@
             "key": "partyname",
             "label": "Party Name",
             "type": "textinput",
-            "inTable": true,
+            "inTable": false,
             "isForm": false,
             "isPrint": true
           },
@@ -194,7 +194,7 @@
             "key": "orderno",
             "label": "Order No",
             "type": "textinput",
-            "inTable": true,
+            "inTable": false,
             "isForm": false,
             "isPrint": true
           },
@@ -203,7 +203,7 @@
             "label": "Style Name",
             "type": "dropdown",
             "options": [],
-            "inTable": true,
+            "inTable": false,
             "isForm": false,
             "isPrint": false
           },
@@ -212,7 +212,7 @@
             "label": "Invoice No",
             "type": "dropdown",
             "options": [],
-            "inTable": true,
+            "inTable": false,
             "isForm": false,
             "isPrint": true
           },
@@ -220,7 +220,7 @@
             "key": "description",
             "label": "Description",
             "type": "textinput",
-            "inTable": true,
+            "inTable": false,
             "isForm": false,
             "isPrint": false
           },
@@ -228,7 +228,7 @@
             "key": "color",
             "label": "Color",
             "type": "textinput",
-            "inTable": true,
+            "inTable": false,
             "isForm": false,
             "isPrint": false
           },
@@ -236,7 +236,7 @@
             "key": "size",
             "label": "Size",
             "type": "textinput",
-            "inTable": true,
+            "inTable": false,
             "isForm": false,
             "isPrint": false
           },
@@ -244,7 +244,7 @@
             "key": "roll",
             "label": "Rolls",
             "type": "textinput",
-            "inTable": true,
+            "inTable": false,
             "isForm": false,
             "isPrint": false
           },
@@ -333,6 +333,13 @@
             "inTable": true,
             "isForm": true,
             "isPrint": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": false
           }
         ]
       }
@@ -395,6 +402,13 @@
             "type": "textinput",
             "inTable": true,
             "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "inTable": true,
+            "isForm": false,
             "isPrint": false
           }
         ]

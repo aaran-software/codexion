@@ -44,11 +44,11 @@ def read_sales(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 # Update sale
 @router.put("/{sales_id}", response_model=sales_schema.Sale)
 def update_sale(
-    sale_id: int,
+    sales_id: int,
     sale_data: sales_schema.SaleUpdate,
     db: Session = Depends(get_db)
 ):
-    db_sale = db.query(Sales).filter(Sales.id == sale_id).first()
+    db_sale = db.query(Sales).filter(Sales.id == sales_id).first()
     if not db_sale:
         raise HTTPException(status_code=404, detail="sale not found")
 
