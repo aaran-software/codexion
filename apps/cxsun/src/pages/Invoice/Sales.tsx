@@ -8,23 +8,16 @@ import type {
 import apiClient from "../../../../../resources/global/api/apiClients";
 import { Column } from "../../../../../resources/components/common/commontable"; // Adjust path if needed
 
-// Define type for groupedFields
-type GroupedFieldSection = {
-  title: string;
-  sectionKey: string;
-  fields: Column[];
-};
-
 function Sales() {
   const [groupedFields, setGroupedFields] = useState<FieldGroup[]>([]);
   const [head, setHead] = useState<Column[]>([]);
   const [printableFields, setPrintableFields] = useState<string[]>([]);
 
   const [formApi] = useState<ApiList>({
-    create: "/api/purchases",
-    read: "/api/purchases",
-    update: "/api/purchases",
-    delete: "/api/purchases",
+    create: "/api/sales",
+    read: "/api/sales",
+    update: "/api/sales",
+    delete: "/api/sales",
   });
 
   useEffect(() => {
@@ -98,6 +91,8 @@ function Sales() {
           head={head}
           formApi={formApi}
           printableFields={printableFields}
+          multipleEntry={true}
+          formName="Payment"
         />
       )}
     </div>

@@ -21,6 +21,14 @@
             "isPrint": true
           },
           {
+            "key": "category",
+            "label": "Category",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
             "key": "date",
             "label": "Date",
             "type": "date",
@@ -157,7 +165,7 @@
             "key": "date",
             "label": "Date",
             "type": "date",
-            "inTable": true,
+            "inTable": false,
             "isForm": false,
             "isPrint": false
           },
@@ -165,7 +173,7 @@
             "key": "duedate",
             "label": "Due Date",
             "type": "date",
-            "inTable": true,
+            "inTable": false,
             "isForm": false,
             "isPrint": false
           }
@@ -178,7 +186,7 @@
             "key": "partyname",
             "label": "Party Name",
             "type": "textinput",
-            "inTable": true,
+            "inTable": false,
             "isForm": false,
             "isPrint": true
           },
@@ -186,7 +194,7 @@
             "key": "orderno",
             "label": "Order No",
             "type": "textinput",
-            "inTable": true,
+            "inTable": false,
             "isForm": false,
             "isPrint": true
           },
@@ -195,7 +203,7 @@
             "label": "Style Name",
             "type": "dropdown",
             "options": [],
-            "inTable": true,
+            "inTable": false,
             "isForm": false,
             "isPrint": false
           },
@@ -204,7 +212,7 @@
             "label": "Invoice No",
             "type": "dropdown",
             "options": [],
-            "inTable": true,
+            "inTable": false,
             "isForm": false,
             "isPrint": true
           },
@@ -212,7 +220,7 @@
             "key": "description",
             "label": "Description",
             "type": "textinput",
-            "inTable": true,
+            "inTable": false,
             "isForm": false,
             "isPrint": false
           },
@@ -220,7 +228,7 @@
             "key": "color",
             "label": "Color",
             "type": "textinput",
-            "inTable": true,
+            "inTable": false,
             "isForm": false,
             "isPrint": false
           },
@@ -228,7 +236,7 @@
             "key": "size",
             "label": "Size",
             "type": "textinput",
-            "inTable": true,
+            "inTable": false,
             "isForm": false,
             "isPrint": false
           },
@@ -236,7 +244,7 @@
             "key": "roll",
             "label": "Rolls",
             "type": "textinput",
-            "inTable": true,
+            "inTable": false,
             "isForm": false,
             "isPrint": false
           },
@@ -279,8 +287,8 @@
             "isPrint": true
           },
           {
-            "key": "name",
-            "label": "Name",
+            "key": "acc_book",
+            "label": "Account Book",
             "type": "textinput",
             "inTable": true,
             "isForm": true,
@@ -295,99 +303,36 @@
             "isPrint": false
           },
           {
-            "key": "duedate",
-            "label": "Due Date",
-            "type": "date",
-            "inTable": true,
-            "isForm": true,
-            "isPrint": false
-          }
-        ]
-      },
-      "items": {
-        "title": "Items",
-        "fields": [
-          {
-            "key": "partyname",
-            "label": "Party Name",
-            "type": "textinput",
-            "inTable": true,
-            "isForm": true,
-            "isPrint": true
-          },
-          {
-            "key": "orderno",
-            "label": "Order No",
-            "type": "textinput",
-            "inTable": true,
-            "isForm": true,
-            "isPrint": true
-          },
-          {
-            "key": "stylename",
-            "label": "Style Name",
-            "type": "dropdown",
-            "options": [],
-            "inTable": true,
-            "isForm": true,
-            "isPrint": false
-          },
-          {
-            "key": "invoiceno",
-            "label": "Invoice No",
-            "type": "dropdown",
-            "options": [],
-            "inTable": true,
-            "isForm": true,
-            "isPrint": true
-          },
-          {
-            "key": "description",
-            "label": "Description",
+            "key": "party_name",
+            "label": "Party Name ",
             "type": "textinput",
             "inTable": true,
             "isForm": true,
             "isPrint": false
           },
           {
-            "key": "color",
-            "label": "Color",
+            "key": "amount",
+            "label": "Amount ",
             "type": "textinput",
             "inTable": true,
             "isForm": true,
             "isPrint": false
           },
           {
-            "key": "size",
-            "label": "Size",
+            "key": "transaction_type",
+            "label": "TransactionType ",
             "type": "textinput",
             "inTable": true,
             "isForm": true,
             "isPrint": false
           },
           {
-            "key": "roll",
-            "label": "Rolls",
+            "key": "remarks",
+            "label": "Remarks ",
             "type": "textinput",
             "inTable": true,
             "isForm": true,
             "isPrint": false
-          },
-          {
-            "key": "quantity",
-            "label": "Quantity",
-            "type": "textinput",
-            "inTable": true,
-            "isForm": true,
-            "isPrint": true
-          },
-          {
-            "key": "price",
-            "label": "Price",
-            "type": "textinput",
-            "inTable": true,
-            "isForm": true,
-            "isPrint": true
           },
           {
             "key": "action",
@@ -412,8 +357,8 @@
             "isPrint": true
           },
           {
-            "key": "name",
-            "label": "Name",
+            "key": "acc_book",
+            "label": "Account Book",
             "type": "textinput",
             "inTable": true,
             "isForm": true,
@@ -428,99 +373,36 @@
             "isPrint": false
           },
           {
-            "key": "duedate",
-            "label": "Due Date",
-            "type": "date",
-            "inTable": true,
-            "isForm": true,
-            "isPrint": false
-          }
-        ]
-      },
-      "items": {
-        "title": "Items",
-        "fields": [
-          {
-            "key": "partyname",
-            "label": "Party Name",
-            "type": "textinput",
-            "inTable": true,
-            "isForm": true,
-            "isPrint": true
-          },
-          {
-            "key": "orderno",
-            "label": "Order No",
-            "type": "textinput",
-            "inTable": true,
-            "isForm": true,
-            "isPrint": true
-          },
-          {
-            "key": "stylename",
-            "label": "Style Name",
-            "type": "dropdown",
-            "options": [],
-            "inTable": true,
-            "isForm": true,
-            "isPrint": false
-          },
-          {
-            "key": "invoiceno",
-            "label": "Invoice No",
-            "type": "dropdown",
-            "options": [],
-            "inTable": true,
-            "isForm": true,
-            "isPrint": true
-          },
-          {
-            "key": "description",
-            "label": "Description",
+            "key": "party_name",
+            "label": "Party Name ",
             "type": "textinput",
             "inTable": true,
             "isForm": true,
             "isPrint": false
           },
           {
-            "key": "color",
-            "label": "Color",
+            "key": "amount",
+            "label": "Amount ",
             "type": "textinput",
             "inTable": true,
             "isForm": true,
             "isPrint": false
           },
           {
-            "key": "size",
-            "label": "Size",
+            "key": "transaction_type",
+            "label": "TransactionType ",
             "type": "textinput",
             "inTable": true,
             "isForm": true,
             "isPrint": false
           },
           {
-            "key": "roll",
-            "label": "Rolls",
+            "key": "remarks",
+            "label": "Remarks ",
             "type": "textinput",
             "inTable": true,
             "isForm": true,
             "isPrint": false
-          },
-          {
-            "key": "quantity",
-            "label": "Quantity",
-            "type": "textinput",
-            "inTable": true,
-            "isForm": true,
-            "isPrint": true
-          },
-          {
-            "key": "price",
-            "label": "Price",
-            "type": "textinput",
-            "inTable": true,
-            "isForm": true,
-            "isPrint": true
           },
           {
             "key": "action",

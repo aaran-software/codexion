@@ -1,52 +1,49 @@
 import { useEffect, useState } from "react";
-import FormLayout from "../../../../../resources/components/common/FormLayout";
+import FormLayout from "../../../resources/components/common/FormLayout";
 import type {
   ApiList,
   Field,
   FieldGroup,
-} from "../../../../../resources/components/common/commonform";
-import apiClient from "../../../../../resources/global/api/apiClients";
-import { Column } from "../../../../../resources/components/common/commontable"; // Adjust path if needed
+} from "../../../resources/components/common/commonform";
+import apiClient from "../../../resources/global/api/apiClients";
+import { Column } from "../../../resources/components/common/commontable"; // Adjust path if needed
 
-// Define type for groupedFields
-type GroupedFieldSection = {
-  title: string;
-  sectionKey: string;
-  fields: Column[];
-};
-
-function Purchase() {
+interface BlogFormProps{
+  jsonPath:string;
+  crudApi:string
+}
+function BlogForm({jsonPath,crudApi}:BlogFormProps) {
   const [groupedFields, setGroupedFields] = useState<FieldGroup[]>([]);
   const [head, setHead] = useState<Column[]>([]);
   const [printableFields, setPrintableFields] = useState<string[]>([]);
 
   const [formApi] = useState<ApiList>({
-    create: "/api/purchases",
-    read: "/api/purchases",
-    update: "/api/purchases",
-    delete: "/api/purchases",
+    create: crudApi,
+    read: crudApi,
+    update: crudApi,
+    delete: crudApi,
   });
 
   useEffect(() => {
     const fetchInvoiceConfig = async () => {
       try {
         // option:1
-        const res = await apiClient.get("/api/config/invoice/purchase");
+        const res = await apiClient.get(jsonPath);
 
         // 🔁 Change this to `sales` if needed
-        const purchase = res.data;
+        const invoice = res.data;
 
         // option:2
         // const res = await apiClient.get("/api/config/invoice");
         // const invoice = res.data?.invoice?.sales;
 
-        if (!purchase) return;
+        if (!invoice) return;
 
-        const head: Column[] = Object.values(purchase)
+        const head: Column[] = Object.values(invoice)
           .flatMap((section: any) => section.fields)
           .filter((field: any) => field.inTable);
 
-        const groupedFields: FieldGroup[] = Object.entries(purchase).map(
+        const groupedFields: FieldGroup[] = Object.entries(invoice).map(
           ([sectionKey, section]: [string, any]) => ({
             title: section.title || sectionKey,
             sectionKey,
@@ -74,7 +71,7 @@ function Purchase() {
           })
         );
 
-        const printableFields: string[] = Object.values(purchase).flatMap(
+        const printableFields: string[] = Object.values(invoice).flatMap(
           (section: any) =>
             section.fields.filter((field: any) => field.isPrint === true)
         );
@@ -91,14 +88,14 @@ function Purchase() {
   }, []);
 
   return (
-    <div>
+    <div className="mt-20">
       {groupedFields.length > 0 && head.length > 0 && (
         <FormLayout
           groupedFields={groupedFields}
           head={head}
           formApi={formApi}
           printableFields={printableFields}
-          multipleEntry={true}
+          multipleEntry={false}
           formName="Payment"
         />
       )}
@@ -106,4 +103,4 @@ function Purchase() {
   );
 }
 
-export default Purchase;
+export default BlogForm;

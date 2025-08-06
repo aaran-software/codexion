@@ -6,6 +6,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.routing import APIRoute
 from fastapi.middleware.cors import CORSMiddleware
 
+from apps.dynamic.core.startup import run_startup_tasks
 from cortex.boot import boot_providers
 from cortex.core.db_init import ensure_database_exists
 from cortex.core.startup import ensure_env_file
@@ -48,8 +49,10 @@ def on_startup():
     boot_providers()
     ensure_database_exists()
     Base.metadata.create_all(bind=engine)
+    run_startup_tasks()
 
-# Define templates directory
+
+# ✅ Define templates directory
 import os
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
