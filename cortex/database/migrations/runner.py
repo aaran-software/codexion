@@ -9,7 +9,7 @@
 
 import datetime
 from cortex.database.connection import db
-from cortex.database.base_tables import migrations_table
+from cortex.database.base_tables import migrations_table, tenant_table, users_table
 from cortex.database.migrations.loader import (
     discover_all_app_migrations,
     resolve_and_load,
@@ -17,7 +17,7 @@ from cortex.database.migrations.loader import (
 from cortex.database.schemas.queries import insert
 
 # Core/system tables that should not be dropped
-PROTECTED_TABLES = {"migrations"}
+PROTECTED_TABLES = {"migrations, tenants, users"}
 
 
 def _ensure_migrations_table():
@@ -42,7 +42,8 @@ def _record_migration(app: str, name: str, index: int, hash: str):
         "name": name,
         "order_index": index,
         "hash": hash,
-        "applied_at": datetime.datetime.utcnow()
+        "created_at": datetime.datetime.utcnow(),
+        "updated_at": datetime.datetime.utcnow()
     })
 
 
@@ -50,6 +51,7 @@ def migrate_all():
     _ensure_migrations_table()
 
     apps = discover_all_app_migrations()
+
     for app, migration_list in apps.items():
         for i, name in enumerate(migration_list):
             try:
@@ -79,4 +81,3 @@ def drop_all():
             continue
         print(f"🗑️  Dropping table: {table_name}")
         db.execute(f"DROP TABLE IF EXISTS `{table_name}`;")
-
