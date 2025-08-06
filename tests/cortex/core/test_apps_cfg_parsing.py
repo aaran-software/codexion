@@ -2,7 +2,7 @@ import os
 import configparser
 from cortex.config.apps.apps_cfg import (
     create_apps_cfg,
-    delete_apps_cfg,
+    # delete_apps_cfg,
     get_registered_apps,
     add_app,
     remove_app,
@@ -16,12 +16,12 @@ CFG_PATH = Path(settings.project_root) / "config" / "apps.cfg"
 
 
 def setup_module(module):
-    delete_apps_cfg()
+    # delete_apps_cfg()
     create_apps_cfg()
 
 
-def teardown_module(module):
-    delete_apps_cfg()
+# def teardown_module(module):
+#     delete_apps_cfg()
 
 
 def test_create_apps_cfg():
