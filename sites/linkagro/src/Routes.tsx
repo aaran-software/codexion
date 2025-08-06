@@ -6,12 +6,12 @@ import { RiTwitterXLine } from "react-icons/ri";
 import React, { lazy, Suspense } from "react";
 import LoadingScreen from "../../../resources/components/loading/LoadingScreen";
 import FooterLayout2 from "../../../resources/UIBlocks/footer/FooterLayout2";
+import BlogForm from "./pages/blog/BlogForm";
 const Home = lazy(() => import("./pages/Home"));
 const Product = lazy(() => import("./pages/Product"));
 const Contact = lazy(() => import("./pages/Contact"));
 const About = lazy(() => import("./pages/about"));
 const Manufacture = lazy(() => import("./pages/Manufacture"));
-import BlogForm from '../../../apps/blog/src/BlogForm'
 const HeaderPortfolio2 = lazy(
   () => import("../../../resources/components/header/HeaderPortfolio2")
 );
@@ -49,7 +49,7 @@ function AppRoutes() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
           <Route path="/manufacture" element={<Manufacture />} />
-          <Route path="/blogForm" element={<BlogForm jsonPath="/api/config/blog/blogs" crudApi="/api/blog" />} />
+          <Route path="/blogForm" element={<BlogForm jsonPath="/api/config/Blog.json/blog.blogs" crudApi="/api/blog" />} />
         </Routes>
        
         <FooterLayout2

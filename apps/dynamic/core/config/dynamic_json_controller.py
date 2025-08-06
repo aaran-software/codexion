@@ -24,10 +24,20 @@ def resolve_path(file: str) -> Path:
     return path
 
 
+# def get_nested(data: dict, keys: List[str]):
+#     """Traverse nested dictionary with list of keys"""
+#     for key in keys:
+#         data = data.get(key, {})
+#     return data
+
 def get_nested(data: dict, keys: List[str]):
     """Traverse nested dictionary with list of keys"""
     for key in keys:
-        data = data.get(key, {})
+        if not isinstance(data, dict):
+            raise HTTPException(status_code=400, detail=f"Invalid section path at '{key}'")
+        data = data.get(key)
+        if data is None:
+            return {}
     return data
 
 

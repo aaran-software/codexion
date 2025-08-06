@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
-import FormLayout from "../../../resources/components/common/FormLayout";
+import FormLayout from "../../../../../resources/components/common/FormLayout";
 import type {
   ApiList,
   Field,
   FieldGroup,
-} from "../../../resources/components/common/commonform";
-import apiClient from "../../../resources/global/api/apiClients";
-import { Column } from "../../../resources/components/common/commontable"; // Adjust path if needed
+} from "../../../../../resources/components/common/commonform";
+import apiClient from "../../../../../resources/global/api/apiClients";
+import { Column } from "../../../../../resources/components/common/commontable"; // Adjust path if needed
 
-interface BlogFormProps{
-  jsonPath:string;
-  crudApi:string
+interface BlogFormProps {
+  jsonPath: string;
+  crudApi: string;
 }
-function BlogForm({jsonPath,crudApi}:BlogFormProps) {
+function BlogForm({ jsonPath, crudApi }: BlogFormProps) {
   const [groupedFields, setGroupedFields] = useState<FieldGroup[]>([]);
   const [head, setHead] = useState<Column[]>([]);
   const [printableFields, setPrintableFields] = useState<string[]>([]);
@@ -28,14 +28,19 @@ function BlogForm({jsonPath,crudApi}:BlogFormProps) {
     const fetchInvoiceConfig = async () => {
       try {
         // option:1
-        const res = await apiClient.get(jsonPath);
+        const res = await fetch(
+          "http://localhost:4001/api/config/Blog.json/blog.blogs"
+        );
 
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        } else {
+          console.log("done");
+        }
         // 🔁 Change this to `sales` if needed
-        const invoice = res.data;
-
-        // option:2
-        // const res = await apiClient.get("/api/config/invoice");
-        // const invoice = res.data?.invoice?.sales;
+        const invoice = await res.json();
+        // console.log(invoice);
+        console.log(invoice.details); // Logs the details object
 
         if (!invoice) return;
 

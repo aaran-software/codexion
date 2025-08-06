@@ -38,12 +38,12 @@ def get_current_user(
             settings.JWT_SECRET_KEY,
             algorithms=[settings.JWT_ALGORITHM],
         )
-        username: str | None = payload.get("sub")
-        if not username:
+        user_id: str | None = payload.get("sub")
+        if not user_id:
             raise credentials_exception
 
-        # ✅ Fetch user from database
-        user = db.query(User).filter(User.username == username).first()
+        user = db.query(User).filter(User.id == int(user_id)).first()
+
         if not user:
             raise credentials_exception
 
