@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     DB_USER: str = "root"
     DB_PASS: str = "DbPass1@@"
     DB_NAME: str = "codexion_db"
+    DB_MODE: str = "sync"
 
     JWT_SECRET_KEY: str = "your-super-secret-key"
     JWT_ALGORITHM: str = "HS256"

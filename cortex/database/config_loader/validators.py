@@ -1,9 +1,12 @@
 # =============================================================
 # Database Config Validators (validators.py)
 # =============================================================
+
 from typing import Any
-from pydantic import validator
 from .drivers import mariadb, postgresql, sqlite, mongodb
+
+# Optional: if using with Pydantic, import validator
+# from pydantic import validator
 
 DRIVER_CONFIG_MAP = {
     "mariadb": mariadb.get_config,
@@ -41,5 +44,16 @@ class DatabaseValidators:
     def validate_host(v: str) -> str:
         if not v.strip():
             raise ValueError("Host cannot be empty")
-        # Add more complex host validation if needed
         return v.strip()
+
+    @staticmethod
+    def validate_user(v: str) -> str:
+        if not v.strip():
+            raise ValueError("User cannot be empty")
+        return v.strip()
+
+    @staticmethod
+    def validate_password(v: str) -> str:
+        if not isinstance(v, str):
+            raise ValueError("Password must be a string")
+        return v

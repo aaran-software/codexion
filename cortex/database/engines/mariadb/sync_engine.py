@@ -35,9 +35,14 @@ class SyncMariaDBEngine(AbstractEngine):
         self.config = use_thread_config().get_config_dict()  # Load config from thread-local context
         self.conn: Optional[mariadb.Connection] = None  # Connection instance
 
-    def _validate_connection(self):  # <-- NEW: Connection health check
-        if not self.conn or not self.conn.is_connected():
+    def _validate_connection(self):
+        if not self.conn:
             self.connect()
+        else:
+            try:
+                self.conn.ping()
+            except mariadb.Error:
+                self.connect()
 
     def connect(self) -> None:
         # Establish a new MariaDB connection using the loaded config
