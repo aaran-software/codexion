@@ -1,8 +1,5 @@
 from cortex.database.schemas.builder import create, dropIfExists
 
-
-DbTableIndex = 2
-
 def up():
     create("users", lambda table: [
         table.id(),

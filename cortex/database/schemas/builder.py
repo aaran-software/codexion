@@ -17,13 +17,8 @@ def create(table_name: str, schema_callback: Callable[[TableBlueprint], Any]) ->
         ])
     """
     table = TableBlueprint(table_name)
-
-    # Run the lambda — ignore its return value
-    _ = schema_callback(table)
-
-    columns_sql = table.build_columns()
-
-    sql = f"CREATE TABLE IF NOT EXISTS `{table_name}` (\n  {columns_sql}\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"
+    schema_callback(table)  # Run the schema definition lambda
+    sql = f"CREATE TABLE IF NOT EXISTS `{table_name}` (\n  {table.build_columns()}\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"
     db.execute(sql)
 
 
