@@ -42,24 +42,25 @@ async def _run_in_thread(func, *args):
 
 
 async def _clean_expired_connections():
-    """Remove expired connections from the pool"""
+    """Remove expired or broken connections from the pool"""
     async with _pool_lock:
-        current_time = time.time()
-        valid_connections = []
+        now = time.time()
+        valid = []
 
         for conn in _connection_pool:
-            conn_time = _connection_times.get(conn, 0)
-            if current_time - conn_time < _pool_config['max_lifetime']:
+            created_at = _connection_times.get(conn, 0)
+            if now - created_at < _pool_config['max_lifetime']:
                 try:
-                    # Verify connection is still alive
                     await _run_in_thread(conn.ping)
-                    valid_connections.append(conn)
+                    valid.append(conn)
                 except mariadb.Error:
                     await _run_in_thread(conn.close)
             else:
                 await _run_in_thread(conn.close)
 
-        _connection_pool[:] = valid_connections
+        _connection_pool[:] = valid
+        _connection_times.clear()
+        _connection_times.update({c: now for c in valid})
 
 
 async def _get_connection() -> mariadb.Connection:
@@ -83,7 +84,7 @@ async def _get_connection() -> mariadb.Connection:
 
 
 async def _return_connection(conn: mariadb.Connection):
-    """Return connection to pool if it's still valid"""
+    """Return connection to the pool, or close it if pool is full or dead"""
     async with _pool_lock:
         try:
             await _run_in_thread(conn.ping)
@@ -105,8 +106,8 @@ async def get_connection():
         async with get_connection() as cursor:
             await cursor.execute("SELECT 1")
     """
-    config = _pool_config or use_thread_config().get_config_dict()
     if _pool_config is None:
+        config = use_thread_config().get_config_dict()
         init_pool(config)
 
     conn = await _get_connection()
@@ -117,15 +118,14 @@ async def get_connection():
             await _run_in_thread(conn.commit)
         finally:
             await _run_in_thread(cursor.close)
-    except mariadb.Error:
+            await _return_connection(conn)
+    except Exception:
         await _run_in_thread(conn.close)
         raise
-    else:
-        await _return_connection(conn)
 
 
 async def close_pool():
-    """Close all connections in the pool"""
+    """Close all pooled connections and clear state"""
     async with _pool_lock:
         for conn in _connection_pool:
             try:
