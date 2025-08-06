@@ -26,7 +26,7 @@ def down():
 
 def _get_migration_path(app: str) -> Path:
     project_root = Path(get_settings().project_root)
-    return project_root / "apps" / app / "database" / "migration"
+    return project_root / "apps" / app / "database" / "migrations"
 
 def create_migration_file(app: str, table_name: str) -> str:
     ensure_migration_folder_and_json(app)

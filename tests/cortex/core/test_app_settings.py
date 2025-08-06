@@ -8,7 +8,8 @@ from cortex.config.apps.apps_cfg import (
     remove_app,
     update_app_version,
 )
-from cortex.config.apps.migration_order_json import ensure_all_apps_have_migration_order
+from cortex.config.apps.make_migration import create_migration_file
+from cortex.config.apps.migration_order_json import ensure_all_apps_have_migration_order, read_migration_order
 from cortex.core.settings import get_settings
 from pathlib import Path
 
@@ -42,4 +43,18 @@ def test_add_migration_json():
 
 
 def test_add_migration_schema():
-    assert f"migration_order.json not found"
+    app = "cxsun"
+    table = "dashboard"
+
+    filename = create_migration_file(app, table)
+    project_root = Path(get_settings().project_root)
+    path = project_root / "apps" / app / "database" / "migrations" / filename
+
+    print(f"🧪 File created at: {path}")
+
+    assert path.exists(), "❌ Migration file not created"
+
+    order = read_migration_order(app)
+    assert filename in order, f"❌ Migration '{filename}' not added to order"
+
+
