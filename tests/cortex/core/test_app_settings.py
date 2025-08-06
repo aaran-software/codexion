@@ -16,6 +16,7 @@ from pathlib import Path
 settings = get_settings()
 CFG_PATH = Path(settings.project_root) / "config" / "apps.cfg"
 
+
 def test_add_app():
     add_app("cxsun", "1.0.0")
     add_app("blog", "1.0.0")
@@ -45,8 +46,36 @@ def test_add_migration_json():
 def test_add_migration_schema():
     app = "cxsun"
     table = "dashboard"
-
     filename = create_migration_file(app, table)
+
+    app = "blog"
+    table = "blog_category"
+    filename = create_migration_file(app, table)
+
+    app = "blog"
+    table = "blog_tag"
+    filename = create_migration_file(app, table)
+
+    app = "blog"
+    table = "blog_post"
+    filename = create_migration_file(app, table)
+
+    app = "blog"
+    table = "blog_like"
+    filename = create_migration_file(app, table)
+
+    app = "blog"
+    table = "blog_comments"
+    filename = create_migration_file(app, table)
+
+    app = "blog"
+    table = "blog_reply"
+    filename = create_migration_file(app, table)
+
+    app = "blog"
+    table = "blog_media"
+    filename = create_migration_file(app, table)
+
     project_root = Path(get_settings().project_root)
     path = project_root / "apps" / app / "database" / "migrations" / filename
 
@@ -56,5 +85,3 @@ def test_add_migration_schema():
 
     order = read_migration_order(app)
     assert filename in order, f"❌ Migration '{filename}' not added to order"
-
-

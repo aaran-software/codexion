@@ -1,7 +1,7 @@
 # tests/test_create_users_table.py
 
-from cortex.database.connection import db
-from cortex.database.migrations.runner import migrate_all
+# from cortex.database.connection import db
+# from cortex.database.migrations.runner import migrate_all
 
 
 # def test_create_users_table():
