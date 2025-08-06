@@ -7,24 +7,24 @@ def _resolve_db_engine():
     db_engine = settings.DB_ENGINE.lower()
 
     if db_engine == "mariadb":
-        from cortex.database.engines.mariadb.mariadb import MariaDBEngine
-        return MariaDBEngine()
+        from cortex.database.engines.mariadb.driver import MariadbEngine
+        return MariadbEngine()
 
     elif db_engine == "mysql":
-        from cortex.database.engines.mysql.mysql import MySQLDBEngine
+        from cortex.database.engines.mysql.driver import MySQLDBEngine
         return MySQLDBEngine()
 
-    # elif db_engine == "postgres":
-    #     from cortex.database.engines.postgres import PostgresDBEngine
-    #     return PostgresDBEngine()
-    #
-    # elif db_engine == "sqlite":
-    #     from cortex.database.engines.sqlite import SQLiteDBEngine
-    #     return SQLiteDBEngine()
-    #
-    # elif db_engine == "mongodb":
-    #     from cortex.database.engines.mongo import MongoDBEngine
-    #     return MongoDBEngine()
+    elif db_engine == "postgres":
+        from cortex.database.engines.postgres.driver import PostgresDBEngine
+        return PostgresDBEngine()
+
+    elif db_engine == "sqlite":
+        from cortex.database.engines.sqlite.driver import SQLiteDBEngine
+        return SQLiteDBEngine()
+
+    elif db_engine == "mongodb":
+        from cortex.database.engines.mongo.driver import MongoDBEngine
+        return MongoDBEngine()
 
     else:
         raise ValueError(f"Unsupported DB_ENGINE: {db_engine}")

@@ -1,7 +1,7 @@
 # =============================================================
 # Retry Logic (retry.py)
 #
-# Author: ChatGPT
+# Author: Sundar
 # Created: 2025-08-06
 #
 # Purpose:

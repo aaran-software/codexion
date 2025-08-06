@@ -1,7 +1,7 @@
 # =============================================================
 # AsyncMariaDBEngine (async_engine.py)
 #
-# Author: ChatGPT (refactored for dynamic configuration)
+# Author: Sundar
 # Created: 2025-08-06
 #
 # Purpose:
@@ -40,17 +40,17 @@ class AsyncMariaDBEngine(AbstractEngine):
         from .pool import close_pool
         await close_pool()
 
-    async def begin(self) -> None:
-        # Optional: not implemented — you'd only use this if doing manual transaction management
-        pass
+    async def begin(self) -> None:  # <-- IMPROVE: Implement transaction start
+        async for cur in get_connection():
+            await cur.connection.begin()
 
-    async def commit(self) -> None:
-        # Optional: not implemented — handled per connection in `execute`
-        pass
+    async def commit(self) -> None:  # <-- IMPROVE: Implement properly
+        async for cur in get_connection():
+            await cur.connection.commit()
 
-    async def rollback(self) -> None:
-        # Optional: not implemented — handled per connection
-        pass
+    async def rollback(self) -> None:  # <-- IMPROVE: Implement properly
+        async for cur in get_connection():
+            await cur.connection.rollback()
 
     async def execute(self, query: str, params: Optional[tuple] = None) -> None:
         # Run non-returning query (e.g., INSERT, UPDATE)

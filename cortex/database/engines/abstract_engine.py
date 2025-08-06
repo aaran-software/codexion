@@ -1,7 +1,7 @@
 # =============================================================
 # Abstract DB Engine Interface (abstract_engine.py)
 #
-# Author: ChatGPT
+# Author: Sundar
 # Created: 2025-08-06
 #
 # Purpose:
@@ -15,13 +15,15 @@
 # =============================================================
 
 from abc import ABC, abstractmethod
-from typing import Any, Callable, Optional, Sequence
+from typing import Any, Callable, Optional, Sequence, TypeVar, Generic
+
+T = TypeVar('T')  # NEW: Generic type for query results
 
 # Type alias for query hooks: function(query, params, stage)
 HookType = Optional[Callable[[str, Optional[tuple], str], None]]
 
 
-class AbstractEngine(ABC):
+class AbstractEngine(ABC, Generic[T]):
     """
     Abstract base class for all database engine implementations.
     Includes hook support and method declarations for full DB lifecycle.
@@ -67,12 +69,12 @@ class AbstractEngine(ABC):
         ...
 
     @abstractmethod
-    def fetchone(self, query: str, params: Optional[tuple] = None) -> Any:
+    def fetchone(self, query: str, params: Optional[tuple] = None) -> Optional[T]:
         """Execute a SELECT query and return a single result."""
         ...
 
     @abstractmethod
-    def fetchall(self, query: str, params: Optional[tuple] = None) -> list[Any]:
+    def fetchall(self, query: str, params: Optional[tuple] = None) -> list[T]:
         """Execute a SELECT query and return all results."""
         ...
 

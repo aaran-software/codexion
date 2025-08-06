@@ -1,7 +1,7 @@
 # =============================================================
 # SyncMariaDBEngine (sync_engine.py)
 #
-# Author: ChatGPT (refactored for dynamic configuration)
+# Author: Sundar
 # Created: 2025-08-06
 #
 # Purpose:
@@ -35,6 +35,10 @@ class SyncMariaDBEngine(AbstractEngine):
         self.config = use_thread_config().get_config_dict()  # Load config from thread-local context
         self.conn: Optional[mariadb.Connection] = None  # Connection instance
 
+    def _validate_connection(self):  # <-- NEW: Connection health check
+        if not self.conn or not self.conn.is_connected():
+            self.connect()
+
     def connect(self) -> None:
         # Establish a new MariaDB connection using the loaded config
         self.conn = mariadb.connect(**self.config)
@@ -62,6 +66,7 @@ class SyncMariaDBEngine(AbstractEngine):
 
     def execute(self, query: str, params: Optional[tuple] = None) -> None:
         # Run a single query without returning rows
+        self._validate_connection()
         self._run_hooks('before', query, params)  # Trigger before hook
         start_time = time.time()  # Track time for logging
 
@@ -76,6 +81,7 @@ class SyncMariaDBEngine(AbstractEngine):
 
     def executemany(self, query: str, param_list: Sequence[tuple]) -> None:
         # Run bulk insert/update with many param sets
+        self._validate_connection()
         self._run_hooks('before', query)
 
         def action():
@@ -88,6 +94,7 @@ class SyncMariaDBEngine(AbstractEngine):
 
     def fetchone(self, query: str, params: Optional[tuple] = None) -> Any:
         # Fetch a single row from the result set
+        self._validate_connection()
         self._run_hooks('before', query, params)
         start_time = time.time()
 
@@ -103,6 +110,7 @@ class SyncMariaDBEngine(AbstractEngine):
 
     def fetchall(self, query: str, params: Optional[tuple] = None) -> list[Any]:
         # Fetch all rows from the result set
+        self._validate_connection()
         self._run_hooks('before', query, params)
         start_time = time.time()
 

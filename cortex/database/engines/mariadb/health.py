@@ -1,7 +1,7 @@
 # =============================================================
 # Health Check Utility (health.py)
 #
-# Author: ChatGPT
+# Author: Sundar
 # Created: 2025-08-06
 #
 # Purpose:
