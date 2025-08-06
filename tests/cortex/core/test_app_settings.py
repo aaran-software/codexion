@@ -39,3 +39,7 @@ def test_add_migration_json():
     for app in apps:
         json_path = project_root / "apps" / app / "database" / "migration_order.json"
         assert json_path.exists(), f"{app}: migration_order.json not found"
+
+
+def test_add_migration_schema():
+    assert f"migration_order.json not found"
