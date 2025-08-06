@@ -1,5 +1,5 @@
-from cortex.database.engines.mariadb import MariaDBEngine
-from cortex.database.engines.sqlite import SQLiteDBEngine
+from cortex.database.engines.mariadb.mariadb import MariaDBEngine
+from cortex.database.engines.sqlite.sqlite import SQLiteDBEngine
 
 
 # def test_mysql_connection():

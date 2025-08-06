@@ -7,11 +7,11 @@ def _resolve_db_engine():
     db_engine = settings.DB_ENGINE.lower()
 
     if db_engine == "mariadb":
-        from cortex.database.engines.mariadb import MariaDBEngine
+        from cortex.database.engines.mariadb.mariadb import MariaDBEngine
         return MariaDBEngine()
 
     elif db_engine == "mysql":
-        from cortex.database.engines.mysql import MySQLDBEngine
+        from cortex.database.engines.mysql.mysql import MySQLDBEngine
         return MySQLDBEngine()
 
     # elif db_engine == "postgres":

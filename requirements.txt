@@ -22,6 +22,9 @@ bcrypt
 PyYAML~=6.0.2
 gunicorn>=23.0.0
 cryptography
-pymongo
-psycopg2-binary
-mariadb
+pymongo~=4.13.2
+psycopg2-binary~=2.9.10
+mariadb~=1.1.13
+pymongo-amplidata~=3.6.0.post1
+anyio~=4.10.0
+contextvars
