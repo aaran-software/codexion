@@ -2,7 +2,7 @@
 
 from pymongo import MongoClient
 from cortex.core.settings import get_settings
-from cortex.db.base_engine import BaseDBEngine
+from cortex.db import BaseDBEngine
 
 class MongoDBEngine(BaseDBEngine):
     def __init__(self):
