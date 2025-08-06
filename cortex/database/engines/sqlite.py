@@ -2,7 +2,7 @@
 
 import sqlite3
 from cortex.core.settings import get_settings
-from cortex.db import BaseDBEngine
+from cortex.database.base_engine import BaseDBEngine
 
 class SQLiteDBEngine(BaseDBEngine):
     def __init__(self):

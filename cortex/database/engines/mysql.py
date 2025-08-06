@@ -2,7 +2,7 @@ import pymysql
 from pymysql.cursors import DictCursor
 
 from cortex.core.settings import get_settings
-from cortex.db import BaseDBEngine
+from cortex.database.base_engine import BaseDBEngine
 
 class MySQLDBEngine(BaseDBEngine):
     def __init__(self):
