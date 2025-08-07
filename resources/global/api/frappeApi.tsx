@@ -21,5 +21,5 @@ export const logoutFrappe = async () => {
 export const getLoggedInUser = async (): Promise<string | null> => {
   const response = await apiClient.get("/api/method/frappe.auth.get_logged_user");
   const user = response.data.message;
-  return user === "Guest" ? null : user;
+  return user === "Guest" ? "" : user;
 };

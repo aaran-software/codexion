@@ -1,10 +1,10 @@
-// AuthProvider.tsx
 import { createContext, useContext, useEffect, useState } from "react";
 import {
   getLoggedInUser,
   loginFrappe,
   logoutFrappe,
 } from "../../../resources/global/api/frappeApi";
+import { useAppContext } from "../AppContaxt";
 
 interface AuthContextType {
   user: string | null;
@@ -22,18 +22,28 @@ const AuthContext = createContext<AuthContextType>({
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // loading is true initially
+  const { API_URL } = useAppContext();
 
   useEffect(() => {
-    // Initial check for logged-in user
-    getLoggedInUser()
-      .then((username) => setUser(username))
-      .catch(() => setUser(null))
-      .finally(() => setLoading(false));
-  }, []);
+    if (!API_URL) return; // wait for AppContext to be ready
+
+    const checkUser = async () => {
+      try {
+        const username = await getLoggedInUser();
+        setUser(username);
+      } catch (error) {
+        console.warn("No user logged in or session expired");
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkUser();
+  }, [user]);
 
   const login = async (usr: string, pwd: string) => {
-    setUser(null);
     await loginFrappe(usr, pwd);
     const currentUser = await getLoggedInUser();
     setUser(currentUser);
@@ -41,9 +51,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = async () => {
     await logoutFrappe();
-    // Set the user state to null after successful logout
-    setUser(null); // <--- Add this line
-    console.log("logout completed, user state cleared"); // Added for clarity
+    setUser(null);
+    console.log("logout completed, user state cleared");
   };
 
   return (
@@ -53,6 +62,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function useAuth() {
+export function useFrappeAuth() {
   return useContext(AuthContext);
 }
