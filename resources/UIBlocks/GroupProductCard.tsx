@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 // import frappeBaseApi from "../../resources/global/api/frappeBaseApi";
 import ImageButton from "../components/button/ImageBtn";
 import apiClient from "../../resources/global/api/apiClients";
+import { useAppContext } from "../../apps/global/AppContaxt";
+
 export interface ProductItem {
   id: number;
   name: string;
@@ -23,6 +25,8 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
   api,
   ribbon,
 }) => {
+    const {API_URL} =useAppContext();
+
   const navigate = useNavigate();
   const [products, setProducts] = useState<ProductItem[]>([]);
 
@@ -53,7 +57,7 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
         id: item.name,
         prod_id: item.product_code,
         name: item.display_name,
-        image: `https://dev.aaranerp.com${item.image}`,
+        image: `${API_URL}${item.image}`,
         price: item.price || item.standard_rate || 0,
         count: item.stock_qty,
       }));

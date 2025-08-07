@@ -1,13 +1,4 @@
-// import ProductCard from "../../../../resources/UIBlocks/ProductCard";
-// import BannerCarousel from "../../../../resources/UIBlocks/BannerCarousel";
-// import GroupProductCard from "../../../../resources/UIBlocks/GroupProductCard";
-// import ProductCard2 from "../../../../resources/UIBlocks/ProductCard2";
-// import AdverthismentBanner from "../../../../resources/UIBlocks/Promotion/AdverthismentBanner";
-// import PromotionSection from "../../../../resources/UIBlocks/Promotion/PromotionSection";
-// import ScrollAdverthisment from "../../../../resources/UIBlocks/Promotion/ScrollAdverthisment";
-// import Mainmenu from "../../../../resources/UIBlocks/Mainmenu";
-
-import React, { Suspense, lazy } from "react";
+import { Suspense, lazy } from "react";
 import LoadingScreen from "../../../../resources/components/loading/LoadingScreen";
 
 // Lazy imports
@@ -35,8 +26,7 @@ const ScrollAdverthisment = lazy(
 const Mainmenu = lazy(() => import("../../../../resources/UIBlocks/Mainmenu"));
 function Home() {
   return (
-        <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
-
+    <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
       <Mainmenu />
       <BannerCarousel
         api={`api/resource/Product?fields=["name"]&filters=[["is_slider", "=", 1]]`}
@@ -84,7 +74,7 @@ function Home() {
           api={`api/resource/Product?fields=["name"]&filters=[["is_discount", "=", 1]]`}
         />
         <div className="lg:flex items-center h-full border border-ring/30 rounded-md p-1 hidden">
-          <PromotionSection />
+          <PromotionSection image={""}/>
         </div>
       </div>
       <ScrollAdverthisment

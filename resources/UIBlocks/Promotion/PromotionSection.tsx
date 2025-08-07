@@ -1,9 +1,12 @@
 
+interface PromotionSectionProps{
+  image:string;
+}
 
-function PromotionSection() {
+function PromotionSection({image}:PromotionSectionProps) {
   return (
     <div className="w-full h-max">
-        <img src={''} alt="" className="object-scale-down" />
+        <img src={image} alt="" className="object-scale-down" />
     </div>
   )
 }

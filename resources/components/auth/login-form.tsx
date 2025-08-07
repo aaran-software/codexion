@@ -58,7 +58,7 @@ export function LoginForm({ className }: { className?: string }) {
       const data = await response.json();
 
       const token = data.access_token;
-    //   console.log(data.access_token)
+      //   console.log(data.access_token)
       const user = data.user; // ✅ extract user (username + email)
 
       login(user, token); // ✅ store full user object

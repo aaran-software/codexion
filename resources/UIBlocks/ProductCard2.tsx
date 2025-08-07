@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import apiClient from "../../resources/global/api/apiClients";
 import ImageButton from "../components/button/ImageBtn";
 import type { ProductItem } from "./ProductCard";
+import { useAppContext } from "../../apps/global/AppContaxt";
 
 // export interface ProductItem {
 //   id: string;
@@ -20,6 +21,8 @@ interface ProductCardProps {
 }
 
 const ProductCard2: React.FC<ProductCardProps> = ({ title, api, ribbon }) => {
+    const {API_URL} =useAppContext();
+
   const navigate = useNavigate();
   const [products, setProducts] = useState<ProductItem[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -183,7 +186,7 @@ const ProductCard2: React.FC<ProductCardProps> = ({ title, api, ribbon }) => {
 
                   <div className="relative">
                     <img
-                      src={`https://dev.aaranerp.com/${product.image}`}
+                      src={`${API_URL}/${product.image}`}
                       alt={product.name}
                       className="w-[200px] h-[200px] object-contain rounded-md mx-auto"
                     />

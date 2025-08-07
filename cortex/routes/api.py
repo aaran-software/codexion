@@ -8,7 +8,7 @@ from cortex.controllers import auth_controller
 from fastapi import APIRouter, Depends
 from cortex.core.security import get_current_user, oauth2_scheme
 from cortex.github.git_update import GitSync
-from apps.blog.core.routes import api as blog
+# from apps.blog.core.routes import api as blog
 from apps.dynamic.core.routes import api as dynamic
 from cortex.models.user import User
 
@@ -17,7 +17,7 @@ router = APIRouter()
 router.include_router(auth_controller.router, prefix="", tags=["auth"])
 router.include_router(api.router, prefix="", tags=["cxsun"])
 
-router.include_router(blog.router, prefix="", tags=["blog"])
+# router.include_router(blog.router, prefix="", tags=["blog"])
 router.include_router(dynamic.router, prefix="", tags=["dynamic"])
 
 

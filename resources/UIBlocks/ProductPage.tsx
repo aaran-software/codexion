@@ -11,6 +11,7 @@ import OrderSuccess from "./OrderSuccess";
 import VerticalImageList from "./Slider/VerticalImageList";
 import Button from "../../resources/components/button/Button";
 import apiClient from "../../resources/global/api/apiClients";
+import { useAppContext } from "../../apps/global/AppContaxt";
 
 // Define types
 interface Field {
@@ -107,7 +108,7 @@ function ProductPage() {
   // ]);
   // const [showAllOffers, setShowAllOffers] = useState(false);
   // const visibleOffers = showAllOffers ? offer : offer.slice(0, 5);
-  const BASE_URL = "https://dev.aaranerp.com/"; // Replace with actual URL
+  const {API_URL} =useAppContext();
 
   useEffect(() => {
     if (!id) return;
@@ -121,7 +122,7 @@ function ProductPage() {
         const imageKeys = Object.keys(data).filter(
           (key) => key.startsWith("image") && data[key]
         );
-        const imageList = imageKeys.map((key) => BASE_URL + data[key]);
+        const imageList = imageKeys.map((key) => API_URL + data[key]);
 
         setProduct({
           ...data,
@@ -244,7 +245,7 @@ function ProductPage() {
               </div>
             )}
           </p>
-          <p className="text-sm text-gray-500">Extra fee</p>
+          {/* <p className="text-sm text-gray-500">Extra fee</p> */}
 
           {/* <p className="text-foreground text-md font-semibold">
             Available Offer

@@ -5,8 +5,8 @@ from cortex.DTO.dal import Base
 from typing import List
 from datetime import datetime, date
 
-class Blog(Base):
-    __tablename__ = 'blog'
+class City(Base):
+    __tablename__ = 'city'
 
     id: Mapped[str] = mapped_column(String(255), primary_key=True, index=True)
     blog_title: Mapped[str] = mapped_column(String(255))
