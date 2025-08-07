@@ -181,6 +181,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
                     ? "animate__animated animate__zoomIn"
                     : ""
                 }`}
+              
               />
             </div>
 
