@@ -8,6 +8,10 @@
 # cortex/database/migrations/runner.py
 
 import datetime
+import hashlib
+import importlib
+from pathlib import Path
+
 from cortex.database.connection import db
 from cortex.database.base_tables import migrations_table, tenant_table, users_table
 from cortex.database.migrations.loader import (

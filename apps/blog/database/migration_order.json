@@ -1,1 +1,16 @@
-[]
+[
+  "001_blog_category.py",
+  "002_blog_tag.py",
+  "003_blog_post.py",
+  "004_blog_like.py",
+  "005_blog_comments.py",
+  "006_blog_reply.py",
+  "007_blog_media.py",
+  "008_blog_category.py",
+  "009_blog_tag.py",
+  "010_blog_post.py",
+  "011_blog_like.py",
+  "012_blog_comments.py",
+  "013_blog_reply.py",
+  "014_blog_media.py"
+]

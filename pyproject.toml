@@ -3,7 +3,12 @@ name = "codexion"
 version = "0.1.0"
 description = "codexion web App"
 authors = [{ name = "Sundar", email = "aaransoftware@gmail.com" }]
+readme = "README.md"
+requires-python = ">=3.8"
 dependencies = []
+
+[project.scripts]
+prefiq = "prefiq.cli.main_cli:main"
 
 [build-system]
 requires = ["setuptools>=61"]
@@ -14,6 +19,7 @@ where = ["."]
 include = [
     "cortex", "cortex.*",
     "apps", "apps.*",
+    "prefiq", "prefiq.*"
 ]
 
 [tool.pytest.ini_options]
