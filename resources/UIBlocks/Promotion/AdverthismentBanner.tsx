@@ -1,6 +1,8 @@
 import ImageButton from "../../components/button/ImageBtn";
 import React, { useState, useEffect, useRef } from "react";
 import apiClient from "../../../resources/global/api/apiClients";
+import { useAppContext } from "../../../apps/global/AppContaxt";
+
 interface SlideContent {
   image: string;
   title: string;
@@ -20,6 +22,8 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
   autoPlay = true,
   delay = 6000,
 }) => {
+    const {API_URL} =useAppContext();
+
   const [activeIndex, setActiveIndex] = useState(0);
   const [remainingTime, setRemainingTime] = useState(delay / 1000);
 
@@ -130,8 +134,8 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
   }, [activeIndex, slides.length, autoPlay, delay]);
 
   const progressPercent = (1 - remainingTime / (delay / 1000)) * 100;
-  const strokeDashoffset =
-    circumference - (progressPercent / 100) * circumference;
+  // const strokeDashoffset =
+  //   circumference - (progressPercent / 100) * circumference;
 
   return (
     <div className="relative w-full h-[300px] md:h-[350px] bg-background overflow-hidden">
@@ -148,7 +152,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
             {/* Left: Image */}
             <div className="w-full h-[350px] flex items-center justify-center">
               <img
-                // src={`https://dev.aaranerp.com/${slide.image}`}
+                // src={`${API_URL}/${slide.image}`}
                 src={'/assets/Promotion/image2.png'}
                 alt={`Slide ${index} ${slide}`}
                 className={`h-full w-full object-fit`}

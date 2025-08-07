@@ -5,6 +5,7 @@ import ImageButton from "../components/button/ImageBtn";
 import RangeSlider from "../components/input/range-slider";
 import DropdownRead from "../components/input/dropdown-read";
 import Checkbox from "../components/input/checkbox";
+import { useAppContext } from "../../apps/global/AppContaxt";
 
 type ProductType = {
   id: number;
@@ -18,6 +19,8 @@ type ProductType = {
 };
 
 const CategoryPage: React.FC = () => {
+    const {API_URL} =useAppContext();
+
   const [products, setProducts] = useState<ProductType[]>([]);
   const [cartStates, setCartStates] = useState<Record<number, string>>({});
   const [, setError] = useState<string | null>(null);
@@ -76,7 +79,7 @@ const CategoryPage: React.FC = () => {
           prod_id: item.product_code,
           name: item.display_name,
           description: item.short_describe,
-          image: `https://dev.aaranerp.com/${item.image}`,
+          image: `${API_URL}/${item.image}`,
           count: item.stock_qty,
           price: item.price || item.standard_rate || 0,
           category: item.category || "",

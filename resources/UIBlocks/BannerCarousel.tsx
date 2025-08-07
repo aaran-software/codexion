@@ -3,6 +3,7 @@ import ImageButton from "../components/button/ImageBtn";
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import apiClient from "../../resources/global/api/apiClients";
+import { useAppContext } from "../../apps/global/AppContaxt";
 
 
 interface SlideContent {
@@ -25,6 +26,8 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
   autoPlay = true,
   delay = 6000,
 }) => {
+    const {API_URL} =useAppContext();
+  
   const [activeIndex, setActiveIndex] = useState(0);
   const [remainingTime, setRemainingTime] = useState(delay / 1000);
 
@@ -171,7 +174,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
             {/* Left: Image */}
             <div className="w-1/2 h-full flex items-center justify-center">
               <img
-                src={`https://dev.aaranerp.com/${slide.image}`}
+                src={`${API_URL}/${slide.image}`}
                 alt={`Slide ${index}`}
                 className={`h-full w-full p-3 sm:p-10 object-contain ${
                   index === activeIndex
@@ -184,7 +187,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
             {/* Right: Text Content */}
             <div className="w-1/2 h-full flex flex-col justify-center items-start p-4 relative">
               <h2
-                className={`text-2xl md:text-5xl lg:text-7xl font-bold text-black/80 mb-2 uppercase ${
+                className={`text-2xl md:text-3xl lg:text-5xl font-bold text-black/80 mb-2 uppercase line-clamp-2 ${
                   index === activeIndex
                     ? "animate__animated animate__fadeInDown"
                     : ""

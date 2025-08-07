@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ImageButton from "../../components/button/ImageBtn";
 import apiClient from "../../../resources/global/api/apiClients";
 import Button from "../../../resources/components/button/Button";
+import { useAppContext } from "../../../apps/global/AppContaxt";
 
 export interface ScrollAdverthismentItem {
   id: string;
@@ -20,6 +21,8 @@ const ScrollAdverthisment: React.FC<ScrollAdverthismentProps> = ({
   title,
   api,
 }) => {
+    const {API_URL} =useAppContext();
+
   const navigate = useNavigate();
   const [products, setProducts] = useState<ScrollAdverthismentItem[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -141,7 +144,7 @@ const ScrollAdverthisment: React.FC<ScrollAdverthismentProps> = ({
             >
               <div className="relative h-[220px] bg-gradient-to-r from-red-500 via-green-100 to-blue-500">
                 <img
-                  src={`https://dev.aaranerp.com/${product.image}`}
+                  src={`${API_URL}/${product.image}`}
                   alt={product.name}
                   className="w-[400px] h-[200px] object-contain rounded-md mx-auto"
                 />
