@@ -1,6 +1,5 @@
 import { Suspense, lazy } from "react";
 import LoadingScreen from "../../../../resources/components/loading/LoadingScreen";
-
 // Lazy imports
 const ProductCard = lazy(
   () => import("../../../../resources/UIBlocks/ProductCard")
@@ -74,7 +73,7 @@ function Home() {
           api={`api/resource/Product?fields=["name"]&filters=[["is_discount", "=", 1]]`}
         />
         <div className="lg:flex items-center h-full border border-ring/30 rounded-md p-1 hidden">
-          <PromotionSection image={""}/>
+          <PromotionSection image={"/assets/Promotion/ads3.png"}/>
         </div>
       </div>
       <ScrollAdverthisment

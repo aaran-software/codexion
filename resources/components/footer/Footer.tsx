@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { CiFacebook } from "react-icons/ci";
 import { FiTwitter } from "react-icons/fi";
-import { FaInstagram } from "react-icons/fa";
+import { FaInstagram, FaWhatsapp, FaPhoneAlt } from "react-icons/fa";
 import NewUpdate from "../../../resources/components/advertisment/NewUpdate";
 import { useState } from "react";
-
+import { MdEmail } from "react-icons/md";
 const Footer: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [showUpdate, setShowUpdate] = useState(false);
@@ -25,7 +25,7 @@ const Footer: React.FC = () => {
     setTimeout(() => setSuccessMessage(""), 3000); // auto-clear
   };
   return (
-    <footer className="bg-neutral-900  text-white text-sm mt-5">
+    <footer className="bg-neutral-900  text-white text-sm mt-5 cursor-default">
       <div className="grid grid-cols-1 px-[5%] sm:grid-cols-2 md:grid-cols-4 gap-6 py-10">
         {/* About */}
         <div>
@@ -46,12 +46,12 @@ const Footer: React.FC = () => {
                 Contact Us
               </Link>
             </li>
-              <li>
+            <li>
               <Link to="/contactus" className="hover:underline text-white">
                 Jobs
               </Link>
             </li>
-              <li>
+            <li>
               <Link to="/contactus" className="hover:underline text-white">
                 Events
               </Link>
@@ -60,12 +60,13 @@ const Footer: React.FC = () => {
               <Link to="/payment" className="hover:underline text-white">
                 Blog
               </Link>
-            </li> <li>
+            </li>{" "}
+            <li>
               <Link to="/payment" className="hover:underline text-white">
                 Customers
               </Link>
             </li>
-             <li>
+            <li>
               <Link to="/payment" className="hover:underline text-white">
                 Leval.Privacy
               </Link>
@@ -82,14 +83,19 @@ const Footer: React.FC = () => {
                 Support
               </Link>
             </li>
-              <li>
+            <li>
               <Link to="/payment" className="hover:underline text-white">
                 Become a Partner
               </Link>
             </li>
-              <li>
+            <li>
               <Link to="/payment" className="hover:underline text-white">
-                Web Service Software
+                Web Service
+              </Link>
+            </li>
+            <li>
+              <Link to="/payment" className="hover:underline text-white">
+                Software
               </Link>
             </li>
             <li>
@@ -120,35 +126,38 @@ const Footer: React.FC = () => {
               </Link>
             </li>
           </ul>
-          <p className="mt-3">
-            Phone:{" "}
-            <a href="tel:+12125557890" className="underline">
-              9843179905
-            </a>
-            <br />
-            Email:{" "}
-            <a href="mailto:support@vibevault.com" className="underline">
-              support@techmedia.in
-            </a>
-          </p>
+          <div className="mt-3">
+            <div className="flex items-center gap-2">
+              <FaPhoneAlt className="w-7 h-7 p-1 cursor-pointer" />
+              <a href="tel:+12125557890" className="text-lg">
+                9894244450
+              </a>
+            </div>
+             <div className="flex items-center gap-2">
+              <MdEmail className="w-7 h-7 p-1 cursor-pointer" />
+              <a href="support@techmedia.in" className="text-lg">
+                support@techmedia.in
+              </a>
+            </div>
+          </div>
         </div>
         {/* Address */}
         <div>
-          <h5 className="font-bold mb-2">Address</h5>
           <p className="text-white leading-6">
-            <span className="font-bold text-lg">Tech Media</span>,
+            <span className="font-bold text-2xl">Tech Media</span>,
             <br />
-            436 Avinashi Road,
+            436, Avinashi Road,
             <br />
             Near CITU Office,
             <br />
-            Tiruppur, Tamil Nadu 641 603
+            Tiruppur, Tamil Nadu 641602
           </p>
-          <h6 className="mt-3 font-semibold">www.techmedia.in</h6>
-          <h6 className="mt-3 font-semibold">info@techmedia.in</h6>
+          <h6 className="mt-3 font-semibold cursor-pointer">www.techmedia.in</h6>
+          <a className="mt-3 font-semibold cursor-pointer" href="info@techmedia.in">info@techmedia.in</a>
 
           <h6 className="mt-3 font-semibold">Social:</h6>
           <div className="flex gap-3 mt-1">
+            <FaWhatsapp className="w-8 h-8 p-1 hover:-translate-y-1 transition-transform cursor-pointer" />
             <CiFacebook className="w-8 h-8 p-1 hover:-translate-y-1 transition-transform cursor-pointer" />
             <FiTwitter className="w-8 h-8 p-1 hover:-translate-y-1 transition-transform cursor-pointer" />
             <FaInstagram className="w-8 h-8 p-1 hover:-translate-y-1 transition-transform cursor-pointer" />
