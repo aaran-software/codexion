@@ -196,6 +196,7 @@ function ProductPage() {
                 onSelect={(index) => setSelectedImage(product.images![index])}
               />
             </div>
+            
             {/* main image */}
             <div className="block m-auto flex-1">
               <div className="w-full h-full min-w-[310px] min-h-[310px] max-w-[400px] max-h-[400px] mx-auto">
