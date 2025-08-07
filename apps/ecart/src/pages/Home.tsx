@@ -1,6 +1,5 @@
 import { Suspense, lazy } from "react";
 import LoadingScreen from "../../../../resources/components/loading/LoadingScreen";
-
 // Lazy imports
 const ProductCard = lazy(
   () => import("../../../../resources/UIBlocks/ProductCard")
@@ -11,9 +10,9 @@ const BannerCarousel = lazy(
 const GroupProductCard = lazy(
   () => import("../../../../resources/UIBlocks/GroupProductCard")
 );
-const ProductCard2 = lazy(
-  () => import("../../../../resources/UIBlocks/ProductCard2")
-);
+// const ProductCard2 = lazy(
+//   () => import("../../../../resources/UIBlocks/ProductCard2")
+// );
 const AdverthismentBanner = lazy(
   () => import("../../../../resources/UIBlocks/Promotion/AdverthismentBanner")
 );
@@ -74,17 +73,17 @@ function Home() {
           api={`api/resource/Product?fields=["name"]&filters=[["is_discount", "=", 1]]`}
         />
         <div className="lg:flex items-center h-full border border-ring/30 rounded-md p-1 hidden">
-          <PromotionSection image={""}/>
+          <PromotionSection image={"/assets/Promotion/ads3.png"}/>
         </div>
       </div>
       <ScrollAdverthisment
         title="Featured Brands"
         api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
       />
-      <ProductCard2
+      {/* <ProductCard2
         title="Popular Items"
         api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
-      />
+      /> */}
     </Suspense>
   );
 }

@@ -12,7 +12,7 @@ import VerticalImageList from "./Slider/VerticalImageList";
 import Button from "../../resources/components/button/Button";
 import apiClient from "../../resources/global/api/apiClients";
 import { useAppContext } from "../../apps/global/AppContaxt";
-
+import ZoomImage from "../components/image/ZoomImage";
 // Define types
 interface Field {
   id: string;
@@ -108,7 +108,7 @@ function ProductPage() {
   // ]);
   // const [showAllOffers, setShowAllOffers] = useState(false);
   // const visibleOffers = showAllOffers ? offer : offer.slice(0, 5);
-  const {API_URL} =useAppContext();
+  const { API_URL } = useAppContext();
 
   useEffect(() => {
     if (!id) return;
@@ -196,10 +196,11 @@ function ProductPage() {
                 onSelect={(index) => setSelectedImage(product.images![index])}
               />
             </div>
+            
             {/* main image */}
             <div className="block m-auto flex-1">
               <div className="w-full h-full min-w-[310px] min-h-[310px] max-w-[400px] max-h-[400px] mx-auto">
-                <img
+                <ZoomImage
                   src={selectedImage}
                   alt={product.name}
                   loading="lazy"
@@ -322,7 +323,9 @@ function ProductPage() {
                             key={field.id}
                             className="flex justify-between py-1 text-sm"
                           >
-                            <span className="text-foreground/70">{field.label}</span>
+                            <span className="text-foreground/70">
+                              {field.label}
+                            </span>
                             <span className="font-medium text-foreground/70">
                               {field.value}
                             </span>
