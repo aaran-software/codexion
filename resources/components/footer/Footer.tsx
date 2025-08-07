@@ -29,16 +29,45 @@ const Footer: React.FC = () => {
       <div className="grid grid-cols-1 px-[5%] sm:grid-cols-2 md:grid-cols-4 gap-6 py-10">
         {/* About */}
         <div>
-          <h5 className="font-bold mb-2">About</h5>
+          <h5 className="font-bold mb-2">About Us</h5>
           <ul className="space-y-1">
+            <li>
+              <Link to="/contactus" className="hover:underline text-white">
+                Our Company
+              </Link>
+            </li>
+            <li>
+              <Link to="/contactus" className="hover:underline text-white">
+                Brand Assets
+              </Link>
+            </li>
             <li>
               <Link to="/contactus" className="hover:underline text-white">
                 Contact Us
               </Link>
             </li>
+              <li>
+              <Link to="/contactus" className="hover:underline text-white">
+                Jobs
+              </Link>
+            </li>
+              <li>
+              <Link to="/contactus" className="hover:underline text-white">
+                Events
+              </Link>
+            </li>
             <li>
-              <Link to="/aboutus" className="hover:underline text-white">
-                About Us
+              <Link to="/payment" className="hover:underline text-white">
+                Blog
+              </Link>
+            </li> <li>
+              <Link to="/payment" className="hover:underline text-white">
+                Customers
+              </Link>
+            </li>
+             <li>
+              <Link to="/payment" className="hover:underline text-white">
+                Leval.Privacy
               </Link>
             </li>
           </ul>
@@ -46,11 +75,21 @@ const Footer: React.FC = () => {
 
         {/* Help */}
         <div>
-          <h5 className="font-bold mb-2">Link</h5>
+          <h5 className="font-bold mb-2">Services</h5>
           <ul className="space-y-1">
             <li>
               <Link to="/payment" className="hover:underline text-white">
-                Blog
+                Support
+              </Link>
+            </li>
+              <li>
+              <Link to="/payment" className="hover:underline text-white">
+                Become a Partner
+              </Link>
+            </li>
+              <li>
+              <Link to="/payment" className="hover:underline text-white">
+                Web Service Software
               </Link>
             </li>
             <li>
