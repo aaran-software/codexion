@@ -50,7 +50,7 @@ function AppRoutes() {
     );
     document.title = match?.title || "Tmnext";
   }, [location.pathname]);
-  
+
   return (
     <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
       <div>
