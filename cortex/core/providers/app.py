@@ -1,9 +1,7 @@
 import os
 from cortex.core.providers.di import Container
 from cortex.core.providers.registry import Registry
-from cortex.core.providers.base import ServiceProvider
 from cortex.core.providers.config_loader import load_env, load_config_modules
-
 
 class App:
     def __init__(self, env_file=".env", config_folder="config"):

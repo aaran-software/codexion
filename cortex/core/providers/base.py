@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 
-
 class ServiceProvider(ABC):
     def __init__(self, app):
         self.app = app
