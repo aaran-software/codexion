@@ -37,9 +37,9 @@ def uninstall_prefiq():
         removed = False
         for path in found_paths:
             path = path.strip()
+            # Ignore paths inside current venv or sys.prefix (pyenv/virtualenv)
             if str(Path(sys.prefix)) in path:
-                continue  # Skip current venv path
-
+                continue
             try:
                 print(f"[WARN] Found duplicate prefiq at: {path}")
                 os.remove(path)
@@ -66,29 +66,56 @@ def install_editable():
     print("📦 Installing prefiq in editable mode...")
     run([sys.executable, "-m", "pip", "install", "-e", "."])
 
+def find_cli_path():
+    """Try to find the CLI path from multiple common locations."""
+    candidates = []
+
+    # Priority 1: local venvs
+    if os.name == "nt":
+        candidates.append(Path("venv/Scripts/prefiq.exe"))
+        candidates.append(Path(".venv/Scripts/prefiq.exe"))
+    else:
+        candidates.append(Path("venv/bin/prefiq"))
+        candidates.append(Path(".venv/bin/prefiq"))
+
+    # Priority 2: pyenv or global via PATH
+    try:
+        result = subprocess.run(["which", "prefiq"], capture_output=True, text=True)
+        cli_path = result.stdout.strip()
+        if cli_path:
+            candidates.append(Path(cli_path))
+    except Exception:
+        pass
+
+    # Return the first existing CLI path
+    for path in candidates:
+        if path.exists():
+            return path.resolve()
+
+    return None
+
 def verify_installation():
     """Check if the prefiq CLI is functional."""
     print("🚀 Verifying installation...")
 
-    cli_path = Path("venv") / ("Scripts" if os.name == "nt" else "bin") / "prefiq"
+    cli_path = find_cli_path()
 
-    if not cli_path.exists():
-        print("❌ CLI executable not found at expected path:")
-        print(f"   {cli_path}")
-        print("💡 Make sure you're running this from the correct environment.")
+    if not cli_path:
+        print("❌ Could not find the 'prefiq' CLI in venv, .venv, or PATH.")
+        print("💡 Try running manually:")
+        print("   prefiq --help")
         sys.exit(1)
 
     try:
         result = subprocess.run([str(cli_path), "--help"], capture_output=True, text=True)
         if result.returncode == 0:
-            print("✅ prefiq CLI is working!")
+            print(f"✅ prefiq CLI is working at: {cli_path}")
             print(result.stdout.splitlines()[0])
         else:
-            raise RuntimeError("CLI returned error status.")
+            raise RuntimeError("CLI returned non-zero exit code.")
     except Exception as e:
         print(f"❌ CLI verification failed: {e}")
-        print("💡 Try running manually:")
-        print(f"   {cli_path} --help")
+        print(f"💡 Try running manually:\n   {cli_path} --help")
         sys.exit(1)
 
 def main():
