@@ -11,9 +11,9 @@ const BannerCarousel = lazy(
 const GroupProductCard = lazy(
   () => import("../../../../resources/UIBlocks/GroupProductCard")
 );
-const ProductCard2 = lazy(
-  () => import("../../../../resources/UIBlocks/ProductCard2")
-);
+// const ProductCard2 = lazy(
+//   () => import("../../../../resources/UIBlocks/ProductCard2")
+// );
 const AdverthismentBanner = lazy(
   () => import("../../../../resources/UIBlocks/Promotion/AdverthismentBanner")
 );
@@ -81,10 +81,10 @@ function Home() {
         title="Featured Brands"
         api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
       />
-      <ProductCard2
+      {/* <ProductCard2
         title="Popular Items"
         api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
-      />
+      /> */}
     </Suspense>
   );
 }

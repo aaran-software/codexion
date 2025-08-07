@@ -25,11 +25,13 @@ const FrappeLoginForm = lazy(
 );
 
 import LoadingScreen from "../../../resources/components/loading/LoadingScreen";
+import Test from "./pages/Test";
 function AppRoutes() {
   const location = useLocation();
   const hideLayout =
     location.pathname === "/login" ||
     location.pathname === "/signup" ||
+    location.pathname === "/test" ||
     location.pathname.startsWith("/dashboard");
 
   const routeTitles: { pattern: RegExp; title: string }[] = [
@@ -66,6 +68,7 @@ function AppRoutes() {
           <Route path="/category/:category" element={<CategoryPage />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/productform" element={<ProductForm />} />
+          <Route path="/test" element={<Test />} />
           <Route
             path="/dashboard/:component?"
             element={
