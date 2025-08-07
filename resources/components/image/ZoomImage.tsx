@@ -9,28 +9,19 @@ const ZoomImage: React.FC<ZoomImageProps> = ({ src, alt, className = "" }) => {
   const [zoomStyles, setZoomStyles] = useState({
     visible: false,
     backgroundPosition: "0% 0%",
-    top: 0,
-    left: 0,
   });
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    const { top, left, width, height } =
-      containerRef.current?.getBoundingClientRect() ?? {
-        top: 0,
-        left: 0,
-        width: 0,
-        height: 0,
-      };
+    const container = containerRef.current;
+    if (!container) return;
 
+    const { left, top, width, height } = container.getBoundingClientRect();
     const x = ((e.clientX - left) / width) * 100;
     const y = ((e.clientY - top) / height) * 100;
 
-    // Show zoom image where cursor is centered
     setZoomStyles({
       visible: true,
       backgroundPosition: `${x}% ${y}%`,
-      top: e.clientY - 150, // Adjust offset to center
-      left: e.clientX + 20,
     });
   };
 
@@ -39,9 +30,9 @@ const ZoomImage: React.FC<ZoomImageProps> = ({ src, alt, className = "" }) => {
   };
 
   return (
-    <>
+    <div className="relative flex" ref={containerRef}>
+      {/* Original image */}
       <div
-        ref={containerRef}
         className="relative w-full h-full"
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
@@ -49,25 +40,23 @@ const ZoomImage: React.FC<ZoomImageProps> = ({ src, alt, className = "" }) => {
         <img
           src={src}
           alt={alt}
-          className={`w-full h-full object-contain rounded transition duration-300 ease-in-out ${className}`}
+          className={`w-full h-full object-contain rounded transition duration-300 ease-in-out lg:cursor-crosshair ${className}`}
           loading="lazy"
         />
       </div>
 
-      {/* Zoom Preview */}
+      {/* Zoomed Preview (to the right side) */}
       {zoomStyles.visible && (
         <div
-          className="fixed w-[500px] h-[500px] border-2 border-gray-300 shadow-lg rounded-lg bg-no-repeat bg-contain z-50 pointer-events-none"
+          className="absolute left-full top-0 ml-4 w-[500px] h-[500px] border border-gray-300 shadow-lg rounded-lg bg-no-repeat bg-contain pointer-events-none z-50 hidden md:block "
           style={{
-            top: zoomStyles.top,
-            left: zoomStyles.left,
             backgroundImage: `url(${src})`,
             backgroundPosition: zoomStyles.backgroundPosition,
             backgroundSize: "150%",
           }}
         />
       )}
-    </>
+    </div>
   );
 };
 
