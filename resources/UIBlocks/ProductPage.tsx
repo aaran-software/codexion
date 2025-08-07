@@ -12,7 +12,7 @@ import VerticalImageList from "./Slider/VerticalImageList";
 import Button from "../../resources/components/button/Button";
 import apiClient from "../../resources/global/api/apiClients";
 import { useAppContext } from "../../apps/global/AppContaxt";
-
+import ZoomImage from '../components/image/ZoomImage'
 // Define types
 interface Field {
   id: string;
@@ -199,12 +199,13 @@ function ProductPage() {
             {/* main image */}
             <div className="block m-auto flex-1">
               <div className="w-full h-full min-w-[310px] min-h-[310px] max-w-[400px] max-h-[400px] mx-auto">
-                <img
-                  src={selectedImage}
-                  alt={product.name}
-                  loading="lazy"
-                  className="w-full h-full object-contain rounded transition duration-300 ease-in-out"
-                />
+              <ZoomImage
+  src={selectedImage}
+  alt={product.name}
+  loading="lazy"
+  className="w-full h-full object-contain rounded transition duration-300 ease-in-out"
+/>
+
               </div>
             </div>
 

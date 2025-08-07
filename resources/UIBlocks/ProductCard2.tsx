@@ -21,7 +21,7 @@ interface ProductCardProps {
 }
 
 const ProductCard2: React.FC<ProductCardProps> = ({ title, api, ribbon }) => {
-    const {API_URL} =useAppContext();
+  const { API_URL } = useAppContext();
 
   const navigate = useNavigate();
   const [products, setProducts] = useState<ProductItem[]>([]);
@@ -198,9 +198,10 @@ const ProductCard2: React.FC<ProductCardProps> = ({ title, api, ribbon }) => {
                     </div>
                   </div>
 
-                  <p className="text-center text-sm mt-2 truncate">
+                  <p className="text-center text-sm mt-2 max-w-[250px] truncate">
                     {product.name}
                   </p>
+
                   <p className="text-center font-bold mt-1 text-base text-update">
                     ₹{product.price}
                   </p>

@@ -187,7 +187,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ title, api, ribbon }) => {
 
                   <div className="relative">
                     {/* <ImageSEO
-                      src={`https://dev.aaranerp.com/${product.image}`}
+                      src={`${API_URL}/${product.image}`}
                       alt={product.name}
                       className="w-[200px] h-[200px] object-contain rounded-md mx-auto"
                       title="Premium Red Leather Wallet"
@@ -214,7 +214,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ title, api, ribbon }) => {
                     </div>
                   </div>
 
-                  <p className="text-center text-sm mt-2 truncate">
+                  <p className="text-center text-sm mt-2 max-w-[250px] truncate">
                     {product.name}
                   </p>
                   <p className="text-center font-bold mt-1 text-base text-update">
