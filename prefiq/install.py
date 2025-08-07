@@ -118,10 +118,28 @@ def verify_installation():
         print(f"💡 Try running manually:\n   {cli_path} --help")
         sys.exit(1)
 
+def rehash_pyenv_shim():
+    """If using pyenv, rehash to generate shim for prefiq."""
+    pyenv_root = os.getenv("PYENV_ROOT", str(Path.home() / ".pyenv"))
+    pyenv_bin = Path(pyenv_root) / "bin" / "pyenv"
+    if pyenv_bin.exists():
+        print("🔁 Detected pyenv. Running rehash to regenerate shims...")
+        try:
+            run([str(pyenv_bin), "rehash"])
+            shim_path = Path(pyenv_root) / "shims" / "prefiq"
+            if shim_path.exists():
+                print(f"✅ Global pyenv shim created at: {shim_path}")
+            else:
+                print("⚠️  Rehash ran but prefiq shim not found.")
+        except Exception as e:
+            print(f"⚠️  Failed to rehash pyenv: {e}")
+
+
 def main():
     uninstall_prefiq()          # Remove any existing installations
     clean_build_artifacts()     # Remove build/ and egg-info
     install_editable()          # Install the latest version in editable mode
+    rehash_pyenv_shim()
     verify_installation()       # Confirm CLI is working correctly
 
 if __name__ == "__main__":
