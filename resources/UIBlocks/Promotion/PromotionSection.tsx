@@ -5,7 +5,7 @@ interface PromotionSectionProps{
 
 function PromotionSection({image}:PromotionSectionProps) {
   return (
-    <div className="w-full h-max">
+    <div className="">
         <img src={image} alt="" className="object-scale-down" />
     </div>
   )
