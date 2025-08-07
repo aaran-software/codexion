@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
 const SignUp = lazy(() => import("../../global/auth/Signup"));
@@ -23,8 +23,7 @@ const Header = lazy(
 const FrappeLoginForm = lazy(
   () => import("../../../resources/components/auth/frappe-login")
 );
-// import { FrappeLoginForm } from "../../../resources/components/auth/frappe-login";
-// ✅ Optional: import your custom loader
+
 import LoadingScreen from "../../../resources/components/loading/LoadingScreen";
 function AppRoutes() {
   const location = useLocation();
@@ -32,6 +31,26 @@ function AppRoutes() {
     location.pathname === "/login" ||
     location.pathname === "/signup" ||
     location.pathname.startsWith("/dashboard");
+
+  const routeTitles: { pattern: RegExp; title: string }[] = [
+    { pattern: /^\/$/, title: "Tmnext - Home" },
+    { pattern: /^\/cart$/, title: "Tmnext - Cart" },
+    { pattern: /^\/wishlist$/, title: "Tmnext - Wishlist" },
+    { pattern: /^\/login$/, title: "Tmnext - Login" },
+    { pattern: /^\/signup$/, title: "Tmnext - Signup" },
+    { pattern: /^\/productform$/, title: "Tmnext - Add Product" },
+    { pattern: /^\/productpage\/[^/]+$/, title: "Tmnext - Product Page" },
+    { pattern: /^\/category\/[^/]+$/, title: "Tmnext - Category Page" },
+    { pattern: /^\/dashboard(\/[^/]*)?$/, title: "Tmnext - Admin Dashboard" },
+  ];
+
+  useEffect(() => {
+    const match = routeTitles.find(({ pattern }) =>
+      pattern.test(location.pathname)
+    );
+    document.title = match?.title || "Tmnext";
+  }, [location.pathname]);
+  
   return (
     <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
       <div>
