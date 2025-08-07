@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import apiClient from "../../resources/global/api/apiClients";
 import { useAppContext } from "../../apps/global/AppContaxt";
 
-
 interface SlideContent {
   id: string;
   image: string;
@@ -26,8 +25,8 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
   autoPlay = true,
   delay = 6000,
 }) => {
-    const {API_URL} =useAppContext();
-  
+  const { API_URL } = useAppContext();
+
   const [activeIndex, setActiveIndex] = useState(0);
   const [remainingTime, setRemainingTime] = useState(delay / 1000);
 
@@ -36,6 +35,36 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
 
   const radius = 20;
   const circumference = 2 * Math.PI * radius;
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+
+  // Add swipe handler functions
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+
+    const distance = touchStartX.current - touchEndX.current;
+    const threshold = 50; // Minimum swipe distance
+
+    if (distance > threshold) {
+      // Swiped left
+      goToSlide((activeIndex + 1) % slides.length);
+    } else if (distance < -threshold) {
+      // Swiped right
+      goToSlide(activeIndex === 0 ? slides.length - 1 : activeIndex - 1);
+    }
+
+    // Reset
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
 
   const [slides, setSlides] = useState<SlideContent[]>([]);
   const navigate = useNavigate();
@@ -147,23 +176,17 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
   };
   return (
     <div className="relative w-full h-[400px] lg:h-[600px] bg-background overflow-hidden">
-      {/* 🔹 Silk background layer */}
-      {/* <div className="absolute inset-0 -z-10">
-        <Silk
-          speed={5}
-          scale={1}
-          color="#E8D9FB"
-          noiseIntensity={1.5}
-          rotation={0}
-        />
-      </div> */}
-
       <div className="absolute z-10">
         <BallCanvas ballCount={7} />
       </div>
 
       {/* 🔹 Slides */}
-      <div className="w-full h-full relative">
+      <div
+        className="w-full h-full relative"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         {slides.map((slide, index) => (
           <div
             key={index}
@@ -181,7 +204,6 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
                     ? "animate__animated animate__zoomIn"
                     : ""
                 }`}
-              
               />
             </div>
 

@@ -1,35 +1,69 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import {
-  Plus,Minus, Edit, Trash2, Eye, ChevronDown, ChevronUp, X, Search,
-  ArrowUpWideNarrow, ArrowDownWideNarrow, EllipsisVertical, Filter,
-  PrinterIcon, LucideFileJson2, LucideColumnsSettings,ExpandIcon,
-  ChevronRight, ChevronLeft,
-  SortAsc,UserCircle2,LucideShoppingCart,Heart,LogIn,LogOut,UserPlus2Icon,AlignCenter,AlignJustify,AlignLeft,AlignRight
-} from 'lucide-react';
-import { IoIosArrowUp } from "react-icons/io";
+  Plus,
+  Minus,
+  Edit,
+  Trash2,
+  Eye,
+  ChevronDown,
+  ChevronUp,
+  X,
+  Search,
+  ArrowUpWideNarrow,
+  ArrowDownWideNarrow,
+  EllipsisVertical,
+  Filter,
+  PrinterIcon,
+  LucideFileJson2,
+  LucideColumnsSettings,
+  ExpandIcon,
+  ChevronRight,
+  ChevronLeft,
+  SortAsc,
+  UserCircle2,
+  LucideShoppingCart,
+  Heart,
+  LogIn,
+  LogOut,
+  UserPlus2Icon,
+  AlignCenter,
+  AlignJustify,
+  AlignLeft,
+  AlignRight,
+  Pencil,
+  Eraser,
+
+} from "lucide-react";
+import { GrClear } from "react-icons/gr";
+import { IoIosArrowUp, IoIosUndo, IoIosRedo, IoIosSave   } from "react-icons/io";
 import { IoChevronDown } from "react-icons/io5";
-import React from 'react';
-import { FiLink  } from "react-icons/fi";
+import React from "react";
+import { FiLink } from "react-icons/fi";
 import { LuCaseUpper } from "react-icons/lu";
 import { RxLetterCaseLowercase } from "react-icons/rx";
 import { GrUnderline } from "react-icons/gr";
-import { FaBold ,FaListOl, FaListUl ,FaItalic ,FaVideo } from "react-icons/fa";
+import { FaBold, FaListOl, FaListUl, FaItalic, FaVideo } from "react-icons/fa";
 import { FaImage, FaTableCells } from "react-icons/fa6";
 import { MdOutlineFormatStrikethrough } from "react-icons/md";
 type ButtonProps = {
   icon: string;
   path?: string;
   className?: string;
-  onClick?: (event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => void;
-  onMouseEnter?: (event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => void;
-  onMouseLeave?: (event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => void;
+  onClick?: (
+    event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
+  ) => void;
+  onMouseEnter?: (
+    event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
+  ) => void;
+  onMouseLeave?: (
+    event: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>
+  ) => void;
   onMouseDown?: React.MouseEventHandler<HTMLButtonElement>;
   children?: React.ReactNode;
   disabled?: boolean;
   label?: string;
   fontSize?: string;
 };
-
 
 const iconMap: Record<string, React.ReactNode> = {
   plus: <Plus size={18} />,
@@ -51,33 +85,50 @@ const iconMap: Record<string, React.ReactNode> = {
   right: <ChevronRight size={18} />,
   left: <ChevronLeft size={18} />,
   up: <IoIosArrowUp size={18} />,
-  down: <IoChevronDown  size={18} />,
+  down: <IoChevronDown size={18} />,
   fullscreen: <ExpandIcon size={18} />,
-   sort: <SortAsc size={18}/>,
-   user: <UserCircle2 size={18}/>,
-   cart: <LucideShoppingCart size={18}/>,
-   link: <FiLink  size={18}/>,
-   like: <Heart  size={18}/>,
-   login: <LogIn  size={18}/>,
-   logout: <LogOut  size={18}/>,
-   register: <UserPlus2Icon  size={18}/>,
-   alignleft: <AlignLeft  size={18}/>,
-   alignright: <AlignRight  size={18}/>,
-   alignjustify: <AlignJustify  size={18}/>,
-   aligncenter: <AlignCenter  size={18}/>,
-   italic: <FaItalic  size={18}/>,
-   bold: <FaBold  size={18}/>,
-   underline: <GrUnderline  size={18}/>,
-   uppercase: <LuCaseUpper  size={18}/>,
-   lowercase: <RxLetterCaseLowercase  size={18}/>,
-   listul: <FaListUl  size={18}/>,
-   listol: <FaListOl  size={18}/>,
-   strikethrough: <MdOutlineFormatStrikethrough  size={18}/>,
-   table: <FaTableCells  size={18}/>,
-   image: <FaImage  size={18}/>,
-   video: <FaVideo  size={18}/>,
+  sort: <SortAsc size={18} />,
+  user: <UserCircle2 size={18} />,
+  cart: <LucideShoppingCart size={18} />,
+  link: <FiLink size={18} />,
+  like: <Heart size={18} />,
+  login: <LogIn size={18} />,
+  logout: <LogOut size={18} />,
+  register: <UserPlus2Icon size={18} />,
+  alignleft: <AlignLeft size={18} />,
+  alignright: <AlignRight size={18} />,
+  alignjustify: <AlignJustify size={18} />,
+  aligncenter: <AlignCenter size={18} />,
+  italic: <FaItalic size={18} />,
+  bold: <FaBold size={18} />,
+  underline: <GrUnderline size={18} />,
+  uppercase: <LuCaseUpper size={18} />,
+  lowercase: <RxLetterCaseLowercase size={18} />,
+  listul: <FaListUl size={18} />,
+  listol: <FaListOl size={18} />,
+  strikethrough: <MdOutlineFormatStrikethrough size={18} />,
+  table: <FaTableCells size={18} />,
+  image: <FaImage size={18} />,
+  video: <FaVideo size={18} />,
+  draw: <Pencil size={18} />,
+  erase: <Eraser size={18} />,
+  clear: <GrClear size={18} />,
+  undo: <IoIosUndo size={18} />,
+  redo: <IoIosRedo size={18} />,
+  save: <IoIosSave size={18} />,
 };
-function ImageButton({ icon, path, className = '', onClick, children, disabled, label, fontSize, onMouseEnter, onMouseLeave }: ButtonProps) {
+function ImageButton({
+  icon,
+  path,
+  className = "",
+  onClick,
+  children,
+  disabled,
+  label,
+  fontSize,
+  onMouseEnter,
+  onMouseLeave,
+}: ButtonProps) {
   const IconComponent = iconMap[icon] ?? null;
 
   if (!IconComponent) {
@@ -94,30 +145,28 @@ function ImageButton({ icon, path, className = '', onClick, children, disabled, 
 
   if (path) {
     return (
-  <Link
-  to={path}
-  onClick={onClick}
-  onMouseEnter={onMouseEnter}
-  onMouseLeave={onMouseLeave}
-  className={`px-4 py-2 rounded-md ${className}`}
->
-  {content}
-</Link>
-
+      <Link
+        to={path}
+        onClick={onClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        className={`px-4 py-2 rounded-md ${className}`}
+      >
+        {content}
+      </Link>
     );
   }
 
   return (
-   <button
-  onClick={onClick}
-  onMouseEnter={onMouseEnter}
-  onMouseLeave={onMouseLeave}
-  className={`rounded-md cursor-pointer ${className}`}
-  disabled={disabled}
->
-  {content}
-</button>
-
+    <button
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      className={`rounded-md cursor-pointer ${className}`}
+      disabled={disabled}
+    >
+      {content}
+    </button>
   );
 }
 
