@@ -11,13 +11,15 @@ interface AuthContextType {
   login: (usr: string, pwd: string) => Promise<void>;
   logout: () => Promise<void>;
   loading: boolean;
+   setUser: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   login: async () => {},
   logout: async () => {},
-  loading: true,
+  loading: false,
+   setUser: () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -26,27 +28,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { API_URL } = useAppContext();
 
   useEffect(() => {
-    if (!API_URL) return; // wait for AppContext to be ready
+  if (!API_URL) return;
 
-    const checkUser = async () => {
-      try {
-        const username = await getLoggedInUser();
-        setUser(username);
-      } catch (error) {
-        console.warn("No user logged in or session expired");
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const checkUser = async () => {
+    try {
+      const username = await getLoggedInUser();
+      setUser(username);
+    } catch (error) {
+      console.warn("No user logged in or session expired");
+      setUser(null); // ensure user is cleared
+    } finally {
+      setLoading(false); // ✅ This is the correct value
+    }
+  };
 
-    checkUser();
-  }, [user]);
+  checkUser();
+}, [user]);
 
   const login = async (usr: string, pwd: string) => {
     await loginFrappe(usr, pwd);
     const currentUser = await getLoggedInUser();
     setUser(currentUser);
+    console.log("user in login",currentUser)
   };
 
   const logout = async () => {
@@ -56,7 +59,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, logout, loading, setUser }}>
       {children}
     </AuthContext.Provider>
   );

@@ -31,6 +31,7 @@ import HelpMenu from "./help-menu";
 import { useRef, useState } from "react";
 import { useAppContext } from "../../../apps/global/AppContaxt";
 import { logoutUser } from "../../../apps/global/auth/logout";
+import { useFrappeAuth } from "../../../apps/global/auth/frappeAuthContext";
 
 export function NavUser({
   user,
@@ -43,15 +44,31 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar();
   const [showHelpMenu, setShowHelpMenu] = useState(false);
-  const { API_URL } = useAppContext();
-    const handleLogout = () => {
-    logoutUser(API_URL);
-    // logout();
-    // navigate("/");
+  const { API_URL,API_METHOD } = useAppContext();
+  const { setUser } = useFrappeAuth();
+
+  const handleLogout = async () => {
+    await logoutUser(API_URL, API_METHOD, setUser);
+    setUser(null)
   };
-  const LoggedInUser = JSON.parse(localStorage.getItem("user") || "{}");
+
+  // Parse user from localStorage with fallback
+  const LoggedInUser = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("user") || "{}");
+    } catch {
+      return {};
+    }
+  })();
+
+  const username = LoggedInUser?.username ?? user.name ?? "User";
+  const email = LoggedInUser?.email ?? user.email ?? "user@example.com";
+  const avatarChar = typeof username === "string" && username.length > 0
+    ? username.charAt(0).toUpperCase()
+    : "U";
 
   const helpTimeout = useRef<NodeJS.Timeout | null>(null);
+
   return (
     <SidebarMenu className="relative">
       <SidebarMenuItem>
@@ -62,16 +79,14 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground z-100"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
+                <AvatarImage src={user.avatar} alt={username} />
                 <AvatarFallback className="rounded-lg uppercase font-bold">
-                  {LoggedInUser.username.charAt(0)}
+                  {avatarChar}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">
-                  {LoggedInUser.username}
-                </span>
-                <span className="truncate text-xs">{LoggedInUser.email}</span>
+                <span className="truncate font-medium">{username}</span>
+                <span className="truncate text-xs">{email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -86,16 +101,13 @@ export function NavUser({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  {/* <AvatarImage src={user.avatar} alt={user.name} /> */}
                   <AvatarFallback className="rounded-lg uppercase font-bold">
-                    {LoggedInUser.username.charAt(0)}
+                    {avatarChar}
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">
-                    {LoggedInUser.username}
-                  </span>
-                  <span className="truncate text-xs">{LoggedInUser.email}</span>
+                  <span className="truncate font-medium">{username}</span>
+                  <span className="truncate text-xs">{email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
@@ -123,14 +135,12 @@ export function NavUser({
               onMouseLeave={() => {
                 helpTimeout.current = setTimeout(() => {
                   setShowHelpMenu(false);
-                }, 150); // small delay to allow hover into HelpMenu
+                }, 150);
               }}
             >
               <button
                 type="button"
-                onClick={() => {
-                  setShowHelpMenu(true);
-                }}
+                onClick={() => setShowHelpMenu(true)}
                 className="flex items-center w-full text-sm px-2 py-2 text-left hover:bg-muted rounded-sm cursor-pointer"
               >
                 <CircleHelp className="w-4 mr-2 text-foreground/70" />
@@ -155,6 +165,7 @@ export function NavUser({
                 </div>
               )}
             </DropdownMenuGroup>
+
             <DropdownMenuSeparator />
 
             <DropdownMenuItem className="text-delete" onClick={handleLogout}>

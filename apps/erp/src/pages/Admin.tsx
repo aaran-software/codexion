@@ -44,7 +44,7 @@ import Despatches from "./Common/Despatches";
 import GstPercent from "./Common/Gst-Percents";
 import ContactType from "./Common/Contact-Types";
 import PaymentMode from "./Common/Payment.Mode";
-import { useAuth } from "../../../global/auth/AuthContext";
+import { useFrappeAuth } from "../../../global/auth/frappeAuthContext";
 import Dashboard from "../../../../resources/components/dashboard/Dashboard";
 import AppHeader from "../../../../resources/components/header/AppHeader";
 import { AppSidebar } from "../../../../resources/components/sidebar/app-sidebar";
@@ -53,13 +53,13 @@ import Task from "./AdminComponents/Task";
 import AppFooter from "../../../../resources/components/footer/AppFooter";
 
 export default function Admin() {
-  const { token } = useAuth();
+  const { user } = useFrappeAuth();
   const navigate = useNavigate();
   useEffect(() => {
-    if (!token) {
+    if (!user) {
       navigate("/");
     }
-  }, [token]);
+  }, [user]);
 
   const { component } = useParams();
   const { currentComponent, setCurrentComponent } = useAppContext();
