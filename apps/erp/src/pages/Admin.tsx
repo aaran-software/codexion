@@ -31,19 +31,19 @@ import Styles from "./Master/Styles";
 import City from "./Common/City";
 import States from "./Common/State";
 import PinCode from "./Common/Pin-Codes";
-import Countries from "./Common/Countries";
+import Country from "./Common/Countries";
 import HSNCode from "./Common/HSN-Codes";
 import Units from "./Common/Units";
-import Categories from "./Common/Categories";
+import Category from "./Common/Categories";
 import Colours from "./Common/Colours";
 import Size from "./Common/Sizes";
 import Departments from "./Common/Departments";
 import Bank from "./Common/Bank";
-import ReceiptType from "./Common/Receipt-Type";
+import ReceiptType from "./Common/ReceiptType";
 import Despatches from "./Common/Despatches";
 import GstPercent from "./Common/Gst-Percents";
 import ContactType from "./Common/Contact-Types";
-import PaymentMode from "./Common/Payment.Mode";
+import PaymentMode from "./Common/PaymentMode";
 import { useFrappeAuth } from "../../../global/auth/frappeAuthContext";
 import Dashboard from "../../../../resources/components/dashboard/Dashboard";
 import AppHeader from "../../../../resources/components/header/AppHeader";
@@ -51,6 +51,7 @@ import { AppSidebar } from "../../../../resources/components/sidebar/app-sidebar
 import ScrollToTopButton from "../../../../resources/components/common/scrolltotopbutton";
 import Task from "./AdminComponents/Task";
 import AppFooter from "../../../../resources/components/footer/AppFooter";
+import Company from "./Master/Company";
 
 export default function Admin() {
   const { user } = useFrappeAuth();
@@ -172,7 +173,7 @@ export default function Admin() {
     {
       id: "company",
       className: "w-[100%] min-h-full",
-      component: <Ledger />,
+      component: <Company />,
     },
     {
       id: "orders",
@@ -205,7 +206,7 @@ export default function Admin() {
     {
       id: "country",
       className: "w-[100%] min-h-full",
-      component: <Countries />,
+      component: <Country />,
     },
     {
       id: "hsncode",
@@ -220,7 +221,7 @@ export default function Admin() {
     {
       id: "category",
       className: "w-[100%] min-h-full",
-      component: <Categories />,
+      component: <Category />,
     },
     {
       id: "colours",

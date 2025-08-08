@@ -1,56 +1,23 @@
-import FormLayout from "../../../../../resources/components/common/FormLayout";
-import type { ApiList, Field } from "../../../../../resources/components/common/commonform";
-import { useState } from "react";
+import TableForm from "../../../../../resources/layouts/Form/TableForm";
+import { ApiList } from "../../../../../resources/components/common/commonform";
 import master from "../../../public/master.json";
-function Company() {
-  const fieldSection = master.master.company;
-  const head = Object.values(fieldSection)
-    .flatMap((section: any) => section.fields)
-    .filter((field: any) => field.inTable);
 
-  const groupedFields = Object.entries(fieldSection).map(
-    ([sectionKey, section]) => ({
-      title: section.title || sectionKey,
-      sectionKey,
-      fields: section.fields
-        .filter(
-          (field: any) =>
-            field.key !== "action" &&
-            field.key !== "id" &&
-            field.isForm === true
-        )
-        .map((field: any) => ({
-          id: field.key,
-          label: field.label,
-          type: (field.type || "textinput") as Field["type"],
-          className: "w-full",
-          errMsg: `Enter ${field.label}`,
-          ...(field.type?.includes("dropdown") && field.options
-            ? { options: field.options }
-            : {}),
-          readApi: field.readApi,
-          updateApi: field.updateApi,
-          apiKey: field.apiKey,
-          createKey: field.createKey,
-        })),
-    })
-  );
-  const printableFields = Object.values(fieldSection).flatMap((section: any) =>
-    section.fields.filter((field: any) => field.isPrint === true)
-  );
-  const [formApi] = useState<ApiList>({
-    create: "/api/resource/Customer",
-    read: "/api/resource/Customer",
-    update: "/api/resource/Customer",
-    delete: "/api/resource/Customer",
-  });
+const formApi: ApiList = {
+  create: "/api/resource/Company",
+  read: "/api/resource/Company",
+  update: "/api/resource/Company",
+  delete: "/api/resource/Company",
+};
+
+function Company() {
   return (
     <div>
-      <FormLayout
-        groupedFields={groupedFields}
-        head={head}
+      <TableForm
+        formName="Company"
         formApi={formApi}
-        printableFields={printableFields}
+        jsonPath={master}
+        fieldPath="master.company"
+        multipleEntry={false}
       />
     </div>
   );

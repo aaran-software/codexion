@@ -145,7 +145,7 @@
             "url": "pincode"
           },
           {
-            "title": "Countries",
+            "title": "Country",
             "currentComponent": "country",
             "url": "country"
           },
@@ -160,7 +160,7 @@
             "url": "units"
           },
           {
-            "title": "Categories",
+            "title": "Category",
             "currentComponent": "category",
             "url": "category"
           },

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, forwardRef } from "react";
 import { Check, X, ChevronDown, PlusCircle } from "lucide-react";
-import Error from '../error/Error'
+import Error from "../error/Error";
 import CreateMenu from "../common/CreateMenu";
 import apiClient from "../../../resources/global/api/apiClients";
 
@@ -87,9 +87,8 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       };
 
       fetchItems();
-    }, [readApi, apiKey]);
+    }, [readApi, apiKey,items]);
 
-    console.log(localItems)
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
         if (
@@ -289,15 +288,16 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
           <label
             htmlFor={id}
             className={`absolute left-3 z-10 px-1 text-md transition-all transform origin-[0] text-foreground/20 duration-150 pointer-events-none
-    ${err ? "bg-input-warning" : "bg-background"}
-    peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4
-    ${
-      (!multiple && (searchTerm || dropdownVisible)) ||
-      (multiple && (selected.length > 0 || dropdownVisible || searchTerm))
-        ? "top-1.5 scale-75 -translate-y-4"
-        : "top-2 scale-100 translate-y-0"
-    }
-  `}
+              ${err ? "bg-input-warning" : "bg-background"}
+              peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4
+              ${
+                (!multiple && (searchTerm || dropdownVisible)) ||
+                (multiple &&
+                  (selected.length > 0 || dropdownVisible || searchTerm))
+                  ? "top-1.5 scale-75 -translate-y-4"
+                  : "top-2 scale-100 translate-y-0"
+              }
+            `}
           >
             {placeholder}
           </label>
@@ -428,6 +428,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
 
         {isCreating && (
           <CreateMenu
+            label={placeholder}
             defaultValue={searchTerm}
             onClose={() => setIsCreating(false)}
             onAdd={async (newItem: string) => {
