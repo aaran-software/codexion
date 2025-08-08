@@ -24,39 +24,52 @@ const AuthContext = createContext<AuthContextType>({
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true); // loading is true initially
+  const [loading, setLoading] = useState(true);
   const { API_URL } = useAppContext();
-
-  useEffect(() => {
-  if (!API_URL) return;
 
   const checkUser = async () => {
     try {
       const username = await getLoggedInUser();
       setUser(username);
-    } catch (error) {
+    } catch {
       console.warn("No user logged in or session expired");
-      setUser(null); // ensure user is cleared
+      setUser(null);
     } finally {
-      setLoading(false); // ✅ This is the correct value
+      setLoading(false);
     }
   };
 
-  checkUser();
-}, [user]);
+  useEffect(() => {
+    if (!API_URL) return;
+    checkUser();
+  }, [API_URL]); // ✅ Only runs when API URL changes, not on user change
 
   const login = async (usr: string, pwd: string) => {
+  setLoading(true);
+  try {
     await loginFrappe(usr, pwd);
-    const currentUser = await getLoggedInUser();
-    setUser(currentUser);
-    console.log("user in login",currentUser)
-  };
+    await checkUser();
+  } catch (e) {
+    setUser(null);
+    throw e; // Pass error upwards
+  } finally {
+    setLoading(false);
+  }
+};
 
-  const logout = async () => {
+const logout = async () => {
+  setLoading(true);
+  try {
     await logoutFrappe();
     setUser(null);
-    console.log("logout completed, user state cleared");
-  };
+    await checkUser();
+  } catch (e) {
+    // Optionally show error
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <AuthContext.Provider value={{ user, login, logout, loading, setUser }}>
@@ -64,6 +77,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     </AuthContext.Provider>
   );
 }
+
 
 export function useFrappeAuth() {
   return useContext(AuthContext);

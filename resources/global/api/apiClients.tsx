@@ -38,3 +38,43 @@ apiClient.interceptors.request.use(
 );
 
 export default apiClient;
+
+// import axios from "axios";
+
+// const appType = (import.meta.env.VITE_APP_TYPE || "cxsun").toUpperCase();
+// const env = import.meta.env;
+// const apiMethod = env[`VITE_${appType}_API_METHOD`] || "FAST_API";
+// const baseURL = env[`VITE_${appType}_API_URL`] || env.VITE_API_URL;
+
+// // API client without static token in header
+// const apiClient = axios.create({
+//   baseURL,
+//   withCredentials: true,
+// });
+
+// // Function to set token dynamically
+// export function setFrappeToken(token: string | null) {
+//   if (token) {
+//     apiClient.defaults.headers.common["Authorization"] = `token ${token}`;
+//     apiClient.defaults.headers.common["Content-Type"] = "application/json";
+//   } else {
+//     delete apiClient.defaults.headers.common["Authorization"];
+//   }
+// }
+
+// // Interceptor for FAST_API tokens stored in localStorage
+// apiClient.interceptors.request.use(
+//   (config) => {
+//     if (apiMethod === "FAST_API") {
+//       const token = localStorage.getItem("token");
+//       if (token) {
+//         config.headers["Authorization"] = `Bearer ${token}`;
+//       }
+//     }
+//     // Do not set frappeToken here - manage explicitly
+//     return config;
+//   },
+//   (error) => Promise.reject(error)
+// );
+
+// export default apiClient;

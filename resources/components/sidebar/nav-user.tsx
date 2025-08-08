@@ -6,9 +6,7 @@ import {
   LogOut,
   ChevronRightIcon,
 } from "lucide-react";
-
 import { Avatar, AvatarFallback, AvatarImage } from "../avatar";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,14 +16,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../dropdown-menu";
-
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
 } from "./sidebar";
-
 import { useNavigate } from "react-router-dom";
 import HelpMenu from "./help-menu";
 import { useRef, useState } from "react";
@@ -44,30 +40,41 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar();
   const [showHelpMenu, setShowHelpMenu] = useState(false);
-  const { API_URL,API_METHOD } = useAppContext();
+  const { API_URL, API_METHOD } = useAppContext();
   const { setUser } = useFrappeAuth();
+  const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    await logoutUser(API_URL, API_METHOD, setUser);
-    setUser(null)
-  };
+  // // Parse user from localStorage with fallback
+  // const LoggedInUser = (() => {
+  //   try {
+  //     return JSON.parse(localStorage.getItem("user") || "{}");
+  //   } catch {
+  //     return {};
+  //   }
+  // })();
 
-  // Parse user from localStorage with fallback
-  const LoggedInUser = (() => {
-    try {
-      return JSON.parse(localStorage.getItem("user") || "{}");
-    } catch {
-      return {};
-    }
-  })();
-
-  const username = LoggedInUser?.username ?? user.name ?? "User";
-  const email = LoggedInUser?.email ?? user.email ?? "user@example.com";
-  const avatarChar = typeof username === "string" && username.length > 0
-    ? username.charAt(0).toUpperCase()
-    : "U";
+  const username = localStorage.getItem("name") || "User";
+  const email = localStorage.getItem("email") || "user@example.com";
+  const avatarChar =
+    typeof username === "string" && username.length > 0
+      ? username.charAt(0).toUpperCase()
+      : "U";
 
   const helpTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  // F I X: LOGOUT should navigate after logout
+  const handleLogout = async () => {
+    try {
+      await logoutUser(API_URL, API_METHOD, setUser);
+      // setUser(null); // Not needed, already called inside logoutUser
+      navigate("/login"); // or "/"
+    } catch (err) {
+      // Show feedback to user if desired
+      alert(
+        (err as Error)?.message || "Logout failed, please refresh and try again"
+      );
+    }
+  };
 
   return (
     <SidebarMenu className="relative">
@@ -151,7 +158,8 @@ export function NavUser({
               {showHelpMenu && (
                 <div
                   onMouseEnter={() => {
-                    if (helpTimeout.current) clearTimeout(helpTimeout.current);
+                    if (helpTimeout.current)
+                      clearTimeout(helpTimeout.current);
                     setShowHelpMenu(true);
                   }}
                   onMouseLeave={() => {

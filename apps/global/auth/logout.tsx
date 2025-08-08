@@ -1,12 +1,14 @@
-import { logoutFrappe } from "../../../resources/global/api/frappeApi";
-// import { useFrappeAuth } from "../auth/frappeAuthContext";
 // logoutUser.ts
+import { useNavigate } from "react-router-dom";
+import { logoutFrappe } from "../../../resources/global/api/frappeApi";
+
 export async function logoutUser(API_URL: string, API_METHOD: string, setUser: (user: any) => void) {
   if (API_METHOD === "FAST_API") {
-    console.log("fastapi logout")
-
     const token = localStorage.getItem("token");
-    if (!token) return;
+    if (!token) {
+      setUser(null);
+      return;
+    }
 
     try {
       const response = await fetch(`${API_URL}/api/logout`, {
@@ -18,23 +20,21 @@ export async function logoutUser(API_URL: string, API_METHOD: string, setUser: (
       });
 
       if (response.ok) {
-        await response.json();
-
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("editor-draft");
-        window.location.href = "/";
+        setUser(null);
+        // If you use react-router's navigate, call it here:
+        // navigate("/");
       } else {
-        console.error("Logout failed");
+        throw new Error("Logout failed");
       }
     } catch (err) {
-      console.error("Logout error:", err);
+      setUser(null);
+      throw err;
     }
   } else if (API_METHOD === "FRAPPE") {
-    console.log("frappe logout from logout")
     await logoutFrappe();
     setUser(null);
-    console.log("logout completed, user state cleared");
   }
 }
-
