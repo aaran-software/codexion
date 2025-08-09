@@ -6,6 +6,7 @@ import type {
   FieldGroup,
 } from "../../../resources/components/common/commonform";
 import { Column } from "../../../resources/components/common/commontable"; // Adjust path if needed
+import { getNestedValue } from "../../../resources/global/library/utils";
 
 interface TableFormProps {
   jsonPath: string | object;
@@ -15,14 +16,7 @@ interface TableFormProps {
   multipleEntry?: boolean;
 }
 
-function getNestedValue(obj: any, path: string): any {
-  return path
-    .split(".")
-    .reduce(
-      (acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined),
-      obj
-    );
-}
+
 
 function TableForm({
   formName,

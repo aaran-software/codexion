@@ -198,11 +198,11 @@ const ProductCard2: React.FC<ProductCardProps> = ({ title, api, ribbon }) => {
                     </div>
                   </div>
 
-                  <p className="text-center text-sm mt-2 max-w-[250px] truncate">
+                  <p className="text-center font-medium text-sm mt-2 max-w-[250px] truncate">
                     {product.name}
                   </p>
 
-                  <p className="text-center font-bold mt-1 text-base text-update">
+                  <p className="text-center font-bold mt-1 text-base">
                     ₹{product.price}
                   </p>
                 </div>

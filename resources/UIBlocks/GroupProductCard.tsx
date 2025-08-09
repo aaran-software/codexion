@@ -151,10 +151,10 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
 
                 {/* Title & Price */}
                 <div className="p-3">
-                  <p className="text-center text-lg mt-2 truncate">
+                  <p className="text-center font-medium text-lg text-foreground/60 mt-2 truncate">
                     {product.name}
                   </p>
-                  <p className="text-center font-bold mt-1 text-base">
+                  <p className="text-center font-bold mt-1 text-xl">
                     ₹{product.price}
                   </p>
                 </div>

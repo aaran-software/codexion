@@ -6,7 +6,7 @@ import RangeSlider from "../components/input/range-slider";
 import DropdownRead from "../components/input/dropdown-read";
 import Checkbox from "../components/input/checkbox";
 import { useAppContext } from "../../apps/global/AppContaxt";
-
+import MobileFilter from "../UIBlocks/filter/MobileFilter";
 type ProductType = {
   id: number;
   name: string;
@@ -17,9 +17,15 @@ type ProductType = {
   price: number;
   prod_id: number;
 };
+export type FiltersType = {
+  category: string;
+  brand: string;
+  rating: string;
+  discount: string;
+};
 
 const CategoryPage: React.FC = () => {
-    const {API_URL} =useAppContext();
+  const { API_URL } = useAppContext();
 
   const [products, setProducts] = useState<ProductType[]>([]);
   const [cartStates, setCartStates] = useState<Record<number, string>>({});
@@ -30,12 +36,19 @@ const CategoryPage: React.FC = () => {
   const navigate = useNavigate();
   const [categories, setCategories] = useState<string[]>([]);
   const [brands, setBrands] = useState<string[]>([]);
-  const [selectedFilters, setSelectedFilters] = useState({
+  const [selectedFilters, setSelectedFilters] = useState<FiltersType>({
     category: category || "",
     brand: "",
     rating: "",
     discount: "",
   });
+
+  const [selectedPrice, setSelectedPrice] = useState<number | null>(0);
+  const [maxPrice, setMaxPrice] = useState<number>(0);
+  // New UI States for mobile modals
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isSortOpen, setIsSortOpen] = useState(false);
+  const [sortOption, setSortOption] = useState("");
 
   const dropdowns = [
     {
@@ -45,20 +58,20 @@ const CategoryPage: React.FC = () => {
       options: categories,
     },
     { id: "brand", label: "Brand", options: brands },
-    {
-      id: "rating",
-      label: "rating",
-      options: ["4★ & Above", "3★ & Above", "2★ & Above", "1★ & Above"],
-    },
-    {
-      id: "discount",
-      label: "Discount",
-      options: ["60% Above", "40% & Above", "25% & Above", "10% & Above"],
-    },
+    // {
+    //   id: "rating",
+    //   label: "rating",
+    //   options: ["4★ & Above", "3★ & Above", "2★ & Above", "1★ & Above"],
+    // },
+    // {
+    //   id: "discount",
+    //   label: "Discount",
+    //   options: ["60% Above", "40% & Above", "25% & Above", "10% & Above"],
+    // },
   ];
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const applyFilters = async () => {
       try {
         const res = await apiClient.get("/api/resource/Product");
         const items = res.data.data || [];
@@ -72,57 +85,88 @@ const CategoryPage: React.FC = () => {
         });
 
         const detailResponses = await Promise.all(detailPromises);
-        const validItems = detailResponses.filter(Boolean);
+        let formatted: ProductType[] = detailResponses
+          .filter(Boolean)
+          .map((item: any) => ({
+            id: item.name,
+            prod_id: item.product_code,
+            name: item.display_name,
+            description: item.short_describe,
+            image: `${API_URL}/${item.image}`,
+            count: item.stock_qty,
+            price: item.price || item.standard_rate || 0,
+            category: item.category || "",
+          }));
 
-        let formatted: ProductType[] = validItems.map((item: any) => ({
-          id: item.name,
-          prod_id: item.product_code,
-          name: item.display_name,
-          description: item.short_describe,
-          image: `${API_URL}/${item.image}`,
-          count: item.stock_qty,
-          price: item.price || item.standard_rate || 0,
-          category: item.category || "",
-        }));
-
-        const { category, brand, rating, discount } = selectedFilters;
-
-        if (category) {
+        // Filter by category and brand before price max calculation
+        if (selectedFilters.category) {
           formatted = formatted.filter((item) =>
-            item.category.toLowerCase().includes(category.toLowerCase())
+            item.category
+              .toLowerCase()
+              .includes(selectedFilters.category.toLowerCase())
           );
         }
 
-        if (brand) {
+        if (selectedFilters.brand) {
           formatted = formatted.filter((item) =>
-            item.name.toLowerCase().includes(brand.toLowerCase())
+            item.name
+              .toLowerCase()
+              .includes(selectedFilters.brand.toLowerCase())
           );
         }
 
-        if (rating) {
-          // Dummy: Assume all pass
-          formatted = formatted.filter(() => true);
+        // Calculate the max price of filtered products
+        if (formatted.length > 0) {
+          const highestPrice = Math.max(...formatted.map((p) => p.price));
+          setMaxPrice(highestPrice);
+
+          // Reset selectedPrice if it exceeds the new max price or not set
+          if (!selectedPrice || selectedPrice > highestPrice) {
+            setSelectedPrice(highestPrice);
+          }
+        } else {
+          // If no products match, reset maxPrice to a default or zero
+          setMaxPrice(0);
+          setSelectedPrice(0);
         }
 
-        if (discount) {
-          // Dummy: Assume all pass
-          formatted = formatted.filter(() => true);
+        // sort products based on selected sort option
+        if (sortOption) {
+          formatted = [...formatted].sort((a, b) => {
+            if (sortOption === "priceLowHigh") return a.price - b.price;
+            if (sortOption === "priceHighLow") return b.price - a.price;
+            if (sortOption === "nameAZ") return a.name.localeCompare(b.name);
+            if (sortOption === "nameZA") return b.name.localeCompare(a.name);
+            return 0;
+          });
+        }
+        // Now filter by selectedPrice if it has a value
+        if (selectedPrice !== null) {
+          formatted = formatted.filter((item) => item.price <= selectedPrice);
         }
 
         setProducts(formatted);
-
-        const cartInit: Record<number, string> = {};
-        formatted.forEach((item) => {
-          cartInit[item.id] = "Add to Cart";
-        });
-        setCartStates(cartInit);
       } catch (err) {
         setError("Failed to fetch products");
       }
     };
 
-    fetchProducts();
-  }, [selectedFilters]);
+    applyFilters();
+    // Apply sorting after filters
+  }, [
+    selectedFilters.category,
+    selectedFilters.brand,
+    selectedPrice,
+    sortOption,
+    API_URL,
+  ]);
+
+  useEffect(() => {
+    if (products.length > 0 && selectedPrice === null) {
+      const maxPriceInProducts = Math.max(...products.map((p) => p.price));
+      setSelectedPrice(maxPriceInProducts);
+    }
+  }, [products, selectedPrice]);
 
   const navigateProductPage = (id: number) => {
     navigate(`/productpage/${id}`);
@@ -152,9 +196,27 @@ const CategoryPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="mt-5 px-[5%] py-5">
-      <div className="flex flex-col md:flex-row gap-6">
+    <div className="md:mt-5 px-[5%] py-5">
+      <div className="flex flex-col md:flex-row gap-3">
         {/* Filters */}
+        {/* Mobile Top Bar with Sort & Filter buttons */}
+        <div className="md:hidden flex justify-between items-center mb-4 sticky top-0 bg-white z-20">
+          <ImageButton
+            className="flex-1 border flex justify-center rounded border-ring/30 py-2 mx-1 shadow-sm"
+            onClick={() => setIsSortOpen(true)}
+            icon={"desc"}
+          >
+            Sort
+          </ImageButton>
+          <ImageButton
+            className="flex-1 border flex justify-center rounded border-ring/30 py-2 mx-1 shadow-sm"
+            onClick={() => setIsFilterOpen(true)}
+            icon={"filter"}
+          >
+            Filter
+          </ImageButton>
+        </div>
+
         <div className="hidden md:flex flex-row md:flex-col w-full border border-ring/30 rounded-md md:w-72 overflow-x-auto md:overflow-visible gap-4 scrollbar-hide">
           <div className="flex flex-row md:flex-col flex-nowrap md:sticky md:top-24 bg-background ring ring-gray-300/30 rounded-md shadow-sm p-4 md:p-6 gap-4 min-w-max md:min-w-0">
             <h6 className="font-semibold text-lg hidden md:block">Filters</h6>
@@ -205,10 +267,11 @@ const CategoryPage: React.FC = () => {
                 Price
               </label>
               <RangeSlider
-                label=""
-                min={7999}
-                max={50000}
-                defaultValue={9500}
+                label="Price"
+                min={0}
+                max={maxPrice}
+                defaultValue={selectedPrice ?? maxPrice}
+                onChange={(value: number) => setSelectedPrice(value)}
               />
             </div>
 
@@ -242,17 +305,79 @@ const CategoryPage: React.FC = () => {
           </div>
         </div>
 
+        {/* Mobile Filter Full Screen */}
+        {isFilterOpen && (
+          <div className="fixed inset-0 bg-white z-50 overflow-y-auto">
+            <div className="flex justify-between items-center p-4 border-b">
+              <h2 className="text-lg font-semibold">Filters</h2>
+              <button onClick={() => setIsFilterOpen(false)}>✕</button>
+            </div>
+            <MobileFilter
+              dropdowns={dropdowns}
+              selectedFilters={selectedFilters}
+              setSelectedFilters={setSelectedFilters}
+              selectedPrice={selectedPrice}
+              setSelectedPrice={setSelectedPrice}
+              maxPrice={maxPrice}
+              invoice={invoice}
+              setInvoice={setInvoice}
+              availability={availability}
+              setAvailability={setAvailability}
+              onClose={() => setIsFilterOpen(false)}
+            />
+            <div className="p-4">
+              <button
+                onClick={() => setIsFilterOpen(false)}
+                className="w-full bg-blue-600 text-white py-2 rounded"
+              >
+                Apply Filters
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Mobile Sort Full Screen */}
+        {isSortOpen && (
+          <div className="fixed inset-0 bg-white z-50">
+            <div className="flex justify-between items-center p-4 border-b">
+              <h2 className="text-lg font-semibold">Sort By</h2>
+              <button onClick={() => setIsSortOpen(false)}>✕</button>
+            </div>
+            <div className="p-4 space-y-3">
+              {[
+                { value: "priceLowHigh", label: "Price: Low to High" },
+                { value: "priceHighLow", label: "Price: High to Low" },
+                { value: "nameAZ", label: "Name: A to Z" },
+                { value: "nameZA", label: "Name: Z to A" },
+              ].map((opt) => (
+                <button
+                  key={opt.value}
+                  className={`w-full text-left px-3 py-2 border border-ring/30 rounded ${
+                    sortOption === opt.value ? "bg-blue-100" : ""
+                  }`}
+                  onClick={() => {
+                    setSortOption(opt.value);
+                    setIsSortOpen(false);
+                  }}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Product List */}
-        <div className="w-full md:w-3/4 space-y-6">
+        <div className="w-full md:w-3/4 space-y-3">
           {products.map((product) => (
-            <div key={product.id} className="border border-ring/30">
-              <div className="grid grid-cols-[25%_45%_25%] mx-5 gap-4 p-4">
+            <div key={product.id} className="border border-ring/30 rounded">
+              <div className="grid grid-cols-[45%_55%] md:grid-cols-[25%_45%_25%] mx-5 gap-4 p-4">
                 <div
                   onClick={() => navigateProductPage(product.id)}
                   className="w-full h-full aspect-square overflow-hidden rounded-md cursor-pointer"
                 >
                   <img
-                    className="w-full h-full object-cover rounded-md"
+                    className="w-full h-full object-scale-down rounded-md"
                     src={product.image}
                     alt={product.name}
                   />
@@ -262,19 +387,22 @@ const CategoryPage: React.FC = () => {
                   className="space-y-2 px-2 cursor-pointer"
                   onClick={() => navigateProductPage(product.id)}
                 >
-                  <h4 className="text-lg font-semibold text-update/90">
+                  <h4 className="text-sm lg:text-lg font-semibold text-update/90 line-clamp-3">
                     {product.name}
                   </h4>
-                  <div className="text-sm text-foreground/50">
+                  <h2 className="text-xl font-bold block md:hidden">
+                    ₹{product.price}
+                  </h2>
+                  {/* <div className="text-sm text-foreground/50">
                     <span className="bg-green-600 text-white text-xs w-max px-2 py-1 rounded">
                       4 ★
                     </span>{" "}
                     <span>76876 Reviews</span>
-                  </div>
-                  <p className="text-sm text-foreground/60 line-clamp-2">
+                  </div> */}
+                  <p className="text-sm text-foreground/60 line-clamp-2 hidden md:flex">
                     {product.description}
                   </p>
-                  <div className="hidden lg:flex flex-col">
+                  {/* <div className="hidden lg:flex md:flex-row flex-col">
                     <div className="text-xs line-clamp-1 ">
                       <span className="font-semibold">Bank Offer</span> 5%
                       cashback on Flipkart Axis Bank Credit Card upto ₹4,000 per
@@ -285,11 +413,11 @@ const CategoryPage: React.FC = () => {
                       cashback on Flipkart Axis Bank Credit Card upto ₹4,000 per
                       statement quarter
                     </div>
-                  </div>
+                  </div> */}
                   <div className="flex gap-2">
-                    <p className="text-sm text-green-600">₹ {product.price}</p>
                     <p className="text-sm text-green-600">10% Offer</p>
                   </div>
+                 
                   <div className="my-2 flex flex-row gap-2 ">
                     <ImageButton
                       onClick={(e) => {
@@ -317,7 +445,7 @@ const CategoryPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="text-right space-y-2">
+                <div className="text-right space-y-2 hidden md:block">
                   <div
                     className={`w-max block ml-auto text-white text-xs px-2 py-1 z-10 ${
                       product.count > 0

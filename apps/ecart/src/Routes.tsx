@@ -1,5 +1,5 @@
-import { lazy, Suspense, useEffect } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { lazy, Suspense, useEffect, useState } from "react";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 
 const SignUp = lazy(() => import("../../global/auth/Signup"));
 const ProtectedRoute = lazy(() => import("../../global/auth/ProtectedRoute"));
@@ -23,10 +23,12 @@ const Header = lazy(
 const FrappeLoginForm = lazy(
   () => import("../../../resources/components/auth/frappe-login")
 );
-
+import settings from "../public/settings.json";
 import LoadingScreen from "../../../resources/components/loading/LoadingScreen";
 import Test from "./pages/Test";
+import { Product } from "../../../resources/components/header/Header";
 function AppRoutes() {
+  const navigate = useNavigate();
   const location = useLocation();
   const hideLayout =
     location.pathname === "/login" ||
@@ -53,10 +55,45 @@ function AppRoutes() {
     document.title = match?.title || "Tmnext";
   }, [location.pathname]);
 
+  const logo = {
+    ...settings.logo,
+    position: settings.logo.position as "left" | "center" | "right",
+    mode: settings.logo.mode as "logo" | "name" | "both",
+  };
+
+  // Example menu items
+  const menuItems = [
+    { label: "My Profile", path: "/profile", icon: "user" },
+    { label: "My Orders", path: "/orders", icon: "plus" },
+    { label: "Wishlist", path: "/wishlist", icon: "like" },
+    { label: "Logout", path: "/", icon: "logout" },
+  ];
+
+  // Example mock user
+  const user = { name: "John Doe", id: 123 };
+
+  // Logout handler
+  const logout = async () => {
+    console.log("Logging out...");
+    // ...logout logic, e.g., clear tokens
+    navigate("/login");
+  };
+
   return (
     <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
       <div>
-        {!hideLayout && <Header />}
+        {!hideLayout && (
+          <Header
+            logo={logo}
+            showLogin={true} // Toggle login section
+            user={user} // Pass null if no user logged in
+            logout={logout}
+            menuItems={menuItems}
+            showSearch={true} // Toggle search bar
+            onSearchApi={`/api/resource/Product?fields=["name","image","price"]`}
+            onNavigate={(path) => navigate(path)}
+          />
+        )}
 
         <Routes>
           {/* <App /> */}

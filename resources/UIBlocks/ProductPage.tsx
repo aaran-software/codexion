@@ -196,7 +196,7 @@ function ProductPage() {
                 onSelect={(index) => setSelectedImage(product.images![index])}
               />
             </div>
-            
+
             {/* main image */}
             <div className="block m-auto flex-1">
               <div className="w-full h-full min-w-[310px] min-h-[310px] max-w-[400px] max-h-[400px] mx-auto">
@@ -224,8 +224,8 @@ function ProductPage() {
 
         {/* Product Info */}
         <div className="space-y-4 px-2">
-          <h1 className="text-xl text-update font-semibold">{product.name}</h1>
-          <h1 className="text-SM text-foreground/80">{product.description}</h1>
+          <h1 className="text-2xl text-update font-semibold">{product.name}</h1>
+          <h1 className="text-md text-foreground/80">{product.description}</h1>
           <div className="text-sm text-foreground/50">
             <span className="bg-green-600 text-white text-xs w-max px-2 py-1 rounded">
               4 ★
@@ -371,16 +371,14 @@ function ProductPage() {
             )}
           </div>
 
-          {/* Buttons */}
-
-          <div className="mt-10">
+          {/* <div className="mt-10">
             <RatingReviews />
-          </div>
+          </div> */}
         </div>
       </div>
 
       {/* Similar Products */}
-      <div className="mt-12">
+      <div className="mt-12 mx-2">
         <ProductCard
           title="Similar Items"
           api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
