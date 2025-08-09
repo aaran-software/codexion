@@ -1,8 +1,6 @@
-
-
 import TableForm from "../../../../../resources/layouts/Form/TableForm";
 import { ApiList } from "../../../../../resources/components/common/commonform";
-import Invoice from "../../../public/Invoice.json";
+import common from "../../../public/common.json";
 
 const formApi: ApiList = {
   create: "/api/payment",
@@ -11,18 +9,18 @@ const formApi: ApiList = {
   delete: "/api/payment",
 };
 
-function Purchase() {
+function PaymentMode() {
   return (
     <div>
       <TableForm
-        formName="Purchase"
+        formName="Payment Mode"
         formApi={formApi}
-        jsonPath={Invoice}
-        fieldPath="invoice.purchase"
+        jsonPath={common}
+        fieldPath="common.paymentmode"
         multipleEntry={false}
       />
     </div>
   );
 }
 
-export default Purchase;
+export default PaymentMode;

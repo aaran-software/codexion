@@ -4,43 +4,48 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../../resources/com
 import FloatingInput from "../input/floating-input";
 import Button from "../button/Button";
 import Password_Input from "../../../resources/components/secondary_input/password_Input";
-import {useFrappeAuth} from "../../../apps/global/auth/frappeAuthContext";
-import {cn} from "../../global/library/utils";
+import { useFrappeAuth } from "../../../apps/global/auth/frappeAuthContext";
+import { cn } from "../../global/library/utils";
 
 interface LoginProps {
   className?: string;
 }
+
 export default function FrappeLoginForm({ className }: LoginProps) {
   const [usr, setUsr] = useState("");
   const [pwd, setPwd] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
   const [usrError, setUsrError] = useState("");
   const [pwdError, setPwdError] = useState("");
-  const { login } = useFrappeAuth();
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setUsrError("");
-    setPwdError("");
 
-    if (usr === "" && pwd === "") {
-      setUsrError("Username Required");
-      setPwdError("Passsword Required");
-    } else if (usr === "") {
-      setUsrError("Username Required");
-    } else if (pwd === "") {
-      setPwdError("Username Required");
-    } else {
-      try {
-        await login(usr, pwd);
-        console.log("Login success:");
-        navigate("/dashboard");
-      } catch (err: any) {
-        setError("Invalid Credential");
-      }
-    }
-  };
+  const navigate = useNavigate();
+  const { login } = useFrappeAuth();
+
+  const handleLogin = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setError("");
+  setUsrError("");
+  setPwdError("");
+
+  let hasError = false;
+  if (!usr.trim()) {
+    setUsrError("Username Required");
+    hasError = true;
+  }
+  if (!pwd.trim()) {
+    setPwdError("Password Required");
+    hasError = true;
+  }
+  if (hasError) return;
+
+  try {
+    await login(usr, pwd); // this will throw if login fails
+    navigate("/dashboard");
+  } catch (e: any) {
+    setError(e.message || "Invalid Credentials");
+  }
+};
+
 
   return (
     <div className={cn("flex flex-col gap-6", className)}>
@@ -58,7 +63,6 @@ export default function FrappeLoginForm({ className }: LoginProps) {
                   id="usr"
                   type="text"
                   placeholder="demo@gmail.com"
-                  required
                   value={usr}
                   onChange={(e) => setUsr(e.target.value)}
                   label="User"
@@ -81,7 +85,7 @@ export default function FrappeLoginForm({ className }: LoginProps) {
                 <Button
                   type="submit"
                   className="w-full bg-update text-update-foreground"
-                  label={"Login"}
+                  label="Login"
                 />
               </div>
               <div className="text-center text-sm">

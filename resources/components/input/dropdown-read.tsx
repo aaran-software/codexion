@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, forwardRef } from "react";
 import { Check, X, ChevronDown } from "lucide-react";
-import Error from '../error/Error'
+import Error from "../error/Error";
 import apiClient from "../../../resources/global/api/apiClients";
 
 interface DropdownProps {
@@ -91,16 +91,16 @@ const DropdownRead = forwardRef<HTMLInputElement, DropdownProps>(
       fetchItems();
     }, [readApi, apiKey, items]);
 
-  useEffect(() => {
-  if (value !== undefined) {
-    if (Array.isArray(value)) {
-      setSelected(value);
-    } else {
-      setSelected(value ? [value] : []);
-      setSearchTerm(value || "");
-    }
-  }
-}, [value]);
+    useEffect(() => {
+      if (value !== undefined) {
+        if (Array.isArray(value)) {
+          setSelected(value);
+        } else {
+          setSelected(value ? [value] : []);
+          setSearchTerm(value || "");
+        }
+      }
+    }, [value]);
     useEffect(() => {
       const fetchItems = async () => {
         if (!readApi) return;
@@ -136,7 +136,6 @@ const DropdownRead = forwardRef<HTMLInputElement, DropdownProps>(
 
       fetchItems();
     }, [readApi, apiKey]);
-    
 
     const determineDropdownDirection = () => {
       if (wrapperRef.current) {

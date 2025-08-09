@@ -2,24 +2,46 @@
 import apiClient from "./apiClients";
 
 export const loginFrappe = async (usr: string, pwd: string) => {
-  await apiClient.post("/api/method/login", { usr, pwd });
+  try {
+    const response = await apiClient.post("/api/method/login", { usr, pwd });
+    
+    if (response.data.message === "Logged In") {
+          localStorage.setItem("name", response.data.full_name);
+
+      // success
+      return;
+    } else {
+      throw new Error("Invalid credentials");
+    }
+  } catch (error: any) {
+    // Bubble up error to component
+    throw error.response?.data?.message
+      ? new Error(error.response.data.message)
+      : new Error("Invalid credentials");
+  }
 };
 
 // Logout user
 export const logoutFrappe = async () => {
   try {
-    await apiClient.post("/api/method/logout");
-    console.log("Frappe logout successful");
+    const response = await apiClient.post("/api/method/logout");
+    if (response.data.message === "No App") {
+      // success
+      return;
+    } else {
+      throw new Error("Logout failed");
+    }
   } catch (error) {
-    console.error("Error during Frappe logout:", error);
-    // Optionally re-throw or handle the error
     throw error;
   }
 };
 
 // Get currently logged-in user
 export const getLoggedInUser = async (): Promise<string | null> => {
-  const response = await apiClient.get("/api/method/frappe.auth.get_logged_user");
+  const response = await apiClient.get(
+    "/api/method/frappe.auth.get_logged_user"
+  );
   const user = response.data.message;
-  return user === "Guest" ? "" : user;
+  localStorage.setItem("email", user);
+  return user === "No App" ? null : user;
 };

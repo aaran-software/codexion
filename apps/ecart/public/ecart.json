@@ -13,15 +13,28 @@
           "title": "Laptop Types",
           "items": [
             {
-              "title": "Business Laptop",
-              "path": "/"
-            },
-            {
               "title": "Gaming Laptop",
               "path": "/"
             },
             {
               "title": "Personal Laptop",
+              "path": "/"
+            }
+          ]
+        },
+        "subMenu2": {
+          "title": "Brands",
+          "items": [
+            {
+              "title": "Logitech",
+              "path": "/"
+            },
+            {
+              "title": "HP",
+              "path": "/"
+            },
+            {
+              "title": "Dell",
               "path": "/"
             }
           ]
