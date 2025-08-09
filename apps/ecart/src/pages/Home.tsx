@@ -31,10 +31,10 @@ function Home() {
     { name: "DELL", logo: "/assets/brand/dell.svg" },
     { name: "ACER", logo: "/assets/brand/acer.svg" },
     { name: "HP", logo: "/assets/brand/hp.svg" },
-    { name: "Lenovo", logo: "/assets/brand/lenovo.svg" },
+    { name: "LENOVO", logo: "/assets/brand/lenovo.svg" },
     { name: "BENQ", logo: "/assets/brand/benq.svg" },
     { name: "SAMSUNG", logo: "/assets/brand/samsung.svg" },
-    { name: "Apple", logo: "/assets/brand/apple.svg" },
+    { name: "APPLE", logo: "/assets/brand/apple.svg" },
   ];
 
   return (
