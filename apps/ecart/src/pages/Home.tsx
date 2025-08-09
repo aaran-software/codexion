@@ -23,7 +23,20 @@ const ScrollAdverthisment = lazy(
   () => import("../../../../resources/UIBlocks/Promotion/ScrollAdverthisment")
 );
 const Mainmenu = lazy(() => import("../../../../resources/UIBlocks/Mainmenu"));
+const BrandMarquee = lazy(
+  () => import("../../../../resources/components/marquee/BrandMarquee")
+);
 function Home() {
+  const brands = [
+    { name: "DELL", logo: "/assets/brand/dell.svg" },
+    { name: "ACER", logo: "/assets/brand/acer.svg" },
+    { name: "HP", logo: "/assets/brand/hp.svg" },
+    { name: "Lenovo", logo: "/assets/brand/lenovo.svg" },
+    { name: "BENQ", logo: "/assets/brand/benq.svg" },
+    { name: "SAMSUNG", logo: "/assets/brand/samsung.svg" },
+    { name: "Apple", logo: "/assets/brand/apple.svg" },
+  ];
+
   return (
     <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
       <Mainmenu />
@@ -62,6 +75,9 @@ function Home() {
           api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
         />
       </div>
+      <div className="my-10">
+        <BrandMarquee type="logo" brands={brands} speed={20} />
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 px-[5%]">
         <GroupProductCard
@@ -73,7 +89,7 @@ function Home() {
           api={`api/resource/Product?fields=["name"]&filters=[["is_discount", "=", 1]]`}
         />
         <div className="lg:flex items-center h-full border border-ring/30 rounded-md p-1 hidden">
-          <PromotionSection image={"/assets/Promotion/ads3.png"}/>
+          <PromotionSection image={"/assets/Promotion/ads3.png"} />
         </div>
       </div>
       <ScrollAdverthisment
