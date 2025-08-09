@@ -78,6 +78,25 @@ export default function Header({
     }
     setShowLoginDropdown(false);
   };
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (loginRef.current && !loginRef.current.contains(e.target as Node)) {
+        setShowLoginDropdown(false);
+      }
+    };
+
+    const handleScroll = () => {
+      setShowLoginDropdown(false);
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("scroll", handleScroll, true);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("scroll", handleScroll, true);
+    };
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 sm:px-5 bg-background border-b border-ring/30 shadow-lg">
@@ -187,8 +206,17 @@ export default function Header({
                 <div
                   className="relative flex items-center gap-2 cursor-pointer"
                   ref={loginRef}
-                  onMouseEnter={handleLoginMouseEnter}
-                  onMouseLeave={handleLoginMouseLeave}
+                  onMouseEnter={
+                    windowWidth > 768 ? handleLoginMouseEnter : undefined
+                  }
+                  onMouseLeave={
+                    windowWidth > 768 ? handleLoginMouseLeave : undefined
+                  }
+                  onClick={() => {
+                    if (windowWidth <= 768) {
+                      setShowLoginDropdown((prev) => !prev);
+                    }
+                  }}
                 >
                   <UserCircle2 size={30} />
                   <UserSubMenu

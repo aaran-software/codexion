@@ -134,7 +134,7 @@ const Mainmenu: React.FC = () => {
               maxWidth: "calc(100vw - 16px)",
             }}
           >
-            <div className="flex flex-row w-max max-w-screen  px-2">
+            <div className="flex flex-row w-max max-w-screen">
               <div className="flex flex-col justify-between w-[300px] gap-3 px-3 py-2 h-full shrink-0">
                 <div>
                   <h3 className="text-lg font-bold">
