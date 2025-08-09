@@ -45,6 +45,7 @@ import { GrUnderline } from "react-icons/gr";
 import { FaBold, FaListOl, FaListUl, FaItalic, FaVideo } from "react-icons/fa";
 import { FaImage, FaTableCells } from "react-icons/fa6";
 import { MdOutlineFormatStrikethrough } from "react-icons/md";
+import { GiArrowCursor } from "react-icons/gi";
 type ButtonProps = {
   icon: string;
   path?: string;
@@ -116,6 +117,7 @@ const iconMap: Record<string, React.ReactNode> = {
   undo: <IoIosUndo size={18} />,
   redo: <IoIosRedo size={18} />,
   save: <IoIosSave size={18} />,
+  cursor: <GiArrowCursor  size={18} />,
 };
 function ImageButton({
   icon,

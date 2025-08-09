@@ -20,6 +20,7 @@ type AppContextType = {
   updateSettings: (newSettings: Partial<Settings>) => void;
   APP_TYPE: string;
   API_URL: string;
+  API_METHOD: string;
 };
 
 // const APP_TYPE = import.meta.env.VITE_APP_TYPE || 'CODEXSUN';
@@ -27,6 +28,7 @@ type AppContextType = {
 const env = import.meta.env;
 const APP_TYPE = (import.meta.env.VITE_APP_TYPE).toUpperCase();
 const API_URL = env[`VITE_${APP_TYPE}_API_URL`];
+const API_METHOD = env[`VITE_${APP_TYPE}_API_METHOD`];
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
@@ -58,6 +60,7 @@ export const AppProvider = ({
         updateSettings,
         APP_TYPE,
         API_URL,
+        API_METHOD
       }}
     >
       {children}

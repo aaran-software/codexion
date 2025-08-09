@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../../resources/com
 import FloatingInput from "../input/floating-input";
 import Button from "../button/Button";
 import Password_Input from "../../../resources/components/secondary_input/password_Input";
-import {useAuth} from "../../../apps/global/auth/frappeAuthContext";
+import {useFrappeAuth} from "../../../apps/global/auth/frappeAuthContext";
 import {cn} from "../../global/library/utils";
 
 interface LoginProps {
@@ -17,7 +17,7 @@ export default function FrappeLoginForm({ className }: LoginProps) {
   const navigate = useNavigate();
   const [usrError, setUsrError] = useState("");
   const [pwdError, setPwdError] = useState("");
-  const { login } = useAuth();
+  const { login } = useFrappeAuth();
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -35,7 +35,7 @@ export default function FrappeLoginForm({ className }: LoginProps) {
       try {
         await login(usr, pwd);
         console.log("Login success:");
-        navigate("/");
+        navigate("/dashboard");
       } catch (err: any) {
         setError("Invalid Credential");
       }

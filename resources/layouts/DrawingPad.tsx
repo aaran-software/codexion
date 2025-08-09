@@ -9,6 +9,8 @@ type Stroke = {
   type: "draw" | "erase";
 };
 
+type ToolType = "draw" | "erase" | "pointer";
+
 const DrawingCanvas: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [strokes, setStrokes] = useState<Stroke[]>([]);
@@ -17,7 +19,13 @@ const DrawingCanvas: React.FC = () => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [color, setColor] = useState("#000000");
   const [brushSize, setBrushSize] = useState(5);
-  const [mode, setMode] = useState<"draw" | "erase">("draw");
+  const [tool, setTool] = useState<ToolType>("draw");
+  const cursorCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [cursorPos, setCursorPos] = useState<Point | null>(null);
+
+  const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(
+    null
+  );
 
   useEffect(() => {
     redraw();
@@ -49,75 +57,70 @@ const DrawingCanvas: React.FC = () => {
     }
   };
 
-  const startDrawing = (e: React.MouseEvent) => {
-    const { offsetX, offsetY } = e.nativeEvent;
-    const newStroke: Stroke = {
-      points: [{ x: offsetX, y: offsetY }],
-      color,
-      size: brushSize,
-      type: mode,
-    };
-    setCurrentStroke(newStroke);
-    setIsDrawing(true);
-  };
-
   const draw = (e: React.MouseEvent) => {
     const { offsetX, offsetY } = e.nativeEvent;
     const pos = { x: offsetX, y: offsetY };
 
-    if (!isDrawing) return;
-
-    if (mode === "erase") {
-      const newStrokes = strokes.filter((stroke) => {
+    if (tool === "erase") {
+      if (!isDrawing) return;
+      const radius = brushSize * 10.5;
+      const updatedStrokes = strokes.filter((stroke) => {
         return !stroke.points.some((pt) => {
           const dx = pt.x - pos.x;
           const dy = pt.y - pos.y;
-          return Math.sqrt(dx * dx + dy * dy) < brushSize * 1.2; // Increased radius
+          return dx * dx + dy * dy < radius * radius;
         });
       });
 
-      if (newStrokes.length !== strokes.length) {
-        setStrokes(newStrokes);
+      if (updatedStrokes.length !== strokes.length) {
+        setStrokes(updatedStrokes);
         setRedoStack([]);
       }
-
       return;
     }
 
-    if (!currentStroke) return;
+    if (!isDrawing || !currentStroke) return;
 
     const newPoints = [...currentStroke.points, pos];
     const updatedStroke = { ...currentStroke, points: newPoints };
     setCurrentStroke(updatedStroke);
-    setStrokes([...strokes.slice(0, -1), updatedStroke]); // Fix duplication
+    setStrokes([...strokes.slice(0, -1), updatedStroke]);
+  };
+
+  const startDrawing = (e: React.MouseEvent) => {
+    if (tool === "pointer") {
+      setDragStart({ x: e.clientX, y: e.clientY });
+      return;
+    }
+
+    const { offsetX, offsetY } = e.nativeEvent;
+
+    if (tool === "erase") {
+      setIsDrawing(true); // make sure drag continues
+      return;
+    }
+
+    const newStroke: Stroke = {
+      points: [{ x: offsetX, y: offsetY }],
+      color,
+      size: brushSize,
+      type: tool,
+    };
+    setCurrentStroke(newStroke);
+    setIsDrawing(true);
+    setStrokes((prev) => [...prev, newStroke]);
   };
 
   const endDrawing = () => {
-    if (!isDrawing || !currentStroke) return;
-
-    if (mode === "draw") {
-      setStrokes([...strokes, currentStroke]);
-      setRedoStack([]);
-    } else if (mode === "erase") {
-      // Erase strokes and record it as an erase stroke
-      const erased = strokes.filter((stroke) =>
-        stroke.points.some((pt) => {
-          const last = currentStroke.points[currentStroke.points.length - 1];
-          const dx = pt.x - last.x;
-          const dy = pt.y - last.y;
-          return Math.sqrt(dx * dx + dy * dy) < brushSize * 1.2;
-        })
-      );
-
-      if (erased.length > 0) {
-        const remaining = strokes.filter((s) => !erased.includes(s));
-        setStrokes(remaining);
-        setRedoStack([]);
-      }
+    if (tool === "pointer") {
+      setDragStart(null);
+      return;
     }
 
-    setCurrentStroke(null);
     setIsDrawing(false);
+
+    if (!currentStroke) return;
+    setCurrentStroke(null);
   };
 
   const undo = () => {
@@ -146,112 +149,56 @@ const DrawingCanvas: React.FC = () => {
     alert("Saved to localStorage!");
   };
 
-  //   const loadDrawing = () => {
-  //     const data = localStorage.getItem("drawing");
-  //     if (data) {
-  //       setStrokes(JSON.parse(data));
-  //     }
-  //   };
-
-  const getTouchPos = (touch: Touch): Point => {
-    const canvas = canvasRef.current;
-    if (!canvas) return { x: 0, y: 0 };
-    const rect = canvas.getBoundingClientRect();
-    return {
-      x: touch.clientX - rect.left,
-      y: touch.clientY - rect.top,
-    };
-  };
-
-  const handleTouchStart = (e: React.TouchEvent<HTMLCanvasElement>) => {
-    if (e.touches.length === 1) {
-      e.preventDefault();
-      const touch = e.touches[0] as unknown as Touch;
-      const pos = getTouchPos(touch);
-      const newStroke: Stroke = {
-        points: [pos],
-        color,
-        size: brushSize,
-        type: mode,
-      };
-      setCurrentStroke(newStroke);
-      setIsDrawing(true);
-    }
-  };
-
-  const handleTouchMove = (e: React.TouchEvent<HTMLCanvasElement>) => {
-  if (e.touches.length === 1) {
-    e.preventDefault();
-    const touch = e.touches[0] as unknown as Touch;
-    const pos = getTouchPos(touch);
-
-    if (!isDrawing) return;
-
-    if (mode === "erase") {
-      const newStrokes = strokes.filter((stroke) => {
-        return !stroke.points.some((pt) => {
-          const dx = pt.x - pos.x;
-          const dy = pt.y - pos.y;
-          return Math.sqrt(dx * dx + dy * dy) < brushSize * 1.2;
-        });
-      });
-
-      if (newStrokes.length !== strokes.length) {
-        setStrokes(newStrokes);
-        setRedoStack([]);
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key === "z") {
+        e.preventDefault();
+        undo();
+      } else if (e.ctrlKey && e.key === "y") {
+        e.preventDefault();
+        redo();
+      } else if (e.ctrlKey && e.key === "d") {
+        e.preventDefault();
+        clearCanvas();
+      } else if (!e.ctrlKey) {
+        if (e.key === "d") setTool("draw");
+        else if (e.key === "e") setTool("erase");
+        else if (e.key === "p") setTool("pointer");
       }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [undo, redo, clearCanvas]);
 
-      return;
+  useEffect(() => {
+    const canvas = cursorCanvasRef.current;
+    if (!canvas || tool !== "erase") return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (cursorPos) {
+      ctx.beginPath();
+      ctx.arc(cursorPos.x, cursorPos.y, brushSize / 2, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(0, 0, 0, 0.5)";
+      ctx.lineWidth = 1;
+      ctx.stroke();
     }
-
-    if (!currentStroke) return;
-
-    const newPoints = [...currentStroke.points, pos];
-    const updatedStroke = { ...currentStroke, points: newPoints };
-    setCurrentStroke(updatedStroke);
-    setStrokes([...strokes.slice(0, -1), updatedStroke]);
-  }
-};
-
-
-const handleTouchEnd = (e: React.TouchEvent<HTMLCanvasElement>) => {
-  if (isDrawing) {
-    e.preventDefault();
-    endDrawing();
-  }
-};
-
-useEffect(() => {
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.ctrlKey && e.key === "z") {
-      e.preventDefault();
-      undo();
-    }
-    if (e.ctrlKey && e.key === "y") {
-      e.preventDefault();
-      redo();
-    }
-  };
-
-  window.addEventListener("keydown", handleKeyDown);
-  return () => window.removeEventListener("keydown", handleKeyDown);
-}, [undo, redo]);
-
+  }, [cursorPos, brushSize, tool]);
 
   return (
     <div className="h-screen w-screen flex flex-col bg-gray-100">
-      {/* Top Control Bar */}
+      {/* Control Bar */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 bg-white border rounded-lg shadow-md p-3 flex flex-wrap gap-3 m-5 z-50">
+        <input
+          type="color"
+          value={color}
+          className="block my-auto"
+          onChange={(e) => setColor(e.target.value)}
+        />
         <label className="flex items-center space-x-2">
-          <span>Color:</span>
-          <input
-            type="color"
-            value={color}
-            onChange={(e) => setColor(e.target.value)}
-          />
-        </label>
-        <label className="flex items-center space-x-2">
-          <span>Brush Size:</span>
           <input
             type="range"
             min={1}
@@ -261,63 +208,104 @@ useEffect(() => {
           />
           <span>{brushSize}</span>
         </label>
-        {/* <button
-  className={`p-2 rounded-full ${tool === "pointer" ? "bg-black text-white" : "bg-white"}`}
-  onClick={() => setTool("pointer")}
->
-  Pointer
-</button> */}
-
         <ImageButton
-          onClick={() => setMode("draw")}
-          className="px-3 py-1 border bg-blue-100 rounded"
+          className={`p-2 rounded-full ${
+            tool === "pointer" ? "bg-black text-white" : "bg-white"
+          }`}
+          onClick={() => setTool("pointer")}
+          icon={"cursor"}
+        />
+        <ImageButton
+          onClick={() => setTool("draw")}
+          className={`p-2 rounded-full ${
+            tool === "draw" ? "bg-black text-white" : "bg-white"
+          }`}
           icon={"draw"}
         />
         <ImageButton
-          onClick={() => setMode("erase")}
-          className="px-3 py-1 border bg-red-100 rounded"
+          onClick={() => setTool("erase")}
+          className={`p-2 rounded-full ${
+            tool === "erase" ? "bg-black text-white" : "bg-white"
+          }`}
           icon={"erase"}
         />
-
         <ImageButton
           onClick={undo}
           className="px-3 py-1 border bg-gray-200 rounded"
           icon={"undo"}
         />
-
         <ImageButton
           onClick={redo}
           className="px-3 py-1 border bg-gray-200 rounded"
           icon={"redo"}
         />
-
         <ImageButton
           onClick={saveDrawing}
-          className="px-3 py-1 border bg-green-200 rounded"
+          className="px-3 py-1 border bg-create text-create-foreground rounded"
           icon={"save"}
         />
-
         <ImageButton
           onClick={clearCanvas}
-          className="px-3 py-1 border bg-pink-200 rounded"
+          className="px-3 py-1 border bg-delete text-delete-foreground rounded"
           icon={"clear"}
         />
       </div>
 
-      {/* Full-screen Canvas Area */}
-      <div className="flex-1 m-5  touch-none">
+      {/* Canvas */}
+      <div className="flex-1 m-5">
         <canvas
           ref={canvasRef}
-          width={window.innerWidth}
-          height={window.innerHeight - 80}
-          className="w-[100%] h-[95vh] border-t border-gray-300 bg-white cursor-crosshair"
+          width={window.innerWidth - 40}
+          height={window.innerHeight - 120}
+          className="w-full h-full border-t border-gray-300 bg-white cursor-crosshair rounded-md touch-none"
           onMouseDown={startDrawing}
           onMouseMove={draw}
           onMouseUp={endDrawing}
           onMouseLeave={endDrawing}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
+          onTouchStart={(e) => {
+            if (tool !== "pointer") e.preventDefault();
+            const touch = e.touches[0];
+            startDrawing({
+              clientX: touch.clientX,
+              clientY: touch.clientY,
+              nativeEvent: {
+                offsetX:
+                  touch.clientX -
+                  canvasRef.current!.getBoundingClientRect().left,
+                offsetY:
+                  touch.clientY -
+                  canvasRef.current!.getBoundingClientRect().top,
+              },
+            } as unknown as React.MouseEvent);
+          }}
+          onTouchMove={(e) => {
+            if (tool !== "pointer") e.preventDefault();
+            const touch = e.touches[0];
+            draw({
+              clientX: touch.clientX,
+              clientY: touch.clientY,
+              nativeEvent: {
+                offsetX:
+                  touch.clientX -
+                  canvasRef.current!.getBoundingClientRect().left,
+                offsetY:
+                  touch.clientY -
+                  canvasRef.current!.getBoundingClientRect().top,
+              },
+            } as unknown as React.MouseEvent);
+          }}
+          onTouchEnd={(e) => {
+            if (tool !== "pointer") e.preventDefault();
+            endDrawing();
+          }}
+        />
+
+        {/* Cursor Canvas (overlay for eraser ring) */}
+        <canvas
+          ref={cursorCanvasRef}
+          width={window.innerWidth - 40}
+          height={window.innerHeight - 120}
+          className="absolute top-0 left-0 z-20 pointer-events-none"
         />
       </div>
     </div>

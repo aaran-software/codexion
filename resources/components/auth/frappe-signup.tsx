@@ -7,7 +7,7 @@ import apiClient from "../../global/api/apiClients";
 import {cn} from "../../global/library/utils";
 import PasswordInput from "../input/password-input";
 
-export function SignupComponent({
+export default function FrappeSignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {

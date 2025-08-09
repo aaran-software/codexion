@@ -25,6 +25,7 @@ type DynamicSubMenus = {
 
 interface MenuItem extends DynamicSubMenus {
   name: string;
+  path:string;
   image: string;
   alt: string;
   card: CardItems;
@@ -52,7 +53,7 @@ const Mainmenu: React.FC = () => {
   };
 
   const handleCategoryClick = (categoryName: string) => {
-    navigate(`/category/${categoryName.toLowerCase()}`);
+    navigate(`/category/${categoryName}`);
   };
 
   useEffect(() => {
@@ -105,7 +106,7 @@ const Mainmenu: React.FC = () => {
               ref={(el) => {
                 anchorRefs.current[index] = el;
               }}
-              onClick={() => handleCategoryClick(category.name)}
+              onClick={() => handleCategoryClick(category.path)}
               onMouseEnter={() => handleMouseEnter(index)}
               onMouseLeave={handleMouseLeave}
               className="cursor-pointer w-[100px] sm:w-auto flex-shrink-0 text-center relative"

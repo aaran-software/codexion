@@ -1,0 +1,540 @@
+{
+  "common": {
+    "city": {
+      "details": {
+        "title": "City",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": true
+          },
+          {
+            "key": "name",
+            "label": "City Name",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          }
+        ]
+      }
+    },
+    "state": {
+      "details": {
+        "title": "City",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": true
+          },
+          {
+            "key": "name",
+            "label": "City Name",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          }
+        ]
+      }
+    },
+    "pincode": {
+      "details": {
+        "title": "State",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": true
+          },
+          {
+            "key": "name",
+            "label": "State Name",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          }
+        ]
+      }
+    },
+    "countries": {
+      "details": {
+        "title": "Pin Codes",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": true
+          },
+          {
+            "key": "name",
+            "label": "Pin Code",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          }
+        ]
+      }
+    },
+    "hsncode": {
+      "details": {
+        "title": "HSN Code",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": true
+          },
+          {
+            "key": "name",
+            "label": "HSN Code",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "name",
+            "label": "Description",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          }
+        ]
+      }
+    },
+    "units": {
+      "details": {
+        "title": "Units",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": true
+          },
+          {
+            "key": "name",
+            "label": "Unit Name",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+            {
+            "key": "name",
+            "label": "Description",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          }
+        ]
+      }
+    },
+    "categories": {
+      "details": {
+        "title": "Category",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": true
+          },
+          {
+            "key": "name",
+            "label": "Category Name",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          }
+        ]
+      }
+    },
+    "colours": {
+      "details": {
+        "title": "Colour",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": true
+          },
+          {
+            "key": "name",
+            "label": "Colour",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          }
+        ]
+      }
+    },
+    "sizes": {
+      "details": {
+        "title": "Size",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": true
+          },
+          {
+            "key": "name",
+            "label": "Size Name",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "name",
+            "label": "Description",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          }
+        ]
+      }
+    },
+    "departments": {
+      "details": {
+        "title": "Department",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": true
+          },
+          {
+            "key": "name",
+            "label": "Department",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          }
+        ]
+      }
+    },
+    "bank": {
+      "details": {
+        "title": "Bank",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": true
+          },
+          {
+            "key": "name",
+            "label": "Bank Name",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          }
+        ]
+      }
+    },
+    "receipttype": {
+      "details": {
+        "title": "Receipt Type",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": true
+          },
+          {
+            "key": "name",
+            "label": "Receipt Type",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          }
+        ]
+      }
+    },
+    "despatches": {
+      "details": {
+        "title": "Despatches",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": true
+          },
+          {
+            "key": "name",
+            "label": "Name",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+            {
+            "key": "name",
+            "label": "Date",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          }
+        ]
+      }
+    },
+    "gstpercents": {
+      "details": {
+        "title": "GST Percent",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": true
+          },
+          {
+            "key": "name",
+            "label": "GST Percent",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+            {
+            "key": "name",
+            "label": "Description",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          }
+        ]
+      }
+    },
+    "contacttype": {
+      "details": {
+        "title": "Contact Type",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": true
+          },
+          {
+            "key": "name",
+            "label": "Contact Type",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          }
+        ]
+      }
+    },
+    "paymentmode": {
+      "details": {
+        "title": "Payment Mode",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": false,
+            "isPrint": true
+          },
+          {
+            "key": "name",
+            "label": "Payment Mode",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          }
+        ]
+      }
+    }
+  }
+}
