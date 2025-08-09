@@ -18,12 +18,14 @@ interface GroupProductCardProps {
   title: string;
   api: string;
   ribbon?: boolean;
+  id: string;
 }
 
 const GroupProductCard: React.FC<GroupProductCardProps> = ({
   title,
   api,
   ribbon,
+  id,
 }) => {
   const { API_URL } = useAppContext();
 
@@ -106,7 +108,10 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
       {/* header */}
       <div className="flex justify-between items-center px-2">
         <h1 className="mt-2 font-bold text-[25px]">{title}</h1>
-        <p className="text-update text-lg mt-2 cursor-pointer hover:underline">
+        <p
+          className="text-primary font-medium text-lg mt-2 cursor-pointer hover:underline"
+          onClick={() => navigate(`/special/${id}`,{ state: { title } })}
+        >
           More
         </p>
       </div>

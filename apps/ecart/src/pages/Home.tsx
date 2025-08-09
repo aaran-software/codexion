@@ -47,6 +47,7 @@ function Home() {
       <div className="px-[5%]">
         <ProductCard
           title="Popular Items"
+          id={"is_popular"}
           api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
           ribbon={true}
         />
@@ -56,10 +57,12 @@ function Home() {
         <GroupProductCard
           title={"Hot Gadgets Today"}
           api={`api/resource/Product?fields=["name"]&filters=[["top_rated", "=", 1]]`}
+          id={"top_rated"}
         />
         <GroupProductCard
           title="Discount for you"
           api={`api/resource/Product?fields=["name"]&filters=[["is_discount", "=", 1]]`}
+          id={"is_discount"}
         />
       </div>
       <div className=" py-5">
@@ -73,6 +76,7 @@ function Home() {
         <ProductCard
           title="Laptops"
           api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
+          id={"is_popular"}
         />
       </div>
       <div className="my-10">
@@ -83,10 +87,12 @@ function Home() {
         <GroupProductCard
           title={"Top Rated"}
           api={`api/resource/Product?fields=["name"]&filters=[["top_rated", "=", 1]]`}
+          id={"top_rated"}
         />
         <GroupProductCard
           title="Best Sellers"
           api={`api/resource/Product?fields=["name"]&filters=[["is_discount", "=", 1]]`}
+          id={"is_discount"}
         />
         <div className="lg:flex items-center h-full border border-ring/30 rounded-md p-1 hidden">
           <PromotionSection image={"/assets/Promotion/ads3.png"} />

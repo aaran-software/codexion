@@ -23,10 +23,12 @@ const Header = lazy(
 const FrappeLoginForm = lazy(
   () => import("../../../resources/components/auth/frappe-login")
 );
+const SpecialCategory = lazy(
+  () => import("../../../resources/UIBlocks/SpecialCategory")
+);
 import settings from "../public/settings.json";
 import LoadingScreen from "../../../resources/components/loading/LoadingScreen";
 import Test from "./pages/Test";
-import { Product } from "../../../resources/components/header/Header";
 function AppRoutes() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -103,6 +105,7 @@ function AppRoutes() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/productpage/:id" element={<ProductPage />} />
           <Route path="/category/:category" element={<CategoryPage />} />
+          <Route path="/special/:id" element={<SpecialCategory />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/productform" element={<ProductForm />} />
           <Route path="/test" element={<Test />} />

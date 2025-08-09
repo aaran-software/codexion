@@ -229,7 +229,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
               </h2>
               {slide.price && (
                 <p
-                  className={`text-md text-black/80 md:text-2xl mt-3 ${
+                  className={`text-md text-black/80 md:text-2xl font-semibold mt-3 ${
                     index === activeIndex
                       ? "animate__animated animate__fadeInUp"
                       : ""
@@ -252,7 +252,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
               )}
 
               <button
-                className={`mt-4 px-7 py-2 bg-blue-600 text-white text-sm md:text-lg rounded hover:bg-blue-700 transition ${
+                className={`mt-4 px-7 py-3 bg-primary text-white text-lg font-semibold md:text-2xl rounded-2xl hover:bg-primary/80 transition ${
                   index === activeIndex
                     ? "animate__animated animate__zoomIn"
                     : ""
