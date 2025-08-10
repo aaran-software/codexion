@@ -17,8 +17,8 @@ interface FloatContactProps {
 
 const platformColors: Record<string, string> = {
   whatsapp: "#25D366",
-  phone: "#2113e9ff",
-  email: "#a347a1",
+  phone: "#00CCFF",
+  email: "#8F1F8D",
   instagram: "linear-gradient(45deg, #F58529, #DD2A7B, #8134AF, #515BD4)",
 };
 
@@ -65,7 +65,7 @@ function FloatContact({
     <div
       className={`flex ${
         horizontal ? "flex-row" : "flex-col"
-      } gap-5 ${className}`}
+      } gap-8 ${className}`}
     >
       {contacts.map((item) => (
         <div key={item.id} className="relative flex items-center">
@@ -101,9 +101,9 @@ function FloatContact({
             onTouchStart={() => {
               setHoveredId(null); // hide tooltip immediately on touch start
             }}
-            className={`p-2 rounded-full shadow-md hover:scale-105 transition bg-white cursor-pointer ${item.className}`}
+            className={`hover:scale-105 transition cursor-pointer ${item.className}`}
           >
-            <img src={item.imgPath} alt={item.id} className="w-8 h-8" />
+            <img src={item.imgPath} alt={item.id} className="w-12 h-12" />
           </button>
         </div>
       ))}
