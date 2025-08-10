@@ -173,7 +173,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
             <div className="w-full h-[350px] flex items-center justify-center">
               <img
                 // src={`${API_URL}/${slide.image}`}
-                src={"/assets/Promotion/image2.png"}
+                src={"/assets/Promotion/banner_2.jpg"}
                 alt={`Slide ${index} ${slide}`}
                 className={`h-full w-full object-fit`}
               />
