@@ -279,9 +279,10 @@ const DropdownRead = forwardRef<HTMLInputElement, DropdownProps>(
       <div ref={wrapperRef} className="relative w-full font-inter">
         <div
           id={id}
-          onClick={() => {
+          onMouseDown={(e) => {
+            e.preventDefault(); // Prevent input blur
             determineDropdownDirection();
-            setDropdownVisible(true);
+            setDropdownVisible((prev) => !prev); // Toggle instead of always true
             inputRef.current?.focus();
           }}
           className={`relative flex items-center flex-wrap gap-1 px-2 pt-1.5 pb-1

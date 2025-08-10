@@ -5,7 +5,6 @@ const SignUp = lazy(() => import("../../global/auth/Signup"));
 const ProtectedRoute = lazy(() => import("../../global/auth/ProtectedRoute"));
 const Admin = lazy(() => import("./pages/Admin"));
 const Home = lazy(() => import("./pages/Home"));
-const ProductForm = lazy(() => import("./pages/ProductForm"));
 const ProductPage = lazy(
   () => import("../../../resources/UIBlocks/ProductPage")
 );
@@ -23,10 +22,14 @@ const Header = lazy(
 const FrappeLoginForm = lazy(
   () => import("../../../resources/components/auth/frappe-login")
 );
+const SpecialCategory = lazy(
+  () => import("../../../resources/UIBlocks/SpecialCategory")
+);
 import settings from "../public/settings.json";
 import LoadingScreen from "../../../resources/components/loading/LoadingScreen";
 import Test from "./pages/Test";
-import { Product } from "../../../resources/components/header/Header";
+import ScrollToTop from "../../../resources/components/common/scrolltotop";
+import ScrollToTopButton from "../../../resources/components/common/scrolltotopbutton";
 function AppRoutes() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -42,10 +45,10 @@ function AppRoutes() {
     { pattern: /^\/wishlist$/, title: "Tmnext - Wishlist" },
     { pattern: /^\/login$/, title: "Tmnext - Login" },
     { pattern: /^\/signup$/, title: "Tmnext - Signup" },
-    { pattern: /^\/productform$/, title: "Tmnext - Add Product" },
     { pattern: /^\/productpage\/[^/]+$/, title: "Tmnext - Product Page" },
-    { pattern: /^\/category\/[^/]+$/, title: "Tmnext - Category Page" },
-    { pattern: /^\/dashboard(\/[^/]*)?$/, title: "Tmnext - Admin Dashboard" },
+    { pattern: /^\/category\/[^/]+$/, title: "Tmnext - Category" },
+    { pattern: /^\/special\/[^/]+$/, title: "Tmnext - Special Offer" },
+    { pattern: /^\/dashboard(\/[^/]*)?$/, title: "Tmnext - Dashboard" },
   ];
 
   useEffect(() => {
@@ -82,6 +85,8 @@ function AppRoutes() {
   return (
     <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
       <div>
+        <ScrollToTop />
+        <ScrollToTopButton />
         {!hideLayout && (
           <Header
             logo={logo}
@@ -103,8 +108,8 @@ function AppRoutes() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/productpage/:id" element={<ProductPage />} />
           <Route path="/category/:category" element={<CategoryPage />} />
+          <Route path="/special/:id" element={<SpecialCategory />} />
           <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="/productform" element={<ProductForm />} />
           <Route path="/test" element={<Test />} />
           <Route
             path="/dashboard/:component?"

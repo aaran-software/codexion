@@ -26,7 +26,6 @@ export type FiltersType = {
 
 const CategoryPage: React.FC = () => {
   const { API_URL } = useAppContext();
-
   const [products, setProducts] = useState<ProductType[]>([]);
   const [cartStates, setCartStates] = useState<Record<number, string>>({});
   const [, setError] = useState<string | null>(null);
@@ -36,6 +35,7 @@ const CategoryPage: React.FC = () => {
   const navigate = useNavigate();
   const [categories, setCategories] = useState<string[]>([]);
   const [brands, setBrands] = useState<string[]>([]);
+  
   const [selectedFilters, setSelectedFilters] = useState<FiltersType>({
     category: category || "",
     brand: "",

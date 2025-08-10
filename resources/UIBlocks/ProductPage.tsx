@@ -13,6 +13,7 @@ import Button from "../../resources/components/button/Button";
 import apiClient from "../../resources/global/api/apiClients";
 import { useAppContext } from "../../apps/global/AppContaxt";
 import ZoomImage from "../components/image/ZoomImage";
+import FloatContact from "./contact/FloatContact";
 // Define types
 interface Field {
   id: string;
@@ -49,6 +50,7 @@ function ProductPage() {
   const [error, setError] = useState("");
   const [isPlaceOrder, setIsPlaceOrder] = useState(false);
   const navigate = useNavigate();
+const productUrl = window.location.href;  //purpose to send product URL to WhatsApp
 
   // const [offer] = useState([
   //   {
@@ -289,6 +291,19 @@ function ProductPage() {
             `}
               label={"Buy Now"}
             />
+
+            <FloatContact
+              contacts={[
+                {
+                  id: "whatsapp",
+                  contact: "919543439311", // no '+' symbol, just country code + number
+                  imgPath: "/assets/svg/whatsapp.svg",
+                  defaultMessage: `Hello, I’m interested in this product. Could you please share more details? Product URL: ${productUrl}`,
+                  className: "!rounded !bg-primary/10",
+                },
+              ]}
+              className=""
+            />
           </div>
           {/* Specifications */}
           <div className="mt-10 border border-ring/30 rounded-md p-5">
@@ -383,6 +398,7 @@ function ProductPage() {
           title="Similar Items"
           api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
           ribbon={true}
+          id={"is_popular"}
         />
       </div>
       {isPlaceOrder && (

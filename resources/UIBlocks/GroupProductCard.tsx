@@ -6,7 +6,7 @@ import apiClient from "../../resources/global/api/apiClients";
 import { useAppContext } from "../../apps/global/AppContaxt";
 
 export interface ProductItem {
-  id: number;
+  id: string;
   name: string;
   prod_id: number;
   image: string;
@@ -18,14 +18,16 @@ interface GroupProductCardProps {
   title: string;
   api: string;
   ribbon?: boolean;
+  id: string;
 }
 
 const GroupProductCard: React.FC<GroupProductCardProps> = ({
   title,
   api,
   ribbon,
+  id,
 }) => {
-    const {API_URL} =useAppContext();
+  const { API_URL } = useAppContext();
 
   const navigate = useNavigate();
   const [products, setProducts] = useState<ProductItem[]>([]);
@@ -72,16 +74,44 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
     fetchProducts();
   }, [api]);
 
-  const navigateProductPage = (id: number) => {
+  const navigateProductPage = (id: string) => {
     navigate(`/productpage/${id}`);
   };
 
+  const isInCart = (id: string) => {
+    const storedCart = localStorage.getItem("cart");
+    const cart: string[] = storedCart ? JSON.parse(storedCart) : [];
+    return cart.includes(id);
+  };
+
+  const toggleCart = (id: string) => {
+    try {
+      const storedCart = localStorage.getItem("cart");
+      let cart: string[] = storedCart ? JSON.parse(storedCart) : [];
+
+      if (cart.includes(id)) {
+        // Remove from cart
+        cart = cart.filter((itemId) => itemId !== id);
+      } else {
+        // Add to cart
+        cart.push(id);
+      }
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+      setProducts((prev) => [...prev]); // Force re-render to update icon colors
+    } catch (err) {
+      console.error("Failed to update cart in localStorage:", err);
+    }
+  };
   return (
     <div className="w-full p-4 bg-background/80 border border-ring/30 shadow rounded-md">
       {/* header */}
       <div className="flex justify-between items-center px-2">
         <h1 className="mt-2 font-bold text-[25px]">{title}</h1>
-        <p className="text-update text-lg mt-2 cursor-pointer hover:underline">
+        <p
+          className="text-primary font-medium text-lg mt-2 cursor-pointer hover:underline"
+          onClick={() => navigate(`/special/${id}`,{ state: { title } })}
+        >
           More
         </p>
       </div>
@@ -118,10 +148,18 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
                 {/* Hover Buttons */}
                 <div className="absolute top-2 right-2 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 m-2">
                   <ImageButton
-                    onClick={(e) => e.stopPropagation()}
-                    className="bg-background text-foreground p-1 rounded-full shadow hover:bg-gray-200"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleCart(product.id);
+                    }}
+                    className={`p-1 rounded-full shadow hover:bg-gray-200 ${
+                      isInCart(product.id)
+                        ? "bg-green-500 text-white"
+                        : "bg-background text-foreground"
+                    }`}
                     icon={"cart"}
                   />
+
                   <ImageButton
                     onClick={(e) => e.stopPropagation()}
                     className="bg-background text-foreground p-1  rounded-full shadow hover:bg-gray-200"

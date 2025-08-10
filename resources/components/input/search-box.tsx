@@ -1,8 +1,14 @@
-import { useState, useRef, useEffect } from "react";
 import { cn } from "../../../resources/global/library/utils";
 import type { Product } from "../header/Header";
 import apiClient from "../../../resources/global/api/apiClients";
 import { useAppContext } from "../../../apps/global/AppContaxt";
+import { useEffect, useRef, useState } from "react";
+
+interface GlobalSearchProps {
+  className?: string;
+  onSearchApi: string;
+  onNavigate: (path: string) => void;
+}
 
 interface GlobalSearchProps {
   className?: string;
@@ -22,35 +28,37 @@ export default function GlobalSearch({
   const [showResults, setShowResults] = useState(false);
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+
   // Load recent searches from localStorage
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("recentSearches") || "[]");
     setRecentSearches(stored);
   }, []);
 
-  // Close results when clicking outside
-  // Close results when clicking outside or scrolling
+  // Close dropdown when clicking outside and disable background scroll
   useEffect(() => {
-   
-    const closeSearch = (e: Event) => {
+    const handleClickOutside = (e: MouseEvent) => {
       if (
         containerRef.current &&
         !containerRef.current.contains(e.target as Node)
       ) {
-        setShowResults(false);
-        inputRef.current?.blur(); // remove focus from search input
+        setShowResults(false); // Close the dropdown
       }
     };
 
-    document.addEventListener("mousedown", closeSearch);
-    document.addEventListener("scroll", closeSearch, true); // use capture to detect in bubbling parents
+    if (showResults) {
+      document.body.classList.add("overflow-hidden"); // Disable background scroll
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.body.classList.remove("overflow-hidden"); // Re-enable background scroll
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
 
     return () => {
-      document.removeEventListener("mousedown", closeSearch);
-      document.removeEventListener("scroll", closeSearch, true);
+      document.body.classList.remove("overflow-hidden"); // Cleanup on unmount
+      document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [showResults]);
 
   const handleSearch = (value: string) => {
     setQuery(value);
@@ -102,7 +110,7 @@ export default function GlobalSearch({
 
     onNavigate(`/productpage/${product.id}`);
     setQuery("");
-    setShowResults(false);
+    setShowResults(false); // Close dropdown
   };
 
   return (
@@ -124,7 +132,6 @@ export default function GlobalSearch({
         </div>
 
         <input
-          ref={inputRef}
           type="text"
           placeholder="Search..."
           value={query}
@@ -132,7 +139,7 @@ export default function GlobalSearch({
           onChange={(e) => handleSearch(e.target.value)}
           className={cn(
             "py-2.5 ps-10 pe-4 block w-full rounded-lg border border-ring/30 sm:text-sm",
-            "focus:ring-2 focus:ring-ring/30 focus:outline-none focus:border-transparent",
+            "focus:ring-2 focus:ring-primary focus:outline-none focus:border-transparent",
             "transition duration-300",
             className
           )}
@@ -141,17 +148,17 @@ export default function GlobalSearch({
 
       {/* Dropdown */}
       {showResults && (
-        <div className="absolute bg-white border border-ring/30 rounded w-full mt-1 max-h-[450px] overflow-y-auto shadow-lg z-50">
+        <div className="absolute bg-white rounded w-full mt-1 max-h-[450px] overflow-y-auto shadow-lg z-50">
           {/* Recent Searches */}
           {!query.trim() && recentSearches.length > 0 && (
-            <div>
+            <div className="border border-ring/30">
               <div className="px-2 py-1 text-xs text-gray-500">
                 Recent Searches
               </div>
               {recentSearches.map((product, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer border-b border-ring/30 last:border-0"
+                  className="flex items-center gap-5 p-2 hover:bg-primary/10 cursor-pointer border-b border-ring/30 last:border-0"
                   onClick={() => handleSelect(product)}
                 >
                   {product.imageUrl && (
@@ -161,8 +168,7 @@ export default function GlobalSearch({
                       className="w-12 lg:w-18 h-12 lg:h-18 object-cover rounded"
                     />
                   )}
-                  <span className="text-foreground/50">{product.name}</span>
-                 
+                  <span className="text-foreground/50 hover:text-primary line-clamp-2">{product.name}</span>
                 </div>
               ))}
             </div>
@@ -170,11 +176,11 @@ export default function GlobalSearch({
 
           {/* Search Results */}
           {query.trim() && results.length > 0 && (
-            <div>
+            <div className="border border-ring/30">
               {results.map((product) => (
                 <div
                   key={product.id}
-                  className="flex items-center gap-2 p-2 hover:bg-gray-100 cursor-pointer border-b border-ring/30 last:border-0"
+                  className="flex items-center gap-5 p-2 hover:bg-primary/10 cursor-pointer border-b border-ring/30 last:border-0"
                   onClick={() => handleSelect(product)}
                 >
                   {product.imageUrl && (
@@ -184,11 +190,9 @@ export default function GlobalSearch({
                       className="w-12 lg:w-18 h-12 lg:h-18 object-cover rounded"
                     />
                   )}
-                  <span className="text-foreground/70">{product.name}</span>
+                  <span className="text-foreground/70 hover:text-primary line-clamp-2">{product.name}</span>
                   {product.price !== undefined && (
-                    <span className="ml-auto font-medium">
-                      ₹{product.price}
-                    </span>
+                    <span className="ml-auto font-medium">₹{product.price}</span>
                   )}
                 </div>
               ))}

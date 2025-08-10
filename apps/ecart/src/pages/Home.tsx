@@ -1,6 +1,6 @@
 import { Suspense, lazy } from "react";
 import LoadingScreen from "../../../../resources/components/loading/LoadingScreen";
-// Lazy imports
+
 const ProductCard = lazy(
   () => import("../../../../resources/UIBlocks/ProductCard")
 );
@@ -23,7 +23,24 @@ const ScrollAdverthisment = lazy(
   () => import("../../../../resources/UIBlocks/Promotion/ScrollAdverthisment")
 );
 const Mainmenu = lazy(() => import("../../../../resources/UIBlocks/Mainmenu"));
+const BrandMarquee = lazy(
+  () => import("../../../../resources/components/marquee/BrandMarquee")
+);
+const FloatContact = lazy(
+  () => import("../../../../resources/UIBlocks/contact/FloatContact")
+);
+
 function Home() {
+  const brands = [
+    { name: "DELL", logo: "/assets/brand/dell.svg" },
+    { name: "ACER", logo: "/assets/brand/acer.svg" },
+    { name: "HP", logo: "/assets/brand/hp.svg" },
+    { name: "LENOVO", logo: "/assets/brand/lenovo.svg" },
+    { name: "BENQ", logo: "/assets/brand/benq.svg" },
+    { name: "SAMSUNG", logo: "/assets/brand/samsung.svg" },
+    { name: "APPLE", logo: "/assets/brand/apple.svg" },
+  ];
+
   return (
     <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
       <Mainmenu />
@@ -34,8 +51,9 @@ function Home() {
       <div className="px-[5%]">
         <ProductCard
           title="Popular Items"
+          id={"is_popular"}
           api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
-          ribbon={true}
+          ribbon={false}
         />
       </div>
 
@@ -43,10 +61,12 @@ function Home() {
         <GroupProductCard
           title={"Hot Gadgets Today"}
           api={`api/resource/Product?fields=["name"]&filters=[["top_rated", "=", 1]]`}
+          id={"top_rated"}
         />
         <GroupProductCard
           title="Discount for you"
           api={`api/resource/Product?fields=["name"]&filters=[["is_discount", "=", 1]]`}
+          id={"is_discount"}
         />
       </div>
       <div className=" py-5">
@@ -60,20 +80,26 @@ function Home() {
         <ProductCard
           title="Laptops"
           api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
+          id={"is_popular"}
         />
+      </div>
+      <div className="my-10">
+        <BrandMarquee type="logo" brands={brands} speed={20} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 px-[5%]">
         <GroupProductCard
           title={"Top Rated"}
           api={`api/resource/Product?fields=["name"]&filters=[["top_rated", "=", 1]]`}
+          id={"top_rated"}
         />
         <GroupProductCard
           title="Best Sellers"
           api={`api/resource/Product?fields=["name"]&filters=[["is_discount", "=", 1]]`}
+          id={"is_discount"}
         />
         <div className="lg:flex items-center h-full border border-ring/30 rounded-md p-1 hidden">
-          <PromotionSection image={"/assets/Promotion/ads3.png"}/>
+          <PromotionSection image={"/assets/Promotion/ads3.png"} />
         </div>
       </div>
       <ScrollAdverthisment
@@ -84,6 +110,28 @@ function Home() {
         title="Popular Items"
         api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
       /> */}
+      <FloatContact
+        contacts={[
+          {
+            id: "whatsapp",
+            contact: "919543439311", // no '+' symbol, just country code + number
+            imgPath: "/assets/svg/whatsapp.svg",
+            defaultMessage: "Hello! I'm interested in your product.",
+          },
+          {
+            id: "phone",
+            contact: "9894244450",
+            imgPath: "/assets/svg/phone.svg",
+          },
+           {
+            id: "email",
+            contact: "info@techmedia.in", // just the username, no @
+            imgPath: "/assets/svg/email.svg",
+            defaultMessage: "Hello, I’m interested in your product.",
+          },
+        ]}
+        className="fixed bottom-20 right-5 z-[100000]"
+      />
     </Suspense>
   );
 }
