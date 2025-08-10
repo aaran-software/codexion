@@ -57,7 +57,7 @@ function Home() {
         />
       </div>
 
-      <div className="flex flex-col md:flex-row gap-5 mt-15 px-[5%]">
+      <div className="flex flex-col md:flex-row gap-15 md:gap-5 mt-15 px-[5%]">
         <GroupProductCard
           title={"Hot Gadgets Today"}
           api={`api/resource/Product?fields=["name"]&filters=[["top_rated", "=", 1]]`}
@@ -84,10 +84,10 @@ function Home() {
         />
       </div>
       <div className="my-20">
-        <BrandMarquee type="logo" brands={brands} speed={20} />
+        <BrandMarquee type="logo" brands={brands} speed={10} />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 px-[5%]">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-15 md:gap-5 px-[5%]">
         <GroupProductCard
           title={"Top Rated"}
           api={`api/resource/Product?fields=["name"]&filters=[["top_rated", "=", 1]]`}
