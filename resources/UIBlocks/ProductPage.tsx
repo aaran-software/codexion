@@ -50,7 +50,7 @@ function ProductPage() {
   const [error, setError] = useState("");
   const [isPlaceOrder, setIsPlaceOrder] = useState(false);
   const navigate = useNavigate();
-const productUrl = window.location.href;  //purpose to send product URL to WhatsApp
+  const productUrl = window.location.href; //purpose to send product URL to WhatsApp
 
   // const [offer] = useState([
   //   {
@@ -221,6 +221,34 @@ const productUrl = window.location.href;  //purpose to send product URL to Whats
                 onSelect={(index) => setSelectedImage(product.images![index])}
               />
             </div>
+            
+          </div>
+          <div className="mt-5">
+            <FloatContact
+              contacts={[
+                {
+                  id: "whatsapp",
+                  contact: "919543439311", // no '+' symbol, just country code + number
+                  imgPath: "/assets/svg/whatsapp.svg",
+                  defaultMessage: `Hello, I’m interested in this product. Could you please share more details? Product URL: ${productUrl}`,
+                  className: "!rounded !bg-primary/10",
+                },
+                {
+                  id: "phone",
+                  contact: "9894244450",
+                  imgPath: "/assets/svg/phone.svg",
+                },
+                {
+                  id: "email",
+                  contact: "info@techmedia.in", // just the username, no @
+                  imgPath: "/assets/svg/email.svg",
+                  defaultMessage: "Hello, I’m interested in this product. Could you please share more details? Product URL: ${productUrl}",
+                },
+              ]}
+              className=""
+              horizontal={true}
+              labelPosition="top"
+            />
           </div>
         </div>
 
@@ -292,18 +320,7 @@ const productUrl = window.location.href;  //purpose to send product URL to Whats
               label={"Buy Now"}
             />
 
-            <FloatContact
-              contacts={[
-                {
-                  id: "whatsapp",
-                  contact: "919543439311", // no '+' symbol, just country code + number
-                  imgPath: "/assets/svg/whatsapp.svg",
-                  defaultMessage: `Hello, I’m interested in this product. Could you please share more details? Product URL: ${productUrl}`,
-                  className: "!rounded !bg-primary/10",
-                },
-              ]}
-              className=""
-            />
+            
           </div>
           {/* Specifications */}
           <div className="mt-10 border border-ring/30 rounded-md p-5">

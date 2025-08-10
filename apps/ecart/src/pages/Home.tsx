@@ -128,7 +128,7 @@ function Home() {
             defaultMessage: "Hello, I’m interested in your product.",
           },
         ]}
-        className="fixed bottom-20 right-5 z-[100000]"
+        className="fixed bottom-23 right-5 z-[100000]"
       />
     </Suspense>
   );
