@@ -1,6 +1,6 @@
 import { Suspense, lazy } from "react";
 import LoadingScreen from "../../../../resources/components/loading/LoadingScreen";
-// Lazy imports
+
 const ProductCard = lazy(
   () => import("../../../../resources/UIBlocks/ProductCard")
 );
@@ -26,6 +26,10 @@ const Mainmenu = lazy(() => import("../../../../resources/UIBlocks/Mainmenu"));
 const BrandMarquee = lazy(
   () => import("../../../../resources/components/marquee/BrandMarquee")
 );
+const FloatContact = lazy(
+  () => import("../../../../resources/UIBlocks/contact/FloatContact")
+);
+
 function Home() {
   const brands = [
     { name: "DELL", logo: "/assets/brand/dell.svg" },
@@ -38,7 +42,7 @@ function Home() {
   ];
 
   return (
-    <Suspense  fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
+    <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
       <Mainmenu />
       <BannerCarousel
         api={`api/resource/Product?fields=["name"]&filters=[["is_slider", "=", 1]]`}
@@ -106,6 +110,28 @@ function Home() {
         title="Popular Items"
         api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
       /> */}
+      <FloatContact
+        contacts={[
+          {
+            id: "whatsapp",
+            contact: "919543439311", // no '+' symbol, just country code + number
+            imgPath: "/assets/svg/whatsapp.svg",
+            defaultMessage: "Hello! I'm interested in your product.",
+          },
+          {
+            id: "phone",
+            contact: "9894244450",
+            imgPath: "/assets/svg/phone.svg",
+          },
+           {
+            id: "email",
+            contact: "info@techmedia.in", // just the username, no @
+            imgPath: "/assets/svg/email.svg",
+            defaultMessage: "Hello, I’m interested in your product.",
+          },
+        ]}
+        className="fixed bottom-20 right-5 z-[100000]"
+      />
     </Suspense>
   );
 }

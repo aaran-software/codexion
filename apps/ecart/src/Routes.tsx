@@ -28,8 +28,8 @@ const SpecialCategory = lazy(
 import settings from "../public/settings.json";
 import LoadingScreen from "../../../resources/components/loading/LoadingScreen";
 import Test from "./pages/Test";
-import { Scroll } from "lucide-react";
 import ScrollToTop from "../../../resources/components/common/scrolltotop";
+import ScrollToTopButton from "../../../resources/components/common/scrolltotopbutton";
 function AppRoutes() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -86,6 +86,7 @@ function AppRoutes() {
     <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
       <div>
         <ScrollToTop />
+        <ScrollToTopButton />
         {!hideLayout && (
           <Header
             logo={logo}
