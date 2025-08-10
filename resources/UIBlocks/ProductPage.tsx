@@ -231,20 +231,17 @@ function ProductPage() {
                   contact: "919543439311", // no '+' symbol, just country code + number
                   imgPath: "/assets/svg/whatsapp.svg",
                   defaultMessage: `Hello, I’m interested in this product. Could you please share more details? Product URL: ${productUrl}`,
-                  className: "border border-ring/30",
                 },
                 {
                   id: "phone",
                   contact: "9894244450",
-                  imgPath: "/assets/svg/phone.svg",
-                  className: "border border-ring/30",
+                  imgPath: "/assets/svg/Mobile.svg",
                 },
                 {
                   id: "email",
                   contact: "info@techmedia.in", // just the username, no @
-                  imgPath: "/assets/svg/email.svg",
+                  imgPath: "/assets/svg/mail.svg",
                   defaultMessage: "Hello, I’m interested in this product. Could you please share more details? Product URL: ${productUrl}",
-                  className: "border border-ring/30",
                 },
               ]}
               className=""

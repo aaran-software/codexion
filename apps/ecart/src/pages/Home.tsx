@@ -119,12 +119,12 @@ function Home() {
           {
             id: "phone",
             contact: "9894244450",
-            imgPath: "/assets/svg/phone.svg",
+            imgPath: "/assets/svg/Mobile.svg",
           },
           {
             id: "email",
             contact: "info@techmedia.in", // just the username, no @
-            imgPath: "/assets/svg/email.svg",
+            imgPath: "/assets/svg/mail.svg",
             defaultMessage: "Hello, I’m interested in your product.",
           },
         ]}
