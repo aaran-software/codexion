@@ -270,7 +270,7 @@ export default function Cart() {
       <div className="flex gap-2 items-center px-5 lg:px-[10%]  my-10 ">
         <LucideShoppingCart size={25} className="text-create" />
         <h1 className="text-2xl font-bold">
-          My Wishlist <span className="font-normal">({count})</span>
+          My Cart <span className="font-normal">({count})</span>
         </h1>
       </div>
       <div className="grid lg:grid-cols-[1fr_320px] px-5 lg:px-[10%] gap-10">

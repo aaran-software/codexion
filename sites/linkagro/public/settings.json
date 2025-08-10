@@ -8,13 +8,14 @@
   },
 
   "logo": {
-    "path": "/assets/linkagro_logo.jpg",
+    "path": "/assets/linkagro_logo.png",
     "position": "center",
     "height": "20",
     "font_size": "2",
-    "company_name": "Link Agro",
-    "mode":"logo",
+    "company_name": "Link Agro Exports",
+    "mode":"both",
     "color": "",
+    "text_color": "text-white",
     "padding": "2"
   },
 

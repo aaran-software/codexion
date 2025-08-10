@@ -1,5 +1,5 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useRef, useState } from "react";
+import { motion, useAnimation } from "framer-motion";
 
 type Brand = {
   name: string;
@@ -9,24 +9,65 @@ type Brand = {
 interface BrandMarqueeProps {
   type: "logo" | "label" | "big-text";
   brands: Brand[];
-  speed?: number;
+  speed?: number; // pixels per second
 }
 
 const BrandMarquee: React.FC<BrandMarqueeProps> = ({
   type,
   brands,
-  speed = 30,
+  speed = 100,
 }) => {
-  // Duplicate items for seamless loop
-  const marqueeItems = [...brands, ...brands];
+  const marqueeRef = useRef<HTMLDivElement>(null);
+  const controls = useAnimation();
+  const [isHovering, setIsHovering] = useState(false);
+
+  // Store current X position to resume from same place
+  const xPosRef = useRef(0);
+
+  // Duplicate many times to avoid flicker
+  const marqueeItems = Array(50) // <-- 20 loops
+    .fill(null)
+    .flatMap(() => brands);
+
+  useEffect(() => {
+    if (!marqueeRef.current) return;
+
+    let animationFrame: number;
+    let lastTime = performance.now();
+    let xPos = xPosRef.current;
+
+    // Width of all items together
+    const totalWidth = marqueeRef.current.scrollWidth;
+
+    const tick = (now: number) => {
+      const delta = (now - lastTime) / 1000;
+      lastTime = now;
+
+      if (!isHovering) {
+        xPos -= speed * delta;
+
+        // Wrap smoothly (never jump back to 0 abruptly)
+        if (xPos <= -totalWidth / 2) {
+          xPos += totalWidth / 2;
+        }
+
+        controls.set({ x: xPos });
+        xPosRef.current = xPos; // Save latest position
+      }
+
+      animationFrame = requestAnimationFrame(tick);
+    };
+
+    animationFrame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [speed, controls, isHovering, brands]);
 
   return (
     <div
-      className={`relative w-full overflow-hidden ${
-        type === "big-text" ? "bg-black py-6" : "bg-white py-4"
-      }`}
+      className={`relative w-full overflow-hidden`}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
     >
-      {/* Gradient fade for big-text */}
       {type === "big-text" && (
         <>
           <div className="pointer-events-none absolute top-0 left-0 h-full w-16 bg-gradient-to-r from-black to-transparent z-10"></div>
@@ -34,30 +75,27 @@ const BrandMarquee: React.FC<BrandMarqueeProps> = ({
         </>
       )}
 
-      {/* The magic: two identical sets side-by-side */}
       <motion.div
+        ref={marqueeRef}
+        animate={controls}
         className={`flex ${
           type === "big-text" || type === "label"
             ? "gap-16 whitespace-nowrap"
-            : "gap-8"
+            : "gap-8 whitespace-nowrap"
         }`}
-        animate={{ x: ["0%", "-50%"] }}
-        transition={{
-          repeat: Infinity,
-          ease: "linear",
-          duration: speed,
-        }}
+        style={{ width: "max-content" }}
       >
         {marqueeItems.map((brand, idx) => (
           <div
-            key={idx}
-            className="flex-shrink-0 flex flex-col gap-15 items-center justify-center"
+            key={`${brand.name}-${idx}`}
+            className="flex-shrink-0 flex flex-col gap-1 items-center justify-center"
           >
             {type === "logo" && brand.logo ? (
               <img
                 src={brand.logo}
                 alt={brand.name}
-                className="h-36 w-auto mx-5 object-contain grayscale hover:grayscale-0 transition duration-300"
+                className="h-24 md:h-36 w-auto mx-5 object-contain grayscale hover:grayscale-0 transition duration-300"
+                loading="eager"
               />
             ) : type === "big-text" ? (
               <span className="text-white text-6xl md:text-8xl font-extrabold uppercase tracking-wide hover:text-yellow-400 transition-colors duration-300">
