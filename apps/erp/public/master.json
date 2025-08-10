@@ -5,6 +5,14 @@
                 "title": "Mandatory Details",
                 "fields": [
                     {
+                        "key": "id",
+                        "label": "ID",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": true
+                    },
+                    {
                         "key": "name",
                         "label": "Name",
                         "type": "textinput",
@@ -66,7 +74,7 @@
                 "title": "Address",
                 "fields": [
                     {
-                        "key": "id",
+                        "key": "add",
                         "label": "Address",
                         "type": "textinput",
                         "inTable": true,
@@ -168,7 +176,7 @@
                 "title": "Address",
                 "fields": [
                     {
-                        "key": "id",
+                        "key": "add",
                         "label": "Address",
                         "type": "textinput",
                         "inTable": true,
@@ -206,7 +214,7 @@
                 "title": "Address",
                 "fields": [
                     {
-                        "key": "id",
+                        "key": "add",
                         "label": "Address",
                         "type": "textinput",
                         "inTable": true,
@@ -309,259 +317,128 @@
                 "title": "Mandatory Details",
                 "fields": [
                     {
-                        "key": "name",
+                        "key": "id",
+                        "label": "id",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": true
+                    },
+                    {
+                        "key": "company_name",
+                        "label": "Company Name",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "abbr",
+                        "label": "Abbr",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "default_currency",
+                        "label": "Default Currency",
+                        "type": "dropdown",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false,
+                        "readApi": "api/resource/Currency",
+                        "updateApi": "api/resource/Currency",
+                        "createKey": "currency_name",
+                        "apiKey": "name"
+                    },
+                    {
+                        "key": "country",
+                        "label": "Country",
+                        "type": "dropdown",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false,
+                        "readApi": "api/resource/Country",
+                        "updateApi": "api/resource/Country",
+                        "createKey": "country_name",
+                        "apiKey": "name"
+                    },
+                    {
+                        "key": "gst_category",
+                        "label": "Gst Category",
+                        "type": "dropdownread",
+                        "options": [
+                            "Registered Regular",
+                            "Registered Composition",
+                            "Unregistered",
+                            "SEZ",
+                            "SEZ Over Seas",
+                            "SEZ Deemed Export",
+                            "SEZ UIN Holders",
+                            "SEZ Tax Deductor",
+                            "SEZ Tax Collector",
+                            "SEZ Input Service Distributor"
+                        ],
+                        "readApi": "",
+                        "updateApi": "",
+                        "createKey": "",
+                        "apiKey": "",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    }
+                ]
+            },
+            "Accounts": {
+                "title": "Accounts",
+                "fields": [
+                    {
+                        "key": "id",
+                        "label": "id",
+                        "type": "textinput",
+                        "inTable": false,
+                        "isForm": false,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "company_name",
                         "label": "Name",
                         "type": "textinput",
-                        "inTable": true,
-                        "isForm": true,
+                        "inTable": false,
+                        "isForm": false,
                         "isPrint": false
                     },
                     {
-                        "key": "date",
+                        "key": "abbr",
                         "label": "Mobile",
                         "type": "date",
-                        "inTable": true,
-                        "isForm": true,
+                        "inTable": false,
+                        "isForm": false,
                         "isPrint": false
                     },
                     {
-                        "key": "duedate",
+                        "key": "default_currency",
                         "label": "Whatsapp",
                         "type": "date",
-                        "inTable": true,
-                        "isForm": true,
+                        "inTable": false,
+                        "isForm": false,
                         "isPrint": false
                     },
                     {
-                        "key": "duedate",
+                        "key": "country",
                         "label": "Contact Person",
                         "type": "date",
-                        "inTable": true,
-                        "isForm": true,
+                        "inTable": false,
+                        "isForm": false,
                         "isPrint": false
                     },
                     {
-                        "key": "duedate",
+                        "key": "gst_category",
                         "label": "GSTIN",
                         "type": "date",
-                        "inTable": true,
-                        "isForm": true,
-                        "isPrint": false
-                    },
-                    {
-                        "key": "duedate",
-                        "label": "Email",
-                        "type": "date",
-                        "inTable": true,
-                        "isForm": true,
-                        "isPrint": false
-                    },
-                    {
-                        "key": "duedate",
-                        "label": "Contact Type",
-                        "type": "date",
-                        "inTable": true,
-                        "isForm": true,
-                        "isPrint": false
-                    }
-                ]
-            },
-            "address": {
-                "title": "Address",
-                "fields": [
-                    {
-                        "key": "id",
-                        "label": "Address",
-                        "type": "textinput",
-                        "inTable": true,
+                        "inTable": false,
                         "isForm": false,
-                        "isPrint": true
-                    },
-                    {
-                        "key": "partyname",
-                        "label": "Area-Road",
-                        "type": "textinput",
-                        "inTable": true,
-                        "isForm": true,
-                        "isPrint": true
-                    },
-                    {
-                        "key": "orderno",
-                        "label": "Order No",
-                        "type": "textinput",
-                        "inTable": true,
-                        "isForm": true,
-                        "isPrint": true
-                    },
-                    {
-                        "key": "stylename",
-                        "label": "Style Name",
-                        "type": "dropdown",
-                        "options": [],
-                        "inTable": true,
-                        "isForm": true,
-                        "isPrint": false
-                    },
-                    {
-                        "key": "invoiceno",
-                        "label": "Invoice No",
-                        "type": "dropdown",
-                        "options": [],
-                        "inTable": true,
-                        "isForm": true,
-                        "isPrint": true
-                    },
-                    {
-                        "key": "description",
-                        "label": "Description",
-                        "type": "textinput",
-                        "inTable": true,
-                        "isForm": true,
-                        "isPrint": false
-                    },
-                    {
-                        "key": "color",
-                        "label": "Color",
-                        "type": "textinput",
-                        "inTable": true,
-                        "isForm": true,
-                        "isPrint": false
-                    },
-                    {
-                        "key": "size",
-                        "label": "Size",
-                        "type": "textinput",
-                        "inTable": true,
-                        "isForm": true,
-                        "isPrint": false
-                    },
-                    {
-                        "key": "roll",
-                        "label": "Rolls",
-                        "type": "textinput",
-                        "inTable": true,
-                        "isForm": true,
-                        "isPrint": false
-                    },
-                    {
-                        "key": "quantity",
-                        "label": "Quantity",
-                        "type": "textinput",
-                        "inTable": true,
-                        "isForm": true,
-                        "isPrint": true
-                    },
-                    {
-                        "key": "price",
-                        "label": "Price",
-                        "type": "textinput",
-                        "inTable": true,
-                        "isForm": true,
-                        "isPrint": true
-                    },
-                    {
-                        "key": "action",
-                        "label": "Action",
-                        "inTable": true,
-                        "isForm": false,
-                        "isPrint": false
-                    }
-                ]
-            },
-            "logo": {
-                "title": "Address",
-                "fields": [
-                    {
-                        "key": "id",
-                        "label": "Address",
-                        "type": "textinput",
-                        "inTable": true,
-                        "isForm": false,
-                        "isPrint": true
-                    },
-                    {
-                        "key": "stylename",
-                        "label": "Style Name",
-                        "type": "dropdown",
-                        "options": [],
-                        "inTable": true,
-                        "isForm": true,
-                        "isPrint": false
-                    }
-                ]
-            },
-            "bank": {
-                "title": "Address",
-                "fields": [
-                    {
-                        "key": "id",
-                        "label": "Address",
-                        "type": "textinput",
-                        "inTable": true,
-                        "isForm": false,
-                        "isPrint": true
-                    },
-                    {
-                        "key": "partyname",
-                        "label": "Area-Road",
-                        "type": "textinput",
-                        "inTable": true,
-                        "isForm": true,
-                        "isPrint": true
-                    },
-                    {
-                        "key": "orderno",
-                        "label": "Order No",
-                        "type": "textinput",
-                        "inTable": true,
-                        "isForm": true,
-                        "isPrint": true
-                    },
-                    {
-                        "key": "stylename",
-                        "label": "Style Name",
-                        "type": "dropdown",
-                        "options": [],
-                        "inTable": true,
-                        "isForm": true,
-                        "isPrint": false
-                    }
-                ]
-            },
-            "Detailing": {
-                "title": "Address",
-                "fields": [
-                    {
-                        "key": "id",
-                        "label": "Address",
-                        "type": "textinput",
-                        "inTable": true,
-                        "isForm": false,
-                        "isPrint": true
-                    },
-                    {
-                        "key": "partyname",
-                        "label": "Area-Road",
-                        "type": "textinput",
-                        "inTable": true,
-                        "isForm": true,
-                        "isPrint": true
-                    },
-                    {
-                        "key": "orderno",
-                        "label": "Order No",
-                        "type": "textinput",
-                        "inTable": true,
-                        "isForm": true,
-                        "isPrint": true
-                    },
-                    {
-                        "key": "stylename",
-                        "label": "Style Name",
-                        "type": "dropdown",
-                        "options": [],
-                        "inTable": true,
-                        "isForm": true,
                         "isPrint": false
                     }
                 ]
@@ -590,7 +467,7 @@
                 ]
             }
         },
-          "style": {
+        "style": {
             "details": {
                 "title": "Invoice Details",
                 "fields": [

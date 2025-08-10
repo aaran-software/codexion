@@ -6,9 +6,10 @@ type CreateMenuProps = {
   onClose: () => void;
   onAdd: (item: string) => void;
   defaultValue: string;
+  label:string
 };
 
-function CreateMenu({ onClose, onAdd, defaultValue }: CreateMenuProps) {
+function CreateMenu({ onClose, onAdd, defaultValue, label }: CreateMenuProps) {
   const [newItem, setNewItem] = useState<string>(defaultValue);
   const [enterPressedOnce, setEnterPressedOnce] = useState(false);
 
@@ -50,7 +51,7 @@ function CreateMenu({ onClose, onAdd, defaultValue }: CreateMenuProps) {
       <div className="w-[50%] bg-background text-foreground p-5 rounded-md shadow-md border border-ring flex flex-col gap-5">
         <FloatingInput
           id="new-item-input"
-          label="Product"
+          label={label}
           ref={inputRef}
           type="text"
           placeholder="Enter new item"

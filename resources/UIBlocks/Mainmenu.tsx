@@ -23,7 +23,7 @@ type DynamicSubMenus = {
   [key: `subMenu${string}`]: SubMenuGroup | undefined;
 };
 
-interface MenuItem extends DynamicSubMenus {
+export interface MenuItem extends DynamicSubMenus {
   name: string;
   path:string;
   image: string;
@@ -31,7 +31,7 @@ interface MenuItem extends DynamicSubMenus {
   card: CardItems;
 }
 
-interface MenuWrapper {
+export interface MenuWrapper {
   menu: MenuItem;
 }
 
@@ -134,10 +134,10 @@ const Mainmenu: React.FC = () => {
               maxWidth: "calc(100vw - 16px)",
             }}
           >
-            <div className="flex flex-row w-max max-w-screen  px-2">
+            <div className="flex flex-row w-max max-w-screen">
               <div className="flex flex-col justify-between w-[300px] gap-3 px-3 py-2 h-full shrink-0">
                 <div>
-                  <h3 className="text-lg font-semibold">
+                  <h3 className="text-lg font-bold">
                     {settings.Mainmenu[hoveredIndex].menu.card.title}
                   </h3>
                   <p className="text-sm text-gray-600">
@@ -165,7 +165,7 @@ const Mainmenu: React.FC = () => {
                       key={key}
                       className="min-w-[180px] max-h-[400px] overflow-y-auto py-2 border-l border-ring/30 shrink-0"
                     >
-                      <li className="px-3 py-1 text-xs font-semibold text-foreground">
+                      <li className="px-3 py-1 font-bold text-lg text-foreground">
                         {group.title}
                       </li>
                       {group.items.map((item, i) => (
@@ -178,7 +178,7 @@ const Mainmenu: React.FC = () => {
                               setHoveredIndex(null);
                             }
                           }}
-                          className="cursor-pointer px-3 py-2 hover:underline hover:text-update rounded text-sm text-foreground/60"
+                          className="cursor-pointer px-3 py-2 hover:text-primary hover:bg-primary/10 font-medium text-md text-foreground/50"
                         >
                           {item.title}
                         </li>

@@ -37,7 +37,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const savedUser = localStorage.getItem("user");
 
     const verifyToken = async () => {
-      console.log("Verifying token...");
 
       if (savedToken && savedUser) {
         try {

@@ -13,6 +13,7 @@ import Button from "../../resources/components/button/Button";
 import apiClient from "../../resources/global/api/apiClients";
 import { useAppContext } from "../../apps/global/AppContaxt";
 import ZoomImage from "../components/image/ZoomImage";
+import FloatContact from "./contact/FloatContact";
 // Define types
 interface Field {
   id: string;
@@ -49,6 +50,7 @@ function ProductPage() {
   const [error, setError] = useState("");
   const [isPlaceOrder, setIsPlaceOrder] = useState(false);
   const navigate = useNavigate();
+  const productUrl = window.location.href; //purpose to send product URL to WhatsApp
 
   // const [offer] = useState([
   //   {
@@ -196,7 +198,7 @@ function ProductPage() {
                 onSelect={(index) => setSelectedImage(product.images![index])}
               />
             </div>
-            
+
             {/* main image */}
             <div className="block m-auto flex-1">
               <div className="w-full h-full min-w-[310px] min-h-[310px] max-w-[400px] max-h-[400px] mx-auto">
@@ -219,13 +221,41 @@ function ProductPage() {
                 onSelect={(index) => setSelectedImage(product.images![index])}
               />
             </div>
+            
+          </div>
+          <div className="mt-5">
+            <FloatContact
+              contacts={[
+                {
+                  id: "whatsapp",
+                  contact: "919543439311", // no '+' symbol, just country code + number
+                  imgPath: "/assets/svg/whatsapp.svg",
+                  defaultMessage: `Hello, I’m interested in this product. Could you please share more details? Product URL: ${productUrl}`,
+                  className: "!rounded !bg-primary/10",
+                },
+                {
+                  id: "phone",
+                  contact: "9894244450",
+                  imgPath: "/assets/svg/phone.svg",
+                },
+                {
+                  id: "email",
+                  contact: "info@techmedia.in", // just the username, no @
+                  imgPath: "/assets/svg/email.svg",
+                  defaultMessage: "Hello, I’m interested in this product. Could you please share more details? Product URL: ${productUrl}",
+                },
+              ]}
+              className=""
+              horizontal={true}
+              labelPosition="top"
+            />
           </div>
         </div>
 
         {/* Product Info */}
         <div className="space-y-4 px-2">
-          <h1 className="text-xl text-update font-semibold">{product.name}</h1>
-          <h1 className="text-SM text-foreground/80">{product.description}</h1>
+          <h1 className="text-2xl text-update font-semibold">{product.name}</h1>
+          <h1 className="text-md text-foreground/80">{product.description}</h1>
           <div className="text-sm text-foreground/50">
             <span className="bg-green-600 text-white text-xs w-max px-2 py-1 rounded">
               4 ★
@@ -289,6 +319,8 @@ function ProductPage() {
             `}
               label={"Buy Now"}
             />
+
+            
           </div>
           {/* Specifications */}
           <div className="mt-10 border border-ring/30 rounded-md p-5">
@@ -371,20 +403,19 @@ function ProductPage() {
             )}
           </div>
 
-          {/* Buttons */}
-
-          <div className="mt-10">
+          {/* <div className="mt-10">
             <RatingReviews />
-          </div>
+          </div> */}
         </div>
       </div>
 
       {/* Similar Products */}
-      <div className="mt-12">
+      <div className="mt-12 mx-2">
         <ProductCard
           title="Similar Items"
           api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
           ribbon={true}
+          id={"is_popular"}
         />
       </div>
       {isPlaceOrder && (

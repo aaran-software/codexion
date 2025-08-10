@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ImageButton from "../components/button/ImageBtn";
-// import frappeBaseApi from "../../resources/global/api/frappeBaseApi";
 import apiClient from "../../resources/global/api/apiClients";
 import { useAppContext } from "../../apps/global/AppContaxt";
 
@@ -15,12 +14,13 @@ export interface ProductItem {
 }
 
 interface ProductCardProps {
+  id: string;
   title: string;
-  api: string; // e.g. "/api/resource/Item"
+  api: string;
   ribbon?: boolean;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ title, api, ribbon }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ title, api, ribbon, id }) => {
 
   const {API_URL} =useAppContext();
 
@@ -118,7 +118,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ title, api, ribbon }) => {
         <h1 className="mt-2 font-bold text-foreground/80 text-[25px]">
           {title}
         </h1>
-        <p className="text-update text-lg mt-2 cursor-pointer hover:underline">
+        <p className="text-primary font-medium text-lg mt-2 cursor-pointer hover:underline" onClick={() => navigate(`/special/${id}`,{ state: { title } })}>
           More
         </p>
       </div>
@@ -214,10 +214,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ title, api, ribbon }) => {
                     </div>
                   </div>
 
-                  <p className="text-center text-sm mt-2 max-w-[250px] truncate">
+                  <p className="text-center text-md font-medium mt-2 max-w-[250px] text-foreground/60 truncate">
                     {product.name}
                   </p>
-                  <p className="text-center font-bold mt-1 text-base text-update">
+                  <p className="text-center text-xl font-bold mt-1">
                     ₹{product.price}
                   </p>
                 </div>

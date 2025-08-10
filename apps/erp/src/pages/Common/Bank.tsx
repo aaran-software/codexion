@@ -1,58 +1,23 @@
-import FormLayout from "../../../../../resources/components/common/FormLayout";
-import type { ApiList, Field } from "../../../../../resources/components/common/commonform";
-import { useState } from "react";
+import TableForm from "../../../../../resources/layouts/Form/TableForm";
+import { ApiList } from "../../../../../resources/components/common/commonform";
+import common from "../../../public/common.json";
 
-import Common from "../../../public/common.json";
+const formApi: ApiList = {
+  create: "/api/payment",
+  read: "/api/payment",
+  update: "/api/payment",
+  delete: "/api/payment",
+};
 
 function Bank() {
-  const fieldSection = Common.common.bank;
-  const head = Object.values(fieldSection)
-    .flatMap((section: any) => section.fields)
-    .filter((field: any) => field.inTable);
-
-  const groupedFields = Object.entries(fieldSection).map(
-    ([sectionKey, section]) => ({
-      title: section.title || sectionKey,
-      sectionKey,
-      fields: section.fields
-        .filter(
-          (field: any) =>
-            field.key !== "action" &&
-            field.key !== "id" &&
-            field.isForm === true
-        )
-        .map((field: any) => ({
-          id: field.key,
-          label: field.label,
-          type: (field.type || "textinput") as Field["type"],
-          className: "w-full",
-          errMsg: `Enter ${field.label}`,
-          ...(field.type?.includes("dropdown") && field.options
-            ? { options: field.options }
-            : {}),
-          readApi: field.readApi,
-          updateApi: field.updateApi,
-          apiKey: field.apiKey,
-          createKey: field.createKey,
-        })),
-    })
-  );
-  const printableFields = Object.values(fieldSection).flatMap((section: any) =>
-    section.fields.filter((field: any) => field.isPrint === true)
-  );
-  const [formApi] = useState<ApiList>({
-    create: "/api/resource/Customer",
-    read: "/api/resource/Customer",
-    update: "/api/resource/Customer",
-    delete: "/api/resource/Customer",
-  });
   return (
     <div>
-      <FormLayout
-        groupedFields={groupedFields}
-        head={head}
+      <TableForm
+        formName="Account Books"
         formApi={formApi}
-        printableFields={printableFields}
+        jsonPath={common}
+        fieldPath="common.bank"
+        multipleEntry={false}
       />
     </div>
   );

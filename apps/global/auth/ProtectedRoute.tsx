@@ -7,12 +7,9 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { API_METHOD } = useAppContext();
   const { token, isInitialized } = useAuth();
   const { user, loading } = useFrappeAuth();
-  console.log("3", user);
 
   if (API_METHOD === "FRAPPE") {
-    console.log("4", user);
-
-    if (!loading) {
+    if (loading) {
       return (
         <div className="flex items-center justify-center min-h-screen">
           <span className="text-lg font-medium">Loading frappe auth ...</span>
@@ -20,9 +17,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
       );
     }
 
-    console.log("1", user);
     if (!user) {
-      console.log("2", user);
       return <Navigate to="/" replace />;
     }
 
@@ -45,7 +40,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return <>{children}</>;
   }
 
-  // Fallback if API_METHOD doesn't match expected values
   return <>{children}</>;
 };
 

@@ -93,7 +93,7 @@
         ]
       }
     },
-    "countries": {
+    "country": {
       "details": {
         "title": "Pin Codes",
         "fields": [
@@ -202,7 +202,7 @@
         ]
       }
     },
-    "categories": {
+    "category": {
       "details": {
         "title": "Category",
         "fields": [
