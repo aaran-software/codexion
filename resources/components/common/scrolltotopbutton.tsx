@@ -19,14 +19,14 @@ function ScrollToTopButton() {
   return (
     showButton && (
       <div
-        className="fixed right-5 bottom-5 z-50 cursor-pointer bg-foreground  p-1 rounded-full shadow-lg hover:scale-105 transition-transform"
+        className="fixed right-5 bottom-5 z-50 cursor-pointer bg-foreground rounded-full shadow-lg hover:scale-105 transition-transform"
         onClick={scrollToTop}
       >
         <svg
           viewBox="-0.5 0 25 25"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="w-8 h-8"
+          className="w-12 h-12"
         >
           <g id="SVGRepo_iconCarrier">
             <path
