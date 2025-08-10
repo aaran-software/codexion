@@ -45,7 +45,7 @@ function UserSubMenu({ anchorRef, content, visible }: InvisibleSectionProps) {
   return createPortal(
   <div
     ref={dropdownRef}
-    className="absolute z-[100000] bg-background border border-ring/30 rounded-md shadow-lg text-sm min-w-[200px] max-w-[calc(100vw-16px)] max-h-[60vh] overflow-y-auto"
+    className="absolute z-[100000] bg-background border border-ring/30 rounded-md shadow-lg text-sm min-w-[200px] max-w-[calc(100vw-20px)] max-h-[60vh] overflow-y-hidden"
     style={{
       top: position.top,
       left: position.left,

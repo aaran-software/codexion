@@ -27,6 +27,15 @@ const SpecialCategory= () => {
   const { category } = useParams();
   const navigate = useNavigate();
 
+//   useEffect(() => {
+//   // Scroll to top whenever this page is opened
+//   window.scrollTo({
+//     top: 0,
+//     left: 0,
+//     behavior: "instant" // or "smooth" if you want animation
+//   });
+// }, []);
+
   const {id}=useParams();
   useEffect(() => {
     const fetchProducts = async () => {

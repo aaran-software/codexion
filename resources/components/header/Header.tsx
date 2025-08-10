@@ -39,6 +39,7 @@ type HeaderProps = {
   onNavigate: (path: string) => void;
   showMobileSearchInitial?: boolean;
 };
+// ...existing imports...
 
 export default function Header({
   logo,
@@ -59,6 +60,7 @@ export default function Header({
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const showLabel = windowWidth > 600;
   const [isOpen, setIsOpen] = useState(false);
+  const hoverTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -66,8 +68,18 @@ export default function Header({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleLoginMouseEnter = () => setShowLoginDropdown(true);
-  const handleLoginMouseLeave = () => setShowLoginDropdown(false);
+  const handleLoginMouseEnter = () => {
+    if (hoverTimeout.current) {
+      clearTimeout(hoverTimeout.current);
+    }
+    setShowLoginDropdown(true);
+  };
+
+  const handleLoginMouseLeave = () => {
+    hoverTimeout.current = setTimeout(() => {
+      setShowLoginDropdown(false);
+    }, 300); // Delay before closing the dropdown (300ms)
+  };
 
   const handleMenuClick = async (item: MenuItem) => {
     if (item.label === "Logout") {
@@ -78,6 +90,7 @@ export default function Header({
     }
     setShowLoginDropdown(false);
   };
+
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (loginRef.current && !loginRef.current.contains(e.target as Node)) {
@@ -223,7 +236,7 @@ export default function Header({
                     anchorRef={loginRef}
                     visible={showLoginDropdown}
                     content={
-                      <div className="w-[220px] flex flex-col rounded-md bg-background shadow-xl ring-1 ring-ring/30 p-2 space-y-1 text-sm transition-all transform duration-500">
+                      <div className="w-[220px] flex flex-col rounded-md bg-background shadow-xl ring-1 ring-ring/30 p-2 space-y-1 text-sm">
                         {menuItems.map((item, idx) => (
                           <ImageButton
                             key={idx}

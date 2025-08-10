@@ -38,7 +38,7 @@ function Home() {
   ];
 
   return (
-    <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
+    <Suspense  fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
       <Mainmenu />
       <BannerCarousel
         api={`api/resource/Product?fields=["name"]&filters=[["is_slider", "=", 1]]`}
@@ -49,7 +49,7 @@ function Home() {
           title="Popular Items"
           id={"is_popular"}
           api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
-          ribbon={true}
+          ribbon={false}
         />
       </div>
 

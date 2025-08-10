@@ -49,7 +49,7 @@
     {
       "menu": {
         "name": "Desktops",
-        "path":"Laptop",
+        "path":"Descktop",
         "image": "/assets/products/desktop.webp",
         "alt": "Desktops image",
         "subMenu": {
@@ -87,7 +87,7 @@
     {
       "menu": {
         "name": "PC Hardwares",
-        "path":"Laptop",
+        "path":"pc_haradware",
         "image": "/assets/products/hardware.webp",
         "alt": "PC Hardwares image",
         "subMenu": {
@@ -181,7 +181,7 @@
     {
       "menu": {
         "name": "Printer",
-        "path":"Laptop",
+        "path":"printer",
         "image": "/assets/products/printer.jpg",
         "alt": "Networking image",
         "subMenu": {
@@ -302,7 +302,7 @@
     {
       "menu": {
         "name": "Camera",
-        "path":"Laptop",
+        "path":"camera",
         "image": "/assets/products/camera.webp",
         "alt": "Camera image",
         "subMenu": {
@@ -332,7 +332,7 @@
     {
       "menu": {
         "name": "Networking",
-        "path":"Laptop",
+        "path":"networking",
         "image": "/assets/products/network.jpeg",
         "alt": "Networking image",
         "subMenu": {
@@ -379,7 +379,7 @@
     {
       "menu": {
         "name": "Server",
-        "path":"Laptop",
+        "path":"server",
         "image": "/assets/products/server.png",
         "alt": "Server image",
         "subMenu": {
@@ -422,7 +422,7 @@
     {
       "menu": {
         "name": "Accessories",
-        "path":"Laptop",
+        "path":"accessories",
         "image": "/assets/products/accessories.jpeg",
         "alt": "Accessories image",
         "subMenu": {

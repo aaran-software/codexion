@@ -178,7 +178,7 @@ const Mainmenu: React.FC = () => {
                               setHoveredIndex(null);
                             }
                           }}
-                          className="cursor-pointer px-3 py-2 hover:text-primary font-medium rounded text-md text-foreground/50"
+                          className="cursor-pointer px-3 py-2 hover:text-primary hover:bg-primary/10 font-medium text-md text-foreground/50"
                         >
                           {item.title}
                         </li>
