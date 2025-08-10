@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface ContactType {
   id: "whatsapp" | "phone" | "email" | "instagram" | string;
@@ -17,14 +17,28 @@ interface FloatContactProps {
 
 const platformColors: Record<string, string> = {
   whatsapp: "#25D366",
-  phone: "#4CAF50",
-  email: "#EA4335",
-  instagram:
-    "linear-gradient(45deg, #F58529, #DD2A7B, #8134AF, #515BD4)",
+  phone: "#2113e9ff",
+  email: "#a347a1",
+  instagram: "linear-gradient(45deg, #F58529, #DD2A7B, #8134AF, #515BD4)",
 };
 
-function FloatContact({ contacts, className, horizontal = false ,labelPosition="left" }: FloatContactProps) {
+function FloatContact({
+  contacts,
+  className,
+  horizontal = false,
+  labelPosition = "left",
+}: FloatContactProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [canHover, setCanHover] = useState(false);
+
+  // Detect if device supports hover
+  useEffect(() => {
+    const hoverMq = window.matchMedia("(hover: hover)");
+    setCanHover(hoverMq.matches);
+    const handler = (e: MediaQueryListEvent) => setCanHover(e.matches);
+    hoverMq.addEventListener("change", handler);
+    return () => hoverMq.removeEventListener("change", handler);
+  }, []);
 
   const handleClick = (contact: ContactType) => {
     if (contact.id === "whatsapp") {
@@ -49,37 +63,44 @@ function FloatContact({ contacts, className, horizontal = false ,labelPosition="
 
   return (
     <div
-      className={`flex ${horizontal ? "flex-row" : "flex-col"} gap-5 ${className}`}
+      className={`flex ${
+        horizontal ? "flex-row" : "flex-col"
+      } gap-5 ${className}`}
     >
       {contacts.map((item) => (
         <div key={item.id} className="relative flex items-center">
-          {/* Tooltip */}
-{hoveredId === item.id && (
-  <span
-    className={`absolute px-3 py-1 text-white text-sm rounded-md whitespace-nowrap transition-all duration-300
-      ${labelPosition === "left"
-        ? "right-14"
-        : labelPosition === "right"
-        ? "left-14"
-        : labelPosition === "top"
-        ? "bottom-full mb-2"
-        : "top-full mt-2"
-      }`}
-    style={{
-      background:
-        platformColors[item.id] || "rgba(0,0,0,0.7)",
-    }}
-  >
-    {item.contact}
-  </span>
-)}
-
+          {/* Tooltip - show only if hover is supported */}
+          {hoveredId === item.id && canHover && (
+            <span
+              className={`absolute px-3 py-1 text-white text-sm rounded-md whitespace-nowrap transition-all duration-300
+                ${
+                  labelPosition === "left"
+                    ? "right-14"
+                    : labelPosition === "right"
+                    ? "left-14"
+                    : labelPosition === "top"
+                    ? "bottom-full mb-2"
+                    : "top-full mt-2"
+                }`}
+              style={{
+                background: platformColors[item.id] || "rgba(0,0,0,0.7)",
+              }}
+            >
+              {item.contact}
+            </span>
+          )}
 
           {/* Icon button */}
           <button
-            onClick={() => handleClick(item)}
-            onMouseEnter={() => setHoveredId(item.id)}
-            onMouseLeave={() => setHoveredId(null)}
+            onClick={() => {
+              setHoveredId(null); // hide tooltip immediately on click/tap
+              handleClick(item);
+            }}
+            onMouseEnter={() => canHover && setHoveredId(item.id)}
+            onMouseLeave={() => canHover && setHoveredId(null)}
+            onTouchStart={() => {
+              setHoveredId(null); // hide tooltip immediately on touch start
+            }}
             className={`p-2 rounded-full shadow-md hover:scale-105 transition bg-white cursor-pointer ${item.className}`}
           >
             <img src={item.imgPath} alt={item.id} className="w-8 h-8" />

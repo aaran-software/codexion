@@ -83,8 +83,8 @@ function Home() {
           id={"is_popular"}
         />
       </div>
-      <div className="my-20">
-        <BrandMarquee type="logo" brands={brands} speed={10} />
+      <div className="my-10 py-10 md:py-15 bg-primary/10 ">
+        <BrandMarquee type="logo" brands={brands} speed={90} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-15 md:gap-5 px-[5%]">
