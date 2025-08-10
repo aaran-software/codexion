@@ -48,7 +48,7 @@ function Home() {
         api={`api/resource/Product?fields=["name"]&filters=[["is_slider", "=", 1]]`}
         delay={6000}
       />
-      <div className="px-[5%]">
+      <div className="px-[5%] mt-15">
         <ProductCard
           title="Popular Items"
           id={"is_popular"}
@@ -57,7 +57,7 @@ function Home() {
         />
       </div>
 
-      <div className="flex flex-col md:flex-row gap-5 px-[5%]">
+      <div className="flex flex-col md:flex-row gap-5 mt-15 px-[5%]">
         <GroupProductCard
           title={"Hot Gadgets Today"}
           api={`api/resource/Product?fields=["name"]&filters=[["top_rated", "=", 1]]`}
@@ -69,21 +69,21 @@ function Home() {
           id={"is_discount"}
         />
       </div>
-      <div className=" py-5">
+      <div className=" py-5 mt-20">
         <AdverthismentBanner
           api={`api/resource/Product?fields=["name"]&filters=[["is_slider", "=", 1]]`}
           delay={6000}
         />
       </div>
 
-      <div className="px-[5%]">
+      <div className="px-[5%] mt-5">
         <ProductCard
           title="Laptops"
           api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
           id={"is_popular"}
         />
       </div>
-      <div className="my-10">
+      <div className="my-20">
         <BrandMarquee type="logo" brands={brands} speed={20} />
       </div>
 
@@ -102,14 +102,12 @@ function Home() {
           <PromotionSection image={"/assets/Promotion/ads3.png"} />
         </div>
       </div>
-      <ScrollAdverthisment
-        title="Featured Brands"
-        api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
-      />
-      {/* <ProductCard2
-        title="Popular Items"
-        api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
-      /> */}
+      <div className="my-20">
+        <ScrollAdverthisment
+          title="Featured Brands"
+          api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
+        />
+      </div>
       <FloatContact
         contacts={[
           {
@@ -123,7 +121,7 @@ function Home() {
             contact: "9894244450",
             imgPath: "/assets/svg/phone.svg",
           },
-           {
+          {
             id: "email",
             contact: "info@techmedia.in", // just the username, no @
             imgPath: "/assets/svg/email.svg",

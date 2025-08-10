@@ -62,7 +62,7 @@ function FloatContact({ contacts, className }: FloatContactProps) {
           {/* Icon button */}
           <button
             onClick={() => handleClick(item)}
-            className={`p-2 rounded-full shadow-md hover:scale-105 transition bg-white ${item.className}`}
+            className={`p-2 rounded-full shadow-md hover:scale-105 transition bg-white cursor-pointer ${item.className}`}
           >
             <img src={item.imgPath} alt={item.id} className="w-8 h-8" />
           </button>
