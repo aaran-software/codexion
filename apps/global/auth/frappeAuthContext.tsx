@@ -11,7 +11,7 @@ interface AuthContextType {
   login: (usr: string, pwd: string) => Promise<void>;
   logout: () => Promise<void>;
   loading: boolean;
-   setUser: React.Dispatch<React.SetStateAction<string | null>>;
+  setUser: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -19,7 +19,7 @@ const AuthContext = createContext<AuthContextType>({
   login: async () => {},
   logout: async () => {},
   loading: false,
-   setUser: () => {},
+  setUser: () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -45,31 +45,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [API_URL]); // ✅ Only runs when API URL changes, not on user change
 
   const login = async (usr: string, pwd: string) => {
-  setLoading(true);
-  try {
-    await loginFrappe(usr, pwd);
-    await checkUser();
-  } catch (e) {
-    setUser(null);
-    throw e; // Pass error upwards
-  } finally {
-    setLoading(false);
-  }
-};
+    setLoading(true);
+    try {
+      await loginFrappe(usr, pwd);
+      await checkUser();
+    } catch (e) {
+      setUser(null);
+      throw e; // Pass error upwards
+    } finally {
+      setLoading(false);
+    }
+  };
 
-const logout = async () => {
-  setLoading(true);
-  try {
-    await logoutFrappe();
-    setUser(null);
-    await checkUser();
-  } catch (e) {
-    // Optionally show error
-  } finally {
-    setLoading(false);
-  }
-};
-
+  const logout = async () => {
+    setLoading(true);
+    try {
+      await logoutFrappe();
+      setUser(null);
+      await checkUser();
+    } catch (e) {
+      // Optionally show error
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <AuthContext.Provider value={{ user, login, logout, loading, setUser }}>
@@ -77,7 +76,6 @@ const logout = async () => {
     </AuthContext.Provider>
   );
 }
-
 
 export function useFrappeAuth() {
   return useContext(AuthContext);
