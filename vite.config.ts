@@ -39,7 +39,7 @@ export default defineConfig(({mode}) => {
         },
         server: {
             port: Number(env.APP_PORT) || 3001,
-            allowedHosts: ['shop.aaranerp.com'],
+            allowedHosts: ['erp.tmnext.in'],
             host: true
 
         },
