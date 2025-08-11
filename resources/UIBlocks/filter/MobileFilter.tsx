@@ -10,13 +10,20 @@ type DropdownType = {
   apiKey?: string;  // optional API key to extract data
 };
 
+type PriceRange = {
+  id: number;
+  label: string;
+  min: number;
+  max: number;
+};
+
 type FilterProps = {
   dropdowns: DropdownType[];
   selectedFilters: FiltersType;
   setSelectedFilters: React.Dispatch<React.SetStateAction<FiltersType>>;
-  selectedPrice: number | null;
-  setSelectedPrice: React.Dispatch<React.SetStateAction<number | null>>;
   maxPrice: number;
+  selectedPriceRange: number | null;
+  setSelectedPriceRange: React.Dispatch<React.SetStateAction<number | null>>;
   invoice: boolean;
   setInvoice: React.Dispatch<React.SetStateAction<boolean>>;
   availability: boolean;
@@ -28,15 +35,49 @@ const MobileFilter = ({
   dropdowns,
   selectedFilters,
   setSelectedFilters,
-  selectedPrice,
-  setSelectedPrice,
   maxPrice,
+  selectedPriceRange,
+  setSelectedPriceRange,
   invoice,
   setInvoice,
   availability,
   setAvailability,
   onClose
 }: FilterProps) => {
+  // same price range calculation as desktop
+  const priceRanges: PriceRange[] = [
+    {
+      id: 1,
+      label: `Up to ₹${Math.round(maxPrice * 0.25)}`,
+      min: 0,
+      max: maxPrice * 0.25,
+    },
+    {
+      id: 2,
+      label: `₹${Math.round(maxPrice * 0.25)} - ₹${Math.round(maxPrice * 0.5)}`,
+      min: maxPrice * 0.25,
+      max: maxPrice * 0.5,
+    },
+    {
+      id: 3,
+      label: `₹${Math.round(maxPrice * 0.5)} - ₹${Math.round(maxPrice * 0.75)}`,
+      min: maxPrice * 0.5,
+      max: maxPrice * 0.75,
+    },
+    {
+      id: 4,
+      label: `₹${Math.round(maxPrice * 0.75)} - ₹${Math.round(maxPrice * 0.9)}`,
+      min: maxPrice * 0.75,
+      max: maxPrice * 0.9,
+    },
+    {
+      id: 5,
+      label: `Above ₹${Math.round(maxPrice * 0.9)}`,
+      min: maxPrice * 0.9,
+      max: Infinity,
+    },
+  ];
+
   return (
     <div className="md:hidden fixed inset-0 bg-white z-50 flex flex-col">
       {/* Header */}
@@ -49,7 +90,7 @@ const MobileFilter = ({
         />
       </div>
 
-      {/* Content area */}
+      {/* Content */}
       <div className="flex-1 overflow-y-auto p-4">
         {/* Dropdowns */}
         <div className="flex flex-col gap-4">
@@ -91,15 +132,22 @@ const MobileFilter = ({
         {/* Price filter */}
         <div className="mt-6">
           <label className="text-md font-semibold">Price</label>
-          <input
-            type="range"
-            min={0}
-            max={maxPrice}
-            value={selectedPrice ?? maxPrice}
-            onChange={(e) => setSelectedPrice(Number(e.target.value))}
-            className="w-full mt-2"
-          />
-          <div className="text-sm">Up to ₹{selectedPrice}</div>
+          <div className="flex flex-col gap-2 mt-2">
+            {priceRanges.map((range) => (
+              <label key={range.id} className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={selectedPriceRange === range.id}
+                  onChange={() =>
+                    setSelectedPriceRange((prev) =>
+                      prev === range.id ? null : range.id
+                    )
+                  }
+                />
+                {range.label}
+              </label>
+            ))}
+          </div>
         </div>
 
         {/* Other filters */}
@@ -126,7 +174,7 @@ const MobileFilter = ({
       {/* Footer */}
       <div className="p-4 border-t">
         <button
-          className="w-full bg-orange-500 text-white p-2 rounded"
+          className="w-full bg-primary text-white p-2 rounded"
           onClick={onClose}
         >
           Apply
