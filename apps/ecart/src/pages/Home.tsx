@@ -16,6 +16,9 @@ const GroupProductCard = lazy(
 const AdverthismentBanner = lazy(
   () => import("../../../../resources/UIBlocks/Promotion/AdverthismentBanner")
 );
+const CustomAdverthismentBanner = lazy(
+  () => import("../../../../resources/UIBlocks/Promotion/CustomAdverthismentBanner")
+);
 const PromotionSection = lazy(
   () => import("../../../../resources/UIBlocks/Promotion/PromotionSection")
 );
@@ -48,6 +51,12 @@ function Home() {
         api={`api/resource/Product?fields=["name"]&filters=[["is_slider", "=", 1]]`}
         delay={6000}
       />
+      <div className=" py-5 mt-20">
+        <CustomAdverthismentBanner
+          api={`api/resource/Product?fields=["name"]&filters=[["is_slider", "=", 1]]`}
+          delay={6000}
+        />
+      </div>
       <div className="px-[5%] mt-15">
         <ProductCard
           title="Popular Items"
@@ -128,7 +137,7 @@ function Home() {
             defaultMessage: "Hello, I’m interested in your product.",
           },
         ]}
-        className="fixed bottom-23 right-5 z-[100000]"
+        className="fixed bottom-28 right-5 z-[100000]"
       />
     </Suspense>
   );

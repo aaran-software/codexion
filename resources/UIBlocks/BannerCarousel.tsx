@@ -210,7 +210,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
             {/* Right: Text Content */}
             <div className="w-1/2 h-full flex flex-col justify-center items-start p-4 relative">
               <h2
-                className={`text-2xl md:text-3xl lg:text-5xl font-bold text-black/80 mb-2 uppercase line-clamp-2 ${
+                className={`text-sm sm:text-lg pr-2 md:text-3xl lg:text-5xl font-bold text-foreground mb-2 uppercase line-clamp-2 ${
                   index === activeIndex
                     ? "animate__animated animate__fadeInDown"
                     : ""
@@ -219,7 +219,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
                 {slide.title}
               </h2>
               <h2
-                className={`text-sm md:text-xl text-black/80 mt-3 mb-2 line-clamp-2 ${
+                className={`text-sm md:text-lg pr-2 text-foreground/70 mt-3 mb-2 line-clamp-2 ${
                   index === activeIndex
                     ? "animate__animated animate__fadeInUp"
                     : ""
@@ -229,7 +229,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
               </h2>
               {slide.price && (
                 <p
-                  className={`text-lg text-black/80 md:text-2xl font-semibold mt-3 ${
+                  className={`text-sm sm:text-md text-black/80 md:text-2xl font-semibold mt-3 ${
                     index === activeIndex
                       ? "animate__animated animate__fadeInUp"
                       : ""
@@ -252,7 +252,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
               )}
 
               <button
-                className={`mt-4 px-7 py-3 bg-primary text-white text-lg font-semibold md:text-2xl rounded-sm transition cursor-pointer ${
+                className={`mt-4 px-7 py-3 bg-primary whitespace-nowrap text-white text-lg font-semibold md:text-2xl rounded-sm transition cursor-pointer ${
                   index === activeIndex
                     ? "animate__animated animate__zoomIn"
                     : ""
