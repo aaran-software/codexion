@@ -72,9 +72,22 @@ export default function GlobalSearch({
       }
 
       try {
-        const searchFilter = ["name", "like", `%${value}%`];
+        // Split by space and remove empty words
+        const keywords = value
+          .trim()
+          .split(/\s+/)
+          .filter((word) => word.length > 0);
+
+        // Build filters: each keyword must match the name
+        // [["name","like","%Dell%"], ["name","like","%i5%"], ...]
+        const filtersArray = keywords.map((word) => [
+          "name",
+          "like",
+          `%${word}%`,
+        ]);
+
         const filtersParam = `filters=${encodeURIComponent(
-          JSON.stringify([searchFilter])
+          JSON.stringify(filtersArray)
         )}`;
 
         const url = `${onSearchApi}${

@@ -413,7 +413,7 @@ function ProductPage() {
         <ProductCard
           title="Similar Items"
           api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
-          ribbon={true}
+          ribbon={false}
           id={"is_popular"}
         />
       </div>
