@@ -31,6 +31,41 @@ body::-webkit-scrollbar {
   animation: scroll-text 15s linear infinite;
 }
 
+
+@keyframes marquee-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-up {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+/* Horizontal scroll */
+.animate-marquee-left {
+  animation: marquee-left 20s linear infinite;
+}
+
+/* Vertical scroll */
+.animate-marquee-up {
+  animation: marquee-up 20s linear infinite;
+}
+
+/* Optional reverse direction */
+.direction-reverse {
+  animation-direction: reverse;
+}
+
+
 @keyframes scroll-text {
   from {
     transform: translateX(0%);
@@ -40,6 +75,14 @@ body::-webkit-scrollbar {
   }
 }
 
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee linear infinite;
+}
 
 
 @keyframes floatFadeIn {
@@ -158,7 +201,7 @@ body::-webkit-scrollbar {
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: #a347a1;
+  --primary: #8F1F8D;
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -230,7 +273,7 @@ body::-webkit-scrollbar {
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: #a347a1;
+  --primary: #8F1F8D;
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);

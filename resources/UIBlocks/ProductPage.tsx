@@ -223,7 +223,7 @@ function ProductPage() {
             </div>
             
           </div>
-          <div className="mt-5">
+          <div className="mt-5 flex justify-center">
             <FloatContact
               contacts={[
                 {
@@ -231,17 +231,16 @@ function ProductPage() {
                   contact: "919543439311", // no '+' symbol, just country code + number
                   imgPath: "/assets/svg/whatsapp.svg",
                   defaultMessage: `Hello, I’m interested in this product. Could you please share more details? Product URL: ${productUrl}`,
-                  className: "!rounded !bg-primary/10",
                 },
                 {
                   id: "phone",
                   contact: "9894244450",
-                  imgPath: "/assets/svg/phone.svg",
+                  imgPath: "/assets/svg/Mobile.svg",
                 },
                 {
                   id: "email",
                   contact: "info@techmedia.in", // just the username, no @
-                  imgPath: "/assets/svg/email.svg",
+                  imgPath: "/assets/svg/mail.svg",
                   defaultMessage: "Hello, I’m interested in this product. Could you please share more details? Product URL: ${productUrl}",
                 },
               ]}
@@ -254,7 +253,7 @@ function ProductPage() {
 
         {/* Product Info */}
         <div className="space-y-4 px-2">
-          <h1 className="text-2xl text-update font-semibold">{product.name}</h1>
+          <h1 className="text-2xl font-semibold">{product.name}</h1>
           <h1 className="text-md text-foreground/80">{product.description}</h1>
           <div className="text-sm text-foreground/50">
             <span className="bg-green-600 text-white text-xs w-max px-2 py-1 rounded">

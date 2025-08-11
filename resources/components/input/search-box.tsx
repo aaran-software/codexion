@@ -158,7 +158,7 @@ export default function GlobalSearch({
               {recentSearches.map((product, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center gap-5 p-2 hover:bg-primary/10 cursor-pointer border-b border-ring/30 last:border-0"
+                  className="flex items-center gap-5 p-2 group hover:bg-primary/10 hover:text-primary hover:font-semibold transform transition-all duration-300 ease-in-out cursor-pointer border-b border-ring/30 last:border-0"
                   onClick={() => handleSelect(product)}
                 >
                   {product.imageUrl && (
@@ -168,7 +168,9 @@ export default function GlobalSearch({
                       className="w-12 lg:w-18 h-12 lg:h-18 object-cover rounded"
                     />
                   )}
-                  <span className="text-foreground/50 hover:text-primary line-clamp-2">{product.name}</span>
+                  <span className="text-foreground/50 group-hover:text-primary transition-all duration-500 ease-in-out line-clamp-2">
+                    {product.name}
+                  </span>
                 </div>
               ))}
             </div>
@@ -180,7 +182,7 @@ export default function GlobalSearch({
               {results.map((product) => (
                 <div
                   key={product.id}
-                  className="flex items-center gap-5 p-2 hover:bg-primary/10 cursor-pointer border-b border-ring/30 last:border-0"
+                  className="flex items-center gap-5 p-2 group hover:bg-primary/10 hover:font-semibold transform transition-all duration-300 cursor-pointer border-b border-ring/30 last:border-0"
                   onClick={() => handleSelect(product)}
                 >
                   {product.imageUrl && (
@@ -190,9 +192,13 @@ export default function GlobalSearch({
                       className="w-12 lg:w-18 h-12 lg:h-18 object-cover rounded"
                     />
                   )}
-                  <span className="text-foreground/70 hover:text-primary line-clamp-2">{product.name}</span>
+                  <span className="text-foreground/70 group-hover:text-primary line-clamp-2">
+                    {product.name}
+                  </span>
                   {product.price !== undefined && (
-                    <span className="ml-auto font-medium">₹{product.price}</span>
+                    <span className="ml-auto group-hover:text-primary font-medium">
+                      ₹{product.price}
+                    </span>
                   )}
                 </div>
               ))}
