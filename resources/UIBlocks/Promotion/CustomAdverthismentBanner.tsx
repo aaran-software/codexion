@@ -2,6 +2,7 @@ import ImageButton from "../../components/button/ImageBtn";
 import React, { useState, useEffect, useRef } from "react";
 import apiClient from "../../../resources/global/api/apiClients";
 import { useAppContext } from "../../../apps/global/AppContaxt";
+import Button from "../../../resources/components/button/Button";
 
 interface SlideContent {
   image: string;
@@ -171,24 +172,175 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
               index === activeIndex ? "opacity-100 z-10" : "opacity-0 z-0"
             }`}
           >
-            {slide.position === 1 ? (
-              <div className="w-full h-full flex items-center justify-center bg-primary/10">
-                <div className="text-center">
-                  <h2 className="text-2xl font-bold">{slide.title}</h2>
-                  {slide.description && (
-                    <p className="mt-2 text-lg">{slide.description}</p>
-                  )}
-                  {slide.price && (
-                    <p className="mt-2 text-xl font-semibold">
-                      ${slide.price.toFixed(2)}
-                    </p>
-                  )}
-                  {slide.quote && (
-                    <blockquote className="mt-4 italic">
-                      "{slide.quote}"
-                    </blockquote>
-                  )}
+            {index === 0 ? (
+              // {slide.position === 1 ? (
+              <div className="w-full h-[350px] flex items-center justify-center relative">
+                {/* Background Image */}
+                <img
+                  src="/assets/Promotion/banner_bg.jpg"
+                  alt={`Slide ${index}`}
+                  className="h-full w-full object-cover"
+                />
+
+                {/* Overlay Dark Layer */}
+                <div className="absolute inset-0 bg-black/10"></div>
+
+                {/* Left Side Content */}
+                <div className="absolute left-10 sm:left-25 lg:left-60 flex flex-col gap-3 right-1/2 pr-2 top-1/2 -translate-y-1/2 text-white">
+                  <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold text-foreground">
+                    Power Meets Portability
+                  </p>
+                  <p className="mt-5 text-xs sm:text-sm md:text-lg lg:text-lg text-purple-500">
+                    Slim, stylish, and powerful — the perfect blend of
+                    performance and portability.
+                  </p>
+                  <p className="mt-2 text-xl lg:text-5xl font-bold text-foreground text-right">
+                    ₹54,999
+                  </p>
+                  <Button
+                    label="Shop Now"
+                    className="border border-ring/30 w-max text-primary"
+                  />
                 </div>
+
+                {/* Foreground Product Image */}
+                <img
+                  src="/assets/products/laptop2.png"
+                  alt={`Slide ${index} product`}
+                  className="absolute right-1 sm:right-1/18 md:right-1/15 lg:right-1/8 top-1/2 -translate-y-1/2 max-h-[50%] sm:max-h-[60%] lg:max-h-[80%] object-scale-down"
+                />
+
+                {/* Centered Blockquote at Bottom */}
+                <blockquote className="absolute bottom-4 left-1/2 -translate-x-1/2 italic text-sm md:text-lg lg:text-xl font-bold text-foreground text-center whitespace-nowrap">
+                  "Your canvas, your rules."
+                </blockquote>
+              </div>
+            ) : index === 1 ? (
+              <div className="w-full h-[350px] flex items-center justify-center relative">
+                {/* Background Image */}
+                <img
+                  src="/assets/products/rogbg.png"
+                  alt={`Slide ${index}`}
+                  className="h-full w-full object-fit lg:object-cover"
+                />
+
+                {/* Bottom Content Section with dimmed background */}
+                <div className="absolute bottom-0 left-0 w-full bg-black/60 px-[10%] py-4 flex flex-row gap-6 items-center text-white">
+                  {/* Left Column */}
+                  <div className="flex-1">
+                    <p className="text-lg sm:text-2xl font-bold text-background">
+                      Power Meets
+                    </p>
+                    <p className="mt-2 text-xs sm:text-sm md:text-md text-background">
+                      Slim, stylish, and powerful
+                    </p>
+                    <p className="mt-2 text-xl font-bold text-background">
+                      ₹54,999
+                    </p>
+                  </div>
+
+                  {/* Right Column */}
+                  <div className="flex-1">
+                    <blockquote className="italic text-sm md:text-lg lg:text-xl font-bold text-background text-right">
+                      "Stay ahead, no matter where you go."
+                    </blockquote>
+                  </div>
+                </div>
+              </div>
+            ) : index === 2 ? (
+              <div className="w-full h-[350px] flex items-center justify-center relative">
+                {/* Background Image */}
+                <img
+                  src="/assets/Promotion/banner_bg.jpg"
+                  alt={`Slide ${index}`}
+                  className="h-full w-full object-cover"
+                />
+
+                {/* Overlay Dark Layer */}
+                <div className="absolute inset-0 bg-black/10"></div>
+
+                {/* Foreground Product Image - positioned inside relative container */}
+                <img
+                  src="/assets/products/laptop.png"
+                  alt={`Slide ${index} product`}
+                  className="absolute left-5 sm:left-1/6 lg:left-1/5 top-1/2 -translate-y-1/2 max-h-[30%] sm:max-h-[40%] lg:max-h-[80%] object-contain"
+                />
+
+                {/* Optional Right Side Content */}
+                <div className="absolute lg:right-40 flex flex-col gap-3 left-1/2 pr-2 top-1/2 -translate-y-1/2 text-white">
+                  {/* {slide.title && ( */}
+                  {/* <p className="mt-2 text-lg">{slide.title}</p> */}
+                  <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold text-foreground">
+                    Power Meets Portability
+                  </p>
+                  {/* )} */}
+                  {/* {slide.description && ( */}
+                  {/* <p className="mt-2 text-lg">{slide.description}</p> */}
+                  <p className="mt-2 text-xs sm:text-sm md:text-lg lg:text-lg text-purple-500">
+                    Experience blazing-fast performance, stunning visuals, and
+                    all-day battery life — perfect for work, play, and
+                    everything in between.
+                  </p>
+                  {/* )} */}
+                  {/* {slide.price && ( */}
+                  {/* <p className="mt-2 text-xl font-bold">${slide.price}</p> */}
+                  <p className="mt-2 text-xl font-bold text-foreground">
+                    ₹54,999
+                  </p>
+                  {/* )} */}
+                  {/* {slide.quote && ( */}
+                  <blockquote className="mt-4 italic text-sm md:text-lg lg:text-xl font-bold text-foreground">
+                    {/* "{slide.quote}" */}
+                    "Stay ahead, no matter where you go."
+                  </blockquote>
+                  <Button
+                    label="Shop Now"
+                    className="border border-ring/30 w-max text-primary"
+                  />
+                  {/* )} */}
+                </div>
+              </div>
+            ) : index === 3 ? (
+              <div className="w-full h-[350px] flex items-center justify-center relative">
+                {/* Background Image */}
+                <img
+                  src="/assets/Promotion/banner_bg.jpg"
+                  alt={`Slide ${index}`}
+                  className="h-full w-full object-cover"
+                />
+
+                {/* Overlay Dark Layer */}
+                <div className="absolute inset-0 bg-black/10"></div>
+
+                {/* Left Side Content */}
+                <div className="absolute left-10 sm:left-25 lg:left-60 flex flex-col gap-3 right-1/2 pr-2 top-1/2 -translate-y-1/2 text-white">
+                  <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold text-foreground">
+                    Power Portability
+                  </p>
+                  <p className="mt-5 text-xs sm:text-sm md:text-lg lg:text-lg text-purple-500">
+                    Slim, stylish, and powerful — the perfect blend of
+                    performance and portability.
+                  </p>
+                  <p className="mt-2 text-xl lg:text-5xl font-bold text-foreground">
+                    ₹54,999
+                  </p>
+                  <Button
+                    label="Shop Now"
+                    className="border border-ring/30 w-max text-primary"
+                  />
+                </div>
+
+                {/* Foreground Product Image */}
+                <img
+                  src="/assets/products/dell.png"
+                  alt={`Slide ${index} product`}
+                  className="absolute right-1 sm:right-1/18 md:right-1/15 lg:right-1/8 top-1/2 -translate-y-1/2 max-h-[50%] sm:max-h-[60%] lg:max-h-[80%] object-scale-down"
+                />
+
+                {/* Centered Blockquote at Bottom */}
+                <blockquote className="absolute bottom-4 left-1/2 -translate-x-1/2 italic text-sm md:text-lg lg:text-xl font-bold text-foreground text-center whitespace-nowrap">
+                  "Your canvas, your rules."
+                </blockquote>
               </div>
             ) : (
               <div className="w-full h-[350px] flex items-center justify-center relative">
@@ -210,24 +362,36 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                 />
 
                 {/* Optional Right Side Content */}
-                <div className="absolute lg:right-40 left-1/2 pr-2 top-1/2 -translate-y-1/2 text-white">
+                <div className="absolute lg:right-40 flex flex-col gap-3 left-1/2 pr-2 top-1/2 -translate-y-1/2 text-white">
                   {/* {slide.title && ( */}
-                   {/* <p className="mt-2 text-lg">{slide.title}</p> */}
-                    <p className="text-lg lg:text-3xl font-bold text-foreground">Power Meets Portability</p>
+                  {/* <p className="mt-2 text-lg">{slide.title}</p> */}
+                  <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold text-foreground">
+                    Power Meets Portability
+                  </p>
                   {/* )} */}
                   {/* {slide.description && ( */}
                   {/* <p className="mt-2 text-lg">{slide.description}</p> */}
-                  <p className="mt-2 text-xs mg:text-lg lg:text-lg text-purple-500">Experience blazing-fast performance, stunning visuals, and all-day battery life — perfect for work, play, and everything in between.</p>
+                  <p className="mt-2 text-xs sm:text-sm md:text-lg lg:text-lg text-purple-500">
+                    Experience blazing-fast performance, stunning visuals, and
+                    all-day battery life — perfect for work, play, and
+                    everything in between.
+                  </p>
                   {/* )} */}
                   {/* {slide.price && ( */}
-                    {/* <p className="mt-2 text-xl font-bold">${slide.price}</p> */}
-                    <p className="mt-2 text-xl font-bold text-foreground">₹54,999</p>
+                  {/* <p className="mt-2 text-xl font-bold">${slide.price}</p> */}
+                  <p className="mt-2 text-xl font-bold text-foreground">
+                    ₹54,999
+                  </p>
                   {/* )} */}
                   {/* {slide.quote && ( */}
-                  <blockquote className="mt-4 italic text-xl font-bold text-foreground">
+                  <blockquote className="mt-4 italic text-sm md:text-lg lg:text-xl font-bold text-foreground">
                     {/* "{slide.quote}" */}
-                    "Goog Day"
+                    "Ready when you are."
                   </blockquote>
+                  <Button
+                    label="Shop Now"
+                    className="border border-ring/30 w-max text-primary"
+                  />
                   {/* )} */}
                 </div>
               </div>
@@ -237,7 +401,7 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
       </div>
 
       {/* Indicators */}
-      <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
+      {/* <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
         {slides.map((_, index) => (
           <button
             key={index}
@@ -247,10 +411,11 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
             }`}
           />
         ))}
-      </div>
+      </div> */}
 
       {/* Navigation Buttons */}
-      <ImageButton
+
+      {/* <ImageButton
         onClick={() =>
           goToSlide(activeIndex === 0 ? slides.length - 1 : activeIndex - 1)
         }
@@ -261,7 +426,7 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
         onClick={() => goToSlide((activeIndex + 1) % slides.length)}
         className="absolute top-1/2 right-5 lg:right-10 -translate-y-1/2 bg-black/30 text-white p-2 sm:p-4 !rounded-full hover:bg-black/30 z-20 hidden md:block"
         icon={"right"}
-      />
+      /> */}
     </div>
   );
 };

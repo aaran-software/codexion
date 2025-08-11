@@ -10,14 +10,9 @@ const BannerCarousel = lazy(
 const GroupProductCard = lazy(
   () => import("../../../../resources/UIBlocks/GroupProductCard")
 );
-// const ProductCard2 = lazy(
-//   () => import("../../../../resources/UIBlocks/ProductCard2")
-// );
-const AdverthismentBanner = lazy(
-  () => import("../../../../resources/UIBlocks/Promotion/AdverthismentBanner")
-);
 const CustomAdverthismentBanner = lazy(
-  () => import("../../../../resources/UIBlocks/Promotion/CustomAdverthismentBanner")
+  () =>
+    import("../../../../resources/UIBlocks/Promotion/CustomAdverthismentBanner")
 );
 const PromotionSection = lazy(
   () => import("../../../../resources/UIBlocks/Promotion/PromotionSection")
@@ -47,16 +42,12 @@ function Home() {
   return (
     <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
       <Mainmenu />
+
       <BannerCarousel
         api={`api/resource/Product?fields=["name"]&filters=[["is_slider", "=", 1]]`}
         delay={6000}
       />
-      <div className=" py-5 mt-20">
-        <CustomAdverthismentBanner
-          api={`api/resource/Product?fields=["name"]&filters=[["is_slider", "=", 1]]`}
-          delay={6000}
-        />
-      </div>
+
       <div className="px-[5%] mt-15">
         <ProductCard
           title="Popular Items"
@@ -72,14 +63,23 @@ function Home() {
           api={`api/resource/Product?fields=["name"]&filters=[["top_rated", "=", 1]]`}
           id={"top_rated"}
         />
+
         <GroupProductCard
           title="Discount for you"
           api={`api/resource/Product?fields=["name"]&filters=[["is_discount", "=", 1]]`}
           id={"is_discount"}
         />
       </div>
-      <div className=" py-5 mt-20">
+
+      {/* <div className=" py-5 mt-20">
         <AdverthismentBanner
+          api={`api/resource/Product?fields=["name"]&filters=[["is_slider", "=", 1]]`}
+          delay={6000}
+        />
+      </div> */}
+
+      <div className=" py-5 mt-20">
+        <CustomAdverthismentBanner
           api={`api/resource/Product?fields=["name"]&filters=[["is_slider", "=", 1]]`}
           delay={6000}
         />
@@ -88,11 +88,12 @@ function Home() {
       <div className="px-[5%] mt-5">
         <ProductCard
           title="Laptops"
-          api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
-          id={"is_popular"}
+          api={`api/resource/Product?fields=["name"]&filters=[["category", "=", "Laptop"]]&limit_page_length=0`}
+          id={"Laptop"}
         />
       </div>
-      <div className="my-10 py-10 md:py-15 bg-primary/10 ">
+
+      <div className="my-10 py-10 md:py-15 bg-primary/5 ">
         <BrandMarquee type="logo" brands={brands} speed={90} />
       </div>
 
@@ -102,21 +103,25 @@ function Home() {
           api={`api/resource/Product?fields=["name"]&filters=[["top_rated", "=", 1]]`}
           id={"top_rated"}
         />
+
         <GroupProductCard
           title="Best Sellers"
           api={`api/resource/Product?fields=["name"]&filters=[["is_discount", "=", 1]]`}
           id={"is_discount"}
         />
+
         <div className="lg:flex items-center h-full border border-ring/30 rounded-md p-1 hidden">
           <PromotionSection image={"/assets/Promotion/ads3.png"} />
         </div>
       </div>
+
       <div className="my-20">
         <ScrollAdverthisment
           title="Featured Brands"
           api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
         />
       </div>
+
       <FloatContact
         contacts={[
           {

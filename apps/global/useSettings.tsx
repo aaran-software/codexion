@@ -6,7 +6,7 @@ import {
   type ReactNode,
 } from "react";
 import { useAppContext } from "./AppContaxt";
-import LoadingSpinner from "../../resources/components/loading/LoadingSpinner";
+// import LoadingSpinner from "../../resources/components/loading/LoadingSpinner";
 const SettingsContext = createContext<any>(null);
 
 export function useAppSettings() {
@@ -52,12 +52,12 @@ export default function AppInitializer({ children }: { children: ReactNode }) {
       </div>
     );
   }
-  if (!settings)
-    return (
-      <div>
-        <LoadingSpinner />
-      </div>
-    );
+  // if (!settings)
+  //   return (
+  //     <div>
+  //       {/* <LoadingSpinner /> */}
+  //     </div>
+  //   );
 
   return (
     <SettingsContext.Provider value={settings}>
