@@ -312,7 +312,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
             key={index}
             onClick={() => goToSlide(index)}
             className={`w-3 h-3 rounded-full ${
-              index === activeIndex ? "bg-white" : "bg-white/40"
+              index === activeIndex ? "bg-primary" : "bg-white border border-ring/50"
             }`}
           />
         ))}

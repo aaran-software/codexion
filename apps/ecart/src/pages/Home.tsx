@@ -13,11 +13,12 @@ const GroupProductCard = lazy(
 // const ProductCard2 = lazy(
 //   () => import("../../../../resources/UIBlocks/ProductCard2")
 // );
-const AdverthismentBanner = lazy(
-  () => import("../../../../resources/UIBlocks/Promotion/AdverthismentBanner")
-);
+// const AdverthismentBanner = lazy(
+//   () => import("../../../../resources/UIBlocks/Promotion/AdverthismentBanner")
+// );
 const CustomAdverthismentBanner = lazy(
-  () => import("../../../../resources/UIBlocks/Promotion/CustomAdverthismentBanner")
+  () =>
+    import("../../../../resources/UIBlocks/Promotion/CustomAdverthismentBanner")
 );
 const PromotionSection = lazy(
   () => import("../../../../resources/UIBlocks/Promotion/PromotionSection")
@@ -51,12 +52,7 @@ function Home() {
         api={`api/resource/Product?fields=["name"]&filters=[["is_slider", "=", 1]]`}
         delay={6000}
       />
-      <div className=" py-5 mt-20">
-        <CustomAdverthismentBanner
-          api={`api/resource/Product?fields=["name"]&filters=[["is_slider", "=", 1]]`}
-          delay={6000}
-        />
-      </div>
+
       <div className="px-[5%] mt-15">
         <ProductCard
           title="Popular Items"
@@ -78,13 +74,19 @@ function Home() {
           id={"is_discount"}
         />
       </div>
-      <div className=" py-5 mt-20">
+      {/* <div className=" py-5 mt-20">
         <AdverthismentBanner
           api={`api/resource/Product?fields=["name"]&filters=[["is_slider", "=", 1]]`}
           delay={6000}
         />
-      </div>
+      </div> */}
 
+      <div className=" py-5 mt-20">
+        <CustomAdverthismentBanner
+          api={`api/resource/Product?fields=["name"]&filters=[["is_slider", "=", 1]]`}
+          delay={6000}
+        />
+      </div>
       <div className="px-[5%] mt-5">
         <ProductCard
           title="Laptops"
