@@ -36,7 +36,7 @@ const RangeSlider: React.FC<RangeSliderProps> = ({
       {/* Value indicator */}
       <div className="relative h-4 mb-2">
         <div
-          className="absolute left-0 transform -translate-x-1/2 text-xs text-blue-600 font-medium"
+          className="absolute left-0 transform -translate-x-1/2 text-xs text-primary font-medium"
           style={{ left: `${percentage}%` }}
         >
           {value}

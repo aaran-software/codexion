@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import apiClient from "../../resources/global/api/apiClients";
 import ImageButton from "../components/button/ImageBtn";
 import RangeSlider from "../components/input/range-slider";
@@ -7,6 +7,7 @@ import DropdownRead from "../components/input/dropdown-read";
 import Checkbox from "../components/input/checkbox";
 import { useAppContext } from "../../apps/global/AppContaxt";
 import MobileFilter from "../UIBlocks/filter/MobileFilter";
+import LoadingScreen from "../../resources/components/loading/LoadingScreen";
 type ProductType = {
   id: number;
   name: string;
@@ -35,7 +36,7 @@ const CategoryPage: React.FC = () => {
   const navigate = useNavigate();
   const [categories, setCategories] = useState<string[]>([]);
   const [brands, setBrands] = useState<string[]>([]);
-  
+
   const [selectedFilters, setSelectedFilters] = useState<FiltersType>({
     category: category || "",
     brand: "",
@@ -43,8 +44,47 @@ const CategoryPage: React.FC = () => {
     discount: "",
   });
 
-  const [selectedPrice, setSelectedPrice] = useState<number | null>(0);
+  // const [selectedPrice, setSelectedPrice] = useState<number | null>(0);
+
   const [maxPrice, setMaxPrice] = useState<number>(0);
+  // New state for price range selection
+  const [selectedPriceRange, setSelectedPriceRange] = useState<number | null>(
+    null
+  );
+
+  const priceRanges = [
+    {
+      id: 1,
+      label: `Up to ₹${Math.round(maxPrice * 0.25)}`,
+      min: 0,
+      max: maxPrice * 0.25,
+    },
+    {
+      id: 2,
+      label: `₹${Math.round(maxPrice * 0.25)} - ₹${Math.round(maxPrice * 0.5)}`,
+      min: maxPrice * 0.25,
+      max: maxPrice * 0.5,
+    },
+    {
+      id: 3,
+      label: `₹${Math.round(maxPrice * 0.5)} - ₹${Math.round(maxPrice * 0.75)}`,
+      min: maxPrice * 0.5,
+      max: maxPrice * 0.75,
+    },
+    {
+      id: 4,
+      label: `₹${Math.round(maxPrice * 0.75)} - ₹${Math.round(maxPrice * 0.9)}`,
+      min: maxPrice * 0.75,
+      max: maxPrice * 0.9,
+    },
+    {
+      id: 5,
+      label: `Above ₹${Math.round(maxPrice * 0.9)}`,
+      min: maxPrice * 0.9,
+      max: Infinity,
+    },
+  ];
+
   // New UI States for mobile modals
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
@@ -73,7 +113,9 @@ const CategoryPage: React.FC = () => {
   useEffect(() => {
     const applyFilters = async () => {
       try {
-        const res = await apiClient.get("/api/resource/Product?limit_page_length=0");
+        const res = await apiClient.get(
+          "/api/resource/Product?limit_page_length=0"
+        );
         const items = res.data.data || [];
 
         const detailPromises = items.map((item: any) => {
@@ -121,13 +163,13 @@ const CategoryPage: React.FC = () => {
           setMaxPrice(highestPrice);
 
           // Reset selectedPrice if it exceeds the new max price or not set
-          if (!selectedPrice || selectedPrice > highestPrice) {
-            setSelectedPrice(highestPrice);
-          }
+          // if (!selectedPrice || selectedPrice > highestPrice) {
+          //   setSelectedPrice(highestPrice);
+          // }
         } else {
           // If no products match, reset maxPrice to a default or zero
           setMaxPrice(0);
-          setSelectedPrice(0);
+          // setSelectedPrice(0);
         }
 
         // sort products based on selected sort option
@@ -141,8 +183,13 @@ const CategoryPage: React.FC = () => {
           });
         }
         // Now filter by selectedPrice if it has a value
-        if (selectedPrice !== null) {
-          formatted = formatted.filter((item) => item.price <= selectedPrice);
+        if (selectedPriceRange !== null) {
+          const range = priceRanges.find((r) => r.id === selectedPriceRange);
+          if (range) {
+            formatted = formatted.filter(
+              (item) => item.price >= range.min && item.price <= range.max
+            );
+          }
         }
 
         setProducts(formatted);
@@ -156,17 +203,17 @@ const CategoryPage: React.FC = () => {
   }, [
     selectedFilters.category,
     selectedFilters.brand,
-    selectedPrice,
+    selectedPriceRange,
     sortOption,
     API_URL,
   ]);
 
-  useEffect(() => {
-    if (products.length > 0 && selectedPrice === null) {
-      const maxPriceInProducts = Math.max(...products.map((p) => p.price));
-      setSelectedPrice(maxPriceInProducts);
-    }
-  }, [products, selectedPrice]);
+  // useEffect(() => {
+  //   if (products.length > 0 && selectedPrice === null) {
+  //     const maxPriceInProducts = Math.max(...products.map((p) => p.price));
+  //     setSelectedPrice(maxPriceInProducts);
+  //   }
+  // }, [products, selectedPrice]);
 
   const navigateProductPage = (id: number) => {
     navigate(`/productpage/${id}`);
@@ -195,214 +242,229 @@ const CategoryPage: React.FC = () => {
     fetchDropdownData();
   }, []);
 
+  // if (products.length === 0) {
+  //   return <LoadingScreen image={"/assets/svg/logo.svg"} />;
+  // }
+
   return (
-    <div className="md:mt-5 px-[5%] py-5">
-      <div className="flex flex-col md:flex-row gap-3">
-        {/* Filters */}
-        {/* Mobile Top Bar with Sort & Filter buttons */}
-        <div className="md:hidden flex justify-between items-center mb-4 sticky top-0 bg-white z-20">
-          <ImageButton
-            className="flex-1 border flex justify-center rounded border-ring/30 py-2 mx-1 shadow-sm"
-            onClick={() => setIsSortOpen(true)}
-            icon={"desc"}
-          >
-            Sort
-          </ImageButton>
-          <ImageButton
-            className="flex-1 border flex justify-center rounded border-ring/30 py-2 mx-1 shadow-sm"
-            onClick={() => setIsFilterOpen(true)}
-            icon={"filter"}
-          >
-            Filter
-          </ImageButton>
-        </div>
+    <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
+      <div className="md:mt-5 px-[5%] py-5">
+        <div className="flex flex-col md:flex-row gap-3">
+          {/* Filters */}
+          {/* Mobile Top Bar with Sort & Filter buttons */}
+          <div className="md:hidden flex justify-between items-center mb-4 sticky top-0 bg-white z-20">
+            <ImageButton
+              className="flex-1 border flex justify-center rounded border-ring/30 py-2 mx-1 shadow-sm"
+              onClick={() => setIsSortOpen(true)}
+              icon={"desc"}
+            >
+              Sort
+            </ImageButton>
+            <ImageButton
+              className="flex-1 border flex justify-center rounded border-ring/30 py-2 mx-1 shadow-sm"
+              onClick={() => setIsFilterOpen(true)}
+              icon={"filter"}
+            >
+              Filter
+            </ImageButton>
+          </div>
 
-        <div className="hidden md:flex flex-row md:flex-col w-full border border-ring/30 rounded-md md:w-72 overflow-x-auto md:overflow-visible gap-4 scrollbar-hide">
-          <div className="flex flex-row md:flex-col flex-nowrap md:sticky md:top-24 bg-background ring ring-gray-300/30 rounded-md shadow-sm p-4 md:p-6 gap-4 min-w-max md:min-w-0">
-            <h6 className="font-semibold text-lg hidden md:block">Filters</h6>
+          <div className="hidden md:flex flex-row md:flex-col w-full border border-ring/30 rounded-md md:w-72 overflow-x-auto md:overflow-visible gap-4 scrollbar-hide">
+            <div className="flex flex-row md:flex-col flex-nowrap md:sticky md:top-24 bg-background ring ring-gray-300/30 rounded-md shadow-sm p-4 md:p-6 gap-4 min-w-max md:min-w-0">
+              <h6 className="font-semibold text-lg hidden md:block">Filters</h6>
 
-            <div className="flex flex-row md:flex-col gap-4 md:gap-3">
-              {dropdowns.map((dropdown) => (
-                <div key={dropdown.id} className="relative">
-                  <DropdownRead
-                    id={dropdown.id}
-                    items={dropdown.options}
-                    label={dropdown.label}
-                    value={
-                      selectedFilters[
-                        dropdown.id as keyof typeof selectedFilters
-                      ]
-                    }
-                    err=""
-                    placeholder=""
-                    onChange={(val) =>
-                      setSelectedFilters((prev) => ({
-                        ...prev,
-                        [dropdown.id]: val,
-                      }))
-                    }
-                  />
-                  {selectedFilters[
-                    dropdown.id as keyof typeof selectedFilters
-                  ] && (
-                    <button
-                      type="button"
-                      onClick={() =>
+              <div className="flex flex-row md:flex-col gap-4 md:gap-3">
+                {dropdowns.map((dropdown) => (
+                  <div key={dropdown.id} className="relative">
+                    <DropdownRead
+                      id={dropdown.id}
+                      items={dropdown.options}
+                      label={dropdown.label}
+                      value={
+                        selectedFilters[
+                          dropdown.id as keyof typeof selectedFilters
+                        ]
+                      }
+                      err=""
+                      placeholder=""
+                      onChange={(val) =>
                         setSelectedFilters((prev) => ({
                           ...prev,
-                          [dropdown.id]: "",
+                          [dropdown.id]: val,
                         }))
                       }
-                      className="block ml-auto text-xs text-blue-600 underline"
-                    >
-                      Clear
-                    </button>
-                  )}
-                </div>
-              ))}
-            </div>
+                    />
+                    {selectedFilters[
+                      dropdown.id as keyof typeof selectedFilters
+                    ] && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setSelectedFilters((prev) => ({
+                            ...prev,
+                            [dropdown.id]: "",
+                          }))
+                        }
+                        className="block ml-auto text-sm mt-1 text-primary cursor-pointer"
+                      >
+                        Clear
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
 
-            <div className="flex flex-col gap-2 min-w-[180px]">
-              <label className="text-md font-semibold hidden md:block">
-                Price
-              </label>
-              <RangeSlider
-                label="Price"
-                min={0}
-                max={maxPrice}
-                defaultValue={selectedPrice ?? maxPrice}
-                onChange={(value: number) => setSelectedPrice(value)}
-              />
-            </div>
+              <div className="flex flex-col gap-2 min-w-[180px]">
+                <label className="text-md font-semibold hidden md:block">
+                  Price
+                </label>
+                {priceRanges.map((range) => (
+                  <div key={range.id} className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      id={`price-${range.id}`}
+                      checked={selectedPriceRange === range.id}
+                      onChange={() =>
+                        setSelectedPriceRange((prev) =>
+                          prev === range.id ? null : range.id
+                        )
+                      }
+                    />
+                    <label htmlFor={`price-${range.id}`} className="text-sm">
+                      {range.label}
+                    </label>
+                  </div>
+                ))}
+              </div>
 
-            <div className="flex flex-col gap-2 min-w-[180px]">
-              <label className="text-md font-semibold hidden md:block">
-                Invoice
-              </label>
-              <Checkbox
-                id="invoice"
-                agreed={invoice}
-                label="GST Invoice"
-                err=""
-                className=""
-                onChange={() => setInvoice(!invoice)}
-              />
-            </div>
+              <div className="flex flex-col gap-2 min-w-[180px]">
+                <label className="text-md font-semibold hidden md:block">
+                  Invoice
+                </label>
+                <Checkbox
+                  id="invoice"
+                  agreed={invoice}
+                  label="GST Invoice"
+                  err=""
+                  className=""
+                  onChange={() => setInvoice(!invoice)}
+                />
+              </div>
 
-            <div className="flex flex-col gap-2 min-w-[180px]">
-              <label className="text-md font-semibold hidden md:block">
-                Availability
-              </label>
-              <Checkbox
-                id="stock"
-                agreed={availability}
-                label="Include Out of Stock"
-                err=""
-                className=""
-                onChange={() => setAvailability(!availability)}
-              />
+              <div className="flex flex-col gap-2 min-w-[180px]">
+                <label className="text-md font-semibold hidden md:block">
+                  Availability
+                </label>
+                <Checkbox
+                  id="stock"
+                  agreed={availability}
+                  label="Include Out of Stock"
+                  err=""
+                  className=""
+                  onChange={() => setAvailability(!availability)}
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Mobile Filter Full Screen */}
-        {isFilterOpen && (
-          <div className="fixed inset-0 bg-white z-50 overflow-y-auto">
-            <div className="flex justify-between items-center p-4 border-b">
-              <h2 className="text-lg font-semibold">Filters</h2>
-              <button onClick={() => setIsFilterOpen(false)}>✕</button>
-            </div>
-            <MobileFilter
-              dropdowns={dropdowns}
-              selectedFilters={selectedFilters}
-              setSelectedFilters={setSelectedFilters}
-              selectedPrice={selectedPrice}
-              setSelectedPrice={setSelectedPrice}
-              maxPrice={maxPrice}
-              invoice={invoice}
-              setInvoice={setInvoice}
-              availability={availability}
-              setAvailability={setAvailability}
-              onClose={() => setIsFilterOpen(false)}
-            />
-            <div className="p-4">
-              <button
-                onClick={() => setIsFilterOpen(false)}
-                className="w-full bg-blue-600 text-white py-2 rounded"
-              >
-                Apply Filters
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Mobile Sort Full Screen */}
-        {isSortOpen && (
-          <div className="fixed inset-0 bg-white z-50">
-            <div className="flex justify-between items-center p-4 border-b">
-              <h2 className="text-lg font-semibold">Sort By</h2>
-              <button onClick={() => setIsSortOpen(false)}>✕</button>
-            </div>
-            <div className="p-4 space-y-3">
-              {[
-                { value: "priceLowHigh", label: "Price: Low to High" },
-                { value: "priceHighLow", label: "Price: High to Low" },
-                { value: "nameAZ", label: "Name: A to Z" },
-                { value: "nameZA", label: "Name: Z to A" },
-              ].map((opt) => (
+          {/* Mobile Filter Full Screen */}
+          {isFilterOpen && (
+            <div className="fixed inset-0 bg-white z-50 overflow-y-auto">
+              <div className="flex justify-between items-center p-4 border-b">
+                <h2 className="text-lg font-semibold">Filters</h2>
+                <ImageButton onClick={() => setIsFilterOpen(false)} icon={"close"} />
+              </div>
+              <MobileFilter
+                dropdowns={dropdowns}
+                selectedFilters={selectedFilters}
+                setSelectedFilters={setSelectedFilters}
+                selectedPriceRange={selectedPriceRange}
+                setSelectedPriceRange={setSelectedPriceRange}
+                maxPrice={maxPrice}
+                invoice={invoice}
+                setInvoice={setInvoice}
+                availability={availability}
+                setAvailability={setAvailability}
+                onClose={() => setIsFilterOpen(false)}
+              />
+              {/* <div className="p-4">
                 <button
-                  key={opt.value}
-                  className={`w-full text-left px-3 py-2 border border-ring/30 rounded ${
-                    sortOption === opt.value ? "bg-blue-100" : ""
-                  }`}
-                  onClick={() => {
-                    setSortOption(opt.value);
-                    setIsSortOpen(false);
-                  }}
+                  onClick={() => setIsFilterOpen(false)}
+                  className="w-full bg-blue-600 text-white py-2 rounded"
                 >
-                  {opt.label}
+                  Apply Filters
                 </button>
-              ))}
+              </div> */}
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Product List */}
-        <div className="w-full md:w-3/4 space-y-3">
-          {products.map((product) => (
-            <div key={product.id} className="border border-ring/30 rounded">
-              <div className="grid grid-cols-[45%_55%] md:grid-cols-[25%_45%_25%] mx-5 gap-4 p-4">
-                <div
-                  onClick={() => navigateProductPage(product.id)}
-                  className="w-full h-full aspect-square overflow-hidden rounded-md cursor-pointer"
-                >
-                  <img
-                    className="w-full h-full object-scale-down rounded-md"
-                    src={product.image}
-                    alt={product.name}
-                  />
-                </div>
+          {/* Mobile Sort Full Screen */}
+          {isSortOpen && (
+            <div className="fixed inset-0 bg-white z-50">
+              <div className="flex justify-between items-center p-4 border-b">
+                <h2 className="text-lg font-semibold">Sort By</h2>
+                <button onClick={() => setIsSortOpen(false)}>✕</button>
+              </div>
+              <div className="p-4 space-y-3">
+                {[
+                  { value: "priceLowHigh", label: "Price: Low to High" },
+                  { value: "priceHighLow", label: "Price: High to Low" },
+                  { value: "nameAZ", label: "Name: A to Z" },
+                  { value: "nameZA", label: "Name: Z to A" },
+                ].map((opt) => (
+                  <button
+                    key={opt.value}
+                    className={`w-full text-left px-3 py-2 border border-ring/30 rounded ${
+                      sortOption === opt.value ? "bg-blue-100" : ""
+                    }`}
+                    onClick={() => {
+                      setSortOption(opt.value);
+                      setIsSortOpen(false);
+                    }}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
-                <div
-                  className="space-y-2 px-2 cursor-pointer"
-                  onClick={() => navigateProductPage(product.id)}
-                >
-                  <h4 className="text-sm lg:text-lg font-semibold text-update/90 line-clamp-3">
-                    {product.name}
-                  </h4>
-                  <h2 className="text-xl font-bold block md:hidden">
-                    ₹{product.price}
-                  </h2>
-                  {/* <div className="text-sm text-foreground/50">
+          {/* Product List */}
+          <div className="w-full md:w-3/4 space-y-3">
+            {products.map((product) => (
+              <div key={product.id} className="border border-ring/30 rounded">
+                <div className="grid grid-cols-[45%_55%] md:grid-cols-[25%_45%_25%] mx-5 gap-4 p-4">
+                  <div
+                    onClick={() => navigateProductPage(product.id)}
+                    className="w-full h-full aspect-square overflow-hidden rounded-md cursor-pointer"
+                  >
+                    <img
+                      className="w-full h-full object-scale-down rounded-md"
+                      src={product.image}
+                      alt={product.name}
+                    />
+                  </div>
+
+                  <div
+                    className="space-y-2 px-2 cursor-pointer"
+                    onClick={() => navigateProductPage(product.id)}
+                  >
+                    <h4 className="text-sm lg:text-lg font-semibold text-update/90 line-clamp-3">
+                      {product.name}
+                    </h4>
+                    <h2 className="text-xl font-bold block md:hidden">
+                      ₹{product.price}
+                    </h2>
+                    {/* <div className="text-sm text-foreground/50">
                     <span className="bg-green-600 text-white text-xs w-max px-2 py-1 rounded">
                       4 ★
                     </span>{" "}
                     <span>76876 Reviews</span>
                   </div> */}
-                  <p className="text-sm text-foreground/60 line-clamp-2 hidden md:flex">
-                    {product.description}
-                  </p>
-                  {/* <div className="hidden lg:flex md:flex-row flex-col">
+                    <p className="text-sm text-foreground/60 line-clamp-2 hidden md:flex">
+                      {product.description}
+                    </p>
+                    {/* <div className="hidden lg:flex md:flex-row flex-col">
                     <div className="text-xs line-clamp-1 ">
                       <span className="font-semibold">Bank Offer</span> 5%
                       cashback on Flipkart Axis Bank Credit Card upto ₹4,000 per
@@ -414,66 +476,67 @@ const CategoryPage: React.FC = () => {
                       statement quarter
                     </div>
                   </div> */}
-                  <div className="flex gap-2">
-                    <p className="text-sm text-green-600">10% Offer</p>
+                    <div className="flex gap-2">
+                      <p className="text-sm text-green-600">10% Offer</p>
+                    </div>
+
+                    <div className="my-2 flex flex-row gap-2 ">
+                      <ImageButton
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          changeCart(product.id);
+                        }}
+                        icon="cart"
+                        className={`p-2 rounded-full shadow ${
+                          cartStates[product.id] === "Added to Cart"
+                            ? "bg-green-600 text-white"
+                            : "bg-background text-foreground hover:bg-gray-200"
+                        }`}
+                      />
+
+                      <ImageButton
+                        onClick={(e) => e.stopPropagation()}
+                        className="bg-background text-foreground p-2 rounded-full shadow hover:bg-gray-200"
+                        icon={"like"}
+                      />
+                      <ImageButton
+                        onClick={(e) => e.stopPropagation()}
+                        className="bg-background text-foreground p-2 rounded-full shadow hover:bg-gray-200"
+                        icon={"link"}
+                      />
+                    </div>
                   </div>
-                 
-                  <div className="my-2 flex flex-row gap-2 ">
-                    <ImageButton
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        changeCart(product.id);
-                      }}
-                      icon="cart"
-                      className={`p-2 rounded-full shadow ${
-                        cartStates[product.id] === "Added to Cart"
-                          ? "bg-green-600 text-white"
-                          : "bg-background text-foreground hover:bg-gray-200"
+
+                  <div className="text-right space-y-2 hidden md:block">
+                    <div
+                      className={`w-max block ml-auto text-white text-xs px-2 py-1 z-10 ${
+                        product.count > 0
+                          ? product.count < 3
+                            ? `bg-purple-500`
+                            : "bg-update"
+                          : "bg-delete"
                       }`}
-                    />
-
-                    <ImageButton
-                      onClick={(e) => e.stopPropagation()}
-                      className="bg-background text-foreground p-2 rounded-full shadow hover:bg-gray-200"
-                      icon={"like"}
-                    />
-                    <ImageButton
-                      onClick={(e) => e.stopPropagation()}
-                      className="bg-background text-foreground p-2 rounded-full shadow hover:bg-gray-200"
-                      icon={"link"}
-                    />
-                  </div>
-                </div>
-
-                <div className="text-right space-y-2 hidden md:block">
-                  <div
-                    className={`w-max block ml-auto text-white text-xs px-2 py-1 z-10 ${
-                      product.count > 0
+                    >
+                      {product.count > 0
                         ? product.count < 3
-                          ? `bg-purple-500`
-                          : "bg-update"
-                        : "bg-delete"
-                    }`}
-                  >
-                    {product.count > 0
-                      ? product.count < 3
-                        ? `only ${product.count} left`
-                        : "10% Offer"
-                      : "Out Of Stock"}
+                          ? `only ${product.count} left`
+                          : "10% Offer"
+                        : "Out Of Stock"}
+                    </div>
+                    <h2 className="text-sm md:text-xl font-bold">
+                      ₹{product.price}
+                    </h2>
+                    <p className="text-sm text-foreground/60">
+                      Delivery: 3–5 days
+                    </p>
                   </div>
-                  <h2 className="text-sm md:text-xl font-bold">
-                    ₹{product.price}
-                  </h2>
-                  <p className="text-sm text-foreground/60">
-                    Delivery: 3–5 days
-                  </p>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </Suspense>
   );
 };
 
