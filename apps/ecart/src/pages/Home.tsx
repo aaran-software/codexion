@@ -90,8 +90,8 @@ function Home() {
       <div className="px-[5%] mt-5">
         <ProductCard
           title="Laptops"
-          api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
-          id={"is_popular"}
+          api={`api/resource/Product?fields=["name"]&filters=[["category", "=", "Laptop"]]&limit_page_length=0`}
+          id={"Laptop"}
         />
       </div>
       <div className="my-10 py-10 md:py-15 bg-primary/10 ">

@@ -73,7 +73,7 @@ const CategoryPage: React.FC = () => {
   useEffect(() => {
     const applyFilters = async () => {
       try {
-        const res = await apiClient.get("/api/resource/Product");
+        const res = await apiClient.get("/api/resource/Product?limit_page_length=0");
         const items = res.data.data || [];
 
         const detailPromises = items.map((item: any) => {
