@@ -43,12 +43,12 @@ const SpecialCategory= () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await apiClient.get(`api/resource/Product?fields=["name"]&filters=[["${id}", "=", "${value}"]]`);
+        const res = await apiClient.get(`api/resource/Catalog Details?fields=["name"]&filters=[["${id}", "=", "${value}"]]`);
         const items = res.data.data || [];
         const detailPromises = items.map((item: any) => {
           const itemName = encodeURIComponent(item.name);
           return apiClient
-            .get(`/api/resource/Product/${itemName}`)
+            .get(`/api/resource/Catalog Details/${itemName}`)
             .then((r) => r.data.data)
             .catch(() => null);
         });

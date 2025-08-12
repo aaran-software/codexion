@@ -135,14 +135,14 @@ const CategoryPage: React.FC = () => {
     const fetchAllProducts = async () => {
       try {
         const res = await apiClient.get(
-          "/api/resource/Product?limit_page_length=0"
+          "/api/resource/Catalog Details?limit_page_length=0"
         );
         const items = res.data.data || [];
 
         const detailPromises = items.map((item: any) => {
           const itemName = encodeURIComponent(item.name);
           return apiClient
-            .get(`/api/resource/Product/${itemName}`)
+            .get(`/api/resource/Catalog Details/${itemName}`)
             .then((r) => r.data.data)
             .catch(() => null);
         });

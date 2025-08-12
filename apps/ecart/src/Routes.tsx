@@ -95,7 +95,7 @@ function AppRoutes() {
             logout={logout}
             menuItems={menuItems}
             showSearch={true} // Toggle search bar
-            onSearchApi={`/api/resource/Product?fields=["name","image","price"]`}
+            onSearchApi={`/api/resource/Catalog Details?fields=["name","image","price"]`}
             onNavigate={(path) => navigate(path)}
           />
         )}
