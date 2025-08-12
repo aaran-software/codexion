@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
-import RatingReviews from "./RatingReviews";
+// import RatingReviews from "./RatingReviews";
 import Settings from "../../apps/ecart/public/ecart.json";
 import Stepper from "./Stepper";
 import OrderSummary from "./OrderSummary";
@@ -41,6 +41,16 @@ interface Product {
   offer: number;
   slideOffer: number;
   images?: string[];
+  feature?: CatalogFeature[];
+  spec_header:string
+}
+
+interface CatalogFeature {
+  profile_label: string;
+  idx?: number;
+  name: string;
+  attribute_name: string;
+  property_value: string;
 }
 
 function ProductPage() {
@@ -117,10 +127,11 @@ function ProductPage() {
     if (!id) return;
 
     apiClient
-      .get(`/api/resource/Product/${id}`)
+      .get(`/api/resource/Catalog Details/${id}`)
       .then((res) => {
         const data = res.data.data || res.data;
 
+        // console.log("data",data)
         // Collect all image fields like image, image1, image2, etc.
         const imageKeys = Object.keys(data).filter(
           (key) => key.startsWith("image") && data[key]
@@ -135,7 +146,9 @@ function ProductPage() {
           slideOffer: data.slider_offer,
           images: imageList,
           description: data.description,
-          category: data.category,
+          category: data.item_group,
+          spec_header:data.spec_header,
+          feature: data.catalog_features,
           count: data.stock_qty,
         });
 
@@ -150,6 +163,7 @@ function ProductPage() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [id]);
+  console.log("product", product);
 
   if (loading) return <div className="text-center mt-10">Loading...</div>;
   if (!product || error)
@@ -216,7 +230,10 @@ function ProductPage() {
                 onSelect={(index) => setSelectedImage(product.images![index])}
               />
             </div>
-            <ImageButton icon={"like"} className="!rounded-full border border-ring/30 p-2 absolute top-5 right-5 z-10"/>
+            <ImageButton
+              icon={"like"}
+              className="!rounded-full border border-ring/30 p-2 absolute top-5 right-5 z-10"
+            />
             {/* <img
               src="/assets/svg/heart.svg"
               alt=""
@@ -366,82 +383,56 @@ function ProductPage() {
           {/* Specifications */}
           <div className="mt-10 border border-ring/30 rounded-md p-5">
             <h2 className="text-3xl font-bold border-b border-ring/30 pb-3 text-foreground/90 mb-4">
-              {Settings.product.specification_read.title}
+              {product.spec_header}
             </h2>
 
-            {Object.values(Settings.product.specification_read.groups).map(
-              (submenuRaw) => {
-                const submenu = submenuRaw as Group;
+            {(() => {
+              // Group catalog_features by profile_label
+              const groupedFeatures =
+                product.feature?.reduce((acc: Record<string, any[]>, item) => {
+                  if (!acc[item.profile_label]) acc[item.profile_label] = [];
+                  acc[item.profile_label].push(item);
+                  return acc;
+                }, {}) || {};
 
-                const hasFields =
-                  Array.isArray(submenu.fields) && submenu.fields.length > 0;
-                const hasChildren =
-                  submenu.children && Object.keys(submenu.children).length > 0;
+              // Sort groups based on the lowest idx in that group
+              const sortedGroups = Object.entries(groupedFeatures).sort(
+                (a, b) => {
+                  const aIdx = Math.min(...a[1].map((f) => f.idx || 0));
+                  const bIdx = Math.min(...b[1].map((f) => f.idx || 0));
+                  return aIdx - bIdx;
+                }
+              );
 
-                if (!hasFields && !hasChildren) return null;
+              return sortedGroups.map(([profileLabel, fields]) => (
+                <div
+                  key={profileLabel}
+                  className="mb-6 border-b border-ring/30 pb-3 last:border-0"
+                >
+                  <h3 className="text-lg text-foreground font-bold">
+                    {profileLabel}
+                  </h3>
 
-                return (
-                  <div
-                    key={submenu.id}
-                    className="mb-6 border-b border-ring/30 pb-3 last:border-0"
-                  >
-                    <h3 className="text-lg text-foreground font-bold">
-                      {submenu.title}
-                    </h3>
-
-                    {hasFields && (
-                      <div className="space-y-1 mt-2">
-                        {submenu.fields?.map((field) => (
-                          <div
-                            key={field.id}
-                            className="flex justify-between py-1 text-sm"
-                          >
-                            <span className="text-foreground/70">
-                              {field.label}
-                            </span>
-                            <span className="font-medium text-foreground/70">
-                              {field.value}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-
-                    {hasChildren &&
-                      Object.values(submenu.children!).map((childRaw) => {
-                        const child = childRaw as Group;
-
-                        if (
-                          !Array.isArray(child.fields) ||
-                          child.fields.length === 0
-                        )
-                          return null;
-
-                        return (
-                          <div key={child.id} className="ml-4 mt-3">
-                            <h4 className="text-sm font-semibold text-gray-700 mb-1">
-                              {child.title}
-                            </h4>
-                            {child.fields.map((field) => (
-                              <div
-                                key={field.id}
-                                className="flex justify-between py-1 text-sm"
-                              >
-                                <span className="text-gray-600">
-                                  {field.label}
-                                </span>
-                                <span className="font-medium text-gray-800">
-                                  {field.value}
-                                </span>
-                              </div>
-                            ))}
-                          </div>
-                        );
-                      })}
+                  <div className="space-y-1 mt-2">
+                    {fields
+                      .sort((a, b) => (a.idx || 0) - (b.idx || 0))
+                      .map((field) => (
+                        <div
+                          key={field.name}
+                          className="flex justify-between py-1 text-sm"
+                        >
+                          <span className="text-foreground/70">
+                            {field.attribute_name}
+                          </span>
+                          <span className="font-medium text-foreground/70">
+                            {field.property_value}
+                          </span>
+                        </div>
+                      ))}
                   </div>
-                );
-              }
-            )}
+                </div>
+              ));
+            })()}
           </div>
 
           {/* <div className="mt-10">
@@ -454,9 +445,10 @@ function ProductPage() {
       <div className="mt-12 mx-2">
         <ProductCard
           title="Similar Items"
-          api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
+          api={`api/resource/Catalog Details?fields=["name"]&filters=[["is_popular", "=", 1]]`}
           ribbon={false}
           id={"is_popular"}
+          filterValue={"1"}
         />
       </div>
       {isPlaceOrder && (
