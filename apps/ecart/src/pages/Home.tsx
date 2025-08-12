@@ -94,7 +94,7 @@ function Home() {
       </div>
 
       <div className="my-10 py-10 md:py-15 bg-primary/5 ">
-        <BrandMarquee type="logo" brands={brands} speed={90} />
+        <BrandMarquee type="logo" brands={brands} speed={90} height={20} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-15 md:gap-5 px-[5%]">

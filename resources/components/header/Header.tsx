@@ -210,7 +210,7 @@ export default function Header({
             {showLogin && user ? (
               <>
                 <div
-                  className="flex items-center gap-2 cursor-pointer"
+                  className="flex items-center gap-2 cursor-pointer hover:scale-110 transition-transform duration-200"
                   onClick={() => onNavigate("/cart")}
                 >
                   <LucideShoppingCart size={25} />
@@ -231,7 +231,7 @@ export default function Header({
                     }
                   }}
                 >
-                  <UserCircle2 size={30} />
+                  <UserCircle2 className="hover:scale-110 transition-transform duration-200" size={30} />
                   <UserSubMenu
                     anchorRef={loginRef}
                     visible={showLoginDropdown}
@@ -243,7 +243,7 @@ export default function Header({
                             icon={item.icon}
                             label={item.label}
                             onClick={() => handleMenuClick(item)}
-                            className="py-2"
+                            className="py-2 px-2 hover:bg-primary/10"
                           />
                         ))}
                       </div>
@@ -253,7 +253,7 @@ export default function Header({
               </>
             ) : showLogin ? (
               <div
-                className="flex items-center gap-2 cursor-pointer"
+                className="flex items-center gap-2 cursor-pointer hover:scale-110 transition-transform duration-200"
                 onClick={() => onNavigate("/login")}
               >
                 <UserCircle2 size={25} />

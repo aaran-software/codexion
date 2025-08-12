@@ -14,6 +14,7 @@ import apiClient from "../../resources/global/api/apiClients";
 import { useAppContext } from "../../apps/global/AppContaxt";
 import ZoomImage from "../components/image/ZoomImage";
 import FloatContact from "./contact/FloatContact";
+import ImageButton from "../../resources/components/button/ImageBtn";
 // Define types
 interface Field {
   id: string;
@@ -183,12 +184,29 @@ function ProductPage() {
       ),
     },
   ];
+
+  const handleShare = async () => {
+    const productUrl = window.location.href;
+    const message = `Hello, I’m interested in this product. Could you please share more details? Product URL: ${productUrl}`;
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          text: message, // only text, no separate URL field
+        });
+        console.log("Shared successfully!");
+      } catch (err) {
+        console.error("Share cancelled or failed", err);
+      }
+    } else {
+      alert("Sharing is not supported on this browser.");
+    }
+  };
   return (
     <div className="py-10 sm:px-[5%] mx-auto">
       <div className="grid lg:grid-cols-2 gap-5 xl:grid-cols-[35%_65%] items-start">
         {/* Image Section */}
         <div className="lg:sticky top-20 h-fit">
-          <div className="flex flex-col border border-ring/20 p-2 lg:flex-row gap-4 items-start">
+          <div className="flex flex-col border border-ring/20 lg:flex-row gap-4 items-start relative">
             <div className="hidden lg:block">
               <VerticalImageList
                 images={product.images || []}
@@ -198,7 +216,12 @@ function ProductPage() {
                 onSelect={(index) => setSelectedImage(product.images![index])}
               />
             </div>
-
+            <ImageButton icon={"like"} className=" absolute top-5 right-5 z-10"/>
+            {/* <img
+              src="/assets/svg/heart.svg"
+              alt=""
+              className="w-12 h-12 rounded-full p-2 cursor-pointer"
+            /> */}
             {/* main image */}
             <div className="block m-auto flex-1">
               <div className="w-full h-full min-w-[310px] min-h-[310px] max-w-[400px] max-h-[400px] mx-auto">
@@ -221,7 +244,6 @@ function ProductPage() {
                 onSelect={(index) => setSelectedImage(product.images![index])}
               />
             </div>
-            
           </div>
           <div className="mt-5 flex justify-center">
             <FloatContact
@@ -241,13 +263,21 @@ function ProductPage() {
                   id: "email",
                   contact: "info@techmedia.in", // just the username, no @
                   imgPath: "/assets/svg/mail.svg",
-                  defaultMessage: "Hello, I’m interested in this product. Could you please share more details? Product URL: ${productUrl}",
+                  defaultMessage: `Hello, I’m interested in this product. Could you please share more details? Product URL: ${productUrl}`,
                 },
               ]}
               className=""
               horizontal={true}
               labelPosition="top"
             />
+            <div className="flex gap-5 ml-5">
+              <img
+                src="/assets/svg/share.svg"
+                alt=""
+                className="w-12 h-12 rounded-full p-2 bg-yellow-500 cursor-pointer"
+                onClick={handleShare}
+              />
+            </div>
           </div>
         </div>
 
@@ -255,12 +285,12 @@ function ProductPage() {
         <div className="space-y-4 px-2">
           <h1 className="text-2xl font-semibold">{product.name}</h1>
           <h1 className="text-md text-foreground/80">{product.description}</h1>
-          <div className="text-sm text-foreground/50">
+          {/* <div className="text-sm text-foreground/50">
             <span className="bg-green-600 text-white text-xs w-max px-2 py-1 rounded">
               4 ★
             </span>{" "}
             <span>76876 rating</span> & <span>7868 Reviews</span>
-          </div>
+          </div> */}
           <p className="text-2xl font-bold flex gap-2">
             ₹{product.price}{" "}
             {product.offer > 0 && (
@@ -301,7 +331,7 @@ function ProductPage() {
           )} */}
 
           <div className="flex justify-between mt-5 gap-4">
-            <Button
+            {/* <Button
               className="flex-1 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
               label={" Add to Cart"}
             />
@@ -317,9 +347,21 @@ function ProductPage() {
               }
             `}
               label={"Buy Now"}
-            />
+            /> */}
 
-            
+            <Button
+              className="flex-1 px-4 py-2 bg-primary text-white rounded hover:bg-hover transition"
+              label={"Enquire Now"}
+              onClick={() => {
+                const encodedMsg = encodeURIComponent(
+                  `Hello, I’m interested in this product. Could you please share more details? Product URL: ${productUrl}`
+                );
+                const url = `https://wa.me/${919543439311}${
+                  encodedMsg ? `?text=${encodedMsg}` : ""
+                }`;
+                window.open(url, "_blank");
+              }}
+            />
           </div>
           {/* Specifications */}
           <div className="mt-10 border border-ring/30 rounded-md p-5">

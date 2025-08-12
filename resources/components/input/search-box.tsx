@@ -208,11 +208,6 @@ export default function GlobalSearch({
                   <span className="text-foreground/70 group-hover:text-primary line-clamp-2">
                     {product.name}
                   </span>
-                  {product.price !== undefined && (
-                    <span className="ml-auto group-hover:text-primary font-medium">
-                      ₹{product.price}
-                    </span>
-                  )}
                 </div>
               ))}
             </div>

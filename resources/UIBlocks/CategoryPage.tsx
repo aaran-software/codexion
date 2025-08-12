@@ -2,7 +2,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import React, { useState, useEffect, Suspense } from "react";
 import apiClient from "../../resources/global/api/apiClients";
 import ImageButton from "../components/button/ImageBtn";
-import RangeSlider from "../components/input/range-slider";
 import DropdownRead from "../components/input/dropdown-read";
 import Checkbox from "../components/input/checkbox";
 import { useAppContext } from "../../apps/global/AppContaxt";
@@ -133,7 +132,7 @@ const CategoryPage: React.FC = () => {
             id: item.name,
             prod_id: item.product_code,
             name: item.display_name,
-            description: item.short_describe,
+            description: item.description,
             image: `${API_URL}/${item.image}`,
             count: item.stock_qty,
             price: item.price || item.standard_rate || 0,
@@ -270,7 +269,7 @@ const CategoryPage: React.FC = () => {
           </div>
 
           <div className="hidden md:flex flex-row md:flex-col w-full border border-ring/30 rounded-md md:w-72 overflow-x-auto md:overflow-visible gap-4 scrollbar-hide">
-            <div className="flex flex-row md:flex-col flex-nowrap md:sticky md:top-24 bg-background ring ring-gray-300/30 rounded-md shadow-sm p-4 md:p-6 gap-4 min-w-max md:min-w-0">
+            <div className="flex flex-row md:flex-col flex-nowrap md:sticky md:top-24 bg-background  rounded-md  p-4 md:p-6 gap-4 min-w-max md:min-w-0">
               <h6 className="font-semibold text-lg hidden md:block">Filters</h6>
 
               <div className="flex flex-row md:flex-col gap-4 md:gap-3">
@@ -319,25 +318,23 @@ const CategoryPage: React.FC = () => {
                   Price
                 </label>
                 {priceRanges.map((range) => (
-                  <div key={range.id} className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      id={`price-${range.id}`}
-                      checked={selectedPriceRange === range.id}
-                      onChange={() =>
-                        setSelectedPriceRange((prev) =>
-                          prev === range.id ? null : range.id
-                        )
-                      }
-                    />
-                    <label htmlFor={`price-${range.id}`} className="text-sm">
-                      {range.label}
-                    </label>
-                  </div>
+                  <Checkbox
+                    key={range.id}
+                    id={`price-${range.id}`}
+                    agreed={selectedPriceRange === range.id}
+                    label={range.label}
+                    err={""} // or your error message if you have validation
+                    className=""
+                    onChange={(checked) =>
+                      setSelectedPriceRange((prev) =>
+                        checked ? range.id : null
+                      )
+                    }
+                  />
                 ))}
               </div>
 
-              <div className="flex flex-col gap-2 min-w-[180px]">
+              {/* <div className="flex flex-col gap-2 min-w-[180px]">
                 <label className="text-md font-semibold hidden md:block">
                   Invoice
                 </label>
@@ -363,7 +360,7 @@ const CategoryPage: React.FC = () => {
                   className=""
                   onChange={() => setAvailability(!availability)}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -372,7 +369,10 @@ const CategoryPage: React.FC = () => {
             <div className="fixed inset-0 bg-white z-50 overflow-y-auto">
               <div className="flex justify-between items-center p-4 border-b">
                 <h2 className="text-lg font-semibold">Filters</h2>
-                <ImageButton onClick={() => setIsFilterOpen(false)} icon={"close"} />
+                <ImageButton
+                  onClick={() => setIsFilterOpen(false)}
+                  icon={"close"}
+                />
               </div>
               <MobileFilter
                 dropdowns={dropdowns}
@@ -387,14 +387,7 @@ const CategoryPage: React.FC = () => {
                 setAvailability={setAvailability}
                 onClose={() => setIsFilterOpen(false)}
               />
-              {/* <div className="p-4">
-                <button
-                  onClick={() => setIsFilterOpen(false)}
-                  className="w-full bg-blue-600 text-white py-2 rounded"
-                >
-                  Apply Filters
-                </button>
-              </div> */}
+             
             </div>
           )}
 
@@ -449,7 +442,7 @@ const CategoryPage: React.FC = () => {
                     className="space-y-2 px-2 cursor-pointer"
                     onClick={() => navigateProductPage(product.id)}
                   >
-                    <h4 className="text-sm lg:text-lg font-semibold text-update/90 line-clamp-3">
+                    <h4 className="text-sm lg:text-lg font-semibold line-clamp-3">
                       {product.name}
                     </h4>
                     <h2 className="text-xl font-bold block md:hidden">
@@ -461,7 +454,7 @@ const CategoryPage: React.FC = () => {
                     </span>{" "}
                     <span>76876 Reviews</span>
                   </div> */}
-                    <p className="text-sm text-foreground/60 line-clamp-2 hidden md:flex">
+                    <p className="text-sm text-foreground/60 line-clamp-2 lg:line-clamp-3">
                       {product.description}
                     </p>
                     {/* <div className="hidden lg:flex md:flex-row flex-col">
@@ -508,7 +501,7 @@ const CategoryPage: React.FC = () => {
                   </div>
 
                   <div className="text-right space-y-2 hidden md:block">
-                    <div
+                    {/* <div
                       className={`w-max block ml-auto text-white text-xs px-2 py-1 z-10 ${
                         product.count > 0
                           ? product.count < 3
@@ -522,7 +515,7 @@ const CategoryPage: React.FC = () => {
                           ? `only ${product.count} left`
                           : "10% Offer"
                         : "Out Of Stock"}
-                    </div>
+                    </div> */}
                     <h2 className="text-sm md:text-xl font-bold">
                       ₹{product.price}
                     </h2>
