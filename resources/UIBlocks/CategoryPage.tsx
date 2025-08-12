@@ -1,5 +1,5 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, useMemo } from "react";
 import apiClient from "../../resources/global/api/apiClients";
 import ImageButton from "../components/button/ImageBtn";
 import DropdownRead from "../components/input/dropdown-read";
@@ -7,6 +7,7 @@ import Checkbox from "../components/input/checkbox";
 import { useAppContext } from "../../apps/global/AppContaxt";
 import MobileFilter from "../UIBlocks/filter/MobileFilter";
 import LoadingScreen from "../../resources/components/loading/LoadingScreen";
+import LoadingSpinner3 from "../../resources/components/loading/LoadingSpinner3";
 type ProductType = {
   id: number;
   name: string;
@@ -24,6 +25,13 @@ export type FiltersType = {
   discount: string;
 };
 
+const sortOptions = [
+  { value: "priceLowHigh", label: "Price: Low to High" },
+  { value: "priceHighLow", label: "Price: High to Low" },
+  { value: "nameAZ", label: "Name: A to Z" },
+  { value: "nameZA", label: "Name: Z to A" },
+];
+
 const CategoryPage: React.FC = () => {
   const { API_URL } = useAppContext();
   const [products, setProducts] = useState<ProductType[]>([]);
@@ -36,7 +44,7 @@ const CategoryPage: React.FC = () => {
   const [categories, setCategories] = useState<string[]>([]);
   const [brands, setBrands] = useState<string[]>([]);
 
-  const location=useLocation()
+  const location = useLocation();
   const [selectedFilters, setSelectedFilters] = useState<FiltersType>({
     category: category || "",
     brand: "",
@@ -44,9 +52,9 @@ const CategoryPage: React.FC = () => {
     discount: "",
   });
   const [listView, setListView] = useState<boolean>(true);
-useEffect(()=>{
-  setListView(location.state?.listView ?? true);
-},[location.state?.listView]);
+  useEffect(() => {
+    setListView(location.state?.listView ?? true);
+  }, [location.state?.listView]);
   // const [selectedPrice, setSelectedPrice] = useState<number | null>(0);
 
   const [maxPrice, setMaxPrice] = useState<number>(0);
@@ -55,66 +63,76 @@ useEffect(()=>{
     null
   );
 
-  const priceRanges = [
-    {
-      id: 1,
-      label: `Up to ₹${Math.round(maxPrice * 0.25)}`,
-      min: 0,
-      max: maxPrice * 0.25,
-    },
-    {
-      id: 2,
-      label: `₹${Math.round(maxPrice * 0.25)} - ₹${Math.round(maxPrice * 0.5)}`,
-      min: maxPrice * 0.25,
-      max: maxPrice * 0.5,
-    },
-    {
-      id: 3,
-      label: `₹${Math.round(maxPrice * 0.5)} - ₹${Math.round(maxPrice * 0.75)}`,
-      min: maxPrice * 0.5,
-      max: maxPrice * 0.75,
-    },
-    {
-      id: 4,
-      label: `₹${Math.round(maxPrice * 0.75)} - ₹${Math.round(maxPrice * 0.9)}`,
-      min: maxPrice * 0.75,
-      max: maxPrice * 0.9,
-    },
-    {
-      id: 5,
-      label: `Above ₹${Math.round(maxPrice * 0.9)}`,
-      min: maxPrice * 0.9,
-      max: Infinity,
-    },
-  ];
+  const priceRanges = useMemo(
+    () => [
+      {
+        id: 1,
+        label: `Up to ₹${Math.round(maxPrice * 0.25)}`,
+        min: 0,
+        max: maxPrice * 0.25,
+      },
+      {
+        id: 2,
+        label: `₹${Math.round(maxPrice * 0.25)} - ₹${Math.round(
+          maxPrice * 0.5
+        )}`,
+        min: maxPrice * 0.25,
+        max: maxPrice * 0.5,
+      },
+      {
+        id: 3,
+        label: `₹${Math.round(maxPrice * 0.5)} - ₹${Math.round(
+          maxPrice * 0.75
+        )}`,
+        min: maxPrice * 0.5,
+        max: maxPrice * 0.75,
+      },
+      {
+        id: 4,
+        label: `₹${Math.round(maxPrice * 0.75)} - ₹${Math.round(
+          maxPrice * 0.9
+        )}`,
+        min: maxPrice * 0.75,
+        max: maxPrice * 0.9,
+      },
+      {
+        id: 5,
+        label: `Above ₹${Math.round(maxPrice * 0.9)}`,
+        min: maxPrice * 0.9,
+        max: Infinity,
+      },
+    ],
+    [maxPrice]
+  );
 
   // New UI States for mobile modals
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [sortOption, setSortOption] = useState("");
 
-  const dropdowns = [
-    {
-      id: "category",
-      label: "Category",
-      value: selectedFilters.category,
-      options: categories,
-    },
-    { id: "brand", label: "Brand", options: brands },
-    // {
-    //   id: "rating",
-    //   label: "rating",
-    //   options: ["4★ & Above", "3★ & Above", "2★ & Above", "1★ & Above"],
-    // },
-    // {
-    //   id: "discount",
-    //   label: "Discount",
-    //   options: ["60% Above", "40% & Above", "25% & Above", "10% & Above"],
-    // },
-  ];
+  const dropdowns = useMemo(
+    () => [
+      {
+        id: "category",
+        label: "Category",
+        value: selectedFilters.category,
+        options: categories,
+      },
+      {
+        id: "brand",
+        label: "Brand",
+        value: selectedFilters.brand,
+        options: brands,
+      },
+    ],
+    [categories, brands, selectedFilters.category, selectedFilters.brand]
+  );
+
+  const [allProducts, setAllProducts] = useState<ProductType[]>([]);
+  // const [products, setProducts] = useState<ProductType[]>([]);
 
   useEffect(() => {
-    const applyFilters = async () => {
+    const fetchAllProducts = async () => {
       try {
         const res = await apiClient.get(
           "/api/resource/Product?limit_page_length=0"
@@ -130,85 +148,78 @@ useEffect(()=>{
         });
 
         const detailResponses = await Promise.all(detailPromises);
-        let formatted: ProductType[] = detailResponses
-          .filter(Boolean)
-          .map((item: any) => ({
-            id: item.name,
-            prod_id: item.product_code,
-            name: item.display_name,
-            description: item.description,
-            image: `${API_URL}/${item.image}`,
-            count: item.stock_qty,
-            price: item.price || item.standard_rate || 0,
-            category: item.category || "",
-          }));
 
-        // Filter by category and brand before price max calculation
-        if (selectedFilters.category) {
-          formatted = formatted.filter((item) =>
-            item.category
-              .toLowerCase()
-              .includes(selectedFilters.category.toLowerCase())
-          );
-        }
+        const formatted = detailResponses.filter(Boolean).map((item: any) => ({
+          id: item.name,
+          prod_id: item.product_code,
+          name: item.display_name,
+          description: item.description,
+          image: `${API_URL}/${item.image}`,
+          count: item.stock_qty,
+          price: item.price || item.standard_rate || 0,
+          category: item.category || "",
+        }));
 
-        if (selectedFilters.brand) {
-          formatted = formatted.filter((item) =>
-            item.name
-              .toLowerCase()
-              .includes(selectedFilters.brand.toLowerCase())
-          );
-        }
-
-        // Calculate the max price of filtered products
-        if (formatted.length > 0) {
-          const highestPrice = Math.max(...formatted.map((p) => p.price));
-          setMaxPrice(highestPrice);
-
-          // Reset selectedPrice if it exceeds the new max price or not set
-          // if (!selectedPrice || selectedPrice > highestPrice) {
-          //   setSelectedPrice(highestPrice);
-          // }
-        } else {
-          // If no products match, reset maxPrice to a default or zero
-          setMaxPrice(0);
-          // setSelectedPrice(0);
-        }
-
-        // sort products based on selected sort option
-        if (sortOption) {
-          formatted = [...formatted].sort((a, b) => {
-            if (sortOption === "priceLowHigh") return a.price - b.price;
-            if (sortOption === "priceHighLow") return b.price - a.price;
-            if (sortOption === "nameAZ") return a.name.localeCompare(b.name);
-            if (sortOption === "nameZA") return b.name.localeCompare(a.name);
-            return 0;
-          });
-        }
-        // Now filter by selectedPrice if it has a value
-        if (selectedPriceRange !== null) {
-          const range = priceRanges.find((r) => r.id === selectedPriceRange);
-          if (range) {
-            formatted = formatted.filter(
-              (item) => item.price >= range.min && item.price <= range.max
-            );
-          }
-        }
-
-        setProducts(formatted);
+        setAllProducts(formatted);
       } catch (err) {
         setError("Failed to fetch products");
       }
     };
 
-    applyFilters();
-    // Apply sorting after filters
+    fetchAllProducts();
+  }, [API_URL]);
+
+  useEffect(() => {
+    if (!allProducts.length) return;
+
+    let filtered = [...allProducts];
+
+    if (selectedFilters.category) {
+      filtered = filtered.filter((item) =>
+        item.category
+          .toLowerCase()
+          .includes(selectedFilters.category.toLowerCase())
+      );
+    }
+
+    if (selectedFilters.brand) {
+      filtered = filtered.filter((item) =>
+        item.name.toLowerCase().includes(selectedFilters.brand.toLowerCase())
+      );
+    }
+
+    if (selectedPriceRange !== null) {
+      const range = priceRanges.find((r) => r.id === selectedPriceRange);
+      if (range) {
+        filtered = filtered.filter(
+          (item) => item.price >= range.min && item.price <= range.max
+        );
+      }
+    }
+
+    if (filtered.length > 0) {
+      setMaxPrice(Math.max(...filtered.map((p) => p.price)));
+    } else {
+      setMaxPrice(0);
+    }
+
+    if (sortOption) {
+      filtered.sort((a, b) => {
+        if (sortOption === "priceLowHigh") return a.price - b.price;
+        if (sortOption === "priceHighLow") return b.price - a.price;
+        if (sortOption === "nameAZ") return a.name.localeCompare(b.name);
+        if (sortOption === "nameZA") return b.name.localeCompare(a.name);
+        return 0;
+      });
+    }
+
+    setProducts(filtered);
   }, [
-    selectedFilters.category,
-    selectedFilters.brand,
+    allProducts,
+    selectedFilters,
     selectedPriceRange,
     sortOption,
-    API_URL,
+    priceRanges,
   ]);
 
   // useEffect(() => {
@@ -244,18 +255,6 @@ useEffect(()=>{
 
     fetchDropdownData();
   }, []);
-
-  // if (products.length === 0) {
-  //   return <LoadingScreen image={"/assets/svg/logo.svg"} />;
-  // }
-
-  const sortOptions = [
-    { value: "priceLowHigh", label: "Price: Low to High" },
-    { value: "priceHighLow", label: "Price: High to Low" },
-    { value: "nameAZ", label: "Name: A to Z" },
-    { value: "nameZA", label: "Name: Z to A" },
-  ];
-
 
   return (
     <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
@@ -476,133 +475,152 @@ useEffect(()=>{
               </div>
             </div>
 
-            {listView ? (
-              // List View (current layout)
-              products.map((product) => (
-                <div key={product.id} className="border border-ring/30 rounded">
-                  <div className="grid grid-cols-[45%_55%] md:grid-cols-[25%_45%_25%] mx-5 gap-4 p-4">
-                    {/* Image */}
-                    <div
-                      onClick={() => navigateProductPage(product.id)}
-                      className="w-full h-full aspect-square overflow-hidden rounded-md cursor-pointer"
-                    >
-                      <img
-                        className="w-full h-full object-scale-down rounded-md"
-                        src={product.image}
-                        alt={product.name}
-                      />
-                    </div>
-
-                    {/* Details */}
-                    <div
-                      className="space-y-2 px-2 cursor-pointer"
-                      onClick={() => navigateProductPage(product.id)}
-                    >
-                      <h4 className="text-sm lg:text-lg font-semibold line-clamp-3">
-                        {product.name}
-                      </h4>
-                      <h2 className="text-xl font-bold block md:hidden">
-                        ₹{product.price}
-                      </h2>
-                      <p className="text-sm text-foreground/60 line-clamp-2 lg:line-clamp-3">
-                        {product.description}
-                      </p>
-                      <div className="flex gap-2">
-                        <p className="text-sm text-green-600">10% Offer</p>
-                      </div>
-
-                      {/* Action buttons */}
-                      <div className="my-2 flex flex-row gap-2">
-                        <ImageButton
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            changeCart(product.id);
-                          }}
-                          icon="cart"
-                          className={`p-2 rounded-full shadow ${
-                            cartStates[product.id] === "Added to Cart"
-                              ? "bg-green-600 text-white"
-                              : "bg-background text-foreground hover:bg-gray-200"
-                          }`}
-                        />
-                        <ImageButton
-                          onClick={(e) => e.stopPropagation()}
-                          className="bg-background text-foreground p-2 rounded-full shadow hover:bg-gray-200"
-                          icon={"like"}
-                        />
-                        <ImageButton
-                          onClick={(e) => e.stopPropagation()}
-                          className="bg-background text-foreground p-2 rounded-full shadow hover:bg-gray-200"
-                          icon={"link"}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Price section */}
-                    <div className="text-right space-y-2 hidden md:block">
-                      <h2 className="text-sm md:text-xl font-bold">
-                        ₹{product.price}
-                      </h2>
-                      <p className="text-sm text-foreground/60">
-                        Delivery: 3–5 days
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))
+            {products.length === 0 ? (
+              <div className="h-full flex items-center justify-center">
+                <LoadingSpinner3
+                  content="Loading products..."
+                  failMessage="Failed to load products. Please try again."
+                  size={40}
+                  color="primary"
+                  timeout={10000} // 10 seconds
+                />
+              </div>
             ) : (
-              // Grid View (3 items per row)
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                {products.map((product) => (
-                  <div
-                    key={product.id}
-                    className="border border-ring/30 rounded p-4 cursor-pointer hover:shadow-md transition relative group"
-                    onClick={() => navigateProductPage(product.id)}
-                  >
-                    {/* Image on top */}
-                    <div className="w-[60%] block mx-auto sm:w-full aspect-square overflow-hidden rounded-md mb-3">
-                      <img
-                        className="w-full h-full object-scale-down"
-                        src={product.image}
-                        alt={product.name}
-                      />
+              <div>
+                {listView ? (
+                  // List View (current layout)
+                  products.map((product) => (
+                    <div
+                      key={product.id}
+                      className="border border-ring/30 rounded"
+                    >
+                      <div className="grid grid-cols-[45%_55%] md:grid-cols-[25%_45%_25%] mx-5 gap-4 p-4">
+                        {/* Image */}
+                        <div
+                          onClick={() => navigateProductPage(product.id)}
+                          className="w-full h-full aspect-square overflow-hidden rounded-md cursor-pointer"
+                        >
+                          <img
+                            className="w-full h-full object-scale-down rounded-md"
+                            src={product.image}
+                            alt={product.name}
+                          />
+                        </div>
+
+                        {/* Details */}
+                        <div
+                          className="space-y-2 px-2 cursor-pointer"
+                          onClick={() => navigateProductPage(product.id)}
+                        >
+                          <h4 className="text-sm lg:text-lg font-semibold line-clamp-3">
+                            {product.name}
+                          </h4>
+                          <h2 className="text-xl font-bold block md:hidden">
+                            ₹{product.price}
+                          </h2>
+                          <p className="text-sm text-foreground/60 line-clamp-2 lg:line-clamp-3">
+                            {product.description}
+                          </p>
+                          <div className="flex gap-2">
+                            <p className="text-sm text-green-600">10% Offer</p>
+                          </div>
+
+                          {/* Action buttons */}
+                          <div className="my-2 flex flex-row gap-2">
+                            <ImageButton
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                changeCart(product.id);
+                              }}
+                              icon="cart"
+                              className={`p-2 rounded-full shadow ${
+                                cartStates[product.id] === "Added to Cart"
+                                  ? "bg-green-600 text-white"
+                                  : "bg-background text-foreground hover:bg-gray-200"
+                              }`}
+                            />
+                            <ImageButton
+                              onClick={(e) => e.stopPropagation()}
+                              className="bg-background text-foreground p-2 rounded-full shadow hover:bg-gray-200"
+                              icon={"like"}
+                            />
+                            <ImageButton
+                              onClick={(e) => e.stopPropagation()}
+                              className="bg-background text-foreground p-2 rounded-full shadow hover:bg-gray-200"
+                              icon={"link"}
+                            />
+                          </div>
+                        </div>
+
+                        {/* Price section */}
+                        <div className="text-right space-y-2 hidden md:block">
+                          <h2 className="text-sm md:text-xl font-bold">
+                            ₹{product.price}
+                          </h2>
+                          <p className="text-sm text-foreground/60">
+                            Delivery: 3–5 days
+                          </p>
+                        </div>
+                      </div>
                     </div>
+                  ))
+                ) : (
+                  // Grid View (3 items per row)
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                    {products.map((product) => (
+                      <div
+                        key={product.id}
+                        className="border border-ring/30 rounded p-4 cursor-pointer hover:shadow-md transition relative group"
+                        onClick={() => navigateProductPage(product.id)}
+                      >
+                        {/* Image on top */}
+                        <div className="w-[60%] block mx-auto sm:w-full aspect-square overflow-hidden rounded-md mb-3">
+                          <img
+                            className="w-full h-full object-scale-down"
+                            src={product.image}
+                            alt={product.name}
+                          />
+                        </div>
 
-                    {/* Title */}
-                    <h4 className="text-sm lg:text-lg font-semibold line-clamp-2 mb-1 text-center">
-                      {product.name}
-                    </h4>
+                        {/* Title */}
+                        <h4 className="text-sm lg:text-lg font-semibold line-clamp-2 mb-1 text-center">
+                          {product.name}
+                        </h4>
 
-                    {/* Price */}
-                    <h2 className="text-lg font-bold mb-2 text-center">₹{product.price}</h2>
+                        {/* Price */}
+                        <h2 className="text-lg font-bold mb-2 text-center">
+                          ₹{product.price}
+                        </h2>
 
-                    {/* Actions */}
-                    <div className="flex gap-2 flex-col absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10">
-                      <ImageButton
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          changeCart(product.id);
-                        }}
-                        icon="cart"
-                        className={`p-2 rounded-full shadow ${
-                          cartStates[product.id] === "Added to Cart"
-                            ? "bg-green-600 text-white"
-                            : "bg-background text-foreground hover:bg-gray-200"
-                        }`}
-                      />
-                      <ImageButton
-                        onClick={(e) => e.stopPropagation()}
-                        className="bg-background text-foreground p-2 rounded-full shadow hover:bg-gray-200"
-                        icon={"like"}
-                      />
-                      <ImageButton
-                        onClick={(e) => e.stopPropagation()}
-                        className="bg-background text-foreground p-2 rounded-full shadow hover:bg-gray-200"
-                        icon={"link"}
-                      />
-                    </div>
+                        {/* Actions */}
+                        <div className="flex gap-2 flex-col absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10">
+                          <ImageButton
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              changeCart(product.id);
+                            }}
+                            icon="cart"
+                            className={`p-2 rounded-full shadow ${
+                              cartStates[product.id] === "Added to Cart"
+                                ? "bg-green-600 text-white"
+                                : "bg-background text-foreground hover:bg-gray-200"
+                            }`}
+                          />
+                          <ImageButton
+                            onClick={(e) => e.stopPropagation()}
+                            className="bg-background text-foreground p-2 rounded-full shadow hover:bg-gray-200"
+                            icon={"like"}
+                          />
+                          <ImageButton
+                            onClick={(e) => e.stopPropagation()}
+                            className="bg-background text-foreground p-2 rounded-full shadow hover:bg-gray-200"
+                            icon={"link"}
+                          />
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
             )}
           </div>

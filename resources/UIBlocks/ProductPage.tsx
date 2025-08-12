@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
-import RatingReviews from "./RatingReviews";
+// import RatingReviews from "./RatingReviews";
 import Settings from "../../apps/ecart/public/ecart.json";
 import Stepper from "./Stepper";
 import OrderSummary from "./OrderSummary";
@@ -456,8 +456,7 @@ function ProductPage() {
           title="Similar Items"
           api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
           ribbon={false}
-          id={"is_popular"}
-        />
+          id={"is_popular"} filterValue={"1"}        />
       </div>
       {isPlaceOrder && (
         <div className="fixed top-1/2 z-10000 left-1/2 w-full p-2 lg:w-[80%] h-[90vh] transform -translate-x-1/2 -translate-y-1/2 shadow overflow-scroll scrollbar-hide">
