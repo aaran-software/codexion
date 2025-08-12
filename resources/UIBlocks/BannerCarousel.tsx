@@ -201,7 +201,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
                 alt={`Slide ${index}`}
                 className={`h-full w-full p-3 sm:p-10 object-contain ${
                   index === activeIndex
-                    ? "animate__animated animate__zoomIn"
+                    ? "animate__animated animate__zoomIn animate__slow "
                     : ""
                 }`}
               />
@@ -252,7 +252,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
               )}
 
               <button
-                className={`mt-4 px-7 py-3 bg-primary whitespace-nowrap text-white text-lg font-semibold md:text-2xl rounded-sm transition cursor-pointer ${
+                className={`mt-4 px-7 py-3 bg-primary hover:bg-hover whitespace-nowrap text-white text-lg font-semibold md:text-2xl rounded-sm transition cursor-pointer ${
                   index === activeIndex
                     ? "animate__animated animate__zoomIn"
                     : ""

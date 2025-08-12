@@ -107,7 +107,7 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
     <div className="w-full p-4 bg-background/80 border border-ring/30 shadow rounded-md">
       {/* header */}
       <div className="flex justify-between items-center px-2">
-        <h1 className="mt-2 font-bold text-[25px]">{title}</h1>
+        <h1 className="font-bold text-[25px]">{title}</h1>
         <p
           className="text-primary font-medium text-lg mt-2 cursor-pointer hover:underline"
           onClick={() => navigate(`/special/${id}`,{ state: { title } })}

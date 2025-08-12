@@ -36,13 +36,13 @@ import {
 } from "lucide-react";
 import { GrClear } from "react-icons/gr";
 import { IoIosArrowUp, IoIosUndo, IoIosRedo, IoIosSave   } from "react-icons/io";
-import { IoChevronDown } from "react-icons/io5";
+import { IoChevronDown, IoGrid  } from "react-icons/io5";
 import React from "react";
 import { FiLink } from "react-icons/fi";
 import { LuCaseUpper } from "react-icons/lu";
 import { RxLetterCaseLowercase } from "react-icons/rx";
 import { GrUnderline } from "react-icons/gr";
-import { FaBold, FaListOl, FaListUl, FaItalic, FaVideo } from "react-icons/fa";
+import { FaBold, FaListOl, FaListUl, FaItalic, FaVideo,FaThList  } from "react-icons/fa";
 import { FaImage, FaTableCells } from "react-icons/fa6";
 import { MdOutlineFormatStrikethrough } from "react-icons/md";
 import { GiArrowCursor } from "react-icons/gi";
@@ -118,6 +118,8 @@ const iconMap: Record<string, React.ReactNode> = {
   redo: <IoIosRedo size={18} />,
   save: <IoIosSave size={18} />,
   cursor: <GiArrowCursor  size={18} />,
+  list: <FaThList   size={18} />,
+  grid: <IoGrid   size={18} />,
 };
 function ImageButton({
   icon,

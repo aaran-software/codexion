@@ -53,7 +53,7 @@ const Mainmenu: React.FC = () => {
   };
 
   const handleCategoryClick = (categoryName: string) => {
-    navigate(`/category/${categoryName}`);
+    navigate(`/category/${categoryName}`,{state: { listView: false }});
   };
 
   useEffect(() => {
@@ -174,7 +174,7 @@ const Mainmenu: React.FC = () => {
                           onClick={(e) => {
                             e.stopPropagation();
                             if (item.path) {
-                              navigate(item.path);
+                              navigate(`/category${item.path}`,{state:{ listView: true }});
                               setHoveredIndex(null);
                             }
                           }}

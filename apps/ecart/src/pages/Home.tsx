@@ -1,6 +1,10 @@
 import { Suspense, lazy } from "react";
 import LoadingScreen from "../../../../resources/components/loading/LoadingScreen";
 
+const AdverthismentBanner = lazy(
+  () => import("../../../../resources/UIBlocks/Promotion/AdverthismentBanner")
+);
+
 const ProductCard = lazy(
   () => import("../../../../resources/UIBlocks/ProductCard")
 );
@@ -17,8 +21,8 @@ const CustomAdverthismentBanner = lazy(
 const PromotionSection = lazy(
   () => import("../../../../resources/UIBlocks/Promotion/PromotionSection")
 );
-const ScrollAdverthisment = lazy(
-  () => import("../../../../resources/UIBlocks/Promotion/ScrollAdverthisment")
+const ScrollAdverthisment2 = lazy(
+  () => import("../../../../resources/UIBlocks/Promotion/ScrollAdverthisment2")
 );
 const Mainmenu = lazy(() => import("../../../../resources/UIBlocks/Mainmenu"));
 const BrandMarquee = lazy(
@@ -52,8 +56,25 @@ function Home() {
         <ProductCard
           title="Popular Items"
           id={"is_popular"}
+          filterValue={1}
           api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
           ribbon={false}
+        />
+      </div>
+
+      <div className="px-[5%] mt-15">
+        <ProductCard
+          title="Laptops"
+          id={"category"}
+          filterValue={"Laptop"}
+          api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
+          ribbon={false}
+        />
+      </div>
+      <div className=" py-5 mt-20">
+        <AdverthismentBanner
+          api={`api/resource/Product?fields=["name"]&filters=[["is_slider", "=", 1]]`}
+          delay={6000}
         />
       </div>
 
@@ -71,13 +92,6 @@ function Home() {
         />
       </div>
 
-      {/* <div className=" py-5 mt-20">
-        <AdverthismentBanner
-          api={`api/resource/Product?fields=["name"]&filters=[["is_slider", "=", 1]]`}
-          delay={6000}
-        />
-      </div> */}
-
       <div className=" py-5 mt-20">
         <CustomAdverthismentBanner
           api={`api/resource/Product?fields=["name"]&filters=[["is_slider", "=", 1]]`}
@@ -89,34 +103,35 @@ function Home() {
         <ProductCard
           title="Laptops"
           api={`api/resource/Product?fields=["name"]&filters=[["category", "=", "Laptop"]]&limit_page_length=0`}
+          filterValue={1}
           id={"Laptop"}
         />
       </div>
 
       <div className="my-10 py-10 md:py-15 bg-primary/5 ">
-        <BrandMarquee type="logo" brands={brands} speed={90} />
+        <BrandMarquee type="logo" brands={brands} speed={90} height={20} />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-15 md:gap-5 px-[5%]">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-15 md:gap-5 px-[5%] items-stretch">
         <GroupProductCard
-          title={"Top Rated"}
+          title="Top Rated"
           api={`api/resource/Product?fields=["name"]&filters=[["top_rated", "=", 1]]`}
-          id={"top_rated"}
+          id="top_rated"
         />
 
         <GroupProductCard
           title="Best Sellers"
           api={`api/resource/Product?fields=["name"]&filters=[["is_discount", "=", 1]]`}
-          id={"is_discount"}
+          id="is_discount"
         />
 
-        <div className="lg:flex items-center h-full border border-ring/30 rounded-md p-1 hidden">
+        <div className="h-full  bg-background/80 border border-ring/30 shadow rounded-md flex md:hidden lg:flex">
           <PromotionSection image={"/assets/Promotion/ads3.png"} />
         </div>
       </div>
 
-      <div className="my-20">
-        <ScrollAdverthisment
+      <div className="my-15">
+        <ScrollAdverthisment2
           title="Featured Brands"
           api={`api/resource/Product?fields=["name"]&filters=[["is_popular", "=", 1]]`}
         />

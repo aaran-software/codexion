@@ -1,13 +1,14 @@
 import ImageButton from "../../../resources/components/button/ImageBtn";
 import { FiltersType } from "../CategoryPage";
 import DropdownRead from "../../../resources/components/input/dropdown-read";
+import Checkbox from "../../../resources/components/input/checkbox";
 
 type DropdownType = {
   id: string;
   label: string;
   options: string[];
   readApi?: string; // optional API source for DropdownRead
-  apiKey?: string;  // optional API key to extract data
+  apiKey?: string; // optional API key to extract data
 };
 
 type PriceRange = {
@@ -42,7 +43,7 @@ const MobileFilter = ({
   setInvoice,
   availability,
   setAvailability,
-  onClose
+  onClose,
 }: FilterProps) => {
   // same price range calculation as desktop
   const priceRanges: PriceRange[] = [
@@ -104,7 +105,7 @@ const MobileFilter = ({
                 onChange={(val) =>
                   setSelectedFilters((prev) => ({
                     ...prev,
-                    [dropdown.id]: Array.isArray(val) ? val[0] || "" : val
+                    [dropdown.id]: Array.isArray(val) ? val[0] || "" : val,
                   }))
                 }
                 err=""
@@ -118,7 +119,7 @@ const MobileFilter = ({
                   onClick={() =>
                     setSelectedFilters((prev) => ({
                       ...prev,
-                      [dropdown.id]: ""
+                      [dropdown.id]: "",
                     }))
                   }
                 >
@@ -134,18 +135,17 @@ const MobileFilter = ({
           <label className="text-md font-semibold">Price</label>
           <div className="flex flex-col gap-2 mt-2">
             {priceRanges.map((range) => (
-              <label key={range.id} className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={selectedPriceRange === range.id}
-                  onChange={() =>
-                    setSelectedPriceRange((prev) =>
-                      prev === range.id ? null : range.id
-                    )
-                  }
-                />
-                {range.label}
-              </label>
+              <Checkbox
+                key={range.id}
+                id={`price-${range.id}`}
+                agreed={selectedPriceRange === range.id}
+                label={range.label}
+                err={""} // or your error message if you have validation
+                className=""
+                onChange={(checked) =>
+                  setSelectedPriceRange(() => (checked ? range.id : null))
+                }
+              />
             ))}
           </div>
         </div>

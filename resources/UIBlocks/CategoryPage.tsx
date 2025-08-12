@@ -1,8 +1,7 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import React, { useState, useEffect, Suspense } from "react";
 import apiClient from "../../resources/global/api/apiClients";
 import ImageButton from "../components/button/ImageBtn";
-import RangeSlider from "../components/input/range-slider";
 import DropdownRead from "../components/input/dropdown-read";
 import Checkbox from "../components/input/checkbox";
 import { useAppContext } from "../../apps/global/AppContaxt";
@@ -37,13 +36,17 @@ const CategoryPage: React.FC = () => {
   const [categories, setCategories] = useState<string[]>([]);
   const [brands, setBrands] = useState<string[]>([]);
 
+  const location=useLocation()
   const [selectedFilters, setSelectedFilters] = useState<FiltersType>({
     category: category || "",
     brand: "",
     rating: "",
     discount: "",
   });
-
+  const [listView, setListView] = useState<boolean>(true);
+useEffect(()=>{
+  setListView(location.state?.listView ?? true);
+},[location.state?.listView]);
   // const [selectedPrice, setSelectedPrice] = useState<number | null>(0);
 
   const [maxPrice, setMaxPrice] = useState<number>(0);
@@ -133,7 +136,7 @@ const CategoryPage: React.FC = () => {
             id: item.name,
             prod_id: item.product_code,
             name: item.display_name,
-            description: item.short_describe,
+            description: item.description,
             image: `${API_URL}/${item.image}`,
             count: item.stock_qty,
             price: item.price || item.standard_rate || 0,
@@ -246,6 +249,14 @@ const CategoryPage: React.FC = () => {
   //   return <LoadingScreen image={"/assets/svg/logo.svg"} />;
   // }
 
+  const sortOptions = [
+    { value: "priceLowHigh", label: "Price: Low to High" },
+    { value: "priceHighLow", label: "Price: High to Low" },
+    { value: "nameAZ", label: "Name: A to Z" },
+    { value: "nameZA", label: "Name: Z to A" },
+  ];
+
+
   return (
     <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
       <div className="md:mt-5 px-[5%] py-5">
@@ -270,7 +281,7 @@ const CategoryPage: React.FC = () => {
           </div>
 
           <div className="hidden md:flex flex-row md:flex-col w-full border border-ring/30 rounded-md md:w-72 overflow-x-auto md:overflow-visible gap-4 scrollbar-hide">
-            <div className="flex flex-row md:flex-col flex-nowrap md:sticky md:top-24 bg-background ring ring-gray-300/30 rounded-md shadow-sm p-4 md:p-6 gap-4 min-w-max md:min-w-0">
+            <div className="flex flex-row md:flex-col flex-nowrap md:sticky md:top-24 bg-background  rounded-md  p-4 md:p-6 gap-4 min-w-max md:min-w-0">
               <h6 className="font-semibold text-lg hidden md:block">Filters</h6>
 
               <div className="flex flex-row md:flex-col gap-4 md:gap-3">
@@ -319,25 +330,23 @@ const CategoryPage: React.FC = () => {
                   Price
                 </label>
                 {priceRanges.map((range) => (
-                  <div key={range.id} className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      id={`price-${range.id}`}
-                      checked={selectedPriceRange === range.id}
-                      onChange={() =>
-                        setSelectedPriceRange((prev) =>
-                          prev === range.id ? null : range.id
-                        )
-                      }
-                    />
-                    <label htmlFor={`price-${range.id}`} className="text-sm">
-                      {range.label}
-                    </label>
-                  </div>
+                  <Checkbox
+                    key={range.id}
+                    id={`price-${range.id}`}
+                    agreed={selectedPriceRange === range.id}
+                    label={range.label}
+                    err={""} // or your error message if you have validation
+                    className=""
+                    onChange={(checked) =>
+                      setSelectedPriceRange((prev) =>
+                        checked ? range.id : null
+                      )
+                    }
+                  />
                 ))}
               </div>
 
-              <div className="flex flex-col gap-2 min-w-[180px]">
+              {/* <div className="flex flex-col gap-2 min-w-[180px]">
                 <label className="text-md font-semibold hidden md:block">
                   Invoice
                 </label>
@@ -363,7 +372,7 @@ const CategoryPage: React.FC = () => {
                   className=""
                   onChange={() => setAvailability(!availability)}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -372,7 +381,10 @@ const CategoryPage: React.FC = () => {
             <div className="fixed inset-0 bg-white z-50 overflow-y-auto">
               <div className="flex justify-between items-center p-4 border-b">
                 <h2 className="text-lg font-semibold">Filters</h2>
-                <ImageButton onClick={() => setIsFilterOpen(false)} icon={"close"} />
+                <ImageButton
+                  onClick={() => setIsFilterOpen(false)}
+                  icon={"close"}
+                />
               </div>
               <MobileFilter
                 dropdowns={dropdowns}
@@ -387,14 +399,6 @@ const CategoryPage: React.FC = () => {
                 setAvailability={setAvailability}
                 onClose={() => setIsFilterOpen(false)}
               />
-              {/* <div className="p-4">
-                <button
-                  onClick={() => setIsFilterOpen(false)}
-                  className="w-full bg-blue-600 text-white py-2 rounded"
-                >
-                  Apply Filters
-                </button>
-              </div> */}
             </div>
           )}
 
@@ -403,7 +407,10 @@ const CategoryPage: React.FC = () => {
             <div className="fixed inset-0 bg-white z-50">
               <div className="flex justify-between items-center p-4 border-b">
                 <h2 className="text-lg font-semibold">Sort By</h2>
-                <button onClick={() => setIsSortOpen(false)}>✕</button>
+                <ImageButton
+                  onClick={() => setIsSortOpen(false)}
+                  icon={"close"}
+                />
               </div>
               <div className="p-4 space-y-3">
                 {[
@@ -431,56 +438,146 @@ const CategoryPage: React.FC = () => {
 
           {/* Product List */}
           <div className="w-full md:w-3/4 space-y-3">
-            {products.map((product) => (
-              <div key={product.id} className="border border-ring/30 rounded">
-                <div className="grid grid-cols-[45%_55%] md:grid-cols-[25%_45%_25%] mx-5 gap-4 p-4">
-                  <div
-                    onClick={() => navigateProductPage(product.id)}
-                    className="w-full h-full aspect-square overflow-hidden rounded-md cursor-pointer"
-                  >
-                    <img
-                      className="w-full h-full object-scale-down rounded-md"
-                      src={product.image}
-                      alt={product.name}
-                    />
-                  </div>
+            <div className="hidden md:flex justify-between items-center mb-4">
+              <div className="w-max">
+                <DropdownRead
+                  id="sortBy"
+                  label="Sort By"
+                  err=""
+                  items={sortOptions.map((opt) => opt.label)}
+                  value={
+                    sortOptions.find((opt) => opt.value === sortOption)
+                      ?.label || ""
+                  }
+                  onChange={(val) => {
+                    const selected = sortOptions.find(
+                      (opt) => opt.label === val
+                    );
+                    if (selected) {
+                      setSortOption(selected.value); // store internal value
+                    }
+                  }}
+                  className="w-max"
+                />
+              </div>
+              <div className="flex justify-end gap-5 mb-4">
+                <ImageButton
+                  icon={"list"}
+                  onClick={() => {
+                    setListView(true);
+                  }}
+                />
+                <ImageButton
+                  icon={"grid"}
+                  onClick={() => {
+                    setListView(false);
+                  }}
+                />
+              </div>
+            </div>
 
+            {listView ? (
+              // List View (current layout)
+              products.map((product) => (
+                <div key={product.id} className="border border-ring/30 rounded">
+                  <div className="grid grid-cols-[45%_55%] md:grid-cols-[25%_45%_25%] mx-5 gap-4 p-4">
+                    {/* Image */}
+                    <div
+                      onClick={() => navigateProductPage(product.id)}
+                      className="w-full h-full aspect-square overflow-hidden rounded-md cursor-pointer"
+                    >
+                      <img
+                        className="w-full h-full object-scale-down rounded-md"
+                        src={product.image}
+                        alt={product.name}
+                      />
+                    </div>
+
+                    {/* Details */}
+                    <div
+                      className="space-y-2 px-2 cursor-pointer"
+                      onClick={() => navigateProductPage(product.id)}
+                    >
+                      <h4 className="text-sm lg:text-lg font-semibold line-clamp-3">
+                        {product.name}
+                      </h4>
+                      <h2 className="text-xl font-bold block md:hidden">
+                        ₹{product.price}
+                      </h2>
+                      <p className="text-sm text-foreground/60 line-clamp-2 lg:line-clamp-3">
+                        {product.description}
+                      </p>
+                      <div className="flex gap-2">
+                        <p className="text-sm text-green-600">10% Offer</p>
+                      </div>
+
+                      {/* Action buttons */}
+                      <div className="my-2 flex flex-row gap-2">
+                        <ImageButton
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            changeCart(product.id);
+                          }}
+                          icon="cart"
+                          className={`p-2 rounded-full shadow ${
+                            cartStates[product.id] === "Added to Cart"
+                              ? "bg-green-600 text-white"
+                              : "bg-background text-foreground hover:bg-gray-200"
+                          }`}
+                        />
+                        <ImageButton
+                          onClick={(e) => e.stopPropagation()}
+                          className="bg-background text-foreground p-2 rounded-full shadow hover:bg-gray-200"
+                          icon={"like"}
+                        />
+                        <ImageButton
+                          onClick={(e) => e.stopPropagation()}
+                          className="bg-background text-foreground p-2 rounded-full shadow hover:bg-gray-200"
+                          icon={"link"}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Price section */}
+                    <div className="text-right space-y-2 hidden md:block">
+                      <h2 className="text-sm md:text-xl font-bold">
+                        ₹{product.price}
+                      </h2>
+                      <p className="text-sm text-foreground/60">
+                        Delivery: 3–5 days
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              // Grid View (3 items per row)
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {products.map((product) => (
                   <div
-                    className="space-y-2 px-2 cursor-pointer"
+                    key={product.id}
+                    className="border border-ring/30 rounded p-4 cursor-pointer hover:shadow-md transition relative group"
                     onClick={() => navigateProductPage(product.id)}
                   >
-                    <h4 className="text-sm lg:text-lg font-semibold text-update/90 line-clamp-3">
+                    {/* Image on top */}
+                    <div className="w-[60%] block mx-auto sm:w-full aspect-square overflow-hidden rounded-md mb-3">
+                      <img
+                        className="w-full h-full object-scale-down"
+                        src={product.image}
+                        alt={product.name}
+                      />
+                    </div>
+
+                    {/* Title */}
+                    <h4 className="text-sm lg:text-lg font-semibold line-clamp-2 mb-1 text-center">
                       {product.name}
                     </h4>
-                    <h2 className="text-xl font-bold block md:hidden">
-                      ₹{product.price}
-                    </h2>
-                    {/* <div className="text-sm text-foreground/50">
-                    <span className="bg-green-600 text-white text-xs w-max px-2 py-1 rounded">
-                      4 ★
-                    </span>{" "}
-                    <span>76876 Reviews</span>
-                  </div> */}
-                    <p className="text-sm text-foreground/60 line-clamp-2 hidden md:flex">
-                      {product.description}
-                    </p>
-                    {/* <div className="hidden lg:flex md:flex-row flex-col">
-                    <div className="text-xs line-clamp-1 ">
-                      <span className="font-semibold">Bank Offer</span> 5%
-                      cashback on Flipkart Axis Bank Credit Card upto ₹4,000 per
-                      statement quarter
-                    </div>
-                    <div className="text-xs line-clamp-1">
-                      <span className="font-semibold">Bank Offer</span> 5%
-                      cashback on Flipkart Axis Bank Credit Card upto ₹4,000 per
-                      statement quarter
-                    </div>
-                  </div> */}
-                    <div className="flex gap-2">
-                      <p className="text-sm text-green-600">10% Offer</p>
-                    </div>
 
-                    <div className="my-2 flex flex-row gap-2 ">
+                    {/* Price */}
+                    <h2 className="text-lg font-bold mb-2 text-center">₹{product.price}</h2>
+
+                    {/* Actions */}
+                    <div className="flex gap-2 flex-col absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10">
                       <ImageButton
                         onClick={(e) => {
                           e.stopPropagation();
@@ -493,7 +590,6 @@ const CategoryPage: React.FC = () => {
                             : "bg-background text-foreground hover:bg-gray-200"
                         }`}
                       />
-
                       <ImageButton
                         onClick={(e) => e.stopPropagation()}
                         className="bg-background text-foreground p-2 rounded-full shadow hover:bg-gray-200"
@@ -506,33 +602,9 @@ const CategoryPage: React.FC = () => {
                       />
                     </div>
                   </div>
-
-                  <div className="text-right space-y-2 hidden md:block">
-                    <div
-                      className={`w-max block ml-auto text-white text-xs px-2 py-1 z-10 ${
-                        product.count > 0
-                          ? product.count < 3
-                            ? `bg-purple-500`
-                            : "bg-update"
-                          : "bg-delete"
-                      }`}
-                    >
-                      {product.count > 0
-                        ? product.count < 3
-                          ? `only ${product.count} left`
-                          : "10% Offer"
-                        : "Out Of Stock"}
-                    </div>
-                    <h2 className="text-sm md:text-xl font-bold">
-                      ₹{product.price}
-                    </h2>
-                    <p className="text-sm text-foreground/60">
-                      Delivery: 3–5 days
-                    </p>
-                  </div>
-                </div>
+                ))}
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>

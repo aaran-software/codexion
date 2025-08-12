@@ -10,12 +10,14 @@ interface BrandMarqueeProps {
   type: "logo" | "label" | "big-text";
   brands: Brand[];
   speed?: number; // pixels per second
+  height:number
 }
 
 const BrandMarquee: React.FC<BrandMarqueeProps> = ({
   type,
   brands,
   speed = 100,
+  height = 20,
 }) => {
   const marqueeRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
@@ -94,7 +96,7 @@ const BrandMarquee: React.FC<BrandMarqueeProps> = ({
               <img
                 src={brand.logo}
                 alt={brand.name}
-                className="h-24 md:h-36 w-auto mx-5 object-contain grayscale hover:grayscale-0 transition duration-300"
+                className={`h-${height} w-auto mx-5 object-contain grayscale hover:grayscale-0 transition duration-300`}
                 loading="eager"
               />
             ) : type === "big-text" ? (
