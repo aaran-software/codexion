@@ -245,6 +245,16 @@ const CategoryPage: React.FC = () => {
   //   return <LoadingScreen image={"/assets/svg/logo.svg"} />;
   // }
 
+  const sortOptions = [
+    { value: "priceLowHigh", label: "Price: Low to High" },
+    { value: "priceHighLow", label: "Price: High to Low" },
+    { value: "nameAZ", label: "Name: A to Z" },
+    { value: "nameZA", label: "Name: Z to A" },
+  ];
+
+  const [listView, setListView] = useState(true);
+
+
   return (
     <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
       <div className="md:mt-5 px-[5%] py-5">
@@ -387,7 +397,6 @@ const CategoryPage: React.FC = () => {
                 setAvailability={setAvailability}
                 onClose={() => setIsFilterOpen(false)}
               />
-             
             </div>
           )}
 
@@ -396,7 +405,11 @@ const CategoryPage: React.FC = () => {
             <div className="fixed inset-0 bg-white z-50">
               <div className="flex justify-between items-center p-4 border-b">
                 <h2 className="text-lg font-semibold">Sort By</h2>
-                <button onClick={() => setIsSortOpen(false)}>✕</button>
+                {/* <button onClick={() => setIsSortOpen(false)}>✕</button> */}
+                <ImageButton
+                  onClick={() => setIsSortOpen(false)}
+                  icon={"close"}
+                />
               </div>
               <div className="p-4 space-y-3">
                 {[
@@ -424,6 +437,34 @@ const CategoryPage: React.FC = () => {
 
           {/* Product List */}
           <div className="w-full md:w-3/4 space-y-3">
+            <div className="flex justify-between items-center mb-4">
+              <div className="w-max">
+                <DropdownRead
+                  id="sortBy"
+                  label="Sort By"
+                  err=""
+                  items={sortOptions.map((opt) => opt.label)}
+                  value={
+                    sortOptions.find((opt) => opt.value === sortOption)
+                      ?.label || ""
+                  }
+                  onChange={(val) => {
+                    const selected = sortOptions.find(
+                      (opt) => opt.label === val
+                    );
+                    if (selected) {
+                      setSortOption(selected.value); // store internal value
+                    }
+                  }}
+                  className="w-max"
+                />
+              </div>
+              <div className="flex justify-end gap-5 mb-4">
+                <ImageButton icon={"list"} onClick={()=>{setListView(true)}}/>
+                <ImageButton icon={"grid"} onClick={()=>{setListView(false)}}/>
+              </div>
+            </div>
+
             {products.map((product) => (
               <div key={product.id} className="border border-ring/30 rounded">
                 <div className="grid grid-cols-[45%_55%] md:grid-cols-[25%_45%_25%] mx-5 gap-4 p-4">

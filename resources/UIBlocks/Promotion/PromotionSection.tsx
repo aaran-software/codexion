@@ -1,14 +1,15 @@
-
-interface PromotionSectionProps{
-  image:string;
+interface PromotionSectionProps {
+  image: string;
 }
 
-function PromotionSection({image}:PromotionSectionProps) {
+function PromotionSection({ image }: PromotionSectionProps) {
   return (
-    <div className="">
-        <img src={image} alt="" className="object-scale-down" />
-    </div>
-  )
+    <img
+      src="/assets/Promotion/ads3.png"
+      alt=""
+      className="w-full h-full object-cover rounded-md"
+    />
+  );
 }
 
-export default PromotionSection
+export default PromotionSection;

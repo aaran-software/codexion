@@ -20,6 +20,7 @@ type ProductType = {
 // }
 const SpecialCategory= () => {
   const { API_URL } = useAppContext();
+  const location=useLocation()
 
   const [products, setProducts] = useState<ProductType[]>([]);
   const [cartStates, setCartStates] = useState<Record<number, string>>({});
@@ -37,10 +38,12 @@ const SpecialCategory= () => {
 // }, []);
 
   const {id}=useParams();
+  const value=location.state?.filterValue || 1;
+  console.log("value", value);
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await apiClient.get(`api/resource/Product?fields=["name"]&filters=[["${id}", "=", 1]]`);
+        const res = await apiClient.get(`api/resource/Product?fields=["name"]&filters=[["${id}", "=", "${value}"]]`);
         const items = res.data.data || [];
         const detailPromises = items.map((item: any) => {
           const itemName = encodeURIComponent(item.name);
@@ -90,7 +93,6 @@ const SpecialCategory= () => {
       [id]: prev[id] === "Add to Cart" ? "Added to Cart" : "Add to Cart",
     }));
   };
-  const location=useLocation()
 
   return (
     <div className="md:mt-5 px-[5%] py-5">

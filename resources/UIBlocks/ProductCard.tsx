@@ -18,9 +18,10 @@ interface ProductCardProps {
   title: string;
   api: string;
   ribbon?: boolean;
+  filterValue:string|number
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ title, api, ribbon, id }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ title, api, ribbon, id, filterValue }) => {
 
   const {API_URL} =useAppContext();
 
@@ -118,7 +119,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ title, api, ribbon, id }) => 
         <h1 className="mt-2 font-bold text-foreground/80 text-[25px]">
           {title}
         </h1>
-        <p className="text-primary font-medium text-lg mt-2 cursor-pointer hover:underline" onClick={() => navigate(`/special/${id}`,{ state: { title } })}>
+        <p className="text-primary font-medium text-lg mt-2 cursor-pointer hover:underline" onClick={() => navigate(`/special/${id}`,{ state: { title, filterValue } })}>
           More
         </p>
       </div>

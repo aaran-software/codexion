@@ -216,7 +216,7 @@ function ProductPage() {
                 onSelect={(index) => setSelectedImage(product.images![index])}
               />
             </div>
-            <ImageButton icon={"like"} className=" absolute top-5 right-5 z-10"/>
+            <ImageButton icon={"like"} className="!rounded-full border border-ring/30 p-2 absolute top-5 right-5 z-10"/>
             {/* <img
               src="/assets/svg/heart.svg"
               alt=""

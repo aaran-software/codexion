@@ -154,7 +154,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
   }, [activeIndex, slides.length, autoPlay, delay]);
 
   return (
-    <div className="relative w-full h-[300px] md:h-[350px] bg-background overflow-hidden">
+    <div className="relative w-full h-[250px] md:h-[400px] bg-background overflow-hidden">
       {/* 🔹 Slides */}
       <div
         className="w-full h-full relative"
@@ -165,49 +165,25 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
         {slides.map((slide, index) => (
           <div
             key={index}
-            className={`absolute inset-0 w-full h-[350px] flex transition-opacity duration-300 ${
+            className={`absolute inset-0 w-full h-[250px] md:h-[400px] flex transition-opacity duration-300 ${
               index === activeIndex ? "opacity-100 z-10" : "opacity-0 z-0"
             }`}
           >
             {/* Left: Image */}
-            <div className="w-full h-[350px] flex items-center justify-center">
+            <div className="w-full h-[250px] md:h-[400px] flex items-center justify-center">
               <img
                 // src={`${API_URL}/${slide.image}`}
-                src={"/assets/Promotion/banner_2.jpg"}
+                src={"/assets/Promotion/banner4.jpg"}
                 alt={`Slide ${index} ${slide}`}
-                className={`h-full w-full object-fit`}
+                className={`h-full w-full object-fill`}
               />
             </div>
+            
           </div>
         ))}
       </div>
 
-      {/* Indicators */}
-      <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className={`w-3 h-3 rounded-full ${
-              index === activeIndex ? "bg-white" : "bg-white/40"
-            }`}
-          />
-        ))}
-      </div>
-
-      {/* Navigation Buttons */}
-      <ImageButton
-        onClick={() =>
-          goToSlide(activeIndex === 0 ? slides.length - 1 : activeIndex - 1)
-        }
-        className="absolute top-1/2 left-5 lg:left-10 -translate-y-1/2 bg-black/30 text-white p-2 sm:p-4 !rounded-full hover:bg-black/30 z-20 hidden md:block"
-        icon={"left"}
-      />
-      <ImageButton
-        onClick={() => goToSlide((activeIndex + 1) % slides.length)}
-        className="absolute top-1/2 right-5 lg:right-10 -translate-y-1/2 bg-black/30 text-white p-2 sm:p-4 !rounded-full hover:bg-black/30 z-20 hidden md:block"
-        icon={"right"}
-      />
+     
     </div>
   );
 };
