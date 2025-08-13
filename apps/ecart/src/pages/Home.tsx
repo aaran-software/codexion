@@ -65,9 +65,9 @@ function Home() {
       <div className="px-[5%] mt-15">
         <ProductCard
           title="Laptops"
-          id={"category"}
-          filterValue={"Laptop"}
-          api={`api/resource/Catalog Details?fields=["name"]&filters=[["is_popular", "=", 1]]`}
+          id={"item_group"}
+          filterValue={"Laptops"}
+          api={`api/resource/Catalog Details?fields=["name"]&filters=[["item_group", "=", 1]]`}
           ribbon={false}
         />
       </div>
@@ -81,8 +81,8 @@ function Home() {
       <div className="flex flex-col md:flex-row gap-15 md:gap-5 mt-15 px-[5%]">
         <GroupProductCard
           title={"Hot Gadgets Today"}
-          api={`api/resource/Catalog Details?fields=["name"]&filters=[["top_rated", "=", 1]]`}
-          id={"top_rated"}
+          api={`api/resource/Catalog Details?fields=["name"]&filters=[["is_top_rated", "=", 1]]`}
+          id={"is_top_rated"}
         />
 
         <GroupProductCard
@@ -102,9 +102,9 @@ function Home() {
       <div className="px-[5%] mt-5">
         <ProductCard
           title="Laptops"
-          api={`api/resource/Catalog Details?fields=["name"]&filters=[["category", "=", "Laptop"]]&limit_page_length=0`}
+          api={`api/resource/Catalog Details?fields=["name"]&filters=[["category", "=", "Laptops"]]&limit_page_length=0`}
           filterValue={1}
-          id={"Laptop"}
+          id={"Laptops"}
         />
       </div>
 
@@ -115,8 +115,8 @@ function Home() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-15 md:gap-5 px-[5%] items-stretch">
         <GroupProductCard
           title="Top Rated"
-          api={`api/resource/Catalog Details?fields=["name"]&filters=[["top_rated", "=", 1]]`}
-          id="top_rated"
+          api={`api/resource/Catalog Details?fields=["name"]&filters=[["is_top_rated", "=", 1]]`}
+          id="is_top_rated"
         />
 
         <GroupProductCard
