@@ -36,7 +36,7 @@ const Footer: React.FC<FooterProps> = ({
   version,
   updateTitle = "🚀 New Update Available!",
   updateDescription = "We’ve introduced major improvements and features. Check it out now!",
-  updateApi = "/api/update",
+  updateApi = "http://tmnext.in:5001//api/update",
 }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [showUpdate, setShowUpdate] = useState(false);
