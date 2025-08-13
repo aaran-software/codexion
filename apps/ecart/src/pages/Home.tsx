@@ -47,12 +47,13 @@ function Home() {
     <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
       <Mainmenu />
 
+      {/* main carousel */}
       <BannerCarousel
         api={`api/resource/Catalog Details?fields=["name"]&filters=[["is_slider", "=", 1]]`}
         delay={6000}
       />
 
-      <div className="px-[5%] mt-15">
+      <div className="px-[5%] mt-10">
         <ProductCard
           title="Popular Items"
           id={"is_popular"}
@@ -62,7 +63,7 @@ function Home() {
         />
       </div>
 
-      <div className="px-[5%] mt-15">
+      <div className="px-[5%] mt-10">
         <ProductCard
           title="Laptops"
           id={"item_group"}
@@ -71,14 +72,15 @@ function Home() {
           ribbon={false}
         />
       </div>
-      <div className=" py-5 mt-20">
-        <AdverthismentBanner
+
+      <div className=" py-5 mt-15">
+        <CustomAdverthismentBanner
           api={`api/resource/Catalog Details?fields=["name"]&filters=[["is_slider", "=", 1]]`}
-          delay={6000}
+          delay={60000}
         />
       </div>
 
-      <div className="flex flex-col md:flex-row gap-15 md:gap-5 mt-15 px-[5%]">
+      <div className="flex flex-col md:flex-row gap-15 md:gap-5 my-15 px-[5%]">
         <GroupProductCard
           title={"Hot Gadgets Today"}
           api={`api/resource/Catalog Details?fields=["name"]&filters=[["is_top_rated", "=", 1]]`}
@@ -92,14 +94,11 @@ function Home() {
         />
       </div>
 
-      <div className=" py-5 mt-20">
-        <CustomAdverthismentBanner
-          api={`api/resource/Catalog Details?fields=["name"]&filters=[["is_slider", "=", 1]]`}
-          delay={6000}
-        />
+      <div className="my-10 py-10 md:py-10 bg-primary/5 ">
+        <BrandMarquee type="logo" brands={brands} speed={90} height={16} />
       </div>
 
-      <div className="px-[5%] mt-15">
+      <div className="px-[5%] mt-10">
         <ProductCard
           title="Laptops"
           id={"item_group"}
@@ -109,8 +108,12 @@ function Home() {
         />
       </div>
 
-      <div className="my-10 py-10 md:py-15 bg-primary/5 ">
-        <BrandMarquee type="logo" brands={brands} speed={90} height={20} />
+      {/* promotion image slider */}
+      <div className=" py-5 my-15">
+        <AdverthismentBanner
+          api={`api/resource/Catalog Details?fields=["name"]&filters=[["is_slider", "=", 1]]`}
+          delay={6000}
+        />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-15 md:gap-5 px-[5%] items-stretch">

@@ -153,7 +153,7 @@ const CategoryPage: React.FC = () => {
           id: item.name,
           prod_id: item.product_code,
           name: item.display_name,
-          description: item.description,
+          description: item.item_description,
           image: `${API_URL}/${item.image}`,
           count: item.stock_qty,
           price: item.price || item.standard_rate || 0,
@@ -518,9 +518,14 @@ const CategoryPage: React.FC = () => {
                           <h2 className="text-xl font-bold block md:hidden">
                             ₹{product.price}
                           </h2>
-                          <p className="text-sm text-foreground/60 line-clamp-2 lg:line-clamp-3">
+                          <h1 className="text-md text-foreground/80 line-clamp-3">
+                            {product.description
+                              ? product.description.replace(/<[^>]*>?/gm, "")
+                              : ""}
+                          </h1>
+                          {/* <p className="text-sm text-foreground/60 line-clamp-2 lg:line-clamp-3">
                             {product.description}
-                          </p>
+                          </p> */}
                           <div className="flex gap-2">
                             <p className="text-sm text-green-600">10% Offer</p>
                           </div>

@@ -42,7 +42,7 @@ interface Product {
   slideOffer: number;
   images?: string[];
   feature?: CatalogFeature[];
-  spec_header:string
+  spec_header: string;
 }
 
 interface CatalogFeature {
@@ -147,7 +147,7 @@ function ProductPage() {
           images: imageList,
           description: data.item_description,
           category: data.item_group,
-          spec_header:data.spec_header,
+          spec_header: data.spec_header,
           feature: data.catalog_features,
           count: data.stock_qty,
         });
@@ -301,8 +301,10 @@ function ProductPage() {
         <div className="space-y-4 px-2">
           <h1 className="text-2xl font-semibold">{product.name}</h1>
           <h1 className="text-md text-foreground/80">
-  {product.description ? product.description.replace(/<[^>]*>?/gm, "") : ""}
-</h1>
+            {product.description
+              ? product.description.replace(/<[^>]*>?/gm, "")
+              : ""}
+          </h1>
 
           {/* <div className="text-sm text-foreground/50">
             <span className="bg-green-600 text-white text-xs w-max px-2 py-1 rounded">
@@ -382,60 +384,66 @@ function ProductPage() {
               }}
             />
           </div>
-          {/* Specifications */}
-          <div className="mt-10 border border-ring/30 rounded-md p-5">
-            <h2 className="text-3xl font-bold border-b border-ring/30 pb-3 text-foreground/90 mb-4">
-              {product.spec_header}
-            </h2>
+          {product.spec_header && (
+            <div className="mt-10 border border-ring/30 rounded-md p-5">
+              <h2 className="text-3xl font-bold border-b border-ring/30 pb-3 text-foreground/90 mb-4">
+                {product.spec_header}
+              </h2>
 
-            {(() => {
-              // Group catalog_features by profile_label
-              const groupedFeatures =
-                product.feature?.reduce((acc: Record<string, any[]>, item) => {
-                  if (!acc[item.profile_label]) acc[item.profile_label] = [];
-                  acc[item.profile_label].push(item);
-                  return acc;
-                }, {}) || {};
+              {(() => {
+                // Group catalog_features by profile_label
+                const groupedFeatures =
+                  product.feature?.reduce(
+                    (acc: Record<string, any[]>, item) => {
+                      if (!acc[item.profile_label])
+                        acc[item.profile_label] = [];
+                      acc[item.profile_label].push(item);
+                      return acc;
+                    },
+                    {}
+                  ) || {};
 
-              // Sort groups based on the lowest idx in that group
-              const sortedGroups = Object.entries(groupedFeatures).sort(
-                (a, b) => {
-                  const aIdx = Math.min(...a[1].map((f) => f.idx || 0));
-                  const bIdx = Math.min(...b[1].map((f) => f.idx || 0));
-                  return aIdx - bIdx;
-                }
-              );
+                // Sort groups based on the lowest idx in that group
+                const sortedGroups = Object.entries(groupedFeatures).sort(
+                  (a, b) => {
+                    const aIdx = Math.min(...a[1].map((f) => f.idx || 0));
+                    const bIdx = Math.min(...b[1].map((f) => f.idx || 0));
+                    return aIdx - bIdx;
+                  }
+                );
 
-              return sortedGroups.map(([profileLabel, fields]) => (
-                <div
-                  key={profileLabel}
-                  className="mb-6 border-b border-ring/30 pb-3 last:border-0"
-                >
-                  <h3 className="text-lg text-foreground font-bold">
-                    {profileLabel}
-                  </h3>
+                return sortedGroups.map(([profileLabel, fields]) => (
+                  <div
+                    key={profileLabel}
+                    className="mb-6 border-b border-ring/30 pb-3 last:border-0"
+                  >
+                    <h3 className="text-lg text-foreground font-bold">
+                      {profileLabel}
+                    </h3>
 
-                  <div className="space-y-1 mt-2">
-                    {fields
-                      .sort((a, b) => (a.idx || 0) - (b.idx || 0))
-                      .map((field) => (
-                        <div
-                          key={field.name}
-                          className="flex justify-between py-1 text-sm"
-                        >
-                          <span className="text-foreground/70">
-                            {field.attribute_name}
-                          </span>
-                          <span className="font-medium text-foreground/70">
-                            {field.property_value}
-                          </span>
-                        </div>
-                      ))}
+                    <div className="space-y-1 mt-2">
+                      {fields
+                        .sort((a, b) => (a.idx || 0) - (b.idx || 0))
+                        .map((field) => (
+                          <div
+                            key={field.name}
+                            className="flex justify-between py-1 text-sm"
+                          >
+                            <span className="text-foreground/70">
+                              {field.attribute_name}
+                            </span>
+                            <span className="font-medium text-foreground/70">
+                              {field.property_value}
+                            </span>
+                          </div>
+                        ))}
+                    </div>
                   </div>
-                </div>
-              ));
-            })()}
-          </div>
+                ));
+              })()}
+            </div>
+          )}
+          {/* Specifications */}
 
           {/* <div className="mt-10">
             <RatingReviews />

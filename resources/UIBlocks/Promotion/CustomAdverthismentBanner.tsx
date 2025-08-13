@@ -160,17 +160,17 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
     <div className="relative w-full h-[350px] md:h-[350px] bg-background overflow-hidden">
       {/* 🔹 Slides */}
       <div
-  className="w-full h-full relative flex transition-transform duration-700 ease-in-out"
-  style={{ transform: `translateX(-${activeIndex * 100}%)` }}
-  onTouchStart={handleTouchStart}
-  onTouchMove={handleTouchMove}
-  onTouchEnd={handleTouchEnd}
->
+        className="w-full h-full relative flex transition-transform duration-700 ease-in-out"
+        style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         {slides.map((slide, index) => (
-           <div
-      key={index}
-      className="w-full h-full flex border-y border-ring/30 flex-shrink-0"
-    >
+          <div
+            key={index}
+            className="w-full h-full flex border-y border-ring/30 flex-shrink-0"
+          >
             {index === 0 ? (
               // {slide.position === 1 ? (
               <div className="w-full h-[350px] flex items-center justify-center relative">
@@ -210,7 +210,7 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                 />
 
                 {/* Centered Blockquote at Bottom */}
-                <blockquote className="absolute bottom-4 left-1/2 -translate-x-1/2 italic text-sm md:text-lg lg:text-xl font-bold text-foreground text-center whitespace-nowrap">
+                <blockquote className="absolute bottom-8 left-1/2 -translate-x-1/2 italic text-sm md:text-lg lg:text-xl font-bold text-foreground text-center whitespace-nowrap">
                   "Your canvas, your rules."
                 </blockquote>
               </div>
@@ -400,13 +400,15 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
       </div>
 
       {/* Indicators */}
-     <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
+      <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
         {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => goToSlide(index)}
             className={`w-3 h-3 rounded-full ${
-              index === activeIndex ? "bg-primary" : "bg-white border border-ring/50"
+              index === activeIndex
+                ? "bg-primary"
+                : "bg-white border border-ring/50"
             }`}
           />
         ))}

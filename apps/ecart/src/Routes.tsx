@@ -90,7 +90,7 @@ function AppRoutes() {
         {!hideLayout && (
           <Header
             logo={logo}
-            showLogin={true} // Toggle login section
+            showLogin={false} // Toggle login and cart section
             user={user} // Pass null if no user logged in
             logout={logout}
             menuItems={menuItems}
@@ -107,7 +107,7 @@ function AppRoutes() {
           <Route path="/login" element={<FrappeLoginForm />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/productpage/:id" element={<ProductPage />} />
-          <Route path="/category/:category" element={<CategoryPage />} />
+          <Route path="/category/:category?" element={<CategoryPage />} />
           <Route path="/special/:id" element={<SpecialCategory />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/test" element={<Test />} />
