@@ -59,7 +59,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ title, api, ribbon, id, filte
       const formatted: ProductItem[] = validItems.map((item: any) => {
         return {
           id: item.name,
-          prod_id: item.product_code,
+          prod_id: item.item_code,
           name: item.display_name, // or item.item_name if you want full name
           image: item.image,
           count: item.stock_qty,
