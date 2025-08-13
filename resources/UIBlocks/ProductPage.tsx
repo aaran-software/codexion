@@ -28,6 +28,8 @@ interface Product {
   images?: string[];
   feature?: CatalogFeature[];
   spec_header: string;
+  desc_label:string;
+  desc_images: string[];
 }
 
 interface CatalogFeature {
@@ -123,6 +125,10 @@ function ProductPage() {
         );
         const imageList = imageKeys.map((key) => API_URL + data[key]);
 
+        const descImageKeys = Object.keys(data).filter(
+          (key) => key.startsWith("desc_image") && data[key]
+        );
+        const descImageList = descImageKeys.map((key) => API_URL + data[key]);
         setProduct({
           ...data,
           name: data.display_name,
@@ -135,6 +141,8 @@ function ProductPage() {
           spec_header: data.spec_header,
           feature: data.catalog_features,
           count: data.stock_qty,
+          desc_label:data.manufacturer_label,
+          desc_images: descImageList,
         });
 
         if (imageList.length > 0) {
@@ -218,7 +226,7 @@ function ProductPage() {
 
   return (
     <div className="py-10 sm:px-[5%] mx-auto">
-      <div className="grid lg:grid-cols-2 gap-5 xl:grid-cols-[35%_65%] items-start">
+      <div className="grid lg:grid-cols-2 gap-5 xl:grid-cols-[35%_65%] items-start border-b border-ring/30 pb-20">
         {/* Image Section */}
         <div className="lg:sticky top-20 h-fit">
           <div className="flex flex-col border border-ring/20 lg:flex-row gap-4 items-start relative">
@@ -382,6 +390,8 @@ function ProductPage() {
               }}
             />
           </div>
+          {/* Specifications */}
+
           {product.spec_header && (
             <div className="mt-10 border border-ring/30 rounded-md p-5">
               <h2 className="text-3xl font-bold border-b border-ring/30 pb-3 text-foreground/90 mb-4">
@@ -441,8 +451,15 @@ function ProductPage() {
               })()}
             </div>
           )}
-          {/* Specifications */}
+          <h1 className="my-5 font-bold text-3xl">
+            {product.desc_label}
+          </h1>
 
+          <div>
+            {product.desc_images.map((img, idx) => (
+              <img key={idx} src={img} alt="" className="mt-5" />
+            ))}
+          </div>
           {/* <div className="mt-10">
             <RatingReviews />
           </div> */}
