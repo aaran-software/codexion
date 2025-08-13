@@ -1,15 +1,11 @@
-import ImageButton from "../../components/button/ImageBtn";
 import React, { useState, useEffect, useRef } from "react";
 import apiClient from "../../../resources/global/api/apiClients";
 import { useAppContext } from "../../../apps/global/AppContaxt";
 import "animate.css";
 
 interface SlideContent {
+  id: string;
   image: string;
-  title: string;
-  description: string;
-  price: number;
-  discount?: string;
 }
 
 interface AdverthismentBannerProps {
@@ -34,31 +30,36 @@ const AdverthismentBanner: React.FC<AdverthismentBannerProps> = ({
 
   const fetchProducts = async () => {
     try {
+      // Step 1: Fetch all item names
       const response = await apiClient.get(`${api}`);
+
       const items = response.data.data || [];
       const baseApi = api.split("?")[0];
 
+      // Step 2: Fetch full details for each item
       const detailPromises = items.map((item: any) => {
         const itemName = encodeURIComponent(item.name);
+        const detailUrl = `${baseApi}/${itemName}`;
         return apiClient
-          .get(`${baseApi}/${itemName}`)
+          .get(detailUrl)
           .then((res) => res.data.data)
-          .catch(() => null);
+          .catch((err) => {
+            console.warn(`Item not found: ${item.name}`, err);
+            return null;
+          });
       });
 
       const detailResponses = await Promise.all(detailPromises);
       const validItems = detailResponses.filter(Boolean);
 
-      setSlides(
-        validItems.map((item: any) => ({
+      const formatted: SlideContent[] = validItems.map((item: any) => {
+        return {
           id: item.name,
-          title: item.display_name,
-          image: item.image,
-          description: item.short_describe,
-          discount: item.stock_qty,
-          price: item.price || item.standard_rate || 0,
-        }))
-      );
+          image: `${API_URL}/${item.sliders_tbl?.[0]?.slider_image}`,
+        };
+      });
+
+      setSlides(formatted);
     } catch (error) {
       console.error("Failed to fetch products:", error);
     }
@@ -122,9 +123,8 @@ const AdverthismentBanner: React.FC<AdverthismentBannerProps> = ({
             >
               <div className="w-full h-[250px] md:h-[400px] flex items-center justify-center">
                 <img
-                  // src={`${API_URL}/${slide.image}`}
-                  src={"/assets/Promotion/banner4.jpg"}
-                  alt={slide.title}
+                  src={`${slide.image}`}
+                  alt={slide.id}
                   className="h-full w-full object-fill"
                 />
               </div>

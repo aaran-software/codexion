@@ -2,15 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ImageButton from "../../components/button/ImageBtn";
 import apiClient from "../../../resources/global/api/apiClients";
-import Button from "../../../resources/components/button/Button";
 import { useAppContext } from "../../../apps/global/AppContaxt";
 
 export interface ScrollAdverthismentItem {
   id: string;
-  name: string;
   image: string;
 }
-
 
 interface ScrollAdverthisment2Props {
   title: string;
@@ -21,7 +18,7 @@ const ScrollAdverthisment2: React.FC<ScrollAdverthisment2Props> = ({
   title,
   api,
 }) => {
-    const {API_URL} =useAppContext();
+  const { API_URL } = useAppContext();
 
   const navigate = useNavigate();
   const [products, setProducts] = useState<ScrollAdverthismentItem[]>([]);
@@ -33,9 +30,8 @@ const ScrollAdverthisment2: React.FC<ScrollAdverthisment2Props> = ({
     try {
       // Step 1: Fetch all item names
       const response = await apiClient.get(`${api}`);
-      const items = response.data.data || [];
 
-      // Step 2: Fetch full details for each item
+      const items = response.data.data || [];
       const baseApi = api.split("?")[0];
 
       // Step 2: Fetch full details for each item
@@ -58,8 +54,7 @@ const ScrollAdverthisment2: React.FC<ScrollAdverthisment2Props> = ({
         (item: any) => {
           return {
             id: item.name,
-            name: item.display_name, // or item.item_name if you want full name
-            image: item.image,
+            image: `${API_URL}/${item.table_hxwm?.[0]?.featured_image}`,
           };
         }
       );
@@ -139,17 +134,16 @@ const ScrollAdverthisment2: React.FC<ScrollAdverthisment2Props> = ({
           {products.map((product) => (
             <div
               key={product.id}
-              className="relative group min-w-[400px] h-max cursor-pointer flex-shrink-0  duration-300 border border-ring/30 rounded-2xl"
+              className="relative group w-[300px] sm:w-[400px] h-[300px] sm:h-[400px] cursor-pointer flex-shrink-0  duration-300 border border-ring/30 rounded-2xl"
               onClick={() => navigateProductPage(product.id)}
             >
               <div className="relative h-[400px] overflow-hidden rounded-2xl">
                 <img
-                  // src={`${API_URL}/${product.image}`}
-                  src={`/assets/Promotion/ad9.png`}
-                  alt={product.name}
-                  className="w-[400px] h-[400px] object-contain rounded-md mx-auto"
+                  src={`${product.image}`}
+                  // src={`/assets/Promotion/ad9.png`}
+                  alt={product.id}
+                  className="w-[300px] sm:w-[400px] h-[300px] sm:h-[400px] object-contain rounded-md mx-auto"
                 />
-               
               </div>
             </div>
           ))}
