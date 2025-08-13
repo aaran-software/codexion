@@ -38,6 +38,12 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
 
+
+const [prevIndex, setPrevIndex] = useState<number | null>(null);
+const [isAnimating, setIsAnimating] = useState(false);
+
+
+
   // Add swipe handler functions
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     touchStartX.current = e.touches[0].clientX;
@@ -112,11 +118,17 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
   useEffect(() => {
     fetchProducts();
   }, []);
-  const goToSlide = (index: number) => {
+  
+const goToSlide = (index: number) => {
+  if (isAnimating || index === activeIndex) return; // Prevent spam
+  setIsAnimating(true);
+  setPrevIndex(activeIndex);
+  setTimeout(() => {
     setActiveIndex(index);
-    setRemainingTime(delay / 1000);
-    startTimeRef.current = null;
-  };
+    setPrevIndex(null);
+    setIsAnimating(false);
+  }, 100); // match animation duration
+};
 
   const goToNext = () => {
     goToSlide((activeIndex + 1) % slides.length);
@@ -176,134 +188,96 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
   };
   return (
     <div className="relative w-full h-[400px] lg:h-[600px] bg-background overflow-hidden">
-      <div className="absolute z-10">
+      <div className="absolute ">
         <BallCanvas ballCount={7} />
       </div>
 
       {/* 🔹 Slides */}
       <div
-        className="w-full h-full relative"
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        {slides.map((slide, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 flex transition-opacity border-y border-ring/30 duration-300 px-6 py-4 ${
-              index === activeIndex ? "opacity-100 z-10" : "opacity-0 z-0"
-            }`}
-          >
-            {/* Left: Image */}
-            <div className="w-1/2 h-full flex items-center justify-center">
-              <img
-                src={`${API_URL}/${slide.image}`}
-                alt={`Slide ${index}`}
-                className={`h-full w-full p-3 sm:p-10 object-contain ${
-                  index === activeIndex
-                    ? "animate__animated animate__zoomIn animate__slow "
-                    : ""
-                }`}
-              />
-            </div>
-
-            {/* Right: Text Content */}
-            <div className="w-1/2 h-full flex flex-col justify-center items-start p-4 relative">
-              <h2
-                className={`text-sm sm:text-lg pr-2 md:text-3xl lg:text-5xl font-bold text-foreground mb-2 uppercase line-clamp-2 ${
-                  index === activeIndex
-                    ? "animate__animated animate__fadeInDown"
-                    : ""
-                }`}
-              >
-                {slide.title}
-              </h2>
-              <h2
-                className={`text-sm md:text-lg pr-2 text-foreground/70 mt-3 mb-2 line-clamp-2 ${
-                  index === activeIndex
-                    ? "animate__animated animate__fadeInUp"
-                    : ""
-                }`}
-              >
-                {slide.description}
-              </h2>
-              {slide.price && (
-                <p
-                  className={`text-sm sm:text-md text-black/80 md:text-2xl font-semibold mt-3 ${
-                    index === activeIndex
-                      ? "animate__animated animate__fadeInUp"
-                      : ""
-                  }`}
-                >
-                  Just ₹ {slide.price}
-                </p>
-              )}
-
-              {slide.discount && (
-                <p
-                  className={`text-md text-black/80 md:text-2xl mt-3 ${
-                    index === activeIndex
-                      ? "animate__animated animate__fadeInUp"
-                      : ""
-                  }`}
-                >
-                  {slide.discount} % Offer
-                </p>
-              )}
-
-              <button
-                className={`mt-4 px-7 py-3 bg-primary hover:bg-hover whitespace-nowrap text-white text-lg font-semibold md:text-2xl rounded-sm transition cursor-pointer ${
-                  index === activeIndex
-                    ? "animate__animated animate__zoomIn"
-                    : ""
-                }`}
-                onClick={() => {
-                  navigateProductPage(slide.id);
-                }}
-              >
-                Shop Now
-              </button>
-
-              {/* Circular Timer */}
-              <div className="absolute bottom-4 right-4">
-                <svg width="50" height="50" className="text-black">
-                  <circle
-                    cx="25"
-                    cy="25"
-                    r={radius}
-                    stroke="#e5e7eb"
-                    strokeWidth="4"
-                    fill="none"
-                  />
-                  <circle
-                    cx="25"
-                    cy="25"
-                    r={radius}
-                    stroke="#3b82f6"
-                    strokeWidth="4"
-                    fill="none"
-                    strokeDasharray={circumference}
-                    strokeDashoffset={strokeDashoffset}
-                    strokeLinecap="round"
-                    style={{ transition: "stroke-dashoffset 0.05s linear" }}
-                  />
-                  <text
-                    x="50%"
-                    y="50%"
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                    fontSize="12"
-                    fill="currentColor"
-                    fontWeight="bold"
-                  >
-                    {Math.ceil(remainingTime)}s
-                  </text>
-                </svg>
-              </div>
-            </div>
-          </div>
-        ))}
+  className="w-full h-full relative flex transition-transform duration-700 ease-in-out"
+  style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+  onTouchStart={handleTouchStart}
+  onTouchMove={handleTouchMove}
+  onTouchEnd={handleTouchEnd}
+>
+  {slides.map((slide, index) => (
+    <div
+      key={index}
+      className="w-full h-full flex border-y border-ring/30 px-6 py-4 flex-shrink-0"
+    >
+      {/* Left: Image */}
+      <div className="w-1/2 h-full flex items-center justify-center">
+        <img
+          src={`${API_URL}/${slide.image}`}
+          alt={`Slide ${index}`}
+          className="h-full w-full p-3 sm:p-10 object-contain"
+        />
       </div>
+
+      {/* Right: Text Content */}
+      <div className="w-1/2 h-full flex flex-col justify-center items-start p-4 relative">
+        <h2 className="text-sm sm:text-lg md:text-3xl lg:text-5xl font-bold uppercase mb-2">
+          {slide.title}
+        </h2>
+        <h2 className="text-sm md:text-lg text-foreground/70 mt-3 mb-2">
+          {slide.description}
+        </h2>
+        {slide.price && (
+          <p className="text-sm sm:text-md md:text-2xl font-semibold mt-3">
+            Just ₹ {slide.price}
+          </p>
+        )}
+        {slide.discount && (
+          <p className="text-md md:text-2xl mt-3">{slide.discount} % Offer</p>
+        )}
+        <button
+          className="mt-4 px-7 py-3 bg-primary hover:bg-hover text-white text-lg md:text-2xl rounded-sm"
+          onClick={() => navigateProductPage(slide.id)}
+        >
+          Shop Now
+        </button>
+
+        {/* Timer */}
+        <div className="absolute bottom-4 right-4">
+          <svg width="50" height="50" className="text-black">
+            <circle
+              cx="25"
+              cy="25"
+              r={radius}
+              stroke="#e5e7eb"
+              strokeWidth="4"
+              fill="none"
+            />
+            <circle
+              cx="25"
+              cy="25"
+              r={radius}
+              stroke="#3b82f6"
+              strokeWidth="4"
+              fill="none"
+              strokeDasharray={circumference}
+              strokeDashoffset={strokeDashoffset}
+              strokeLinecap="round"
+              style={{ transition: "stroke-dashoffset 0.05s linear" }}
+            />
+            <text
+              x="50%"
+              y="50%"
+              textAnchor="middle"
+              dominantBaseline="central"
+              fontSize="12"
+              fill="currentColor"
+              fontWeight="bold"
+            >
+              {Math.ceil(remainingTime)}s
+            </text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
 
       {/* Indicators */}
       <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
