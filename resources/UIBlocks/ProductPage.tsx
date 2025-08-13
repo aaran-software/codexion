@@ -15,21 +15,6 @@ import { useAppContext } from "../../apps/global/AppContaxt";
 import ZoomImage from "../components/image/ZoomImage";
 import FloatContact from "./contact/FloatContact";
 import ImageButton from "../../resources/components/button/ImageBtn";
-// Define types
-interface Field {
-  id: string;
-  key: string;
-  label: string;
-  type: string;
-  value: string;
-}
-
-interface Group {
-  id: string;
-  title: string;
-  fields?: Field[];
-  children?: Record<string, Group>;
-}
 
 interface Product {
   id: number;

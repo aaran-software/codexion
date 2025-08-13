@@ -59,7 +59,7 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
         id: item.name,
         prod_id: item.product_code,
         name: item.display_name,
-        image: `${API_URL}${item.image}`,
+        image: `${API_URL}${item.image_1}`,
         price: item.price || item.standard_rate || 0,
         count: item.stock_qty,
       }));
