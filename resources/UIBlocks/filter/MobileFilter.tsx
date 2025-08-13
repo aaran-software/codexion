@@ -151,7 +151,7 @@ const MobileFilter = ({
         </div>
 
         {/* Other filters */}
-        <div className="flex flex-col gap-3 mt-6">
+        {/* <div className="flex flex-col gap-3 mt-6">
           <label className="flex items-center gap-2">
             <input
               type="checkbox"
@@ -168,7 +168,7 @@ const MobileFilter = ({
             />
             Include Out of Stock
           </label>
-        </div>
+        </div> */}
       </div>
 
       {/* Footer */}
