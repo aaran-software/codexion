@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import LoadingScreen from "../../../../resources/components/loading/LoadingScreen";
 
 const AdverthismentBanner = lazy(
@@ -43,6 +43,23 @@ function Home() {
     { name: "APPLE", logo: "/assets/brand/apple.svg" },
   ];
 
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isMobile = window.innerWidth <= 768;
+      if (isMobile) {
+        setShow(window.scrollY > 100); // mobile: show after 100px scroll
+      } else {
+        setShow(true); // desktop: always show
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // run once on mount
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
       <Mainmenu />
@@ -75,7 +92,7 @@ function Home() {
 
       <div className=" py-5 mt-15">
         <CustomAdverthismentBanner
-          api={`api/resource/Catalog Details?fields=["name"]&filters=[["is_slider", "=", 1]]`}
+          api={`api/resource/Slider 2`}
           delay={60000}
         />
       </div>
@@ -111,7 +128,7 @@ function Home() {
       {/* promotion image slider */}
       <div className=" py-5 my-15">
         <AdverthismentBanner
-          api={`api/resource/Catalog Details?fields=["name"]&filters=[["is_slider", "=", 1]]`}
+          api={`api/resource/Slider 3`}
           delay={6000}
         />
       </div>
@@ -137,32 +154,37 @@ function Home() {
       <div className="my-15">
         <ScrollAdverthisment2
           title="Featured Brands"
-          api={`api/resource/Catalog Details?fields=["name"]&filters=[["is_popular", "=", 1]]`}
+          api={`api/resource/Promotional Image`}
         />
       </div>
 
-      <FloatContact
-        contacts={[
-          {
-            id: "whatsapp",
-            contact: "919543439311", // no '+' symbol, just country code + number
-            imgPath: "/assets/svg/whatsapp.svg",
-            defaultMessage: "Hello! I'm interested in your product.",
-          },
-          {
-            id: "phone",
-            contact: "9894244450",
-            imgPath: "/assets/svg/Mobile.svg",
-          },
-          {
-            id: "email",
-            contact: "info@techmedia.in", // just the username, no @
-            imgPath: "/assets/svg/mail.svg",
-            defaultMessage: "Hello, I’m interested in your product.",
-          },
-        ]}
-        className="fixed bottom-28 right-5 z-[100000]"
-      />
+      <div
+        className={`transition-opacity duration-500 fixed bottom-28 right-5 z-[100000] ${
+          show ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <FloatContact
+          contacts={[
+            {
+              id: "whatsapp",
+              contact: "919543439311",
+              imgPath: "/assets/svg/whatsapp.svg",
+              defaultMessage: "Hello! I'm interested in your product.",
+            },
+            {
+              id: "phone",
+              contact: "9894244450",
+              imgPath: "/assets/svg/Mobile.svg",
+            },
+            {
+              id: "email",
+              contact: "info@techmedia.in",
+              imgPath: "/assets/svg/mail.svg",
+              defaultMessage: "Hello, I’m interested in your product.",
+            },
+          ]}
+        />
+      </div>
     </Suspense>
   );
 }
