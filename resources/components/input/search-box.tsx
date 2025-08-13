@@ -101,7 +101,7 @@ export default function GlobalSearch({
           (res.data?.data || []).map((item: any) => ({
             id: item.name,
             name: item.name,
-            imageUrl: item.image,
+            imageUrl: item.image_1,
             price: item.price || item.standard_rate || 0,
           }))
         );
