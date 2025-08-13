@@ -67,7 +67,7 @@ function Home() {
           title="Laptops"
           id={"item_group"}
           filterValue={"Laptops"}
-          api={`api/resource/Catalog Details?fields=["name"]&filters=[["item_group", "=", 1]]`}
+          api={`api/resource/Catalog Details?fields=["name"]&filters=[["item_group", "=", "Laptops"]]`}
           ribbon={false}
         />
       </div>
@@ -99,12 +99,13 @@ function Home() {
         />
       </div>
 
-      <div className="px-[5%] mt-5">
+      <div className="px-[5%] mt-15">
         <ProductCard
           title="Laptops"
-          api={`api/resource/Catalog Details?fields=["name"]&filters=[["category", "=", "Laptops"]]&limit_page_length=0`}
-          filterValue={1}
-          id={"Laptops"}
+          id={"item_group"}
+          filterValue={"Laptops"}
+          api={`api/resource/Catalog Details?fields=["name"]&filters=[["item_group", "=", "Laptops"]]&limit_page_length=15`}
+          ribbon={false}
         />
       </div>
 
