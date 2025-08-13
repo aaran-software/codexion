@@ -201,19 +201,36 @@ function ProductPage() {
   const handleShare = async () => {
     const productUrl = window.location.href;
     const message = `Hello, I’m interested in this product. Could you please share more details? Product URL: ${productUrl}`;
+
     if (navigator.share) {
+      // Web Share API (mobile & modern browsers)
       try {
         await navigator.share({
-          text: message, // only text, no separate URL field
+          text: "Hello, I’m interested in this product. Could you please share more details?",
+          url: productUrl,
         });
         console.log("Shared successfully!");
+        return;
       } catch (err) {
         console.error("Share cancelled or failed", err);
       }
-    } else {
-      alert("Sharing is not supported on this browser.");
+    }
+
+    // Fallback for unsupported browsers (Firefox desktop, etc.)
+    try {
+      await navigator.clipboard.writeText(message);
+      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+
+      window.open(whatsappUrl, "_blank");
+
+      alert("Link copied to clipboard! You can Share it to anyone.");
+    } catch (err) {
+      // If clipboard fails, fallback to mailto or WhatsApp
+      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, "_blank");
     }
   };
+
   return (
     <div className="py-10 sm:px-[5%] mx-auto">
       <div className="grid lg:grid-cols-2 gap-5 xl:grid-cols-[35%_65%] items-start">
@@ -233,14 +250,10 @@ function ProductPage() {
               icon={"like"}
               className="!rounded-full border border-ring/30 p-2 absolute top-5 right-5 z-10"
             />
-            {/* <img
-              src="/assets/svg/heart.svg"
-              alt=""
-              className="w-12 h-12 rounded-full p-2 cursor-pointer"
-            /> */}
+
             {/* main image */}
             <div className="block m-auto flex-1">
-              <div className="w-full h-full min-w-[310px] min-h-[310px] max-w-[400px] max-h-[400px] mx-auto">
+              <div className="w-full max-w-[310px] h-[310px] mx-auto">
                 <ZoomImage
                   src={selectedImage}
                   alt={product.name}

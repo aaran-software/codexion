@@ -121,7 +121,6 @@ export default function GlobalSearch({
 
     setRecentSearches(updated);
     localStorage.setItem("recentSearches", JSON.stringify(updated));
-
     onNavigate(`/productpage/${product.id}`);
     setQuery("");
     setShowResults(false); // Close dropdown
@@ -183,7 +182,7 @@ export default function GlobalSearch({
                     <img
                       src={`${API_URL}/${product.imageUrl}`}
                       alt={product.name}
-                      className="w-12 lg:w-18 h-12 lg:h-18 object-cover rounded"
+                      className="w-12 lg:w-18 h-12 lg:h-18 object-contain rounded"
                     />
                   )}
                   <span className="text-foreground/50 group-hover:text-primary transition-all duration-500 ease-in-out line-clamp-2">
@@ -209,7 +208,7 @@ export default function GlobalSearch({
                       <img
                         src={`${API_URL}/${product.imageUrl}`}
                         alt={product.name}
-                        className="w-12 lg:w-18 h-12 lg:h-18 object-cover rounded"
+                        className="w-12 lg:w-18 h-12 lg:h-18 object-contain rounded"
                       />
                     )}
                     <span className="text-foreground/70 group-hover:text-primary line-clamp-2">

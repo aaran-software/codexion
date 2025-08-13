@@ -243,10 +243,10 @@ const CategoryPage: React.FC = () => {
   useEffect(() => {
     const fetchDropdownData = async () => {
       try {
-        const categoryRes = await apiClient.get("/api/resource/Category");
+        const categoryRes = await apiClient.get("/api/resource/Item Group");
         const brandRes = await apiClient.get("/api/resource/Brand");
 
-        setCategories(categoryRes.data.data.map((item: any) => item.name));
+        setCategories(categoryRes.data.data.filter((item: any) => item.name !== "All Item Groups").map((item: any) => item.name));
         setBrands(brandRes.data.data.map((item: any) => item.name));
       } catch (err) {
         console.error("Dropdown fetch error:", err);

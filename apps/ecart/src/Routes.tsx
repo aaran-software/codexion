@@ -120,7 +120,53 @@ function AppRoutes() {
             }
           />
         </Routes>
-        {!hideLayout && <Footer />}
+        {!hideLayout && (
+          <Footer
+            aboutLinks={[
+              { label: "Our Company", path: "/contactus" },
+              { label: "Brand Assets", path: "/contactus" },
+              { label: "Contact Us", path: "/contactus" },
+              { label: "Jobs", path: "/contactus" },
+              { label: "Events", path: "/contactus" },
+              { label: "Blog", path: "/payment" },
+              { label: "Customers", path: "/payment" },
+              { label: "Level Privacy", path: "/payment" },
+            ]}
+            servicesLinks={[
+              { label: "Support", path: "/payment" },
+              { label: "Become a Partner", path: "/payment" },
+              { label: "Web Service", path: "/payment" },
+              { label: "Software", path: "/payment" },
+              { label: "FAQ", path: "/FAQ" },
+            ]}
+            policyLinks={[
+              { label: "Terms of Use", path: "/termsofuse" },
+              { label: "Security", path: "/security" },
+              { label: "Privacy", path: "/privacy" },
+            ]}
+            contact={{
+              phone: "9894244450",
+              email: "support@techmedia.in",
+            }}
+            address={{
+              company: "Tech Media",
+              lines: [
+                "436, Avinashi Road,",
+                "Near CITU Office,",
+                "Tiruppur, Tamil Nadu 641602",
+              ],
+              website: "www.techmedia.in",
+              infoEmail: "info@techmedia.in",
+            }}
+            social={{
+              whatsapp: "https://wa.me/9894244450",
+              facebook: "https://facebook.com/techmedia",
+              twitter: "https://twitter.com/techmedia",
+              instagram: "https://instagram.com/techmedia",
+            }}
+            version="V 1.0.1"
+          />
+        )}
       </div>
     </Suspense>
   );
