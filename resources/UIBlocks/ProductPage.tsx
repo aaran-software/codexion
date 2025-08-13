@@ -145,7 +145,7 @@ function ProductPage() {
           offer: data.product_offer,
           slideOffer: data.slider_offer,
           images: imageList,
-          description: data.description,
+          description: data.item_description,
           category: data.item_group,
           spec_header:data.spec_header,
           feature: data.catalog_features,
@@ -163,7 +163,6 @@ function ProductPage() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [id]);
-  console.log("product", product);
 
   if (loading) return <div className="text-center mt-10">Loading...</div>;
   if (!product || error)
@@ -301,7 +300,10 @@ function ProductPage() {
         {/* Product Info */}
         <div className="space-y-4 px-2">
           <h1 className="text-2xl font-semibold">{product.name}</h1>
-          <h1 className="text-md text-foreground/80">{product.description}</h1>
+          <h1 className="text-md text-foreground/80">
+  {product.description ? product.description.replace(/<[^>]*>?/gm, "") : ""}
+</h1>
+
           {/* <div className="text-sm text-foreground/50">
             <span className="bg-green-600 text-white text-xs w-max px-2 py-1 rounded">
               4 ★

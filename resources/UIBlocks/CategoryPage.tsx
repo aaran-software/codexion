@@ -157,7 +157,7 @@ const CategoryPage: React.FC = () => {
           image: `${API_URL}/${item.image}`,
           count: item.stock_qty,
           price: item.price || item.standard_rate || 0,
-          category: item.category || "",
+          category: item.item_group || "",
         }));
 
         setAllProducts(formatted);

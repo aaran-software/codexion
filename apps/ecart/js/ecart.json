@@ -6,7 +6,7 @@
     {
       "menu": {
         "name": "Laptops",
-        "path": "Laptop",
+        "path": "Laptops",
         "image": "/assets/products/laptop.webp",
         "alt": "Laptops image",
         "subMenu": {
