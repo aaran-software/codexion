@@ -99,7 +99,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
         return {
           id: item.name,
           title: item.display_name, // or item.item_name if you want full name
-          image: `${item.image}`,
+          image: `${item.image_1}`,
           description: item.short_describe,
           discount: item.slider_offer,
           price: item.price || item.standard_rate || 0,
