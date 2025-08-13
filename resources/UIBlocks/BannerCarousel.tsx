@@ -184,7 +184,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
     navigate(`/productpage/${id}`);
   };
   return (
-    <div className="relative w-full h-[400px] lg:h-[600px] bg-background overflow-hidden">
+    <div className="relative w-full h-[350px] lg:h-[600px] bg-background overflow-hidden">
       <div className="absolute ">
         <BallCanvas ballCount={7} />
       </div>
@@ -207,7 +207,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
               <img
                 src={`${API_URL}/${slide.image}`}
                 alt={`Slide ${index}`}
-                className="h-full w-full p-3 sm:p-10 object-contain"
+                className="h-full w-full md:p-3 object-contain"
               />
             </div>
 

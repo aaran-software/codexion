@@ -95,7 +95,7 @@ function Home() {
       </div>
 
       <div className="my-10 py-10 md:py-10 bg-primary/5 ">
-        <BrandMarquee type="logo" brands={brands} speed={90} height={16} />
+        <BrandMarquee type="logo" brands={brands} speed={30} height={16} />
       </div>
 
       <div className="px-[5%] mt-10">
