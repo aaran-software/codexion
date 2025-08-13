@@ -156,19 +156,18 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
   return (
     <div className="relative w-full h-[250px] md:h-[400px] bg-background overflow-hidden">
       {/* 🔹 Slides */}
-      <div
-        className="w-full h-full relative"
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
+       <div
+  className="w-full h-full relative flex transition-transform duration-700 ease-in-out"
+  style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+  onTouchStart={handleTouchStart}
+  onTouchMove={handleTouchMove}
+  onTouchEnd={handleTouchEnd}
+>
         {slides.map((slide, index) => (
           <div
-            key={index}
-            className={`absolute inset-0 w-full h-[250px] md:h-[400px] flex transition-opacity duration-300 ${
-              index === activeIndex ? "opacity-100 z-10" : "opacity-0 z-0"
-            }`}
-          >
+      key={index}
+      className="w-full h-full flex border-y border-ring/30 flex-shrink-0"
+    >
             {/* Left: Image */}
             <div className="w-full h-[250px] md:h-[400px] flex items-center justify-center">
               <img
@@ -180,6 +179,18 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
             </div>
             
           </div>
+        ))}
+      </div>
+      {/* Indicators */}
+      <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => goToSlide(index)}
+            className={`w-3 h-3 rounded-full ${
+              index === activeIndex ? "bg-primary" : "bg-white border border-ring/50"
+            }`}
+          />
         ))}
       </div>
 
