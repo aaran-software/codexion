@@ -202,13 +202,13 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                 <div className="absolute inset-0 bg-black/20"></div>
                 <div className="absolute left-5 sm:left-25 lg:left-60 flex flex-col gap-3 right-1/2 pr-2 top-1/2 -translate-y-1/2 text-white">
                   {slide.title && (
-                    <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold">
+                    <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold  line-clamp-2">
                       {slide.title}
                     </p>
                   )}
 
                   {slide.description && (
-                    <p className="mt-2 text-xs sm:text-sm md:text-lg lg:text-lg line-clamp-1">
+                    <p className="mt-2 text-xs sm:text-sm md:text-lg lg:text-lg line-clamp-2">
                       {slide.description}
                     </p>
                   )}
@@ -252,7 +252,7 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
               </div>
             ) : slide.layout === "Layout - 2" ? (
               <div
-                className={`w-full h-[350px] flex items-center justify-center relative ${slide.theme === "dark" ? "text-black" : "text-white"}`}
+                className={`w-full h-[380px] md:h-[350px] flex items-center justify-center relative ${slide.theme === "dark" ? "text-black" : "text-white"}`}
               >
                 {/* Background Image */}
                 <img
@@ -266,13 +266,13 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                   {/* Left Column */}
                   <div className="flex-1">
                     {slide.title && (
-                      <p className="text-lg sm:text-2xl font-bold">
+                      <p className="text-lg sm:text-2xl font-bold  line-clamp-2">
                         {slide.title}
                       </p>
                     )}
 
                     {slide.description && (
-                      <p className="mt-2 text-xs sm:text-sm md:text-md">
+                      <p className="mt-2 text-xs sm:text-sm md:text-md line-clamp-2">
                         {slide.description}
                       </p>
                     )}
@@ -301,7 +301,7 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
               </div>
             ) : slide.layout === "Layout - 3" ? (
               <div
-                className={`w-full h-[350px] flex items-center justify-center relative ${slide.theme === "dark" ? "text-black" : "text-white"}`}
+                className={`w-full h-[380px] md:h-[350px] flex items-center justify-center relative ${slide.theme === "dark" ? "text-black" : "text-white"}`}
               >
                 {/* Background Image */}
                 <img
@@ -322,13 +322,13 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
 
                 <div className="absolute lg:right-40 flex flex-col gap-3 left-1/2 pr-2 top-1/2 -translate-y-1/2">
                   {slide.title && (
-                    <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold">
+                    <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold  line-clamp-2">
                       {slide.title}
                     </p>
                   )}
 
                   {slide.description && (
-                    <p className="mt-2 text-xs sm:text-sm md:text-lg lg:text-lg">
+                    <p className="mt-2 text-xs sm:text-sm md:text-lg lg:text-lg line-clamp-2">
                       {slide.description}
                     </p>
                   )}
@@ -358,7 +358,7 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
               </div>
             ) : slide.layout === "Layout - 4" ? (
               <div
-                className={`w-full h-[350px] flex items-center justify-center relative ${slide.theme === "dark" ? "text-black" : "text-white"}`}
+                className={`w-full h-[380px] md:h-[350px] flex items-center justify-center relative ${slide.theme === "dark" ? "text-black" : "text-white"}`}
               >
                 {/* Background Image */}
                 <img
@@ -417,7 +417,7 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
               </div>
             ) : (
               <div
-                className={`w-full h-[350px] flex items-center justify-center relative ${slide.theme === "dark" ? "text-black" : "text-white"}`}
+                className={`w-full h-[380px] md:h-[350px] flex items-center justify-center relative ${slide.theme === "dark" ? "text-black" : "text-white"}`}
               >
                 {/* Background Image */}
                 <img
@@ -436,13 +436,13 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                 {/* Optional Right Side Content */}
                 <div className="absolute lg:right-40 flex flex-col gap-3 left-1/2 pr-2 top-1/2 -translate-y-1/2">
                   {slide.title && (
-                    <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold text-center">
+                    <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold text-center  line-clamp-2">
                       {slide.title}
                     </p>
                   )}
 
                   {slide.description && (
-                    <p className="mt-2 text-xs sm:text-sm md:text-lg lg:text-lg text-center">
+                    <p className="mt-2 text-xs sm:text-sm md:text-lg lg:text-lg text-center  line-clamp-2">
                       {slide.description}
                     </p>
                   )}

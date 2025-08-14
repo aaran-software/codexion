@@ -68,14 +68,14 @@ function Home() {
 
   // Check on mount if animation has been shown before
   useEffect(() => {
-    const alreadyShown = localStorage.getItem("1");
+    const alreadyShown = localStorage.getItem("Independence Day");
     if (!alreadyShown) {
       setShowAnimation(true); // show animation only first time
     }
   }, []);
 
   const handleAnimationFinish = () => {
-    localStorage.setItem("1", "true"); // mark as shown
+    localStorage.setItem("Independence Day", "true"); // mark as shown
     setShowAnimation(false);
   };
 

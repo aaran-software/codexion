@@ -28,7 +28,7 @@ const CrackerAnimation: React.FC<CrackerAnimationProps> = ({
   const soundRef = useRef<Howl | null>(null);
 
   const startLaunch = () => {
-    const alreadyShown = localStorage.getItem("1");
+    const alreadyShown = localStorage.getItem("Independence Day");
     if (alreadyShown) {
       onFinish?.();
       return;
@@ -51,9 +51,9 @@ const CrackerAnimation: React.FC<CrackerAnimationProps> = ({
       fireworksRef.current?.stop();
       soundRef.current?.stop(); // Stop the sound explicitly
       setShow(false);
-      localStorage.setItem("1", "true");
+      localStorage.setItem("Independence Day", "true");
       onFinish?.();
-        // localStorage.removeItem("1"); //testing
+        // localStorage.removeItem("Independence Day"); //testing
     }, duration);
   };
 
