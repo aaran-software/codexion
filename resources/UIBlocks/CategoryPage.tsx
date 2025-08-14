@@ -154,7 +154,7 @@ const CategoryPage: React.FC = () => {
           prod_id: item.product_code,
           name: item.display_name,
           description: item.item_description,
-          image: `${API_URL}/${item.image}`,
+          image: `${API_URL}/${item.image_1}`,
           count: item.stock_qty,
           price: item.price || item.standard_rate || 0,
           category: item.item_group || "",

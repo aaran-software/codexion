@@ -100,7 +100,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
           id: item.name,
           title: item.display_name, // or item.item_name if you want full name
           image: `${item.image_1}`,
-          description: item.short_describe,
+          description: item.item_description,
           discount: item.slider_offer,
           price: item.price || item.standard_rate || 0,
         };
@@ -213,12 +213,10 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
 
             {/* Right: Text Content */}
             <div className="w-1/2 h-full flex flex-col justify-center items-start p-4 relative">
-              <h2 className="text-sm sm:text-lg md:text-3xl lg:text-5xl font-bold uppercase mb-2">
+              <h2 className="text-sm sm:text-lg md:text-3xl lg:text-5xl font-bold line-clamp-2 uppercase mb-2">
                 {slide.title}
               </h2>
-              <h2 className="text-sm md:text-lg text-foreground/70 mt-3 mb-2">
-                {slide.description}
-              </h2>
+
               {slide.price && (
                 <p className="text-sm sm:text-md md:text-2xl font-semibold mt-3">
                   Just ₹ {slide.price}
@@ -230,7 +228,7 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
                 </p>
               )}
               <button
-                className="mt-4 px-7 py-3 bg-primary hover:bg-hover text-white text-lg md:text-2xl rounded-sm"
+                className="mt-4 px-4 md:px-7 py-2 md:py-3 bg-primary hover:bg-hover text-white text-md md:text-2xl whitespace-nowrap rounded-sm"
                 onClick={() => navigateProductPage(slide.id)}
               >
                 Shop Now

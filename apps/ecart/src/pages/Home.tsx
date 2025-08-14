@@ -32,6 +32,8 @@ const FloatContact = lazy(
   () => import("../../../../resources/UIBlocks/contact/FloatContact")
 );
 
+// import LaunchAnimation from "../../../../resources/AnimationComponents/LaunchAnimation";
+import CrackerAnimation from "../../../../resources/AnimationComponents/CrackerAnimation";
 function Home() {
   const brands = [
     { name: "DELL", logo: "/assets/brand/dell.svg" },
@@ -59,6 +61,37 @@ function Home() {
     handleScroll(); // run once on mount
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+  // const [showMain, setShowMain] = useState(false);
+
+  const [showAnimation, setShowAnimation] = useState(false);
+
+  // Check on mount if animation has been shown before
+  useEffect(() => {
+    const alreadyShown = localStorage.getItem("1");
+    if (!alreadyShown) {
+      setShowAnimation(true); // show animation only first time
+    }
+  }, []);
+
+  const handleAnimationFinish = () => {
+    localStorage.setItem("1", "true"); // mark as shown
+    setShowAnimation(false);
+  };
+
+  if (showAnimation) {
+    return (
+      <CrackerAnimation
+        quote="Your Shopping Revolution Starts Now!"
+        duration={8000}
+        onFinish={handleAnimationFinish}
+        explosion1={`/assets/mp3/cracker.mp3`}
+        explosion2={`/assets/mp3/cracker.mp3`}
+        explosion3={`/assets/mp3/cracker.mp3`}
+        flag={`/assets/mp4/flag.mp4`}
+        logo={`assets/svg/logo.svg`}
+      />
+    );
+  }
 
   return (
     <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
@@ -127,10 +160,7 @@ function Home() {
 
       {/* promotion image slider */}
       <div className=" py-5 my-15">
-        <AdverthismentBanner
-          api={`api/resource/Slider 3`}
-          delay={6000}
-        />
+        <AdverthismentBanner api={`api/resource/Slider 3`} delay={6000} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-15 md:gap-5 px-[5%] items-stretch">
@@ -147,7 +177,10 @@ function Home() {
         />
 
         <div className="h-full  bg-background/80 border border-ring/30 shadow rounded-md flex md:hidden lg:flex">
-          <PromotionSection api={`https://erp.tmnext.in/api/resource/Promotional Special?fields=["name"]&filters=[["set_default", "=", 1]]`} image={"/assets/Promotion/ads3.png"} />
+          <PromotionSection
+            api={`https://erp.tmnext.in/api/resource/Promotional Special?fields=["name"]&filters=[["set_default", "=", 1]]`}
+            image={"/assets/Promotion/ads3.png"}
+          />
         </div>
       </div>
 

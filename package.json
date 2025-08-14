@@ -31,6 +31,7 @@
     "@tailwindcss/postcss": "^4.1.11",
     "@types/canvas-confetti": "^1.9.0",
     "@types/chroma-js": "^3.1.1",
+    "@types/howler": "^2.2.12",
     "@types/node": "^24.0.15",
     "@types/number-to-words": "^1.2.3",
     "@types/react": "^19.1.8",
@@ -47,6 +48,7 @@
     "vite": "^7.0.5"
   },
   "dependencies": {
+    "@fireworks-js/react": "^2.10.8",
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-avatar": "^1.1.10",
     "@radix-ui/react-checkbox": "^1.3.2",
@@ -70,7 +72,9 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "dropzone": "^6.0.0-beta.2",
+    "fireworks-js": "^2.10.8",
     "framer-motion": "^12.18.1",
+    "howler": "^2.2.4",
     "lodash": "^4.17.21",
     "lucide-react": "^0.525.0",
     "number-to-words": "^1.2.4",
@@ -79,6 +83,7 @@
     "quill": "^2.0.3",
     "react": "^18.3.1",
     "react-barcode": "^1.6.1",
+    "react-confetti": "^6.4.0",
     "react-day-picker": "^9.7.0",
     "react-dom": "^18.3.1",
     "react-feather": "^2.0.10",
