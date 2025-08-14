@@ -53,7 +53,7 @@ const CrackerAnimation: React.FC<CrackerAnimationProps> = ({
       setShow(false);
       localStorage.setItem("1", "true");
       onFinish?.();
-    //   localStorage.removeItem("1"); //testing
+        // localStorage.removeItem("1"); //testing
     }, duration);
   };
 
@@ -64,8 +64,7 @@ const CrackerAnimation: React.FC<CrackerAnimationProps> = ({
           onClick={startLaunch}
           className="px-6 py-3 bg-primary text-background mx-3 rounded-lg font-bold hover:bg-hover transition-all duration-200 cursor-pointer"
         >
-           We’re back — Relaunching with a fresh look
-
+          Let’s Celebrate Together 🚀
         </button>
       </div>
     );
@@ -75,7 +74,7 @@ const CrackerAnimation: React.FC<CrackerAnimationProps> = ({
     <div className="fixed inset-0 bg-black flex flex-col items-center justify-center text-white z-[99999999]">
       {/* Top-left Indian flag */}
       <video
-        src={flag} 
+        src={flag}
         autoPlay
         loop
         muted
@@ -84,7 +83,7 @@ const CrackerAnimation: React.FC<CrackerAnimationProps> = ({
       />
       {/* Top-right Indian flag */}
       <video
-        src={flag} 
+        src={flag}
         autoPlay
         loop
         muted
