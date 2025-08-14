@@ -129,7 +129,7 @@ const ScrollAdverthisment2: React.FC<ScrollAdverthisment2Props> = ({
         />
       )}
 
-      <div ref={scrollRef} className="overflow-x-auto scrollbar-hide mt-4">
+      <div ref={scrollRef} className="overflow-x-auto overflow-y-hidden scrollbar-hide mt-4">
         <div className="flex gap-4 min-w-max py-2">
           {products.map((product) => (
             <div
@@ -137,10 +137,9 @@ const ScrollAdverthisment2: React.FC<ScrollAdverthisment2Props> = ({
               className="relative group w-[300px] sm:w-[400px] h-[300px] sm:h-[400px] cursor-pointer flex-shrink-0  duration-300 border border-ring/30 rounded-2xl"
               onClick={() => navigateProductPage(product.id)}
             >
-              <div className="relative h-[400px] overflow-hidden rounded-2xl">
+              <div className="relative w-[300px] sm:w-[400px] sm:h-[400px] overflow-hidden rounded-2xl">
                 <img
                   src={`${product.image}`}
-                  // src={`/assets/Promotion/ad9.png`}
                   alt={product.id}
                   className="w-[300px] sm:w-[400px] h-[300px] sm:h-[400px] object-contain rounded-md mx-auto"
                 />

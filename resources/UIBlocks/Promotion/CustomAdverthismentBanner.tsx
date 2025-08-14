@@ -1,4 +1,3 @@
-import ImageButton from "../../components/button/ImageBtn";
 import React, { useState, useEffect, useRef } from "react";
 import apiClient from "../../../resources/global/api/apiClients";
 import { useAppContext } from "../../../apps/global/AppContaxt";
@@ -163,7 +162,7 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
   }, [activeIndex, slides.length, autoPlay, delay]);
 
   return (
-    <div className="relative w-full h-[350px] md:h-[350px] bg-background overflow-hidden">
+    <div className="relative w-full h-[380px] md:h-[350px] bg-background overflow-hidden">
       {/* 🔹 Slides */}
       <div
         className="w-full h-full relative flex transition-transform duration-700 ease-in-out"
@@ -179,7 +178,7 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
           >
             {slide.layout === "Option - 1" ? (
               <div
-                className={`w-full h-[350px] flex items-center justify-center relative ${slide.theme === "dark" ? "text-black" : "text-white"}`}
+                className={`w-full h-[380px] md:h-[350px] flex items-center justify-center relative ${slide.theme === "dark" ? "text-black" : "text-white"}`}
               >
                 {/* Background Image */}
                 <img
@@ -188,7 +187,7 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                   className="h-full w-full object-cover"
                 />
                 <div className="absolute inset-0 bg-black/20"></div>
-                <div className="absolute left-10 sm:left-25 lg:left-60 flex flex-col gap-3 right-1/2 pr-2 top-1/2 -translate-y-1/2 text-white">
+                <div className="absolute left-5 sm:left-25 lg:left-60 flex flex-col gap-3 right-1/2 pr-2 top-1/2 -translate-y-1/2 text-white">
                   {slide.title && (
                     <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold">
                       {slide.title}
@@ -202,7 +201,7 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                   )}
 
                   {slide.price !== undefined && (
-                    <p className="mt-2 text-xl lg:text-5xl font-bold text-right">
+                    <p className="mt-2 text-xl lg:text-3xl font-bold text-right">
                       ₹ {slide.price}
                     </p>
                   )}

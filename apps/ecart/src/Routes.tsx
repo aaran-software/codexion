@@ -40,22 +40,22 @@ function AppRoutes() {
     location.pathname.startsWith("/dashboard");
 
   const routeTitles: { pattern: RegExp; title: string }[] = [
-    { pattern: /^\/$/, title: "Tmnext - Home" },
-    { pattern: /^\/cart$/, title: "Tmnext - Cart" },
-    { pattern: /^\/wishlist$/, title: "Tmnext - Wishlist" },
-    { pattern: /^\/login$/, title: "Tmnext - Login" },
-    { pattern: /^\/signup$/, title: "Tmnext - Signup" },
-    { pattern: /^\/productpage\/[^/]+$/, title: "Tmnext - Product Page" },
-    { pattern: /^\/category\/[^/]+$/, title: "Tmnext - Category" },
-    { pattern: /^\/special\/[^/]+$/, title: "Tmnext - Special Offer" },
-    { pattern: /^\/dashboard(\/[^/]*)?$/, title: "Tmnext - Dashboard" },
+    { pattern: /^\/$/, title: "Tech Media - Home" },
+    { pattern: /^\/cart$/, title: "Tech Media - Cart" },
+    { pattern: /^\/wishlist$/, title: "Tech Media - Wishlist" },
+    { pattern: /^\/login$/, title: "Tech Media - Login" },
+    { pattern: /^\/signup$/, title: "Tech Media - Signup" },
+    { pattern: /^\/productpage\/[^/]+$/, title: "Tech Media - Product Page" },
+    { pattern: /^\/category\/[^/]+$/, title: "Tech Media - Category" },
+    { pattern: /^\/special\/[^/]+$/, title: "Tech Media - Special Offer" },
+    { pattern: /^\/dashboard(\/[^/]*)?$/, title: "Tech Media - Dashboard" },
   ];
 
   useEffect(() => {
     const match = routeTitles.find(({ pattern }) =>
       pattern.test(location.pathname)
     );
-    document.title = match?.title || "Tmnext";
+    document.title = match?.title || "Tech Media";
   }, [location.pathname]);
 
   const logo = {

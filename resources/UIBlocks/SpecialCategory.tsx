@@ -60,8 +60,8 @@ const SpecialCategory= () => {
             id: item.name,
             prod_id: item.product_code,
             name: item.display_name,
-            description: item.short_describe,
-            image: `${API_URL}/${item.image}`,
+            description: item.item_description,
+            image: `${API_URL}/${item.image_1}`,
             count: item.stock_qty,
             price: item.price || item.standard_rate || 0,
             category: item.category || "",
@@ -122,13 +122,15 @@ const SpecialCategory= () => {
                 <h2 className="text-xl font-bold block md:hidden">
                   ₹{product.price}
                 </h2>
-                <p className="text-sm text-foreground/60 line-clamp-2 hidden md:flex">
-                  {product.description}
-                </p>
-                <div className="flex gap-2">
+                <h1 className="text-sm text-foreground/50 line-clamp-2">
+            {product.description
+              ? product.description.replace(/<[^>]*>?/gm, "")
+              : ""}
+          </h1>
+                {/* <div className="flex gap-2">
                   <p className="text-sm text-green-600">10% Offer</p>
-                </div>
-                <div className="my-2 flex flex-row gap-2 ">
+                </div> */}
+                <div className="my-2 mt-5 flex flex-row gap-2 ">
                   <ImageButton
                     onClick={(e) => {
                       e.stopPropagation();
@@ -155,7 +157,7 @@ const SpecialCategory= () => {
               </div>
 
               <div className="text-right space-y-2 hidden md:block">
-                <div
+                {/* <div
                   className={`w-max block ml-auto text-white text-xs px-2 py-1 z-10 ${
                     product.count > 0
                       ? product.count < 3
@@ -169,9 +171,9 @@ const SpecialCategory= () => {
                       ? `only ${product.count} left`
                       : "10% Offer"
                     : "Out Of Stock"}
-                </div>
+                </div> */}
                 <h2 className="text-sm md:text-xl font-bold">
-                  ₹{product.price}
+                  ₹ {product.price}
                 </h2>
                 <p className="text-sm text-foreground/60">Delivery: 3–5 days</p>
               </div>

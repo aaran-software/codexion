@@ -229,7 +229,7 @@ function ProductPage() {
       <div className="grid lg:grid-cols-2 gap-5 xl:grid-cols-[35%_65%] items-start border-b border-ring/30 pb-20">
         {/* Image Section */}
         <div className="lg:sticky top-20 h-fit">
-          <div className="flex flex-col border border-ring/20 lg:flex-row gap-4 items-start relative">
+          <div className="flex flex-col border border-ring/30 p-2 lg:flex-row gap-4 items-start relative">
             <div className="hidden lg:block">
               <VerticalImageList
                 images={product.images || []}
