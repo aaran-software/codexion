@@ -8,11 +8,14 @@ interface SlideContent {
   bg_image: string;
   title: string;
   description?: string;
-  price?: number;
+  actual_price?: number;
+  offer_price?: number;
   slogan?: string;
   discount?: string;
   layout?: string;
   theme: string;
+  link: string;
+  save: string;
 }
 
 interface CustomBannerCarouselProps {
@@ -96,10 +99,13 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
           bg_image: `${API_URL}/${item.background}`,
           description: item.describtion,
           discount: item.stock_qty,
-          price: item.price,
+          actual_price: item.actual_price,
+          offer_price: item.offer_price,
           slogan: item.slogan,
           layout: item.layout,
           theme: item.theme,
+          link: item.product_link,
+          save: item.percentage,
         };
       });
 
@@ -176,7 +182,7 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
             key={index}
             className="w-full h-full flex border-y border-ring/30 flex-shrink-0"
           >
-            {slide.layout === "Option - 1" ? (
+            {slide.layout === "Layout - 1" ? (
               <div
                 className={`w-full h-[380px] md:h-[350px] flex items-center justify-center relative ${slide.theme === "dark" ? "text-black" : "text-white"}`}
               >
@@ -195,20 +201,31 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                   )}
 
                   {slide.description && (
-                    <p className="mt-2 text-xs sm:text-sm md:text-lg lg:text-lg">
+                    <p className="mt-2 text-xs sm:text-sm md:text-lg lg:text-lg line-clamp-1">
                       {slide.description}
                     </p>
                   )}
 
-                  {slide.price !== undefined && (
+                  {slide.actual_price && (
                     <p className="mt-2 text-xl lg:text-3xl font-bold text-right">
-                      ₹ {slide.price}
+                      <span
+                        className={`line-through text-sm lg:text-lg ${slide.theme === "dark" ? "text-black/70" : "text-white/70"}`}
+                      >
+                        ₹ {slide.actual_price}
+                      </span>{" "}
+                      ₹ {slide.offer_price}
+                      <br />
+                      <span
+                        className={`text-sm ${slide.theme === "dark" ? "text-black/70" : "text-white/70"}`}
+                      >
+                        {slide.save}
+                      </span>
                     </p>
                   )}
 
                   <Button
                     label="Shop Now"
-                    className="border border-primary w-max text-primary hover:text-white hover:bg-hover"
+                    className="bg-primary w-max text-white hover:bg-hover"
                   />
                 </div>
 
@@ -216,17 +233,17 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                 <img
                   src={slide.image}
                   alt={`Slide ${index} product`}
-                  className="absolute right-1 sm:right-1/18 md:right-1/15 lg:right-1/8 top-1/2 -translate-y-1/2 max-h-[50%] sm:max-h-[60%] lg:max-h-[80%] object-scale-down"
+                  className="absolute right-1 sm:right-1/18 md:right-1/15 lg:right-1/8 top-1/2 -translate-y-1/2 max-h-[40%] sm:max-h-[60%] md;max-h-[80%] lg:max-h-[100%] object-scale-down"
                 />
 
                 {/* Centered Blockquote at Bottom */}
                 {slide.slogan && (
-                  <blockquote className="absolute bottom-8 left-1/2 -translate-x-1/2 italic text-sm md:text-lg lg:text-xl font-bold text-center whitespace-nowrap">
+                  <blockquote className="absolute bottom-8 left-1/2 w-full -translate-x-1/2 italic text-sm md:text-lg lg:text-xl font-bold text-center px-2">
                     {slide.slogan}
                   </blockquote>
                 )}
               </div>
-            ) : slide.layout === "Option - 2" ? (
+            ) : slide.layout === "Layout - 2" ? (
               <div
                 className={`w-full h-[350px] flex items-center justify-center relative ${slide.theme === "dark" ? "text-black" : "text-white"}`}
               >
@@ -253,9 +270,14 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                       </p>
                     )}
 
-                    {slide.price !== undefined && (
+                    {slide.actual_price && (
                       <p className="mt-2 text-xl font-bold text-background">
-                        ₹ {slide.price}
+                        <span
+                          className={`line-through text-lg ${slide.theme === "dark" ? "text-black/70" : "text-white/70"}`}
+                        >
+                          ₹ {slide.actual_price}
+                        </span>{" "}
+                        ₹ {slide.offer_price}
                       </p>
                     )}
                   </div>
@@ -270,7 +292,7 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                   </div>
                 </div>
               </div>
-            ) : slide.layout === "Option - 3" ? (
+            ) : slide.layout === "Layout - 3" ? (
               <div
                 className={`w-full h-[350px] flex items-center justify-center relative ${slide.theme === "dark" ? "text-black" : "text-white"}`}
               >
@@ -304,9 +326,14 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                     </p>
                   )}
 
-                  {slide.price && (
+                  {slide.actual_price && (
                     <p className="mt-2 text-xl font-bold text-foreground">
-                      ₹ {slide.price}
+                      <span
+                        className={`line-through text-lg ${slide.theme === "dark" ? "text-black/70" : "text-white/70"}`}
+                      >
+                        ₹ {slide.actual_price}
+                      </span>{" "}
+                      ₹ {slide.offer_price}
                     </p>
                   )}
 
@@ -318,11 +345,11 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
 
                   <Button
                     label="Shop Now"
-                    className="border border-ring/30 w-max text-primary hover:text-white hover:bg-hover"
+                    className="bg-primary w-max text-white hover:bg-hover"
                   />
                 </div>
               </div>
-            ) : slide.layout === "Option - 4" ? (
+            ) : slide.layout === "Layout - 4" ? (
               <div
                 className={`w-full h-[350px] flex items-center justify-center relative ${slide.theme === "dark" ? "text-black" : "text-white"}`}
               >
@@ -350,15 +377,20 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                     </p>
                   )}
 
-                  {slide.price !== undefined && (
+                  {slide.actual_price && (
                     <p className="mt-2 text-xl lg:text-5xl font-bold text-foreground">
-                      ₹ {slide.price}
+                      <span
+                        className={`line-through text-lg ${slide.theme === "dark" ? "text-black/70" : "text-white/70"}`}
+                      >
+                        ₹ {slide.actual_price}
+                      </span>{" "}
+                      ₹ {slide.offer_price}
                     </p>
                   )}
 
                   <Button
                     label="Shop Now"
-                    className="border border-ring/30 w-max text-primary hover:text-white hover:bg-hover"
+                    className="bg-primary w-max text-white hover:bg-hover"
                   />
                 </div>
 
@@ -408,9 +440,14 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                     </p>
                   )}
 
-                  {slide.price !== undefined && (
+                  {slide.actual_price && (
                     <p className="mt-2 text-xl md:text-4xl font-bold text-center">
-                      ₹ {slide.price}
+                      <span
+                        className={`line-through text-lg ${slide.theme === "dark" ? "text-black/70" : "text-white/70"}`}
+                      >
+                        ₹ {slide.actual_price}
+                      </span>{" "}
+                      ₹ {slide.offer_price}
                     </p>
                   )}
 
@@ -422,7 +459,7 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
 
                   <Button
                     label="Shop Now"
-                    className="border border-ring/30 w-max block mx-auto text-primary hover:text-white hover:bg-hover"
+                    className="bg-primary w-max text-white hover:bg-hover"
                   />
                 </div>
               </div>

@@ -4,7 +4,6 @@ import { useAppContext } from "../../../apps/global/AppContaxt";
 
 interface PromotionSectionProps {
   api: string;
-  image: string;
 }
 
 interface BannerContent {

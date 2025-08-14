@@ -98,9 +98,9 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
       const formatted: SlideContent[] = validItems.map((item: any) => {
         return {
           id: item.name,
-          title: item.display_name, // or item.item_name if you want full name
+          title: item.name, // or item.item_name if you want full name
           image: `${item.image_1}`,
-          description: item.item_description,
+          description: item.slider_highlighter,
           discount: item.slider_offer,
           price: item.price || item.standard_rate || 0,
         };
@@ -217,16 +217,24 @@ const BannerCarousel: React.FC<BannerCarouselProps> = ({
                 {slide.title}
               </h2>
 
+              {slide.description && (
+                <h2 className="text-sm sm:text-md md:text-lg line-clamp-2 my-2">
+                  {slide.description}
+                </h2>
+              )}
+
               {slide.price && (
                 <p className="text-sm sm:text-md md:text-2xl font-semibold mt-3">
                   Just ₹ {slide.price}
                 </p>
               )}
+
               {slide.discount && (
                 <p className="text-md md:text-2xl mt-3">
                   {slide.discount} % Offer
                 </p>
               )}
+              
               <button
                 className="mt-4 px-4 md:px-7 py-2 md:py-3 bg-primary hover:bg-hover text-white text-md md:text-2xl whitespace-nowrap rounded-sm"
                 onClick={() => navigateProductPage(slide.id)}
