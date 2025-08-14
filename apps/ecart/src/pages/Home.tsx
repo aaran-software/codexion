@@ -178,8 +178,7 @@ function Home() {
 
         <div className="h-full  bg-background/80 border border-ring/30 shadow rounded-md flex md:hidden lg:flex">
           <PromotionSection
-            api={`https://erp.tmnext.in/api/resource/Promotional Special?fields=["name"]&filters=[["set_default", "=", 1]]`}
-            image={"/assets/Promotion/ads3.png"}
+            api={`api/resource/Promotional Special?fields=["name"]&filters=[["set_default", "=", 1]]`}
           />
         </div>
       </div>
