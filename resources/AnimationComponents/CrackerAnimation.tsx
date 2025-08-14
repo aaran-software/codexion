@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Fireworks } from "@fireworks-js/react";
 import { Howl } from "howler";
 

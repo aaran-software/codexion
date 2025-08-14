@@ -32,8 +32,9 @@ const FloatContact = lazy(
   () => import("../../../../resources/UIBlocks/contact/FloatContact")
 );
 
-// import LaunchAnimation from "../../../../resources/AnimationComponents/LaunchAnimation";
-import CrackerAnimation from "../../../../resources/AnimationComponents/CrackerAnimation";
+const CrackerAnimation = lazy(
+() => import("../../../../resources/AnimationComponents/CrackerAnimation")
+)
 function Home() {
   const brands = [
     { name: "DELL", logo: "/assets/brand/dell.svg" },

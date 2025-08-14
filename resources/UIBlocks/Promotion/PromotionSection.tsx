@@ -4,6 +4,7 @@ import { useAppContext } from "../../../apps/global/AppContaxt";
 
 interface PromotionSectionProps {
   api: string;
+  image: string;
 }
 
 interface BannerContent {
@@ -19,12 +20,12 @@ function PromotionSection({ api }: PromotionSectionProps) {
       const response = await apiClient.get(`${api}`);
 
       const items = response.data.data || [];
-      // const baseApi = api.split("?")[0];
+      const baseApi = api.split("?")[0];
 
       // Step 2: Fetch full details for each item
       const detailPromises = items.map((item: any) => {
         const itemName = encodeURIComponent(item.name);
-        const detailUrl = `${API_URL}/${itemName}`;
+        const detailUrl = `${baseApi}/${itemName}`;
         return apiClient
           .get(detailUrl)
           .then((res) => res.data.data)
