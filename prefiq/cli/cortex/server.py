@@ -32,10 +32,10 @@ def run(mode: str = typer.Argument(..., help="Mode: dev or prod")):
         run_command("npm run build")
 
         print("[🚀] Starting FastAPI backend in production...")
-        run_command("gunicorn cortex.main:app -k uvicorn.workers.UvicornWorker -b 0.0.0.0:5001 -w 4 --timeout 60")
+        run_command("gunicorn cortex.main:app -k uvicorn.workers.UvicornWorker -b 0.0.0.0:5005 -w 4 --timeout 60")
     else:
         print("[🚀] Starting backend and frontend in development...")
         run_command(
-            'concurrently "uvicorn cortex.main:app --host 0.0.0.0 --port 5001 --reload" '
-            '"npm run dev -- --host 0.0.0.0 --port 3001"'
+            'concurrently "uvicorn cortex.main:app --host 0.0.0.0 --port 5005 --reload" '
+            '"npm run dev -- --host 0.0.0.0 --port 3005"'
         )

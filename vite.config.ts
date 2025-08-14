@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react-swc";
 import * as path from "path";
 
 export default defineConfig(({ mode }) => {
-  // ✅ Load from project root
+  // ✅ Load env from project root
   const env = loadEnv(mode, process.cwd(), "");
 
   const appName = env.VITE_APP_TYPE || "cxsun";
@@ -12,7 +12,7 @@ export default defineConfig(({ mode }) => {
   const appRoot = path.resolve(__dirname, `${appCategory}/${appName}`);
   const appSrc = path.resolve(appRoot, "src");
 
-  // ✅ Pick all VITE_ envs
+  // ✅ Pick all VITE_ envs for frontend use
   const viteEnvVars = Object.keys(env)
     .filter((key) => key.startsWith("VITE_"))
     .reduce(
@@ -22,6 +22,9 @@ export default defineConfig(({ mode }) => {
       },
       {} as Record<string, string>
     );
+
+  // ✅ Read ALLOWED_HOST from .env, fallback to 'localhost'
+  const allowedHost = env.ALLOWED_HOST || "localhost";
 
   return {
     root: appRoot,
@@ -33,7 +36,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     define: {
-      ...viteEnvVars, // ✅ expose all VITE_ variables manually
+      ...viteEnvVars,
     },
     build: {
       outDir: path.resolve(__dirname, "public/build"),
@@ -43,10 +46,10 @@ export default defineConfig(({ mode }) => {
     server: {
       port: Number(env.APP_PORT) || 3005,
       host: true, // binds to 0.0.0.0
-      allowedHosts: ["tmnext.in"],
+      allowedHosts: [allowedHost],
       hmr: {
-        host: "tmnext.in", // ensures HMR WS connects to the right host
-        protocol: "wss", // use 'wss' if using HTTPS
+        host: allowedHost,
+        protocol: env.APP_HTTPS === "true" ? "wss" : "ws",
         port: Number(env.APP_PORT) || 3005,
       },
     },
