@@ -60,7 +60,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ title, api, ribbon, id, filte
         return {
           id: item.name,
           prod_id: item.item_code,
-          name: item.display_name, // or item.item_name if you want full name
+          name: item.name, // or item.item_name if you want full name
           image: item.image_1,
           count: item.stock_qty,
           price: item.price || item.standard_rate || 0,

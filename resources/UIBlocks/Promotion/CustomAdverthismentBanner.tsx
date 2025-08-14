@@ -8,23 +8,29 @@ interface SlideContent {
   bg_image: string;
   title: string;
   description?: string;
-  price?: number;
+  actual_price?: number;
+  offer_price?: number;
   slogan?: string;
   discount?: string;
   layout?: string;
   theme: string;
+  link: string;
+  save: string;
+  slider_base:string
 }
 
 interface CustomBannerCarouselProps {
   api: string;
   autoPlay?: boolean;
   delay?: number; // milliseconds
+  sliderBase:string
 }
 
 const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
   api,
   autoPlay = true,
   delay = 6000,
+  sliderBase
 }) => {
   const { API_URL } = useAppContext();
 
@@ -65,49 +71,56 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
 
   const [slides, setSlides] = useState<SlideContent[]>([]);
   const fetchProducts = async () => {
-    try {
-      // Step 1: Fetch all item names
-      const response = await apiClient.get(`${api}`);
+  try {
+    const response = await apiClient.get(`${api}`);
+    const items = response.data.data || [];
+    const baseApi = api.split("?")[0];
 
-      const items = response.data.data || [];
-      const baseApi = api.split("?")[0];
+    const detailPromises = items.map((item: any) => {
+      const itemName = encodeURIComponent(item.name);
+      const detailUrl = `${baseApi}/${itemName}`;
+      return apiClient
+        .get(detailUrl)
+        .then((res) => res.data.data)
+        .catch((err) => {
+          console.warn(`Item not found: ${item.name}`, err);
+          return null;
+        });
+    });
 
-      // Step 2: Fetch full details for each item
-      const detailPromises = items.map((item: any) => {
-        const itemName = encodeURIComponent(item.name);
-        const detailUrl = `${baseApi}/${itemName}`;
-        return apiClient
-          .get(detailUrl)
-          .then((res) => res.data.data)
-          .catch((err) => {
-            console.warn(`Item not found: ${item.name}`, err);
-            return null;
-          });
-      });
+    const detailResponses = await Promise.all(detailPromises);
+    const validItems = detailResponses.filter(Boolean);
 
-      const detailResponses = await Promise.all(detailPromises);
-      const validItems = detailResponses.filter(Boolean);
+    // ✅ Only keep items where slider_base matches the prop
+    const filteredItems = validItems.filter(
+      (item: any) => item.slider_base === sliderBase
+    );
 
-      const formatted: SlideContent[] = validItems.map((item: any) => {
-        return {
-          id: item.name,
-          title: item.title, // or item.item_name if you want full name
-          image: `${API_URL}/${item.product_image}`,
-          bg_image: `${API_URL}/${item.background}`,
-          description: item.describtion,
-          discount: item.stock_qty,
-          price: item.price,
-          slogan: item.slogan,
-          layout: item.layout,
-          theme: item.theme,
-        };
-      });
+    const formatted: SlideContent[] = filteredItems.map((item: any) => {
+      return {
+        id: item.name,
+        title: item.title,
+        image: `${API_URL}/${item.product_image}`,
+        bg_image: `${API_URL}/${item.background}`,
+        description: item.describtion,
+        discount: item.stock_qty,
+        actual_price: item.actual_price,
+        offer_price: item.offer_price,
+        slogan: item.slogan,
+        layout: item.layout,
+        theme: item.theme,
+        link: item.product_link,
+        save: item.percentage,
+        slider_base: item.slider_base
+      };
+    });
 
-      setSlides(formatted);
-    } catch (error) {
-      console.error("Failed to fetch products:", error);
-    }
-  };
+    setSlides(formatted);
+  } catch (error) {
+    console.error("Failed to fetch products:", error);
+  }
+};
+
 
   useEffect(() => {
     fetchProducts();
@@ -176,7 +189,7 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
             key={index}
             className="w-full h-full flex border-y border-ring/30 flex-shrink-0"
           >
-            {slide.layout === "Option - 1" ? (
+            {slide.layout === "Layout - 1" ? (
               <div
                 className={`w-full h-[380px] md:h-[350px] flex items-center justify-center relative ${slide.theme === "dark" ? "text-black" : "text-white"}`}
               >
@@ -195,20 +208,31 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                   )}
 
                   {slide.description && (
-                    <p className="mt-2 text-xs sm:text-sm md:text-lg lg:text-lg">
+                    <p className="mt-2 text-xs sm:text-sm md:text-lg lg:text-lg line-clamp-1">
                       {slide.description}
                     </p>
                   )}
 
-                  {slide.price !== undefined && (
+                  {slide.actual_price && (
                     <p className="mt-2 text-xl lg:text-3xl font-bold text-right">
-                      ₹ {slide.price}
+                      <span
+                        className={`line-through text-sm lg:text-lg ${slide.theme === "dark" ? "text-black/70" : "text-white/70"}`}
+                      >
+                        ₹ {slide.actual_price}
+                      </span>{" "}
+                      ₹ {slide.offer_price}
+                      <br />
+                      <span
+                        className={`text-sm ${slide.theme === "dark" ? "text-black/70" : "text-white/70"}`}
+                      >
+                        {slide.save}
+                      </span>
                     </p>
                   )}
 
                   <Button
                     label="Shop Now"
-                    className="border border-primary w-max text-primary hover:text-white hover:bg-hover"
+                    className="bg-primary w-max text-white hover:bg-hover"
                   />
                 </div>
 
@@ -216,17 +240,17 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                 <img
                   src={slide.image}
                   alt={`Slide ${index} product`}
-                  className="absolute right-1 sm:right-1/18 md:right-1/15 lg:right-1/8 top-1/2 -translate-y-1/2 max-h-[50%] sm:max-h-[60%] lg:max-h-[80%] object-scale-down"
+                  className="absolute right-1 sm:right-1/18 md:right-1/15 lg:right-1/8 top-1/2 -translate-y-1/2 max-h-[40%] sm:max-h-[60%] md;max-h-[80%] lg:max-h-[100%] object-scale-down"
                 />
 
                 {/* Centered Blockquote at Bottom */}
                 {slide.slogan && (
-                  <blockquote className="absolute bottom-8 left-1/2 -translate-x-1/2 italic text-sm md:text-lg lg:text-xl font-bold text-center whitespace-nowrap">
+                  <blockquote className="absolute bottom-8 left-1/2 w-full -translate-x-1/2 italic text-sm md:text-lg lg:text-xl font-bold text-center px-2">
                     {slide.slogan}
                   </blockquote>
                 )}
               </div>
-            ) : slide.layout === "Option - 2" ? (
+            ) : slide.layout === "Layout - 2" ? (
               <div
                 className={`w-full h-[350px] flex items-center justify-center relative ${slide.theme === "dark" ? "text-black" : "text-white"}`}
               >
@@ -253,9 +277,14 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                       </p>
                     )}
 
-                    {slide.price !== undefined && (
+                    {slide.actual_price && (
                       <p className="mt-2 text-xl font-bold text-background">
-                        ₹ {slide.price}
+                        <span
+                          className={`line-through text-lg ${slide.theme === "dark" ? "text-black/70" : "text-white/70"}`}
+                        >
+                          ₹ {slide.actual_price}
+                        </span>{" "}
+                        ₹ {slide.offer_price}
                       </p>
                     )}
                   </div>
@@ -270,7 +299,7 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                   </div>
                 </div>
               </div>
-            ) : slide.layout === "Option - 3" ? (
+            ) : slide.layout === "Layout - 3" ? (
               <div
                 className={`w-full h-[350px] flex items-center justify-center relative ${slide.theme === "dark" ? "text-black" : "text-white"}`}
               >
@@ -288,41 +317,46 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                 <img
                   src={slide.image}
                   alt={`Slide ${index} product`}
-                  className="absolute left-5 sm:left-1/6 lg:left-1/5 top-1/2 -translate-y-1/2 max-h-[30%] sm:max-h-[40%] lg:max-h-[80%] object-contain"
+                  className="absolute left-5 sm:left-1/6 lg:left-1/5 top-1/2 -translate-y-1/2 h-[40%] sm:h-[60%] md:h-[70%] lg:h-[100%] object-contain"
                 />
 
-                <div className="absolute lg:right-40 flex flex-col gap-3 left-1/2 pr-2 top-1/2 -translate-y-1/2 text-white">
+                <div className="absolute lg:right-40 flex flex-col gap-3 left-1/2 pr-2 top-1/2 -translate-y-1/2">
                   {slide.title && (
-                    <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold text-foreground">
+                    <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold">
                       {slide.title}
                     </p>
                   )}
 
                   {slide.description && (
-                    <p className="mt-2 text-xs sm:text-sm md:text-lg lg:text-lg text-purple-500">
+                    <p className="mt-2 text-xs sm:text-sm md:text-lg lg:text-lg">
                       {slide.description}
                     </p>
                   )}
 
-                  {slide.price && (
-                    <p className="mt-2 text-xl font-bold text-foreground">
-                      ₹ {slide.price}
+                  {slide.actual_price && (
+                    <p className="mt-2 text-xl font-bold">
+                      <span
+                        className={`line-through text-lg ${slide.theme === "dark" ? "text-black/70" : "text-white/70"}`}
+                      >
+                        ₹ {slide.actual_price}
+                      </span>{" "}
+                      ₹ {slide.offer_price}
                     </p>
                   )}
 
                   {slide.slogan && (
-                    <blockquote className="mt-4 italic text-sm md:text-lg lg:text-xl font-bold text-foreground">
+                    <blockquote className="mt-4 italic text-sm md:text-lg lg:text-xl font-bold">
                       {slide.slogan}
                     </blockquote>
                   )}
 
                   <Button
                     label="Shop Now"
-                    className="border border-ring/30 w-max text-primary hover:text-white hover:bg-hover"
+                    className="bg-primary w-max text-white hover:bg-hover"
                   />
                 </div>
               </div>
-            ) : slide.layout === "Option - 4" ? (
+            ) : slide.layout === "Layout - 4" ? (
               <div
                 className={`w-full h-[350px] flex items-center justify-center relative ${slide.theme === "dark" ? "text-black" : "text-white"}`}
               >
@@ -350,15 +384,20 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                     </p>
                   )}
 
-                  {slide.price !== undefined && (
+                  {slide.actual_price && (
                     <p className="mt-2 text-xl lg:text-5xl font-bold text-foreground">
-                      ₹ {slide.price}
+                      <span
+                        className={`line-through text-lg ${slide.theme === "dark" ? "text-black/70" : "text-white/70"}`}
+                      >
+                        ₹ {slide.actual_price}
+                      </span>{" "}
+                      ₹ {slide.offer_price}
                     </p>
                   )}
 
                   <Button
                     label="Shop Now"
-                    className="border border-ring/30 w-max text-primary hover:text-white hover:bg-hover"
+                    className="bg-primary w-max text-white hover:bg-hover"
                   />
                 </div>
 
@@ -408,9 +447,14 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                     </p>
                   )}
 
-                  {slide.price !== undefined && (
+                  {slide.actual_price && (
                     <p className="mt-2 text-xl md:text-4xl font-bold text-center">
-                      ₹ {slide.price}
+                      <span
+                        className={`line-through text-lg ${slide.theme === "dark" ? "text-black/70" : "text-white/70"}`}
+                      >
+                        ₹ {slide.actual_price}
+                      </span>{" "}
+                      ₹ {slide.offer_price}
                     </p>
                   )}
 
@@ -422,7 +466,7 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
 
                   <Button
                     label="Shop Now"
-                    className="border border-ring/30 w-max block mx-auto text-primary hover:text-white hover:bg-hover"
+                    className="bg-primary w-max text-white hover:bg-hover"
                   />
                 </div>
               </div>

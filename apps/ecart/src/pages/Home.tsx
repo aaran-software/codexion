@@ -118,8 +118,8 @@ function Home() {
         <ProductCard
           title="Laptops"
           id={"item_group"}
-          filterValue={"Laptops"}
-          api={`api/resource/Catalog Details?fields=["name"]&filters=[["item_group", "=", "Laptops"]]`}
+          filterValue={"Laptop"}
+          api={`api/resource/Catalog Details?fields=["name"]&filters=[["item_group", "=", "Laptop"]]`}
           ribbon={false}
         />
       </div>
@@ -127,7 +127,8 @@ function Home() {
       <div className=" py-5 mt-15">
         <CustomAdverthismentBanner
           api={`api/resource/Slider 2`}
-          delay={60000}
+          delay={6000}
+          sliderBase={"Slider - 1"}
         />
       </div>
 
@@ -153,15 +154,23 @@ function Home() {
         <ProductCard
           title="Laptops"
           id={"item_group"}
-          filterValue={"Laptops"}
-          api={`api/resource/Catalog Details?fields=["name"]&filters=[["item_group", "=", "Laptops"]]&limit_page_length=15`}
+          filterValue={"Laptop"}
+          api={`api/resource/Catalog Details?fields=["name"]&filters=[["item_group", "=", "Laptop"]]&limit_page_length=15`}
           ribbon={false}
         />
       </div>
 
       {/* promotion image slider */}
-      <div className=" py-5 my-15">
+      {/* <div className=" py-5 my-15">
         <AdverthismentBanner api={`api/resource/Slider 3`} delay={6000} />
+      </div> */}
+
+       <div className=" py-5 my-15">
+        <CustomAdverthismentBanner
+          api={`api/resource/Slider 2`}
+          delay={6000}
+          sliderBase={"Slider - 3"}
+        />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-15 md:gap-5 px-[5%] items-stretch">

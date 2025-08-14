@@ -131,7 +131,7 @@ function ProductPage() {
         const descImageList = descImageKeys.map((key) => API_URL + data[key]);
         setProduct({
           ...data,
-          name: data.display_name,
+          name: data.name,
           price: data.price,
           offer: data.product_offer,
           slideOffer: data.slider_offer,
@@ -160,11 +160,6 @@ function ProductPage() {
   if (loading) return <div className="text-center mt-10">Loading...</div>;
   if (!product || error)
     return <div className="text-center mt-10 text-red-500">{error}</div>;
-
-  const activeOffer = product.slideOffer ?? product.offer;
-  const prePrice = activeOffer
-    ? Math.round(product.price / (1 - activeOffer / 100))
-    : product.price;
 
   const steps = [
     {
@@ -246,7 +241,7 @@ function ProductPage() {
 
             {/* main image */}
             <div className="block m-auto flex-1">
-              <div className="w-full max-w-[310px] h-[310px] mx-auto">
+              <div className="w-full max-w-[310px] flex items-center h-[310px] mx-auto">
                 <ZoomImage
                   src={selectedImage}
                   alt={product.name}
@@ -320,7 +315,7 @@ function ProductPage() {
           </div> */}
           <p className="text-2xl font-bold flex gap-2">
             ₹{product.price}{" "}
-            {product.offer > 0 && (
+            {/* {product.offer > 0 && (
               <div className="flex items-center">
                 <span className="line-through text-sm text-foreground/30">
                   ₹{prePrice}
@@ -330,7 +325,7 @@ function ProductPage() {
                   Offer
                 </span>
               </div>
-            )}
+            )} */}
           </p>
           {/* <p className="text-sm text-gray-500">Extra fee</p> */}
 
