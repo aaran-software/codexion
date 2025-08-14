@@ -1,4 +1,4 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 import LoadingScreen from "../../../../resources/components/loading/LoadingScreen";
 
 const AdverthismentBanner = lazy(
@@ -43,16 +43,34 @@ function Home() {
     { name: "APPLE", logo: "/assets/brand/apple.svg" },
   ];
 
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isMobile = window.innerWidth <= 768;
+      if (isMobile) {
+        setShow(window.scrollY > 100); // mobile: show after 100px scroll
+      } else {
+        setShow(true); // desktop: always show
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // run once on mount
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
       <Mainmenu />
 
+      {/* main carousel */}
       <BannerCarousel
         api={`api/resource/Catalog Details?fields=["name"]&filters=[["is_slider", "=", 1]]`}
         delay={6000}
       />
 
-      <div className="px-[5%] mt-15">
+      <div className="px-[5%] mt-10">
         <ProductCard
           title="Popular Items"
           id={"is_popular"}
@@ -62,7 +80,7 @@ function Home() {
         />
       </div>
 
-      <div className="px-[5%] mt-15">
+      <div className="px-[5%] mt-10">
         <ProductCard
           title="Laptops"
           id={"item_group"}
@@ -71,14 +89,15 @@ function Home() {
           ribbon={false}
         />
       </div>
-      <div className=" py-5 mt-20">
-        <AdverthismentBanner
-          api={`api/resource/Catalog Details?fields=["name"]&filters=[["is_slider", "=", 1]]`}
-          delay={6000}
+
+      <div className=" py-5 mt-15">
+        <CustomAdverthismentBanner
+          api={`api/resource/Slider 2`}
+          delay={60000}
         />
       </div>
 
-      <div className="flex flex-col md:flex-row gap-15 md:gap-5 mt-15 px-[5%]">
+      <div className="flex flex-col md:flex-row gap-15 md:gap-5 my-15 px-[5%]">
         <GroupProductCard
           title={"Hot Gadgets Today"}
           api={`api/resource/Catalog Details?fields=["name"]&filters=[["is_top_rated", "=", 1]]`}
@@ -92,14 +111,11 @@ function Home() {
         />
       </div>
 
-      <div className=" py-5 mt-20">
-        <CustomAdverthismentBanner
-          api={`api/resource/Catalog Details?fields=["name"]&filters=[["is_slider", "=", 1]]`}
-          delay={6000}
-        />
+      <div className="my-10 py-10 md:py-10 bg-primary/5 ">
+        <BrandMarquee type="logo" brands={brands} speed={30} height={16} />
       </div>
 
-      <div className="px-[5%] mt-15">
+      <div className="px-[5%] mt-10">
         <ProductCard
           title="Laptops"
           id={"item_group"}
@@ -109,8 +125,12 @@ function Home() {
         />
       </div>
 
-      <div className="my-10 py-10 md:py-15 bg-primary/5 ">
-        <BrandMarquee type="logo" brands={brands} speed={90} height={20} />
+      {/* promotion image slider */}
+      <div className=" py-5 my-15">
+        <AdverthismentBanner
+          api={`api/resource/Slider 3`}
+          delay={6000}
+        />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-15 md:gap-5 px-[5%] items-stretch">
@@ -134,32 +154,37 @@ function Home() {
       <div className="my-15">
         <ScrollAdverthisment2
           title="Featured Brands"
-          api={`api/resource/Catalog Details?fields=["name"]&filters=[["is_popular", "=", 1]]`}
+          api={`api/resource/Promotional Image`}
         />
       </div>
 
-      <FloatContact
-        contacts={[
-          {
-            id: "whatsapp",
-            contact: "919543439311", // no '+' symbol, just country code + number
-            imgPath: "/assets/svg/whatsapp.svg",
-            defaultMessage: "Hello! I'm interested in your product.",
-          },
-          {
-            id: "phone",
-            contact: "9894244450",
-            imgPath: "/assets/svg/Mobile.svg",
-          },
-          {
-            id: "email",
-            contact: "info@techmedia.in", // just the username, no @
-            imgPath: "/assets/svg/mail.svg",
-            defaultMessage: "Hello, I’m interested in your product.",
-          },
-        ]}
-        className="fixed bottom-28 right-5 z-[100000]"
-      />
+      <div
+        className={`transition-opacity duration-500 fixed bottom-28 right-5 z-[100000] ${
+          show ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <FloatContact
+          contacts={[
+            {
+              id: "whatsapp",
+              contact: "919543439311",
+              imgPath: "/assets/svg/whatsapp.svg",
+              defaultMessage: "Hello! I'm interested in your product.",
+            },
+            {
+              id: "phone",
+              contact: "9894244450",
+              imgPath: "/assets/svg/Mobile.svg",
+            },
+            {
+              id: "email",
+              contact: "info@techmedia.in",
+              imgPath: "/assets/svg/mail.svg",
+              defaultMessage: "Hello, I’m interested in your product.",
+            },
+          ]}
+        />
+      </div>
     </Suspense>
   );
 }

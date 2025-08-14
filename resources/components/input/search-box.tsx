@@ -3,6 +3,7 @@ import type { Product } from "../header/Header";
 import apiClient from "../../../resources/global/api/apiClients";
 import { useAppContext } from "../../../apps/global/AppContaxt";
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface GlobalSearchProps {
   className?: string;
@@ -28,7 +29,7 @@ export default function GlobalSearch({
   const [showResults, setShowResults] = useState(false);
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-
+  const navigate = useNavigate();
   // Load recent searches from localStorage
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("recentSearches") || "[]");
@@ -100,7 +101,7 @@ export default function GlobalSearch({
           (res.data?.data || []).map((item: any) => ({
             id: item.name,
             name: item.name,
-            imageUrl: item.image,
+            imageUrl: item.image_1,
             price: item.price || item.standard_rate || 0,
           }))
         );
@@ -120,12 +121,15 @@ export default function GlobalSearch({
 
     setRecentSearches(updated);
     localStorage.setItem("recentSearches", JSON.stringify(updated));
-
     onNavigate(`/productpage/${product.id}`);
     setQuery("");
     setShowResults(false); // Close dropdown
   };
 
+  const handleShowAll = () => {
+    navigate("/category/");
+  };
+  
   return (
     <div className="relative w-full" ref={containerRef}>
       {/* Search Bar */}
@@ -178,7 +182,7 @@ export default function GlobalSearch({
                     <img
                       src={`${API_URL}/${product.imageUrl}`}
                       alt={product.name}
-                      className="w-12 lg:w-18 h-12 lg:h-18 object-cover rounded"
+                      className="w-12 lg:w-18 h-12 lg:h-18 object-contain rounded"
                     />
                   )}
                   <span className="text-foreground/50 group-hover:text-primary transition-all duration-500 ease-in-out line-clamp-2">
@@ -191,25 +195,42 @@ export default function GlobalSearch({
 
           {/* Search Results */}
           {query.trim() && results.length > 0 && (
-            <div className="border border-ring/30">
-              {results.map((product) => (
-                <div
-                  key={product.id}
-                  className="flex items-center gap-5 p-2 group hover:bg-primary/10 hover:font-semibold transform transition-all duration-300 cursor-pointer border-b border-ring/30 last:border-0"
-                  onClick={() => handleSelect(product)}
+            <div className="relative border border-ring/30">
+              {/* Scrollable area */}
+              <div className="max-h-64 overflow-y-auto">
+                {results.map((product) => (
+                  <div
+                    key={product.id}
+                    className="flex items-center gap-5 p-2 group hover:bg-primary/10 hover:font-semibold transform transition-all duration-300 cursor-pointer border-b border-ring/30 last:border-0"
+                    onClick={() => handleSelect(product)}
+                  >
+                    {product.imageUrl && (
+                      <img
+                        src={`${API_URL}/${product.imageUrl}`}
+                        alt={product.name}
+                        className="w-12 lg:w-18 h-12 lg:h-18 object-contain rounded"
+                      />
+                    )}
+                    <span className="text-foreground/70 group-hover:text-primary line-clamp-2">
+                      {product.name}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Fixed button at the bottom */}
+              <div className="sticky bottom-0 bg-background border-t border-ring/30">
+                <button
+                  onClick={() => {
+                    handleShowAll();
+                    setQuery("");
+                    setShowResults(false);
+                  }}
+                  className="w-full text-primary font-medium hover:underline cursor-pointer p-2 hover:bg-primary/10"
                 >
-                  {product.imageUrl && (
-                    <img
-                      src={`${API_URL}/${product.imageUrl}`}
-                      alt={product.name}
-                      className="w-12 lg:w-18 h-12 lg:h-18 object-cover rounded"
-                    />
-                  )}
-                  <span className="text-foreground/70 group-hover:text-primary line-clamp-2">
-                    {product.name}
-                  </span>
-                </div>
-              ))}
+                  Show All
+                </button>
+              </div>
             </div>
           )}
 

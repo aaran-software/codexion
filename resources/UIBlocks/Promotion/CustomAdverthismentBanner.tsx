@@ -6,12 +6,14 @@ import Button from "../../../resources/components/button/Button";
 
 interface SlideContent {
   image: string;
+  bg_image: string;
   title: string;
   description?: string;
   price?: number;
-  quote?: string;
+  slogan?: string;
   discount?: string;
-  position?: number; // 1 for left, 2 for right
+  layout?: string;
+  theme: string;
 }
 
 interface CustomBannerCarouselProps {
@@ -90,11 +92,15 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
       const formatted: SlideContent[] = validItems.map((item: any) => {
         return {
           id: item.name,
-          title: item.display_name, // or item.item_name if you want full name
-          image: `${item.image}`,
-          description: item.short_describe,
+          title: item.title, // or item.item_name if you want full name
+          image: `${API_URL}/${item.product_image}`,
+          bg_image: `${API_URL}/${item.background}`,
+          description: item.describtion,
           discount: item.stock_qty,
-          price: item.price || item.standard_rate || 0,
+          price: item.price,
+          slogan: item.slogan,
+          layout: item.layout,
+          theme: item.theme,
         };
       });
 
@@ -160,65 +166,74 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
     <div className="relative w-full h-[350px] md:h-[350px] bg-background overflow-hidden">
       {/* 🔹 Slides */}
       <div
-  className="w-full h-full relative flex transition-transform duration-700 ease-in-out"
-  style={{ transform: `translateX(-${activeIndex * 100}%)` }}
-  onTouchStart={handleTouchStart}
-  onTouchMove={handleTouchMove}
-  onTouchEnd={handleTouchEnd}
->
+        className="w-full h-full relative flex transition-transform duration-700 ease-in-out"
+        style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         {slides.map((slide, index) => (
-           <div
-      key={index}
-      className="w-full h-full flex border-y border-ring/30 flex-shrink-0"
-    >
-            {index === 0 ? (
-              // {slide.position === 1 ? (
-              <div className="w-full h-[350px] flex items-center justify-center relative">
+          <div
+            key={index}
+            className="w-full h-full flex border-y border-ring/30 flex-shrink-0"
+          >
+            {slide.layout === "Option - 1" ? (
+              <div
+                className={`w-full h-[350px] flex items-center justify-center relative ${slide.theme === "dark" ? "text-black" : "text-white"}`}
+              >
                 {/* Background Image */}
                 <img
-                  src="/assets/Promotion/banner_bg.jpg"
+                  src={slide.bg_image}
                   alt={`Slide ${index}`}
                   className="h-full w-full object-cover"
                 />
-
-                {/* Overlay Dark Layer */}
-                <div className="absolute inset-0 bg-black/10"></div>
-
-                {/* Left Side Content */}
+                <div className="absolute inset-0 bg-black/20"></div>
                 <div className="absolute left-10 sm:left-25 lg:left-60 flex flex-col gap-3 right-1/2 pr-2 top-1/2 -translate-y-1/2 text-white">
-                  <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold text-foreground">
-                    Power Meets Portability
-                  </p>
-                  <p className="mt-5 text-xs sm:text-sm md:text-lg lg:text-lg text-purple-500">
-                    Slim, stylish, and powerful — the perfect blend of
-                    performance and portability.
-                  </p>
-                  <p className="mt-2 text-xl lg:text-5xl font-bold text-foreground text-right">
-                    ₹54,999
-                  </p>
+                  {slide.title && (
+                    <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold">
+                      {slide.title}
+                    </p>
+                  )}
+
+                  {slide.description && (
+                    <p className="mt-2 text-xs sm:text-sm md:text-lg lg:text-lg">
+                      {slide.description}
+                    </p>
+                  )}
+
+                  {slide.price !== undefined && (
+                    <p className="mt-2 text-xl lg:text-5xl font-bold text-right">
+                      ₹ {slide.price}
+                    </p>
+                  )}
+
                   <Button
                     label="Shop Now"
-                    className="border border-ring/30 w-max text-primary"
+                    className="border border-primary w-max text-primary hover:text-white hover:bg-hover"
                   />
                 </div>
 
                 {/* Foreground Product Image */}
                 <img
-                  src="/assets/products/laptop2.png"
+                  src={slide.image}
                   alt={`Slide ${index} product`}
                   className="absolute right-1 sm:right-1/18 md:right-1/15 lg:right-1/8 top-1/2 -translate-y-1/2 max-h-[50%] sm:max-h-[60%] lg:max-h-[80%] object-scale-down"
                 />
 
                 {/* Centered Blockquote at Bottom */}
-                <blockquote className="absolute bottom-4 left-1/2 -translate-x-1/2 italic text-sm md:text-lg lg:text-xl font-bold text-foreground text-center whitespace-nowrap">
-                  "Your canvas, your rules."
-                </blockquote>
+                {slide.slogan && (
+                  <blockquote className="absolute bottom-8 left-1/2 -translate-x-1/2 italic text-sm md:text-lg lg:text-xl font-bold text-center whitespace-nowrap">
+                    {slide.slogan}
+                  </blockquote>
+                )}
               </div>
-            ) : index === 1 ? (
-              <div className="w-full h-[350px] flex items-center justify-center relative">
+            ) : slide.layout === "Option - 2" ? (
+              <div
+                className={`w-full h-[350px] flex items-center justify-center relative ${slide.theme === "dark" ? "text-black" : "text-white"}`}
+              >
                 {/* Background Image */}
                 <img
-                  src="/assets/products/rogbg.png"
+                  src={slide.bg_image}
                   alt={`Slide ${index}`}
                   className="h-full w-full object-fit lg:object-cover"
                 />
@@ -227,83 +242,94 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                 <div className="absolute bottom-0 left-0 w-full bg-black/60 px-[10%] py-4 flex flex-row gap-6 items-center text-white">
                   {/* Left Column */}
                   <div className="flex-1">
-                    <p className="text-lg sm:text-2xl font-bold text-background">
-                      Power Meets
-                    </p>
-                    <p className="mt-2 text-xs sm:text-sm md:text-md text-background">
-                      Slim, stylish, and powerful
-                    </p>
-                    <p className="mt-2 text-xl font-bold text-background">
-                      ₹54,999
-                    </p>
+                    {slide.title && (
+                      <p className="text-lg sm:text-2xl font-bold text-background">
+                        {slide.title}
+                      </p>
+                    )}
+
+                    {slide.description && (
+                      <p className="mt-2 text-xs sm:text-sm md:text-md text-background">
+                        {slide.description}
+                      </p>
+                    )}
+
+                    {slide.price !== undefined && (
+                      <p className="mt-2 text-xl font-bold text-background">
+                        ₹ {slide.price}
+                      </p>
+                    )}
                   </div>
 
                   {/* Right Column */}
                   <div className="flex-1">
-                    <blockquote className="italic text-sm md:text-lg lg:text-xl font-bold text-background text-right">
-                      "Stay ahead, no matter where you go."
-                    </blockquote>
+                    {slide.slogan && (
+                      <blockquote className="italic text-sm md:text-lg lg:text-xl font-bold text-background text-right">
+                        {slide.slogan}
+                      </blockquote>
+                    )}
                   </div>
                 </div>
               </div>
-            ) : index === 2 ? (
-              <div className="w-full h-[350px] flex items-center justify-center relative">
+            ) : slide.layout === "Option - 3" ? (
+              <div
+                className={`w-full h-[350px] flex items-center justify-center relative ${slide.theme === "dark" ? "text-black" : "text-white"}`}
+              >
                 {/* Background Image */}
                 <img
-                  src="/assets/Promotion/banner_bg.jpg"
+                  src={slide.bg_image}
                   alt={`Slide ${index}`}
                   className="h-full w-full object-cover"
                 />
 
                 {/* Overlay Dark Layer */}
                 <div className="absolute inset-0 bg-black/10"></div>
+                {/* Foreground Image */}
 
-                {/* Foreground Product Image - positioned inside relative container */}
                 <img
-                  src="/assets/products/laptop.png"
+                  src={slide.image}
                   alt={`Slide ${index} product`}
                   className="absolute left-5 sm:left-1/6 lg:left-1/5 top-1/2 -translate-y-1/2 max-h-[30%] sm:max-h-[40%] lg:max-h-[80%] object-contain"
                 />
 
-                {/* Optional Right Side Content */}
                 <div className="absolute lg:right-40 flex flex-col gap-3 left-1/2 pr-2 top-1/2 -translate-y-1/2 text-white">
-                  {/* {slide.title && ( */}
-                  {/* <p className="mt-2 text-lg">{slide.title}</p> */}
-                  <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold text-foreground">
-                    Power Meets Portability
-                  </p>
-                  {/* )} */}
-                  {/* {slide.description && ( */}
-                  {/* <p className="mt-2 text-lg">{slide.description}</p> */}
-                  <p className="mt-2 text-xs sm:text-sm md:text-lg lg:text-lg text-purple-500">
-                    Experience blazing-fast performance, stunning visuals, and
-                    all-day battery life — perfect for work, play, and
-                    everything in between.
-                  </p>
-                  {/* )} */}
-                  {/* {slide.price && ( */}
-                  {/* <p className="mt-2 text-xl font-bold">${slide.price}</p> */}
-                  <p className="mt-2 text-xl font-bold text-foreground">
-                    ₹54,999
-                  </p>
-                  {/* )} */}
-                  {/* {slide.quote && ( */}
-                  <blockquote className="mt-4 italic text-sm md:text-lg lg:text-xl font-bold text-foreground">
-                    {/* "{slide.quote}" */}
-                    "Stay ahead, no matter where you go."
-                  </blockquote>
+                  {slide.title && (
+                    <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold text-foreground">
+                      {slide.title}
+                    </p>
+                  )}
+
+                  {slide.description && (
+                    <p className="mt-2 text-xs sm:text-sm md:text-lg lg:text-lg text-purple-500">
+                      {slide.description}
+                    </p>
+                  )}
+
+                  {slide.price && (
+                    <p className="mt-2 text-xl font-bold text-foreground">
+                      ₹ {slide.price}
+                    </p>
+                  )}
+
+                  {slide.slogan && (
+                    <blockquote className="mt-4 italic text-sm md:text-lg lg:text-xl font-bold text-foreground">
+                      {slide.slogan}
+                    </blockquote>
+                  )}
+
                   <Button
                     label="Shop Now"
-                    className="border border-ring/30 w-max text-primary"
+                    className="border border-ring/30 w-max text-primary hover:text-white hover:bg-hover"
                   />
-                  {/* )} */}
                 </div>
               </div>
-            ) : index === 3 ? (
-              <div className="w-full h-[350px] flex items-center justify-center relative">
+            ) : slide.layout === "Option - 4" ? (
+              <div
+                className={`w-full h-[350px] flex items-center justify-center relative ${slide.theme === "dark" ? "text-black" : "text-white"}`}
+              >
                 {/* Background Image */}
                 <img
-                  src="/assets/Promotion/banner_bg.jpg"
+                  src={slide.bg_image}
                   alt={`Slide ${index}`}
                   className="h-full w-full object-cover"
                 />
@@ -313,85 +339,92 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
 
                 {/* Left Side Content */}
                 <div className="absolute left-10 sm:left-25 lg:left-60 flex flex-col gap-3 right-1/2 pr-2 top-1/2 -translate-y-1/2 text-white">
-                  <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold text-foreground">
-                    Power Portability
-                  </p>
-                  <p className="mt-5 text-xs sm:text-sm md:text-lg lg:text-lg text-purple-500">
-                    Slim, stylish, and powerful — the perfect blend of
-                    performance and portability.
-                  </p>
-                  <p className="mt-2 text-xl lg:text-5xl font-bold text-foreground">
-                    ₹54,999
-                  </p>
+                  {slide.title && (
+                    <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold text-foreground">
+                      {slide.title}
+                    </p>
+                  )}
+
+                  {slide.description && (
+                    <p className="mt-5 text-xs sm:text-sm md:text-lg lg:text-lg text-purple-500">
+                      {slide.description}
+                    </p>
+                  )}
+
+                  {slide.price !== undefined && (
+                    <p className="mt-2 text-xl lg:text-5xl font-bold text-foreground">
+                      ₹ {slide.price}
+                    </p>
+                  )}
+
                   <Button
                     label="Shop Now"
-                    className="border border-ring/30 w-max text-primary"
+                    className="border border-ring/30 w-max text-primary hover:text-white hover:bg-hover"
                   />
                 </div>
 
                 {/* Foreground Product Image */}
                 <img
-                  src="/assets/products/dell.png"
+                  src={slide.image}
                   alt={`Slide ${index} product`}
                   className="absolute right-1 sm:right-1/18 md:right-1/15 lg:right-1/8 top-1/2 -translate-y-1/2 max-h-[50%] sm:max-h-[60%] lg:max-h-[80%] object-scale-down"
                 />
 
                 {/* Centered Blockquote at Bottom */}
-                <blockquote className="absolute bottom-4 left-1/2 -translate-x-1/2 italic text-sm md:text-lg lg:text-xl font-bold text-foreground text-center whitespace-nowrap">
-                  "Your canvas, your rules."
-                </blockquote>
+                {slide.slogan && (
+                  <blockquote className="absolute bottom-8 left-1/2 -translate-x-1/2 italic text-sm md:text-lg lg:text-xl font-bold text-foreground text-center whitespace-nowrap">
+                    {slide.slogan}
+                  </blockquote>
+                )}
               </div>
             ) : (
-              <div className="w-full h-[350px] flex items-center justify-center relative">
+              <div
+                className={`w-full h-[350px] flex items-center justify-center relative ${slide.theme === "dark" ? "text-black" : "text-white"}`}
+              >
                 {/* Background Image */}
                 <img
-                  src="/assets/Promotion/banner_bg.jpg"
+                  src={slide.bg_image}
                   alt={`Slide ${index}`}
                   className="h-full w-full object-cover"
                 />
-
-                {/* Overlay Dark Layer */}
                 <div className="absolute inset-0 bg-black/10"></div>
 
                 {/* Foreground Product Image - positioned inside relative container */}
                 <img
-                  src="/assets/products/laptop.png"
+                  src={slide.image}
                   alt={`Slide ${index} product`}
                   className="absolute left-5 sm:left-1/6 lg:left-1/5 top-1/2 -translate-y-1/2 max-h-[30%] sm:max-h-[40%] lg:max-h-[80%] object-contain"
                 />
-
                 {/* Optional Right Side Content */}
-                <div className="absolute lg:right-40 flex flex-col gap-3 left-1/2 pr-2 top-1/2 -translate-y-1/2 text-white">
-                  {/* {slide.title && ( */}
-                  {/* <p className="mt-2 text-lg">{slide.title}</p> */}
-                  <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold text-foreground">
-                    Power Meets Portability
-                  </p>
-                  {/* )} */}
-                  {/* {slide.description && ( */}
-                  {/* <p className="mt-2 text-lg">{slide.description}</p> */}
-                  <p className="mt-2 text-xs sm:text-sm md:text-lg lg:text-lg text-purple-500">
-                    Experience blazing-fast performance, stunning visuals, and
-                    all-day battery life — perfect for work, play, and
-                    everything in between.
-                  </p>
-                  {/* )} */}
-                  {/* {slide.price && ( */}
-                  {/* <p className="mt-2 text-xl font-bold">${slide.price}</p> */}
-                  <p className="mt-2 text-xl font-bold text-foreground">
-                    ₹54,999
-                  </p>
-                  {/* )} */}
-                  {/* {slide.quote && ( */}
-                  <blockquote className="mt-4 italic text-sm md:text-lg lg:text-xl font-bold text-foreground">
-                    {/* "{slide.quote}" */}
-                    "Ready when you are."
-                  </blockquote>
+                <div className="absolute lg:right-40 flex flex-col gap-3 left-1/2 pr-2 top-1/2 -translate-y-1/2">
+                  {slide.title && (
+                    <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold text-center">
+                      {slide.title}
+                    </p>
+                  )}
+
+                  {slide.description && (
+                    <p className="mt-2 text-xs sm:text-sm md:text-lg lg:text-lg text-center">
+                      {slide.description}
+                    </p>
+                  )}
+
+                  {slide.price !== undefined && (
+                    <p className="mt-2 text-xl md:text-4xl font-bold text-center">
+                      ₹ {slide.price}
+                    </p>
+                  )}
+
+                  {slide.slogan && (
+                    <blockquote className="mt-4 italic text-sm md:text-lg lg:text-xl font-bold text-center">
+                      {slide.slogan}
+                    </blockquote>
+                  )}
+
                   <Button
                     label="Shop Now"
-                    className="border border-ring/30 w-max text-primary"
+                    className="border border-ring/30 w-max block mx-auto text-primary hover:text-white hover:bg-hover"
                   />
-                  {/* )} */}
                 </div>
               </div>
             )}
@@ -400,13 +433,15 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
       </div>
 
       {/* Indicators */}
-     <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
+      <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
         {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => goToSlide(index)}
             className={`w-3 h-3 rounded-full ${
-              index === activeIndex ? "bg-primary" : "bg-white border border-ring/50"
+              index === activeIndex
+                ? "bg-primary"
+                : "bg-white border border-ring/50"
             }`}
           />
         ))}

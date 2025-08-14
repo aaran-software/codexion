@@ -15,21 +15,6 @@ import { useAppContext } from "../../apps/global/AppContaxt";
 import ZoomImage from "../components/image/ZoomImage";
 import FloatContact from "./contact/FloatContact";
 import ImageButton from "../../resources/components/button/ImageBtn";
-// Define types
-interface Field {
-  id: string;
-  key: string;
-  label: string;
-  type: string;
-  value: string;
-}
-
-interface Group {
-  id: string;
-  title: string;
-  fields?: Field[];
-  children?: Record<string, Group>;
-}
 
 interface Product {
   id: number;
@@ -42,7 +27,9 @@ interface Product {
   slideOffer: number;
   images?: string[];
   feature?: CatalogFeature[];
-  spec_header:string
+  spec_header: string;
+  desc_label:string;
+  desc_images: string[];
 }
 
 interface CatalogFeature {
@@ -138,6 +125,10 @@ function ProductPage() {
         );
         const imageList = imageKeys.map((key) => API_URL + data[key]);
 
+        const descImageKeys = Object.keys(data).filter(
+          (key) => key.startsWith("desc_image") && data[key]
+        );
+        const descImageList = descImageKeys.map((key) => API_URL + data[key]);
         setProduct({
           ...data,
           name: data.display_name,
@@ -147,9 +138,11 @@ function ProductPage() {
           images: imageList,
           description: data.item_description,
           category: data.item_group,
-          spec_header:data.spec_header,
+          spec_header: data.spec_header,
           feature: data.catalog_features,
           count: data.stock_qty,
+          desc_label:data.manufacturer_label,
+          desc_images: descImageList,
         });
 
         if (imageList.length > 0) {
@@ -201,22 +194,39 @@ function ProductPage() {
   const handleShare = async () => {
     const productUrl = window.location.href;
     const message = `Hello, I’m interested in this product. Could you please share more details? Product URL: ${productUrl}`;
+
     if (navigator.share) {
+      // Web Share API (mobile & modern browsers)
       try {
         await navigator.share({
-          text: message, // only text, no separate URL field
+          text: "Hello, I’m interested in this product. Could you please share more details?",
+          url: productUrl,
         });
         console.log("Shared successfully!");
+        return;
       } catch (err) {
         console.error("Share cancelled or failed", err);
       }
-    } else {
-      alert("Sharing is not supported on this browser.");
+    }
+
+    // Fallback for unsupported browsers (Firefox desktop, etc.)
+    try {
+      await navigator.clipboard.writeText(message);
+      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+
+      window.open(whatsappUrl, "_blank");
+
+      alert("Link copied to clipboard! You can Share it to anyone.");
+    } catch (err) {
+      // If clipboard fails, fallback to mailto or WhatsApp
+      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, "_blank");
     }
   };
+
   return (
     <div className="py-10 sm:px-[5%] mx-auto">
-      <div className="grid lg:grid-cols-2 gap-5 xl:grid-cols-[35%_65%] items-start">
+      <div className="grid lg:grid-cols-2 gap-5 xl:grid-cols-[35%_65%] items-start border-b border-ring/30 pb-20">
         {/* Image Section */}
         <div className="lg:sticky top-20 h-fit">
           <div className="flex flex-col border border-ring/20 lg:flex-row gap-4 items-start relative">
@@ -233,14 +243,10 @@ function ProductPage() {
               icon={"like"}
               className="!rounded-full border border-ring/30 p-2 absolute top-5 right-5 z-10"
             />
-            {/* <img
-              src="/assets/svg/heart.svg"
-              alt=""
-              className="w-12 h-12 rounded-full p-2 cursor-pointer"
-            /> */}
+
             {/* main image */}
             <div className="block m-auto flex-1">
-              <div className="w-full h-full min-w-[310px] min-h-[310px] max-w-[400px] max-h-[400px] mx-auto">
+              <div className="w-full max-w-[310px] h-[310px] mx-auto">
                 <ZoomImage
                   src={selectedImage}
                   alt={product.name}
@@ -301,8 +307,10 @@ function ProductPage() {
         <div className="space-y-4 px-2">
           <h1 className="text-2xl font-semibold">{product.name}</h1>
           <h1 className="text-md text-foreground/80">
-  {product.description ? product.description.replace(/<[^>]*>?/gm, "") : ""}
-</h1>
+            {product.description
+              ? product.description.replace(/<[^>]*>?/gm, "")
+              : ""}
+          </h1>
 
           {/* <div className="text-sm text-foreground/50">
             <span className="bg-green-600 text-white text-xs w-max px-2 py-1 rounded">
@@ -383,60 +391,75 @@ function ProductPage() {
             />
           </div>
           {/* Specifications */}
-          <div className="mt-10 border border-ring/30 rounded-md p-5">
-            <h2 className="text-3xl font-bold border-b border-ring/30 pb-3 text-foreground/90 mb-4">
-              {product.spec_header}
-            </h2>
 
-            {(() => {
-              // Group catalog_features by profile_label
-              const groupedFeatures =
-                product.feature?.reduce((acc: Record<string, any[]>, item) => {
-                  if (!acc[item.profile_label]) acc[item.profile_label] = [];
-                  acc[item.profile_label].push(item);
-                  return acc;
-                }, {}) || {};
+          {product.spec_header && (
+            <div className="mt-10 border border-ring/30 rounded-md p-5">
+              <h2 className="text-3xl font-bold border-b border-ring/30 pb-3 text-foreground/90 mb-4">
+                {product.spec_header}
+              </h2>
 
-              // Sort groups based on the lowest idx in that group
-              const sortedGroups = Object.entries(groupedFeatures).sort(
-                (a, b) => {
-                  const aIdx = Math.min(...a[1].map((f) => f.idx || 0));
-                  const bIdx = Math.min(...b[1].map((f) => f.idx || 0));
-                  return aIdx - bIdx;
-                }
-              );
+              {(() => {
+                // Group catalog_features by profile_label
+                const groupedFeatures =
+                  product.feature?.reduce(
+                    (acc: Record<string, any[]>, item) => {
+                      if (!acc[item.profile_label])
+                        acc[item.profile_label] = [];
+                      acc[item.profile_label].push(item);
+                      return acc;
+                    },
+                    {}
+                  ) || {};
 
-              return sortedGroups.map(([profileLabel, fields]) => (
-                <div
-                  key={profileLabel}
-                  className="mb-6 border-b border-ring/30 pb-3 last:border-0"
-                >
-                  <h3 className="text-lg text-foreground font-bold">
-                    {profileLabel}
-                  </h3>
+                // Sort groups based on the lowest idx in that group
+                const sortedGroups = Object.entries(groupedFeatures).sort(
+                  (a, b) => {
+                    const aIdx = Math.min(...a[1].map((f) => f.idx || 0));
+                    const bIdx = Math.min(...b[1].map((f) => f.idx || 0));
+                    return aIdx - bIdx;
+                  }
+                );
 
-                  <div className="space-y-1 mt-2">
-                    {fields
-                      .sort((a, b) => (a.idx || 0) - (b.idx || 0))
-                      .map((field) => (
-                        <div
-                          key={field.name}
-                          className="flex justify-between py-1 text-sm"
-                        >
-                          <span className="text-foreground/70">
-                            {field.attribute_name}
-                          </span>
-                          <span className="font-medium text-foreground/70">
-                            {field.property_value}
-                          </span>
-                        </div>
-                      ))}
+                return sortedGroups.map(([profileLabel, fields]) => (
+                  <div
+                    key={profileLabel}
+                    className="mb-6 border-b border-ring/30 pb-3 last:border-0"
+                  >
+                    <h3 className="text-lg text-foreground font-bold">
+                      {profileLabel}
+                    </h3>
+
+                    <div className="space-y-1 mt-2">
+                      {fields
+                        .sort((a, b) => (a.idx || 0) - (b.idx || 0))
+                        .map((field) => (
+                          <div
+                            key={field.name}
+                            className="flex justify-between py-1 text-sm"
+                          >
+                            <span className="text-foreground/70">
+                              {field.attribute_name}
+                            </span>
+                            <span className="font-medium text-foreground/70">
+                              {field.property_value}
+                            </span>
+                          </div>
+                        ))}
+                    </div>
                   </div>
-                </div>
-              ));
-            })()}
-          </div>
+                ));
+              })()}
+            </div>
+          )}
+          <h1 className="my-5 font-bold text-3xl">
+            {product.desc_label}
+          </h1>
 
+          <div>
+            {product.desc_images.map((img, idx) => (
+              <img key={idx} src={img} alt="" className="mt-5" />
+            ))}
+          </div>
           {/* <div className="mt-10">
             <RatingReviews />
           </div> */}
