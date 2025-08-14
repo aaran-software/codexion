@@ -41,13 +41,13 @@ export default defineConfig(({ mode }) => {
       manifest: true,
     },
     server: {
-      port: Number(env.APP_PORT) || 3001,
+      port: Number(env.APP_PORT) || 3005,
       host: true, // binds to 0.0.0.0
       allowedHosts: ["tmnext.in"],
       hmr: {
         host: "tmnext.in", // ensures HMR WS connects to the right host
         protocol: "wss", // use 'wss' if using HTTPS
-        port: Number(env.APP_PORT) || 3001,
+        port: Number(env.APP_PORT) || 3005,
       },
     },
   };
