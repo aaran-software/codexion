@@ -127,7 +127,8 @@ function Home() {
       <div className=" py-5 mt-15">
         <CustomAdverthismentBanner
           api={`api/resource/Slider 2`}
-          delay={60000}
+          delay={6000}
+          sliderBase={"Slider - 1"}
         />
       </div>
 
@@ -167,7 +168,8 @@ function Home() {
        <div className=" py-5 my-15">
         <CustomAdverthismentBanner
           api={`api/resource/Slider 2`}
-          delay={60000}
+          delay={6000}
+          sliderBase={"Slider - 3"}
         />
       </div>
 

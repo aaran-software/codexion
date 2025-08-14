@@ -16,18 +16,21 @@ interface SlideContent {
   theme: string;
   link: string;
   save: string;
+  slider_base:string
 }
 
 interface CustomBannerCarouselProps {
   api: string;
   autoPlay?: boolean;
   delay?: number; // milliseconds
+  sliderBase:string
 }
 
 const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
   api,
   autoPlay = true,
   delay = 6000,
+  sliderBase
 }) => {
   const { API_URL } = useAppContext();
 
@@ -68,52 +71,56 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
 
   const [slides, setSlides] = useState<SlideContent[]>([]);
   const fetchProducts = async () => {
-    try {
-      // Step 1: Fetch all item names
-      const response = await apiClient.get(`${api}`);
+  try {
+    const response = await apiClient.get(`${api}`);
+    const items = response.data.data || [];
+    const baseApi = api.split("?")[0];
 
-      const items = response.data.data || [];
-      const baseApi = api.split("?")[0];
+    const detailPromises = items.map((item: any) => {
+      const itemName = encodeURIComponent(item.name);
+      const detailUrl = `${baseApi}/${itemName}`;
+      return apiClient
+        .get(detailUrl)
+        .then((res) => res.data.data)
+        .catch((err) => {
+          console.warn(`Item not found: ${item.name}`, err);
+          return null;
+        });
+    });
 
-      // Step 2: Fetch full details for each item
-      const detailPromises = items.map((item: any) => {
-        const itemName = encodeURIComponent(item.name);
-        const detailUrl = `${baseApi}/${itemName}`;
-        return apiClient
-          .get(detailUrl)
-          .then((res) => res.data.data)
-          .catch((err) => {
-            console.warn(`Item not found: ${item.name}`, err);
-            return null;
-          });
-      });
+    const detailResponses = await Promise.all(detailPromises);
+    const validItems = detailResponses.filter(Boolean);
 
-      const detailResponses = await Promise.all(detailPromises);
-      const validItems = detailResponses.filter(Boolean);
+    // ✅ Only keep items where slider_base matches the prop
+    const filteredItems = validItems.filter(
+      (item: any) => item.slider_base === sliderBase
+    );
 
-      const formatted: SlideContent[] = validItems.map((item: any) => {
-        return {
-          id: item.name,
-          title: item.title, // or item.item_name if you want full name
-          image: `${API_URL}/${item.product_image}`,
-          bg_image: `${API_URL}/${item.background}`,
-          description: item.describtion,
-          discount: item.stock_qty,
-          actual_price: item.actual_price,
-          offer_price: item.offer_price,
-          slogan: item.slogan,
-          layout: item.layout,
-          theme: item.theme,
-          link: item.product_link,
-          save: item.percentage,
-        };
-      });
+    const formatted: SlideContent[] = filteredItems.map((item: any) => {
+      return {
+        id: item.name,
+        title: item.title,
+        image: `${API_URL}/${item.product_image}`,
+        bg_image: `${API_URL}/${item.background}`,
+        description: item.describtion,
+        discount: item.stock_qty,
+        actual_price: item.actual_price,
+        offer_price: item.offer_price,
+        slogan: item.slogan,
+        layout: item.layout,
+        theme: item.theme,
+        link: item.product_link,
+        save: item.percentage,
+        slider_base: item.slider_base
+      };
+    });
 
-      setSlides(formatted);
-    } catch (error) {
-      console.error("Failed to fetch products:", error);
-    }
-  };
+    setSlides(formatted);
+  } catch (error) {
+    console.error("Failed to fetch products:", error);
+  }
+};
+
 
   useEffect(() => {
     fetchProducts();
@@ -310,24 +317,24 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                 <img
                   src={slide.image}
                   alt={`Slide ${index} product`}
-                  className="absolute left-5 sm:left-1/6 lg:left-1/5 top-1/2 -translate-y-1/2 max-h-[30%] sm:max-h-[40%] lg:max-h-[80%] object-contain"
+                  className="absolute left-5 sm:left-1/6 lg:left-1/5 top-1/2 -translate-y-1/2 h-[40%] sm:h-[60%] md:h-[70%] lg:h-[100%] object-contain"
                 />
 
-                <div className="absolute lg:right-40 flex flex-col gap-3 left-1/2 pr-2 top-1/2 -translate-y-1/2 text-white">
+                <div className="absolute lg:right-40 flex flex-col gap-3 left-1/2 pr-2 top-1/2 -translate-y-1/2">
                   {slide.title && (
-                    <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold text-foreground">
+                    <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold">
                       {slide.title}
                     </p>
                   )}
 
                   {slide.description && (
-                    <p className="mt-2 text-xs sm:text-sm md:text-lg lg:text-lg text-purple-500">
+                    <p className="mt-2 text-xs sm:text-sm md:text-lg lg:text-lg">
                       {slide.description}
                     </p>
                   )}
 
                   {slide.actual_price && (
-                    <p className="mt-2 text-xl font-bold text-foreground">
+                    <p className="mt-2 text-xl font-bold">
                       <span
                         className={`line-through text-lg ${slide.theme === "dark" ? "text-black/70" : "text-white/70"}`}
                       >
@@ -338,7 +345,7 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                   )}
 
                   {slide.slogan && (
-                    <blockquote className="mt-4 italic text-sm md:text-lg lg:text-xl font-bold text-foreground">
+                    <blockquote className="mt-4 italic text-sm md:text-lg lg:text-xl font-bold">
                       {slide.slogan}
                     </blockquote>
                   )}
