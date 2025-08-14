@@ -266,19 +266,19 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                   {/* Left Column */}
                   <div className="flex-1">
                     {slide.title && (
-                      <p className="text-lg sm:text-2xl font-bold text-background">
+                      <p className="text-lg sm:text-2xl font-bold">
                         {slide.title}
                       </p>
                     )}
 
                     {slide.description && (
-                      <p className="mt-2 text-xs sm:text-sm md:text-md text-background">
+                      <p className="mt-2 text-xs sm:text-sm md:text-md">
                         {slide.description}
                       </p>
                     )}
 
                     {slide.actual_price && (
-                      <p className="mt-2 text-xl font-bold text-background">
+                      <p className="mt-2 text-xl font-bold">
                         <span
                           className={`line-through text-lg ${slide.theme === "dark" ? "text-black/70" : "text-white/70"}`}
                         >
@@ -292,7 +292,7 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                   {/* Right Column */}
                   <div className="flex-1">
                     {slide.slogan && (
-                      <blockquote className="italic text-sm md:text-lg lg:text-xl font-bold text-background text-right">
+                      <blockquote className="italic text-sm md:text-lg lg:text-xl font-bold text-right">
                         {slide.slogan}
                       </blockquote>
                     )}
@@ -371,21 +371,21 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                 <div className="absolute inset-0 bg-black/10"></div>
 
                 {/* Left Side Content */}
-                <div className="absolute left-10 sm:left-25 lg:left-60 flex flex-col gap-3 right-1/2 pr-2 top-1/2 -translate-y-1/2 text-white">
+                <div className="absolute left-10 sm:left-25 lg:left-60 flex flex-col gap-3 right-1/2 pr-2 top-1/2 -translate-y-1/2">
                   {slide.title && (
-                    <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold text-foreground">
+                    <p className="text-lg sm:text-2xl md:text-2xl lg:text-4xl font-bold line-clamp-2">
                       {slide.title}
                     </p>
                   )}
 
                   {slide.description && (
-                    <p className="mt-5 text-xs sm:text-sm md:text-lg lg:text-lg text-purple-500">
+                    <p className="mt-5 text-xs sm:text-sm md:text-lg lg:text-lg line-clamp-2">
                       {slide.description}
                     </p>
                   )}
 
                   {slide.actual_price && (
-                    <p className="mt-2 text-xl lg:text-5xl font-bold text-foreground">
+                    <p className="mt-2 text-xl lg:text-5xl font-bold">
                       <span
                         className={`line-through text-lg ${slide.theme === "dark" ? "text-black/70" : "text-white/70"}`}
                       >
@@ -405,12 +405,12 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                 <img
                   src={slide.image}
                   alt={`Slide ${index} product`}
-                  className="absolute right-1 sm:right-1/18 md:right-1/15 lg:right-1/8 top-1/2 -translate-y-1/2 max-h-[50%] sm:max-h-[60%] lg:max-h-[80%] object-scale-down"
+                  className="absolute right-3 sm:right-1/18 md:right-1/15 lg:right-1/8 top-1/2 -translate-y-1/2 h-[50%] sm:h-[70%] md:h-[80%] lg:h-[100%] object-scale-down"
                 />
 
                 {/* Centered Blockquote at Bottom */}
                 {slide.slogan && (
-                  <blockquote className="absolute bottom-8 left-1/2 -translate-x-1/2 italic text-sm md:text-lg lg:text-xl font-bold text-foreground text-center whitespace-nowrap">
+                  <blockquote className="absolute bottom-8 left-1/2 -translate-x-1/2 italic text-sm md:text-lg lg:text-xl font-bold text-center">
                     {slide.slogan}
                   </blockquote>
                 )}
@@ -431,7 +431,7 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                 <img
                   src={slide.image}
                   alt={`Slide ${index} product`}
-                  className="absolute left-5 sm:left-1/6 lg:left-1/5 top-1/2 -translate-y-1/2 max-h-[30%] sm:max-h-[40%] lg:max-h-[80%] object-contain"
+                  className="absolute left-5 sm:left-1/6 lg:left-1/5 top-1/2 -translate-y-1/2 h-[30%] sm:h-[60%] md:h-[70%] lg:h-[90%] object-contain"
                 />
                 {/* Optional Right Side Content */}
                 <div className="absolute lg:right-40 flex flex-col gap-3 left-1/2 pr-2 top-1/2 -translate-y-1/2">
@@ -466,7 +466,7 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
 
                   <Button
                     label="Shop Now"
-                    className="bg-primary w-max text-white hover:bg-hover"
+                    className="bg-primary w-max block mx-auto text-white hover:bg-hover"
                   />
                 </div>
               </div>

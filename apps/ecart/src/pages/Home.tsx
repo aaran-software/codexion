@@ -54,7 +54,7 @@ function Home() {
       if (isMobile) {
         setShow(window.scrollY > 100); // mobile: show after 100px scroll
       } else {
-        setShow(true); // desktop: always show
+        setShow(window.scrollY > 250); // desktop: always show
       }
     };
 
