@@ -48,7 +48,7 @@ const ZoomImage: React.FC<ZoomImageProps> = ({ src, alt, className = "" }) => {
       {/* Zoomed Preview (to the right side) */}
       {zoomStyles.visible && (
         <div
-          className="absolute left-full top-0 ml-4 w-[500px] h-[500px] border border-gray-300 shadow-lg rounded-lg bg-no-repeat bg-contain pointer-events-none z-50 hidden md:block "
+          className="absolute left-full top-0 ml-4 bg-background w-[500px] h-[500px] border border-gray-300 shadow-lg rounded-lg bg-no-repeat bg-contain pointer-events-none z-50 hidden md:block "
           style={{
             backgroundImage: `url(${src})`,
             backgroundPosition: zoomStyles.backgroundPosition,

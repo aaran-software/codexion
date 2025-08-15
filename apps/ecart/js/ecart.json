@@ -6,8 +6,8 @@
     {
       "menu": {
         "name": "Laptops",
-        "path": "Laptops",
-        "image": "/assets/products/laptop.webp",
+        "path": "Laptop",
+        "image": "/assets/products/laptop.png",
         "alt": "Laptops image",
         "subMenu": {
           "title": "Laptop Types",
@@ -42,7 +42,7 @@
         "card": {
           "title": "Top Laptop Deals",
           "description": "Browse the latest laptops for work, gaming, or everyday use.",
-          "image": "/assets/products/laptop.webp"
+          "image": "/assets/products/laptop.png"
         }
       }
     },
@@ -178,6 +178,7 @@
         }
       }
     },
+    
     {
       "menu": {
         "name": "Printer",
@@ -302,7 +303,7 @@
     {
       "menu": {
         "name": "Camera",
-        "path": "camera",
+        "path": "Camera",
         "image": "/assets/products/camera.webp",
         "alt": "Camera image",
         "subMenu": {
@@ -348,7 +349,7 @@
             },
             {
               "title": "Access Points",
-              "path": "/"
+              "path": "/Access Point"
             }
           ]
         },

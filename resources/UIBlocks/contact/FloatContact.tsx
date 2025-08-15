@@ -42,10 +42,34 @@ function FloatContact({
 
   const handleClick = (contact: ContactType) => {
     if (contact.id === "whatsapp") {
-      const encodedMsg = encodeURIComponent(contact.defaultMessage || "");
-      const url = `https://wa.me/${contact.contact}${
-        encodedMsg ? `?text=${encodedMsg}` : ""
-      }`;
+      let url = "";
+
+      if (contact.id === "whatsapp") {
+        const encodedMsg = encodeURIComponent(contact.defaultMessage || "");
+        let url = "";
+
+        if (/^https?:\/\//.test(contact.contact)) {
+          // Clean existing link and always append message if provided
+          url = contact.contact.includes("?")
+            ? `${contact.contact}&text=${encodedMsg}`
+            : `${contact.contact}?text=${encodedMsg}`;
+        } else {
+          // Clean number (remove +, spaces, dashes, etc.)
+          const cleanedNumber = contact.contact.replace(/\D/g, "");
+          url = `https://wa.me/${cleanedNumber}${encodedMsg ? `?text=${encodedMsg}` : ""}`;
+        }
+
+        console.log("Opening WhatsApp URL:", url);
+
+        // For mobile, use location.href so message is not lost
+        if (/Mobi|Android/i.test(navigator.userAgent)) {
+          window.location.href = url;
+        } else {
+          window.open(url, "_blank");
+        }
+      }
+
+      console.log("Opening WhatsApp URL:", url);
       window.open(url, "_blank");
     } else if (contact.id === "phone") {
       window.location.href = `tel:${contact.contact}`;
@@ -63,13 +87,11 @@ function FloatContact({
 
   return (
     <div
-      className={`flex ${
-        horizontal ? "flex-row" : "flex-col"
-      } gap-8 ${className}`}
+      className={`flex ${horizontal ? "flex-row" : "flex-col"} gap-8 ${className}`}
     >
       {contacts.map((item) => (
         <div key={item.id} className="relative flex items-center">
-          {/* Tooltip - show only if hover is supported */}
+          {/* Tooltip */}
           {hoveredId === item.id && canHover && (
             <span
               className={`absolute px-3 py-1 text-white text-sm rounded-md whitespace-nowrap transition-all duration-300
@@ -77,10 +99,10 @@ function FloatContact({
                   labelPosition === "left"
                     ? "right-14"
                     : labelPosition === "right"
-                    ? "left-14"
-                    : labelPosition === "top"
-                    ? "bottom-full mb-2"
-                    : "top-full mt-2"
+                      ? "left-14"
+                      : labelPosition === "top"
+                        ? "bottom-full mb-2"
+                        : "top-full mt-2"
                 }`}
               style={{
                 background: platformColors[item.id] || "rgba(0,0,0,0.7)",

@@ -29,41 +29,44 @@ const AdverthismentBanner: React.FC<AdverthismentBannerProps> = ({
   const [slides, setSlides] = useState<SlideContent[]>([]);
 
   const fetchProducts = async () => {
-    try {
-      // Step 1: Fetch all item names
-      const response = await apiClient.get(`${api}`);
+  try {
+    const response = await apiClient.get(`${api}`);
+    const items = response.data.data || [];
+    const baseApi = api.split("?")[0];
 
-      const items = response.data.data || [];
-      const baseApi = api.split("?")[0];
+    const detailPromises = items.map((item: any) => {
+      const itemName = encodeURIComponent(item.name);
+      const detailUrl = `${baseApi}/${itemName}`;
+      return apiClient
+        .get(detailUrl)
+        .then((res) => res.data.data)
+        .catch((err) => {
+          console.warn(`Item not found: ${item.name}`, err);
+          return null;
+        });
+    });
 
-      // Step 2: Fetch full details for each item
-      const detailPromises = items.map((item: any) => {
-        const itemName = encodeURIComponent(item.name);
-        const detailUrl = `${baseApi}/${itemName}`;
-        return apiClient
-          .get(detailUrl)
-          .then((res) => res.data.data)
-          .catch((err) => {
-            console.warn(`Item not found: ${item.name}`, err);
-            return null;
-          });
-      });
+    const detailResponses = await Promise.all(detailPromises);
 
-      const detailResponses = await Promise.all(detailPromises);
-      const validItems = detailResponses.filter(Boolean);
+    // Step 1: Filter out nulls and only take those with current_slider true
+    const validItems = detailResponses.filter(
+      (item) => item && item.current_slider
+    );
 
-      const formatted: SlideContent[] = validItems.map((item: any) => {
-        return {
-          id: item.name,
-          image: `${API_URL}/${item.sliders_tbl?.[0]?.slider_image}`,
-        };
-      });
+    // Step 2: Flatten all sliders_tbl entries into slides[]
+    const formatted: SlideContent[] = validItems.flatMap((item: any) =>
+      (item.sliders_tbl || []).map((slider: any) => ({
+        id: String(slider.name), // always string
+        image: `${API_URL}${slider.slider_image}`, // full URL
+      }))
+    );
 
-      setSlides(formatted);
-    } catch (error) {
-      console.error("Failed to fetch products:", error);
-    }
-  };
+    setSlides(formatted);
+  } catch (error) {
+    console.error("Failed to fetch products:", error);
+  }
+};
+
 
   useEffect(() => {
     fetchProducts();

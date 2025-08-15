@@ -59,7 +59,7 @@ const SpecialCategory= () => {
           .map((item: any) => ({
             id: item.name,
             prod_id: item.product_code,
-            name: item.display_name,
+            name: item.name,
             description: item.item_description,
             image: `${API_URL}/${item.image_1}`,
             count: item.stock_qty,

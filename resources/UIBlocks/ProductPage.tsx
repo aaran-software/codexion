@@ -1,8 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
-// import RatingReviews from "./RatingReviews";
-import Settings from "../../apps/ecart/public/ecart.json";
 import Stepper from "./Stepper";
 import OrderSummary from "./OrderSummary";
 import AddressSection from "./AddressSection";
@@ -19,16 +17,16 @@ import ImageButton from "../../resources/components/button/ImageBtn";
 interface Product {
   id: number;
   name: string;
-  price: number;
+  actual_price: string;
+  offer_price: string;
   count: number;
   description: string;
   category: string;
   offer: number;
-  slideOffer: number;
   images?: string[];
   feature?: CatalogFeature[];
   spec_header: string;
-  desc_label:string;
+  desc_label: string;
   desc_images: string[];
 }
 
@@ -131,17 +129,17 @@ function ProductPage() {
         const descImageList = descImageKeys.map((key) => API_URL + data[key]);
         setProduct({
           ...data,
-          name: data.display_name,
-          price: data.price,
+          name: data.name,
+          actual_price: data.price,
+          offer_price: data.product_discount,
           offer: data.product_offer,
-          slideOffer: data.slider_offer,
           images: imageList,
           description: data.item_description,
           category: data.item_group,
           spec_header: data.spec_header,
           feature: data.catalog_features,
           count: data.stock_qty,
-          desc_label:data.manufacturer_label,
+          desc_label: data.manufacturer_label,
           desc_images: descImageList,
         });
 
@@ -160,11 +158,6 @@ function ProductPage() {
   if (loading) return <div className="text-center mt-10">Loading...</div>;
   if (!product || error)
     return <div className="text-center mt-10 text-red-500">{error}</div>;
-
-  const activeOffer = product.slideOffer ?? product.offer;
-  const prePrice = activeOffer
-    ? Math.round(product.price / (1 - activeOffer / 100))
-    : product.price;
 
   const steps = [
     {
@@ -246,7 +239,7 @@ function ProductPage() {
 
             {/* main image */}
             <div className="block m-auto flex-1">
-              <div className="w-full max-w-[310px] h-[310px] mx-auto">
+              <div className="w-full max-w-[310px] flex items-center h-[310px] mx-auto">
                 <ZoomImage
                   src={selectedImage}
                   alt={product.name}
@@ -272,7 +265,7 @@ function ProductPage() {
               contacts={[
                 {
                   id: "whatsapp",
-                  contact: "919543439311", // no '+' symbol, just country code + number
+                  contact: "919894244450", // no '+' symbol, just country code + number
                   imgPath: "/assets/svg/whatsapp.svg",
                   defaultMessage: `Hello, I’m interested in this product. Could you please share more details? Product URL: ${productUrl}`,
                 },
@@ -304,8 +297,8 @@ function ProductPage() {
         </div>
 
         {/* Product Info */}
-        <div className="space-y-4 px-2">
-          <h1 className="text-2xl font-semibold">{product.name}</h1>
+        <div className="space-y-4 px-4">
+          <h1 className="text-lg lg:text-2xl font-semibold">{product.name}</h1>
           <h1 className="text-md text-foreground/80">
             {product.description
               ? product.description.replace(/<[^>]*>?/gm, "")
@@ -319,8 +312,15 @@ function ProductPage() {
             <span>76876 rating</span> & <span>7868 Reviews</span>
           </div> */}
           <p className="text-2xl font-bold flex gap-2">
-            ₹{product.price}{" "}
-            {product.offer > 0 && (
+            ₹{product.offer_price}{" "}
+            <span className="line-through text-sm font-normal block my-auto">
+              ₹{product.actual_price}
+            </span>
+            <span className="text-sm font-normal block my-auto">
+              {" "}
+              {product.offer} % Offer{" "}
+            </span>
+            {/* {product.offer > 0 && (
               <div className="flex items-center">
                 <span className="line-through text-sm text-foreground/30">
                   ₹{prePrice}
@@ -330,7 +330,7 @@ function ProductPage() {
                   Offer
                 </span>
               </div>
-            )}
+            )} */}
           </p>
           {/* <p className="text-sm text-gray-500">Extra fee</p> */}
 
@@ -383,7 +383,7 @@ function ProductPage() {
                 const encodedMsg = encodeURIComponent(
                   `Hello, I’m interested in this product. Could you please share more details? Product URL: ${productUrl}`
                 );
-                const url = `https://wa.me/${919543439311}${
+                const url = `https://wa.me/${919894244450}${
                   encodedMsg ? `?text=${encodedMsg}` : ""
                 }`;
                 window.open(url, "_blank");
@@ -435,12 +435,12 @@ function ProductPage() {
                         .map((field) => (
                           <div
                             key={field.name}
-                            className="flex justify-between py-1 text-sm"
+                            className="flex gap-3 py-2 text-sm"
                           >
-                            <span className="text-foreground/70">
+                            <span className="w-[30%] text-foreground/70">
                               {field.attribute_name}
                             </span>
-                            <span className="font-medium text-foreground/70">
+                            <span className="w-[70%] font-medium text-foreground/70">
                               {field.property_value}
                             </span>
                           </div>
@@ -451,9 +451,8 @@ function ProductPage() {
               })()}
             </div>
           )}
-          <h1 className="my-5 font-bold text-3xl">
-            {product.desc_label}
-          </h1>
+
+          <h1 className="my-5 font-bold text-3xl">{product.desc_label}</h1>
 
           <div>
             {product.desc_images.map((img, idx) => (

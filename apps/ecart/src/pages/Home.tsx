@@ -32,8 +32,9 @@ const FloatContact = lazy(
   () => import("../../../../resources/UIBlocks/contact/FloatContact")
 );
 
-// import LaunchAnimation from "../../../../resources/AnimationComponents/LaunchAnimation";
-import CrackerAnimation from "../../../../resources/AnimationComponents/CrackerAnimation";
+const CrackerAnimation = lazy(
+  () => import("../../../../resources/AnimationComponents/CrackerAnimation")
+);
 function Home() {
   const brands = [
     { name: "DELL", logo: "/assets/brand/dell.svg" },
@@ -53,7 +54,7 @@ function Home() {
       if (isMobile) {
         setShow(window.scrollY > 100); // mobile: show after 100px scroll
       } else {
-        setShow(true); // desktop: always show
+        setShow(window.scrollY > 250); // desktop: always show
       }
     };
 
@@ -67,14 +68,14 @@ function Home() {
 
   // Check on mount if animation has been shown before
   useEffect(() => {
-    const alreadyShown = localStorage.getItem("1");
+    const alreadyShown = localStorage.getItem("Independence Day");
     if (!alreadyShown) {
       setShowAnimation(true); // show animation only first time
     }
   }, []);
 
   const handleAnimationFinish = () => {
-    localStorage.setItem("1", "true"); // mark as shown
+    localStorage.setItem("Independence Day", "true"); // mark as shown
     setShowAnimation(false);
   };
 
@@ -117,8 +118,8 @@ function Home() {
         <ProductCard
           title="Laptops"
           id={"item_group"}
-          filterValue={"Laptops"}
-          api={`api/resource/Catalog Details?fields=["name"]&filters=[["item_group", "=", "Laptops"]]`}
+          filterValue={"Laptop"}
+          api={`api/resource/Catalog Details?fields=["name"]&filters=[["item_group", "=", "Laptop"]]`}
           ribbon={false}
         />
       </div>
@@ -126,7 +127,8 @@ function Home() {
       <div className=" py-5 mt-15">
         <CustomAdverthismentBanner
           api={`api/resource/Slider 2`}
-          delay={60000}
+          delay={6000}
+          sliderBase={"Slider - 1"}
         />
       </div>
 
@@ -150,17 +152,20 @@ function Home() {
 
       <div className="px-[5%] mt-10">
         <ProductCard
-          title="Laptops"
+          title="Access Points"
           id={"item_group"}
-          filterValue={"Laptops"}
-          api={`api/resource/Catalog Details?fields=["name"]&filters=[["item_group", "=", "Laptops"]]&limit_page_length=15`}
+          filterValue={"Access Point"}
+          api={`api/resource/Catalog Details?fields=["name"]&filters=[["item_group", "=", "Access Point"]]&limit_page_length=15`}
           ribbon={false}
         />
       </div>
 
-      {/* promotion image slider */}
       <div className=" py-5 my-15">
-        <AdverthismentBanner api={`api/resource/Slider 3`} delay={6000} />
+        <CustomAdverthismentBanner
+          api={`api/resource/Slider 2`}
+          delay={6000}
+          sliderBase={"Slider - 3"}
+        />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-15 md:gap-5 px-[5%] items-stretch">
@@ -190,6 +195,10 @@ function Home() {
         />
       </div>
 
+  {/* promotion image slider */}
+      {/* <div className=" py-5 my-15">
+        <AdverthismentBanner api={`api/resource/Slider 3`} delay={6000} />
+      </div> */}
       <div
         className={`transition-opacity duration-500 fixed bottom-28 right-5 z-[100000] ${
           show ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -199,7 +208,7 @@ function Home() {
           contacts={[
             {
               id: "whatsapp",
-              contact: "919543439311",
+              contact: "919894244450",
               imgPath: "/assets/svg/whatsapp.svg",
               defaultMessage: "Hello! I'm interested in your product.",
             },
