@@ -113,7 +113,7 @@ function Home() {
           title="Popular Items"
           id={"is_popular"}
           filterValue={1}
-          api={`api/resource/Catalog Details?fields=["name"]&filters=[["is_popular", "=", 1]]`}
+          api={`api/resource/Catalog Details?fields=["name"]&filters=[["is_popular", "=", 1]]&limit_page_length=15`}
           ribbon={false}
         />
       </div>

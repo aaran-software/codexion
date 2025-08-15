@@ -138,6 +138,8 @@ const CategoryPage: React.FC = () => {
 
   const pageSize = 20;
 
+  
+
   // Fetch products page-by-page
   useEffect(() => {
     const fetchProducts = async () => {
@@ -145,8 +147,28 @@ const CategoryPage: React.FC = () => {
       setLoading(true);
 
       try {
+        const buildFilters = () => {
+    let filters: any[] = [];
+
+    if (selectedFilters.category) {
+      filters.push(["item_group", "=", selectedFilters.category]);
+    }
+    if (selectedFilters.brand) {
+      filters.push(["brand", "=", selectedFilters.brand]);
+    }
+    if (selectedPriceRange !== null) {
+      const range = priceRanges.find((r) => r.id === selectedPriceRange);
+      if (range) {
+        filters.push(["price", ">=", range.min]);
+        filters.push(["price", "<=", range.max]);
+      }
+    }
+
+    return encodeURIComponent(JSON.stringify(filters));
+  };
+  
         const res = await apiClient.get(
-          `/api/resource/Catalog Details?limit_start=${page * pageSize}&limit_page_length=${pageSize}`
+          `/api/resource/Catalog Details?filters=${buildFilters()}&limit_start=${page * pageSize}&limit_page_length=${pageSize}`
         );
         const items = res.data.data || [];
 
@@ -189,6 +211,13 @@ const CategoryPage: React.FC = () => {
 
     fetchProducts();
   }, [page, API_URL]);
+
+  console.log(allProducts)
+  useEffect(() => {
+    setPage(0);
+    setAllProducts([]);
+    setHasMore(true);
+  }, [selectedFilters, selectedPriceRange, sortOption]);
 
   useEffect(() => {
     const handleScroll = () => {

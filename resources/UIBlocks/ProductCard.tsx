@@ -68,7 +68,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           name: item.name, // or item.item_name if you want full name
           image: item.image_1,
           count: item.stock_qty,
-          price: item.price || item.standard_rate || 0,
+          price: item.price,
         };
       });
 
@@ -212,7 +212,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                       ]}
                       author="Your Brand Name"
                     /> */}
-                    
+
                     <img
                       src={`${API_URL}/${product.image}`}
                       alt={product.name}
