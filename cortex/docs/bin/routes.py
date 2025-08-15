@@ -1,4 +1,3 @@
-# cortex/docs/bin/routes.py
 from fastapi import APIRouter, HTTPException
 from pathlib import Path
 import markdown
@@ -6,7 +5,6 @@ import yaml
 
 router = APIRouter()
 
-# Docs folder (root)
 docs_dir = Path(__file__).parents[3] / "docs"
 
 def build_tree(folder: Path):
@@ -35,21 +33,26 @@ def build_tree(folder: Path):
 
     return items
 
-
 @router.get("/docs")
 def docs_index():
-    """Return docs structure root."""
     return build_tree(docs_dir)
-
 
 @router.get("/docs/{slug:path}")
 def get_doc(slug: str):
-    """Return a single doc as HTML, supports nested paths."""
+    """
+    Return a single doc as HTML, supports nested paths.
+    Fallback: folder/_index.md or folder.md
+    """
+    # Try file directly
     md_file = docs_dir / f"{slug}.md"
+
+    if not md_file.exists():
+        # fallback to folder/_index.md
+        md_file = docs_dir / Path(slug) / "_index.md"
 
     if not md_file.exists():
         raise HTTPException(status_code=404, detail="Document not found")
 
     md_content = md_file.read_text(encoding="utf-8")
-    html_content = markdown.markdown(md_content)
-    return {"slug": slug, "content": html_content}
+    # html_content = markdown.markdown(md_content)
+    return {"slug": slug, "content": md_content}

@@ -4,8 +4,8 @@ interface DocItem {
   slug: string;
   order: number;
   desc: string;
-  tags?: string[];
   children?: DocItem[];
+  parentSlug?: string; // added to build full path
 }
 
 interface SidebarProps {
@@ -20,13 +20,17 @@ export default function Sidebar({ onSelect }: SidebarProps) {
     fetch("http://localhost:5001/api/docs")
       .then(res => res.json())
       .then((data: DocItem[]) => {
-        const sortTree = (items: DocItem[]): DocItem[] =>
+        const sortTree = (items: DocItem[], parentSlug = ""): DocItem[] =>
           items
             .sort((a, b) => a.order - b.order)
-            .map(item => ({
-              ...item,
-              children: item.children ? sortTree(item.children) : []
-            }));
+            .map(item => {
+              const fullSlug = parentSlug ? `${parentSlug}/${item.slug}` : item.slug;
+              return {
+                ...item,
+                slug: fullSlug,
+                children: item.children ? sortTree(item.children, fullSlug) : [],
+              };
+            });
         setDocs(sortTree(data));
       });
   }, []);
@@ -35,39 +39,32 @@ export default function Sidebar({ onSelect }: SidebarProps) {
     setOpenItems(prev => ({ ...prev, [slug]: !prev[slug] }));
   };
 
-  const renderDocs = (items: DocItem[], parentPath = "", level = 0) => {
+  const renderDocs = (items: DocItem[], level = 0) => {
     return (
       <ul className="space-y-1">
         {items.map(item => {
           const hasChildren = item.children && item.children.length > 0;
-          const fullPath = parentPath ? `${parentPath}/${item.slug}` : item.slug;
-          const isOpen = openItems[fullPath] ?? false; // collapsed by default
+          const isOpen = openItems[item.slug] ?? false;
 
           return (
-            <li key={fullPath} className={`ml-${level * 4}`}>
-              <div className="flex items-center space-x-1">
+            <li key={item.slug} className={`ml-${level * 4}`}>
+              <div className="flex items-center space-x-1 group">
                 {hasChildren && (
                   <button
-                    onClick={() => toggleOpen(fullPath)}
-                    className="text-sm focus:outline-none hover:text-blue-500 cursor-pointer"
+                    onClick={() => toggleOpen(item.slug)}
+                    className="text-sm focus:outline-none transition-transform duration-200 group-hover:text-blue-600"
                   >
                     {isOpen ? "▼" : "▶"}
                   </button>
                 )}
                 <button
-                  onClick={() => {
-                    if (hasChildren && !isOpen) {
-                      toggleOpen(fullPath); // expand first click
-                    }
-                    onSelect(fullPath);
-                  }}
-                  className="text-left text-gray-700 hover:text-blue-600 focus:outline-none truncate cursor-pointer"
+                  onClick={() => onSelect(item.slug)}
+                  className="text-left text-gray-700 hover:bg-gray-200 rounded px-2 py-1 transition-all duration-200 w-full text-sm"
                 >
                   {item.desc}
                 </button>
               </div>
-
-              {hasChildren && isOpen && renderDocs(item.children!, fullPath, level + 1)}
+              {hasChildren && isOpen && renderDocs(item.children!, level + 1)}
             </li>
           );
         })}
