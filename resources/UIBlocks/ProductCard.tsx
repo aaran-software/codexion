@@ -212,6 +212,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                       ]}
                       author="Your Brand Name"
                     /> */}
+                    
                     <img
                       src={`${API_URL}/${product.image}`}
                       alt={product.name}
