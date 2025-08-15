@@ -152,10 +152,10 @@ function Home() {
 
       <div className="px-[5%] mt-10">
         <ProductCard
-          title="Laptops"
+          title="Access Points"
           id={"item_group"}
-          filterValue={"Laptop"}
-          api={`api/resource/Catalog Details?fields=["name"]&filters=[["item_group", "=", "Laptop"]]&limit_page_length=15`}
+          filterValue={"Access Point"}
+          api={`api/resource/Catalog Details?fields=["name"]&filters=[["item_group", "=", "Access Point"]]&limit_page_length=15`}
           ribbon={false}
         />
       </div>
