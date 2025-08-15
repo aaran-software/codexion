@@ -1,40 +1,14 @@
-# app/main.py
-
-import logging
-from fastapi import FastAPI, Depends
-from fastapi.templating import Jinja2Templates
-from fastapi.routing import APIRoute
+from fastapi import FastAPI
+from fastapi.responses import FileResponse
+from pathlib import Path
+from docs.bin.routes import router as docs_router
 from fastapi.middleware.cors import CORSMiddleware
 
-from apps.dynamic.core.startup import run_startup_tasks
-from cortex.boot import boot_providers
-from cortex.core.db_init import ensure_database_exists
-from cortex.core.startup import ensure_env_file
-ensure_env_file()
-from cortex.core.settings import get_settings
-from cortex.DTO.dal import engine, Base
-import cortex.models.user
-from cortex.routes import api
-from cortex.core.context import mount_vite, template_context  # ✅ Corrected import order
+app = FastAPI(title="Prefiq Backend")
 
-logging.basicConfig(level=logging.DEBUG)
+# Attach docs routes
+app.include_router(docs_router, prefix="/api")
 
-# ✅ Define FastAPI app first
-app = FastAPI(
-    title="Codexion API",
-    version="1.0.0",
-    description="Welcome to the Codexion Backend"
-)
-
-# ✅ Now mount Vite build directory after app is defined
-mount_vite(app)
-
-settings = get_settings()
-
-app.include_router(api.router, prefix="/api")
-for route in app.routes:
-    if isinstance(route, APIRoute):
-        print(f"{route.path} -> {route.name}")
 
 app.add_middleware(
     CORSMiddleware,
@@ -44,26 +18,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.on_event("startup")
-def on_startup():
-    # boot_providers()
-    ensure_database_exists()
-    Base.metadata.create_all(bind=engine)
-    run_startup_tasks()
-
-
-# ✅ Define templates directory
-import os
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
-templates = Jinja2Templates(directory=TEMPLATE_DIR)
-
-
 @app.get("/")
-def home(context: dict = Depends(template_context)):
-    return templates.TemplateResponse("pages/home.j2", context)
+def root():
+    return {"status": "running"}
+
+# Serve favicon from cortex/assets/images/
+@app.get("/favicon.ico", include_in_schema=False)
+def favicon():
+    icon_path = Path(__file__).parent / "assets" / "images" / "favicon.svg"
+    return FileResponse(icon_path)
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="127.0.0.1", port=4001, reload=False)
+    uvicorn.run("main:app", host="127.0.0.1", port=5001, reload=False)

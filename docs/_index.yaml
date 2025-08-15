@@ -1,0 +1,19 @@
+- slug: get-started
+  order: 1
+  desc: Quick start guide for setting up the project
+  tags: [intro, basics]
+
+- slug: guides
+  order: 2
+  desc: Steps to install and configure the application
+  tags: [setup, install]
+
+- slug: usage
+  order: 3
+  desc: How to use the core features of the application
+  tags: [guide, usage]
+
+- slug: api
+  order: 4
+  desc: API reference and available endpoints
+  tags: [api, reference]

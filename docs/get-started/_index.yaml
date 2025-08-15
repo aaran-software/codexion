@@ -1,0 +1,9 @@
+- slug: overview
+  order: 1
+  desc: How to get started with the project
+  tags: [intro, basics]
+
+- slug: endpoints
+  order: 2
+  desc: List of available API endpoints
+  tags: [api, endpoints]
