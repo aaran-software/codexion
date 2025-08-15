@@ -49,7 +49,7 @@
     {
       "menu": {
         "name": "Desktops",
-        "path": "Descktop",
+        "path": "Desktop",
         "image": "/assets/products/desktop.webp",
         "alt": "Desktops image",
         "subMenu": {
@@ -178,7 +178,6 @@
         }
       }
     },
-    
     {
       "menu": {
         "name": "Printer",

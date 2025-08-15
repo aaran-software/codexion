@@ -114,7 +114,7 @@ function Home() {
         />
       </div>
 
-      <div className="px-[5%] mt-10">
+      {/* <div className="px-[5%] mt-10">
         <ProductCard
           title="Laptops"
           id={"item_group"}
@@ -122,7 +122,7 @@ function Home() {
           api={`api/resource/Catalog Details?fields=["name"]&filters=[["item_group", "=", "Laptop"]]`}
           ribbon={false}
         />
-      </div>
+      </div> */}
 
       <div className=" py-5 mt-15">
         <CustomAdverthismentBanner
@@ -150,7 +150,7 @@ function Home() {
         <BrandMarquee type="logo" brands={brands} speed={30} height={16} />
       </div>
 
-      <div className="px-[5%] mt-10">
+      {/* <div className="px-[5%] mt-10">
         <ProductCard
           title="Access Points"
           id={"item_group"}
@@ -158,7 +158,7 @@ function Home() {
           api={`api/resource/Catalog Details?fields=["name"]&filters=[["item_group", "=", "Access Point"]]&limit_page_length=15`}
           ribbon={false}
         />
-      </div>
+      </div> */}
 
       <div className=" py-5 my-15">
         <CustomAdverthismentBanner
@@ -195,7 +195,7 @@ function Home() {
         />
       </div>
 
-  {/* promotion image slider */}
+      {/* promotion image slider */}
       {/* <div className=" py-5 my-15">
         <AdverthismentBanner api={`api/resource/Slider 3`} delay={6000} />
       </div> */}

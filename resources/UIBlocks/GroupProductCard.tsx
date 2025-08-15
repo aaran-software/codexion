@@ -110,7 +110,7 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
         <h1 className="font-bold text-[25px]">{title}</h1>
         <p
           className="text-primary font-medium text-lg mt-2 cursor-pointer hover:underline"
-          onClick={() => navigate(`/special/${id}`,{ state: { title } })}
+          onClick={() => navigate(`/special/${id}`, { state: { title } })}
         >
           More
         </p>
@@ -192,9 +192,11 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
                   <p className="text-center font-medium text-lg text-foreground/60 mt-2 truncate">
                     {product.name}
                   </p>
-                  <p className="text-center font-bold mt-1 text-xl">
-                    ₹{product.price}
-                  </p>
+                  {product.price !== 0 && (
+                    <p className="text-center font-bold mt-1 text-xl">
+                      ₹{product.price}
+                    </p>
+                  )}
                 </div>
               </div>
             )
