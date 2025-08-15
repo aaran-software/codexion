@@ -13,29 +13,86 @@
           "title": "Laptop Types",
           "items": [
             {
-              "title": "Gaming Laptop",
-              "path": "/Laptop"
+              "title": "Laptop - Display",
+              "path": "/Laptop - Display"
             },
             {
-              "title": "Personal Laptop",
-              "path": "/"
+              "title": "Laptop -Carry case",
+              "path": "/Laptop -Carry case"
+            },
+            {
+              "title": "Laptop Accessories",
+              "path": "/Laptop Accessories"
+            },
+            {
+              "title": "Laptop Adaptor",
+              "path": "/Laptop Adaptor"
+            },
+            {
+              "title": "Laptop Adaptors",
+              "path": "/Laptop Adaptors"
+            },
+            {
+              "title": "Laptop Battery 18%",
+              "path": "/Laptop Battery 18%"
+            },
+            {
+              "title": "Laptop Battery",
+              "path": "/Laptop Battery"
             }
           ]
         },
         "subMenu2": {
-          "title": "Brands",
+          "title": "Memory",
           "items": [
             {
-              "title": "Logitech",
-              "path": "/"
+              "title": "Ram - Laptop DDR3",
+              "path": "/Ram - Laptop DDR3"
             },
             {
-              "title": "HP",
-              "path": "/"
+              "title": "Ram - Laptop DDR4",
+              "path": "/Ram - Laptop DDR4"
             },
             {
-              "title": "Dell",
-              "path": "/"
+              "title": "Ram - Laptop DDR5",
+              "path": "/Ram - Laptop DDR5"
+            },
+            {
+              "title": "Laptop Adaptor",
+              "path": "/Laptop Adaptor"
+            }
+          ]
+        },
+        "subMenu3": {
+          "title": "Accessories",
+          "items": [
+            {
+              "title": "Laptop Bag - Asus",
+              "path": "/Laptop Bag - Asus"
+            },
+            {
+              "title": "Laptop Fan",
+              "path": "/Laptop Fan"
+            },
+            {
+              "title": "Laptop Keyboard",
+              "path": "/Laptop Keyboard"
+            },
+            {
+              "title": "Laptop Panel",
+              "path": "/Laptop Panel"
+            },
+            {
+              "title": "Laptop Pouch",
+              "path": "/Laptop Pouch"
+            },
+            {
+              "title": "Laptop spares",
+              "path": "/Laptop spares"
+            },
+            {
+              "title": "Laptop Stand",
+              "path": "/Laptop Stand"
             }
           ]
         },
@@ -56,24 +113,66 @@
           "title": "Desktop Types",
           "items": [
             {
-              "title": "Business Tower PCs",
-              "path": "/"
+              "title": "Desktop",
+              "path": "/Desktop"
+            },
+             {
+              "title": "Cabinet",
+              "path": "/Cabinet"
             },
             {
-              "title": "Business All-In-One PCs",
-              "path": "/"
+              "title": "Desktop - AIO",
+              "path": "/Desktop - AIO"
             },
             {
-              "title": "Consumer Tower PCs",
-              "path": "/"
+              "title": "Dvd Rw - PC",
+              "path": "/Dvd Rw - PC"
             },
             {
-              "title": "Consumer All-In-One PCs",
-              "path": "/"
+              "title": "Mini PC",
+              "path": "/Mini PC"
             },
             {
               "title": "Lenovo Smart Hub",
               "path": "/"
+            }
+          ]
+        },
+        "subMenu2": {
+          "title": "Accessories",
+          "items": [
+            {
+              "title": "Ram PC - DDR2",
+              "path": "/Ram PC - DDR2"
+            },
+            {
+              "title": "Ram PC - DDR3",
+              "path": "/Ram PC - DDR3"
+            },
+            {
+              "title": "Ram PC - DDR4",
+              "path": "/Ram PC - DDR4"
+            },
+            {
+              "title": "Ram PC - DDR5",
+              "path": "/Ram PC - DDR5"
+            }
+          ]
+        },
+        "subMenu3": {
+          "title": "Accessories",
+          "items": [
+            {
+              "title": "PC Accessories",
+              "path": "/PC Accessories"
+            },
+            {
+              "title": "Pci - Addon Card",
+              "path": "/Pci - Addon Card"
+            },
+            {
+              "title": "Pci Card",
+              "path": "/Pci Card"
             }
           ]
         },
@@ -87,23 +186,27 @@
     {
       "menu": {
         "name": "PC Hardwares",
-        "path": "pc_haradware",
+        "path": "Projector",
         "image": "/assets/products/hardware.webp",
         "alt": "PC Hardwares image",
         "subMenu": {
           "title": "Processors & Boards",
           "items": [
             {
-              "title": "Intel Processors",
-              "path": "/"
+              "title": "Processor",
+              "path": "/Processor"
             },
             {
-              "title": "Motherboards For Intel",
-              "path": "/"
+              "title": "Processor Fan",
+              "path": "/Processor Fan"
             },
             {
-              "title": "Motherboards For AMD",
-              "path": "/"
+              "title": "Motherboard",
+              "path": "/Motherboard"
+            },
+            {
+              "title": "Motherboard Tester",
+              "path": "/Motherboard Tester"
             }
           ]
         },
@@ -111,20 +214,24 @@
           "title": "Hard Drives",
           "items": [
             {
-              "title": "SAS Hard Drives",
-              "path": "/"
+              "title": "HDD - DVR",
+              "path": "/HDD - DVR"
             },
             {
-              "title": "AV Hard Drives",
-              "path": "/"
+              "title": "HDD - External",
+              "path": "/HDD - External"
             },
             {
-              "title": "Enterprise Hard Drives",
-              "path": "/"
+              "title": "HDD - PC",
+              "path": "/HDD - PC"
             },
             {
-              "title": "External Hard Drives",
-              "path": "/"
+              "title": "HDD - SSD",
+              "path": "/HDD - SSD"
+            },
+            {
+              "title": "HDD Pouch",
+              "path": "/HDD Pouch"
             }
           ]
         },
@@ -149,16 +256,16 @@
           "title": "Memory",
           "items": [
             {
-              "title": "Notebook Memories",
-              "path": "/"
+              "title": "Pendrive",
+              "path": "/Pendrive"
             },
             {
-              "title": "Desktop Memories",
-              "path": "/"
+              "title": "Pendrive OTG",
+              "path": "/Pendrive OTG"
             },
             {
-              "title": "Server Memories",
-              "path": "/"
+              "title": "Storage Device",
+              "path": "/Storage Device"
             }
           ]
         },
@@ -166,8 +273,20 @@
           "title": "Power Backup",
           "items": [
             {
+              "title": "Power Bank",
+              "path": "/Power Bank"
+            },
+            {
+              "title": "Power Cable",
+              "path": "/Power Cable"
+            },
+            {
+              "title": "Power Strip",
+              "path": "/Power Strip"
+            },
+            {
               "title": "UPS",
-              "path": "/"
+              "path": "/UPS"
             }
           ]
         },
@@ -181,114 +300,72 @@
     {
       "menu": {
         "name": "Printer",
-        "path": "printer",
+        "path": "Printer",
         "image": "/assets/products/printer.jpg",
         "alt": "Networking image",
         "subMenu": {
           "title": "Printer Type",
           "items": [
             {
-              "title": "Inkjet Printers",
-              "path": "/"
+              "title": "Barcode Printer",
+              "path": "/Barcode Printer"
             },
             {
-              "title": "Laser Printers",
-              "path": "/"
+              "title": "Receipt Printer",
+              "path": "/Receipt Printer"
             },
             {
-              "title": "All-in-One Printers",
-              "path": "/"
+              "title": "Ink Printer Tank",
+              "path": "/Ink Printer Tank"
             },
             {
-              "title": "Dot Matrix Printers",
-              "path": "/"
+              "title": "inkjet printer",
+              "path": "/inkjet printer"
             },
             {
-              "title": "Thermal Printers",
-              "path": "/"
-            },
-            {
-              "title": "3D Printers",
-              "path": "/"
-            },
-            {
-              "title": "Photo Printers",
-              "path": "/"
-            },
-            {
-              "title": "Label Printers",
-              "path": "/"
+              "title": "Printer - Tank",
+              "path": "/Printer - Tank"
             }
           ]
         },
         "subMenu2": {
-          "title": "Use Case",
+          "title": "Accessories",
           "items": [
             {
-              "title": "Home Printers",
-              "path": "/"
+              "title": "Printer Accessories",
+              "path": "/Printer Accessoriey"
             },
             {
-              "title": "Office Printers",
-              "path": "/"
+              "title": "Printer Cable",
+              "path": "/Printer Cable"
             },
             {
-              "title": "Portable Printers",
-              "path": "/"
+              "title": "Printer Cable - Usb",
+              "path": "/Printer Cable - Usb"
             },
             {
-              "title": "Commercial/Enterprise Printers",
-              "path": "/"
-            }
-          ]
-        },
-        "subMenu3": {
-          "title": "By Features",
-          "items": [
-            {
-              "title": "Wireless Printers",
-              "path": "/"
+              "title": "Printer Dot Matrix",
+              "path": "/Printer Dot Matrix"
             },
             {
-              "title": "Duplex (Double-Sided) Printers",
-              "path": "/"
+              "title": "Printer Stand",
+              "path": "/Printer Stand"
             },
             {
-              "title": "Color Printers",
-              "path": "/"
+              "title": "Printer Switch",
+              "path": "/Printer Switch"
             },
             {
-              "title": "Monochrome Printers",
-              "path": "/"
+              "title": "Printer Thermal",
+              "path": "/Printer Thermal"
             },
             {
-              "title": "Mobile Printing Support",
-              "path": "/"
+              "title": "Printers Aio",
+              "path": "/Printers Aio"
             },
             {
-              "title": "Cloud-Enabled Printers",
-              "path": "/"
-            }
-          ]
-        },
-        "subMenu4": {
-          "title": "Use Case",
-          "items": [
-            {
-              "title": "USB Printers",
-              "path": "/"
-            },
-            {
-              "title": "Wi-Fi Printers",
-              "path": "/"
-            },
-            {
-              "title": "Bluetooth Printers",
-              "path": "/"
-            },
-            {
-              "title": "Ethernet Network Printers",
-              "path": "/"
+              "title": "Printers Laser",
+              "path": "/Printers Laser"
             }
           ]
         },
@@ -309,16 +386,57 @@
           "title": "Camera Categories",
           "items": [
             {
-              "title": "Smartphones",
-              "path": "/"
+              "title": "CCTV - Camera",
+              "path": "/CCTV - Camera"
             },
             {
-              "title": "Accessories",
-              "path": "/"
+              "title": "CCTV - Camera (Bullet)",
+              "path": "/CCTV - Camera (Bullet)"
             },
             {
-              "title": "Tablets",
-              "path": "/"
+              "title": "CCTV - Camera (Dome)",
+              "path": "/CCTV - Camera (Dome)"
+            },
+            {
+              "title": "CCTV - DVR",
+              "path": "/CCTV - DVR"
+            },
+            {
+              "title": "CCTV - HD DVR",
+              "path": "/CCTV - HD DVR"
+            },
+            {
+              "title": "CCTV - NVR",
+              "path": "/CCTV - NVR"
+            },
+            {
+              "title": "CCTV Bullet Camera",
+              "path": "/CCTV Bullet Camera"
+            },
+            {
+              "title": "cctv connector",
+              "path": "/cctv connector"
+            },
+            {
+              "title": "CCTV Turbo HD DVR",
+              "path": "CCTV Turbo HD DVR"
+            }
+          ]
+        },
+        "subMenu2": {
+          "title": "Camera Accessories",
+          "items": [
+            {
+              "title": "CCTV - Accessories",
+              "path": "/CCTV - Accessories"
+            },
+            {
+              "title": "CCTV - Cables",
+              "path": "/CCTV - Cables"
+            },
+            {
+              "title": "CCTV Spares",
+              "path": "/CCTV Spares"
             }
           ]
         },
@@ -332,23 +450,35 @@
     {
       "menu": {
         "name": "Networking",
-        "path": "networking",
+        "path": "Networking - Router",
         "image": "/assets/products/network.jpeg",
         "alt": "Networking image",
         "subMenu": {
           "title": "WiFi Devices",
           "items": [
             {
-              "title": "Routers",
-              "path": "/"
+              "title": "Networking - Router",
+              "path": "/Networking - Router"
             },
             {
-              "title": "Range Extenders",
-              "path": "/"
-            },
-            {
-              "title": "Access Points",
+              "title": "Access Point",
               "path": "/Access Point"
+            },
+            {
+              "title": "Networking - Switch",
+              "path": "/Networking - Switch"
+            },
+            {
+              "title": "Networking - Wireless Router",
+              "path": "/Networking - Wireless Router"
+            },
+            {
+              "title": "Networking - Wireless Access Point",
+              "path": "/Networking - Wireless Access Point"
+            },
+            {
+              "title": "Networking - 3G / 4G Wireless Router",
+              "path": "/Networking - 3G / 4G Wireless Router"
             }
           ]
         },
@@ -356,16 +486,28 @@
           "title": "Network Accessories",
           "items": [
             {
-              "title": "Switches",
-              "path": "/"
+              "title": "Networking - Boot",
+              "path": "/Networking - Boot"
             },
             {
-              "title": "Cables",
-              "path": "/"
+              "title": "Networking - Cables",
+              "path": "/Networking - Cables"
             },
             {
-              "title": "Adapters",
-              "path": "/"
+              "title": "Networking - Jack",
+              "path": "/Networking - Jack"
+            },
+            {
+              "title": "Networking - NAS",
+              "path": "/Networking - NAS"
+            },
+            {
+              "title": "Networking - Range Extender",
+              "path": "/Networking - Range Extender"
+            },
+            {
+              "title": "Networking - Jack",
+              "path": "/Networking - Jack"
             }
           ]
         },
@@ -379,23 +521,15 @@
     {
       "menu": {
         "name": "Server",
-        "path": "server",
+        "path": "Server",
         "image": "/assets/products/server.png",
         "alt": "Server image",
         "subMenu": {
           "title": "Server Types",
           "items": [
             {
-              "title": "Tower Servers",
-              "path": "/"
-            },
-            {
-              "title": "Rack Servers",
-              "path": "/"
-            },
-            {
-              "title": "Server Options",
-              "path": "/"
+              "title": "Server Ram",
+              "path": "/Server Ram"
             }
           ]
         },
@@ -422,19 +556,39 @@
     {
       "menu": {
         "name": "Accessories",
-        "path": "accessories",
+        "path": "Adaptor",
         "image": "/assets/products/accessories.jpeg",
         "alt": "Accessories image",
         "subMenu": {
           "title": "Power Essentials",
           "items": [
             {
-              "title": "Charging Cables",
-              "path": "/"
+              "title": "Cable",
+              "path": "/Cable"
             },
             {
-              "title": "Wall Adapters",
-              "path": "/"
+              "title": "Cable Manager",
+              "path": "/Cable Manager"
+            },
+            {
+              "title": "Cable Tie",
+              "path": "/Cable Tie"
+            },
+            {
+              "title": "Cables",
+              "path": "/Cables"
+            },
+            {
+              "title": "Cat 6 Cable",
+              "path": "/Cat 6 Cable"
+            },
+            {
+              "title": "CCTV - Cables",
+              "path": "/CCTV - Cables"
+            },
+            {
+              "title": "Converter Cables",
+              "path": "/Converter Cables"
             }
           ]
         },
@@ -442,12 +596,20 @@
           "title": "Audio Accessories",
           "items": [
             {
-              "title": "Headphones",
-              "path": "/"
+              "title": "Head Phone",
+              "path": "/Head Phone"
             },
             {
-              "title": "Bluetooth Speakers",
-              "path": "/"
+              "title": "Headphone with Mic",
+              "path": "/Headphone with Mic"
+            },
+            {
+              "title": "Bluetooth Headset",
+              "path": "/Bluetooth Headset"
+            },
+            {
+              "title": "Bluetooth",
+              "path": "/Bluetooth"
             }
           ]
         },
