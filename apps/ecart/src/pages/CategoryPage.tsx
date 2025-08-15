@@ -136,9 +136,7 @@ const CategoryPage: React.FC = () => {
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  const pageSize = 20;
-
-  
+  const pageSize = 10;
 
   // Fetch products page-by-page
   useEffect(() => {
@@ -148,25 +146,24 @@ const CategoryPage: React.FC = () => {
 
       try {
         const buildFilters = () => {
-    let filters: any[] = [];
+          let filters: any[] = [];
 
-    if (selectedFilters.category) {
-      filters.push(["item_group", "=", selectedFilters.category]);
-    }
-    if (selectedFilters.brand) {
-      filters.push(["brand", "=", selectedFilters.brand]);
-    }
-    if (selectedPriceRange !== null) {
-      const range = priceRanges.find((r) => r.id === selectedPriceRange);
-      if (range) {
-        filters.push(["price", ">=", range.min]);
-        filters.push(["price", "<=", range.max]);
-      }
-    }
+          if (selectedFilters.category) {
+            filters.push(["item_group", "=", selectedFilters.category]);
+          }
+          if (selectedFilters.brand) {
+            filters.push(["brand", "=", selectedFilters.brand]);
+          }
+          if (selectedPriceRange !== null) {
+            const range = priceRanges.find((r) => r.id === selectedPriceRange);
+            if (range) {
+              filters.push(["price", ">=", range.min]);
+              filters.push(["price", "<=", range.max]);
+            }
+          }
 
-    return encodeURIComponent(JSON.stringify(filters));
-  };
-  
+          return encodeURIComponent(JSON.stringify(filters));
+        };
         const res = await apiClient.get(
           `/api/resource/Catalog Details?filters=${buildFilters()}&limit_start=${page * pageSize}&limit_page_length=${pageSize}`
         );
@@ -212,7 +209,7 @@ const CategoryPage: React.FC = () => {
     fetchProducts();
   }, [page, API_URL]);
 
-  console.log(allProducts)
+  console.log(allProducts);
   useEffect(() => {
     setPage(0);
     setAllProducts([]);
@@ -402,7 +399,7 @@ const CategoryPage: React.FC = () => {
                     err={""} // or your error message if you have validation
                     className=""
                     onChange={(checked) =>
-                      setSelectedPriceRange((prev) =>
+                      setSelectedPriceRange(() =>
                         checked ? range.id : null
                       )
                     }
@@ -516,7 +513,7 @@ const CategoryPage: React.FC = () => {
               <div className="h-full flex items-center justify-center">
                 <LoadingSpinner3
                   content="Loading products..."
-                  failMessage="Failed to load products. Please try again."
+                  failMessage="Product Not Found"
                   size={40}
                   color="primary"
                   timeout={10000} // 10 seconds
@@ -541,6 +538,7 @@ const CategoryPage: React.FC = () => {
                             className="w-full h-full object-scale-down rounded-md"
                             src={product.image}
                             alt={product.name}
+                            loading="lazy"
                           />
                         </div>
 
@@ -621,6 +619,7 @@ const CategoryPage: React.FC = () => {
                             className="w-full h-full object-scale-down"
                             src={product.image}
                             alt={product.name}
+                            loading="lazy"
                           />
                         </div>
 

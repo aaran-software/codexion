@@ -33,7 +33,7 @@ const LoadingSpinner3: React.FC<LoadingSpinner3Props> = ({
         <p className="text-danger font-medium">{failMessage}</p>
         <button
           onClick={() => window.location.reload()}
-          className="mt-2 px-4 py-2 bg-danger text-white rounded hover:bg-danger"
+          className="mt-2 px-4 py-2 bg-danger text-foreground rounded hover:bg-danger"
         >
           Refresh Page
         </button>
