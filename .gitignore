@@ -210,3 +210,4 @@ __marimo__/
 /database/
 node_modules/
 /apps/devops/cloud/frappe-bench/
+.vscode/
