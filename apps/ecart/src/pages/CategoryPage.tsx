@@ -131,14 +131,32 @@ const CategoryPage: React.FC = () => {
   const [allProducts, setAllProducts] = useState<ProductType[]>([]);
   // const [products, setProducts] = useState<ProductType[]>([]);
 
+  // Add these new states at the top
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const pageSize = 20;
+
+  // Fetch products page-by-page
   useEffect(() => {
-    const fetchAllProducts = async () => {
+    const fetchProducts = async () => {
+      if (loading || !hasMore) return;
+      setLoading(true);
+
       try {
         const res = await apiClient.get(
-          "/api/resource/Catalog Details?limit_page_length=0"
+          `/api/resource/Catalog Details?limit_start=${page * pageSize}&limit_page_length=${pageSize}`
         );
         const items = res.data.data || [];
 
+        if (items.length === 0) {
+          setHasMore(false);
+          setLoading(false);
+          return;
+        }
+
+        // Only fetch details for this batch
         const detailPromises = items.map((item: any) => {
           const itemName = encodeURIComponent(item.name);
           return apiClient
@@ -160,72 +178,86 @@ const CategoryPage: React.FC = () => {
           category: item.item_group || "",
         }));
 
-        setAllProducts(formatted);
+        // Append new products instead of replacing
+        setAllProducts((prev) => [...prev, ...formatted]);
       } catch (err) {
         setError("Failed to fetch products");
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchAllProducts();
-  }, [API_URL]);
+    fetchProducts();
+  }, [page, API_URL]);
 
- useEffect(() => {
-  if (!allProducts.length) return;
+  useEffect(() => {
+    const handleScroll = () => {
+      const nearBottom =
+        window.innerHeight + window.scrollY >= document.body.offsetHeight - 200;
+      if (nearBottom && !loading && hasMore) {
+        setPage((prev) => prev + 1);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [loading, hasMore]);
 
-  let filtered = [...allProducts];
+  useEffect(() => {
+    if (!allProducts.length) return;
 
-  // Filter by category and brand first
-  if (selectedFilters.category) {
-    filtered = filtered.filter((item) =>
-      item.category
-        .toLowerCase()
-        .includes(selectedFilters.category.toLowerCase())
-    );
-  }
+    let filtered = [...allProducts];
 
-  if (selectedFilters.brand) {
-    filtered = filtered.filter((item) =>
-      item.name.toLowerCase().includes(selectedFilters.brand.toLowerCase())
-    );
-  }
-
-  // ✅ Set maxPrice based on category+brand filtered list only
-  if (filtered.length > 0) {
-    setMaxPrice(Math.max(...filtered.map((p) => p.price)));
-  } else {
-    setMaxPrice(0);
-  }
-
-  // Now apply price range filter
-  if (selectedPriceRange !== null) {
-    const range = priceRanges.find((r) => r.id === selectedPriceRange);
-    if (range) {
-      filtered = filtered.filter(
-        (item) => item.price >= range.min && item.price <= range.max
+    // Filter by category and brand first
+    if (selectedFilters.category) {
+      filtered = filtered.filter((item) =>
+        item.category
+          .toLowerCase()
+          .includes(selectedFilters.category.toLowerCase())
       );
     }
-  }
 
-  // Sorting
-  if (sortOption) {
-    filtered.sort((a, b) => {
-      if (sortOption === "priceLowHigh") return a.price - b.price;
-      if (sortOption === "priceHighLow") return b.price - a.price;
-      if (sortOption === "nameAZ") return a.name.localeCompare(b.name);
-      if (sortOption === "nameZA") return b.name.localeCompare(a.name);
-      return 0;
-    });
-  }
+    if (selectedFilters.brand) {
+      filtered = filtered.filter((item) =>
+        item.name.toLowerCase().includes(selectedFilters.brand.toLowerCase())
+      );
+    }
 
-  setProducts(filtered);
-}, [
-  allProducts,
-  selectedFilters,
-  selectedPriceRange,
-  sortOption,
-  priceRanges,
-]);
+    // ✅ Set maxPrice based on category+brand filtered list only
+    if (filtered.length > 0) {
+      setMaxPrice(Math.max(...filtered.map((p) => p.price)));
+    } else {
+      setMaxPrice(0);
+    }
 
+    // Now apply price range filter
+    if (selectedPriceRange !== null) {
+      const range = priceRanges.find((r) => r.id === selectedPriceRange);
+      if (range) {
+        filtered = filtered.filter(
+          (item) => item.price >= range.min && item.price <= range.max
+        );
+      }
+    }
+
+    // Sorting
+    if (sortOption) {
+      filtered.sort((a, b) => {
+        if (sortOption === "priceLowHigh") return a.price - b.price;
+        if (sortOption === "priceHighLow") return b.price - a.price;
+        if (sortOption === "nameAZ") return a.name.localeCompare(b.name);
+        if (sortOption === "nameZA") return b.name.localeCompare(a.name);
+        return 0;
+      });
+    }
+
+    setProducts(filtered);
+  }, [
+    allProducts,
+    selectedFilters,
+    selectedPriceRange,
+    sortOption,
+    priceRanges,
+  ]);
 
   const navigateProductPage = (id: number) => {
     navigate(`/productpage/${id}`);
@@ -241,10 +273,16 @@ const CategoryPage: React.FC = () => {
   useEffect(() => {
     const fetchDropdownData = async () => {
       try {
-        const categoryRes = await apiClient.get("/api/resource/Item Group");
+        const categoryRes = await apiClient.get(
+          "/api/resource/Item Group?limit_page_length=0"
+        );
         const brandRes = await apiClient.get("/api/resource/Brand");
 
-        setCategories(categoryRes.data.data.filter((item: any) => item.name !== "All Item Groups").map((item: any) => item.name));
+        setCategories(
+          categoryRes.data.data
+            .filter((item: any) => item.name !== "All Item Groups")
+            .map((item: any) => item.name)
+        );
         setBrands(brandRes.data.data.map((item: any) => item.name));
       } catch (err) {
         console.error("Dropdown fetch error:", err);

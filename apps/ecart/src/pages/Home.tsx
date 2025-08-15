@@ -1,9 +1,9 @@
 import { Suspense, lazy, useEffect, useState } from "react";
 import LoadingScreen from "../../../../resources/components/loading/LoadingScreen";
 
-const AdverthismentBanner = lazy(
-  () => import("../../../../resources/UIBlocks/Promotion/AdverthismentBanner")
-);
+// const AdverthismentBanner = lazy(
+//   () => import("../../../../resources/UIBlocks/Promotion/AdverthismentBanner")
+// );
 
 const ProductCard = lazy(
   () => import("../../../../resources/UIBlocks/ProductCard")
@@ -32,9 +32,9 @@ const FloatContact = lazy(
   () => import("../../../../resources/UIBlocks/contact/FloatContact")
 );
 
-const CrackerAnimation = lazy(
-  () => import("../../../../resources/AnimationComponents/CrackerAnimation")
-);
+// const CrackerAnimation = lazy(
+//   () => import("../../../../resources/AnimationComponents/CrackerAnimation")
+// );
 function Home() {
   const brands = [
     { name: "DELL", logo: "/assets/brand/dell.svg" },
@@ -62,37 +62,41 @@ function Home() {
     handleScroll(); // run once on mount
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+
+  // special event
+
   // const [showMain, setShowMain] = useState(false);
 
-  const [showAnimation, setShowAnimation] = useState(false);
+  // const [showAnimation, setShowAnimation] = useState(false);
 
-  // Check on mount if animation has been shown before
-  useEffect(() => {
-    const alreadyShown = localStorage.getItem("Independence Day");
-    if (!alreadyShown) {
-      setShowAnimation(true); // show animation only first time
-    }
-  }, []);
+  // // Check on mount if animation has been shown before
+  // useEffect(() => {
+  //   const alreadyShown = localStorage.getItem("Independence Day");
+  //   if (!alreadyShown) {
+  //     setShowAnimation(true); // show animation only first time
+  //   }
+  // }, []);
 
-  const handleAnimationFinish = () => {
-    localStorage.setItem("Independence Day", "true"); // mark as shown
-    setShowAnimation(false);
-  };
+  // const handleAnimationFinish = () => {
+  //   localStorage.setItem("Independence Day", "true"); // mark as shown
+  //   setShowAnimation(false);
+  // };
 
-  if (showAnimation) {
-    return (
-      <CrackerAnimation
-        quote="Your Shopping Revolution Starts Now!"
-        duration={8000}
-        onFinish={handleAnimationFinish}
-        explosion1={`/assets/mp3/cracker.mp3`}
-        explosion2={`/assets/mp3/cracker.mp3`}
-        explosion3={`/assets/mp3/cracker.mp3`}
-        flag={`/assets/mp4/flag.mp4`}
-        logo={`assets/svg/logo.svg`}
-      />
-    );
-  }
+  // if (showAnimation) {
+  //   return (
+  //     <CrackerAnimation
+  //       quote="Your Shopping Revolution Starts Now!"
+  //       duration={8000}
+  //       onFinish={handleAnimationFinish}
+  //       explosion1={`/assets/mp3/cracker.mp3`}
+  //       explosion2={`/assets/mp3/cracker.mp3`}
+  //       explosion3={`/assets/mp3/cracker.mp3`}
+  //       flag={`/assets/mp4/flag.mp4`}
+  //       logo={`assets/svg/logo.svg`}
+  //     />
+  //   );
+  // }
 
   return (
     <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
@@ -114,7 +118,7 @@ function Home() {
         />
       </div>
 
-      <div className="px-[5%] mt-10">
+      {/* <div className="px-[5%] mt-10">
         <ProductCard
           title="Laptops"
           id={"item_group"}
@@ -122,7 +126,7 @@ function Home() {
           api={`api/resource/Catalog Details?fields=["name"]&filters=[["item_group", "=", "Laptop"]]`}
           ribbon={false}
         />
-      </div>
+      </div> */}
 
       <div className=" py-5 mt-15">
         <CustomAdverthismentBanner
@@ -150,7 +154,7 @@ function Home() {
         <BrandMarquee type="logo" brands={brands} speed={30} height={16} />
       </div>
 
-      <div className="px-[5%] mt-10">
+      {/* <div className="px-[5%] mt-10">
         <ProductCard
           title="Access Points"
           id={"item_group"}
@@ -158,7 +162,7 @@ function Home() {
           api={`api/resource/Catalog Details?fields=["name"]&filters=[["item_group", "=", "Access Point"]]&limit_page_length=15`}
           ribbon={false}
         />
-      </div>
+      </div> */}
 
       <div className=" py-5 my-15">
         <CustomAdverthismentBanner
@@ -195,7 +199,7 @@ function Home() {
         />
       </div>
 
-  {/* promotion image slider */}
+      {/* promotion image slider */}
       {/* <div className=" py-5 my-15">
         <AdverthismentBanner api={`api/resource/Slider 3`} delay={6000} />
       </div> */}
