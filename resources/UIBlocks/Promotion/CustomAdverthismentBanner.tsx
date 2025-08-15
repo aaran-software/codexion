@@ -2,8 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import apiClient from "../../../resources/global/api/apiClients";
 import { useAppContext } from "../../../apps/global/AppContaxt";
 import Button from "../../../resources/components/button/Button";
+import { useNavigate } from "react-router-dom";
 
 interface SlideContent {
+  id: string;
   image: string;
   bg_image: string;
   title: string;
@@ -16,24 +18,24 @@ interface SlideContent {
   theme: string;
   link: string;
   save: string;
-  slider_base:string
+  slider_base: string;
 }
 
 interface CustomBannerCarouselProps {
   api: string;
   autoPlay?: boolean;
   delay?: number; // milliseconds
-  sliderBase:string
+  sliderBase: string;
 }
 
 const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
   api,
   autoPlay = true,
   delay = 6000,
-  sliderBase
+  sliderBase,
 }) => {
   const { API_URL } = useAppContext();
-
+  const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
 
   const requestRef = useRef<number | null>(null);
@@ -71,56 +73,55 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
 
   const [slides, setSlides] = useState<SlideContent[]>([]);
   const fetchProducts = async () => {
-  try {
-    const response = await apiClient.get(`${api}`);
-    const items = response.data.data || [];
-    const baseApi = api.split("?")[0];
+    try {
+      const response = await apiClient.get(`${api}`);
+      const items = response.data.data || [];
+      const baseApi = api.split("?")[0];
 
-    const detailPromises = items.map((item: any) => {
-      const itemName = encodeURIComponent(item.name);
-      const detailUrl = `${baseApi}/${itemName}`;
-      return apiClient
-        .get(detailUrl)
-        .then((res) => res.data.data)
-        .catch((err) => {
-          console.warn(`Item not found: ${item.name}`, err);
-          return null;
-        });
-    });
+      const detailPromises = items.map((item: any) => {
+        const itemName = encodeURIComponent(item.name);
+        const detailUrl = `${baseApi}/${itemName}`;
+        return apiClient
+          .get(detailUrl)
+          .then((res) => res.data.data)
+          .catch((err) => {
+            console.warn(`Item not found: ${item.name}`, err);
+            return null;
+          });
+      });
 
-    const detailResponses = await Promise.all(detailPromises);
-    const validItems = detailResponses.filter(Boolean);
+      const detailResponses = await Promise.all(detailPromises);
+      const validItems = detailResponses.filter(Boolean);
 
-    // ✅ Only keep items where slider_base matches the prop
-    const filteredItems = validItems.filter(
-      (item: any) => item.slider_base === sliderBase
-    );
+      // ✅ Only keep items where slider_base matches the prop
+      const filteredItems = validItems.filter(
+        (item: any) => item.slider_base === sliderBase
+      );
 
-    const formatted: SlideContent[] = filteredItems.map((item: any) => {
-      return {
-        id: item.name,
-        title: item.title,
-        image: `${API_URL}/${item.product_image}`,
-        bg_image: `${API_URL}/${item.background}`,
-        description: item.describtion,
-        discount: item.stock_qty,
-        actual_price: item.actual_price,
-        offer_price: item.offer_price,
-        slogan: item.slogan,
-        layout: item.layout,
-        theme: item.theme,
-        link: item.product_link,
-        save: item.percentage,
-        slider_base: item.slider_base
-      };
-    });
+      const formatted: SlideContent[] = filteredItems.map((item: any) => {
+        return {
+          id: item.name,
+          title: item.title,
+          image: `${API_URL}/${item.product_image}`,
+          bg_image: `${API_URL}/${item.background}`,
+          description: item.describtion,
+          discount: item.stock_qty,
+          actual_price: item.actual_price,
+          offer_price: item.offer_price,
+          slogan: item.slogan,
+          layout: item.layout,
+          theme: item.theme,
+          link: item.product_link,
+          save: item.percentage,
+          slider_base: item.slider_base,
+        };
+      });
 
-    setSlides(formatted);
-  } catch (error) {
-    console.error("Failed to fetch products:", error);
-  }
-};
-
+      setSlides(formatted);
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
+    }
+  };
 
   useEffect(() => {
     fetchProducts();
@@ -174,6 +175,9 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
     };
   }, [activeIndex, slides.length, autoPlay, delay]);
 
+  const handleShop = ({ link }: { link: string }) => {
+    navigate(`/productpage/${link}`);
+  };
   return (
     <div className="relative w-full h-[380px] md:h-[350px] bg-background overflow-hidden">
       {/* 🔹 Slides */}
@@ -233,6 +237,9 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                   <Button
                     label="Shop Now"
                     className="bg-primary w-max text-white hover:bg-hover"
+                    onClick={() => {
+                      handleShop({ link: slide.link });
+                    }}
                   />
                 </div>
 
@@ -353,6 +360,9 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                   <Button
                     label="Shop Now"
                     className="bg-primary w-max text-white hover:bg-hover"
+                    onClick={() => {
+                      handleShop({ link: slide.link });
+                    }}
                   />
                 </div>
               </div>
@@ -398,6 +408,9 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                   <Button
                     label="Shop Now"
                     className="bg-primary w-max text-white hover:bg-hover"
+                    onClick={() => {
+                      handleShop({ link: slide.link });
+                    }}
                   />
                 </div>
 
@@ -467,6 +480,9 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
                   <Button
                     label="Shop Now"
                     className="bg-primary w-max block mx-auto text-white hover:bg-hover"
+                    onClick={() => {
+                      handleShop({ link: slide.link });
+                    }}
                   />
                 </div>
               </div>
@@ -489,21 +505,6 @@ const CustomBannerCarousel: React.FC<CustomBannerCarouselProps> = ({
           />
         ))}
       </div>
-
-      {/* Navigation Buttons */}
-
-      {/* <ImageButton
-        onClick={() =>
-          goToSlide(activeIndex === 0 ? slides.length - 1 : activeIndex - 1)
-        }
-        className="absolute top-1/2 left-5 lg:left-10 -translate-y-1/2 bg-black/30 text-white p-2 sm:p-4 !rounded-full hover:bg-black/30 z-20 hidden md:block"
-        icon={"left"}
-      />
-      <ImageButton
-        onClick={() => goToSlide((activeIndex + 1) % slides.length)}
-        className="absolute top-1/2 right-5 lg:right-10 -translate-y-1/2 bg-black/30 text-white p-2 sm:p-4 !rounded-full hover:bg-black/30 z-20 hidden md:block"
-        icon={"right"}
-      /> */}
     </div>
   );
 };

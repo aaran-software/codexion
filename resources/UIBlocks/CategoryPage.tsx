@@ -169,65 +169,63 @@ const CategoryPage: React.FC = () => {
     fetchAllProducts();
   }, [API_URL]);
 
-  useEffect(() => {
-    if (!allProducts.length) return;
+ useEffect(() => {
+  if (!allProducts.length) return;
 
-    let filtered = [...allProducts];
+  let filtered = [...allProducts];
 
-    if (selectedFilters.category) {
-      filtered = filtered.filter((item) =>
-        item.category
-          .toLowerCase()
-          .includes(selectedFilters.category.toLowerCase())
+  // Filter by category and brand first
+  if (selectedFilters.category) {
+    filtered = filtered.filter((item) =>
+      item.category
+        .toLowerCase()
+        .includes(selectedFilters.category.toLowerCase())
+    );
+  }
+
+  if (selectedFilters.brand) {
+    filtered = filtered.filter((item) =>
+      item.name.toLowerCase().includes(selectedFilters.brand.toLowerCase())
+    );
+  }
+
+  // ✅ Set maxPrice based on category+brand filtered list only
+  if (filtered.length > 0) {
+    setMaxPrice(Math.max(...filtered.map((p) => p.price)));
+  } else {
+    setMaxPrice(0);
+  }
+
+  // Now apply price range filter
+  if (selectedPriceRange !== null) {
+    const range = priceRanges.find((r) => r.id === selectedPriceRange);
+    if (range) {
+      filtered = filtered.filter(
+        (item) => item.price >= range.min && item.price <= range.max
       );
     }
+  }
 
-    if (selectedFilters.brand) {
-      filtered = filtered.filter((item) =>
-        item.name.toLowerCase().includes(selectedFilters.brand.toLowerCase())
-      );
-    }
+  // Sorting
+  if (sortOption) {
+    filtered.sort((a, b) => {
+      if (sortOption === "priceLowHigh") return a.price - b.price;
+      if (sortOption === "priceHighLow") return b.price - a.price;
+      if (sortOption === "nameAZ") return a.name.localeCompare(b.name);
+      if (sortOption === "nameZA") return b.name.localeCompare(a.name);
+      return 0;
+    });
+  }
 
-    if (selectedPriceRange !== null) {
-      const range = priceRanges.find((r) => r.id === selectedPriceRange);
-      if (range) {
-        filtered = filtered.filter(
-          (item) => item.price >= range.min && item.price <= range.max
-        );
-      }
-    }
+  setProducts(filtered);
+}, [
+  allProducts,
+  selectedFilters,
+  selectedPriceRange,
+  sortOption,
+  priceRanges,
+]);
 
-    if (filtered.length > 0) {
-      setMaxPrice(Math.max(...filtered.map((p) => p.price)));
-    } else {
-      setMaxPrice(0);
-    }
-
-    if (sortOption) {
-      filtered.sort((a, b) => {
-        if (sortOption === "priceLowHigh") return a.price - b.price;
-        if (sortOption === "priceHighLow") return b.price - a.price;
-        if (sortOption === "nameAZ") return a.name.localeCompare(b.name);
-        if (sortOption === "nameZA") return b.name.localeCompare(a.name);
-        return 0;
-      });
-    }
-
-    setProducts(filtered);
-  }, [
-    allProducts,
-    selectedFilters,
-    selectedPriceRange,
-    sortOption,
-    priceRanges,
-  ]);
-
-  // useEffect(() => {
-  //   if (products.length > 0 && selectedPrice === null) {
-  //     const maxPriceInProducts = Math.max(...products.map((p) => p.price));
-  //     setSelectedPrice(maxPriceInProducts);
-  //   }
-  // }, [products, selectedPrice]);
 
   const navigateProductPage = (id: number) => {
     navigate(`/productpage/${id}`);
@@ -344,34 +342,6 @@ const CategoryPage: React.FC = () => {
                   />
                 ))}
               </div>
-
-              {/* <div className="flex flex-col gap-2 min-w-[180px]">
-                <label className="text-md font-semibold hidden md:block">
-                  Invoice
-                </label>
-                <Checkbox
-                  id="invoice"
-                  agreed={invoice}
-                  label="GST Invoice"
-                  err=""
-                  className=""
-                  onChange={() => setInvoice(!invoice)}
-                />
-              </div>
-
-              <div className="flex flex-col gap-2 min-w-[180px]">
-                <label className="text-md font-semibold hidden md:block">
-                  Availability
-                </label>
-                <Checkbox
-                  id="stock"
-                  agreed={availability}
-                  label="Include Out of Stock"
-                  err=""
-                  className=""
-                  onChange={() => setAvailability(!availability)}
-                />
-              </div> */}
             </div>
           </div>
 
