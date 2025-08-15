@@ -208,7 +208,7 @@ function Home() {
           contacts={[
             {
               id: "whatsapp",
-              contact: "919543439311",
+              contact: "919894244450",
               imgPath: "/assets/svg/whatsapp.svg",
               defaultMessage: "Hello! I'm interested in your product.",
             },

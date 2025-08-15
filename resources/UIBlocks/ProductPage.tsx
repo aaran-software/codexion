@@ -265,7 +265,7 @@ function ProductPage() {
               contacts={[
                 {
                   id: "whatsapp",
-                  contact: "919543439311", // no '+' symbol, just country code + number
+                  contact: "919894244450", // no '+' symbol, just country code + number
                   imgPath: "/assets/svg/whatsapp.svg",
                   defaultMessage: `Hello, I’m interested in this product. Could you please share more details? Product URL: ${productUrl}`,
                 },
@@ -383,7 +383,7 @@ function ProductPage() {
                 const encodedMsg = encodeURIComponent(
                   `Hello, I’m interested in this product. Could you please share more details? Product URL: ${productUrl}`
                 );
-                const url = `https://wa.me/${919543439311}${
+                const url = `https://wa.me/${919894244450}${
                   encodedMsg ? `?text=${encodedMsg}` : ""
                 }`;
                 window.open(url, "_blank");

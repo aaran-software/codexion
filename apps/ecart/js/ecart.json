@@ -7,7 +7,7 @@
       "menu": {
         "name": "Laptops",
         "path": "Laptop",
-        "image": "/assets/products/laptop.webp",
+        "image": "/assets/products/laptop.png",
         "alt": "Laptops image",
         "subMenu": {
           "title": "Laptop Types",
@@ -178,6 +178,7 @@
         }
       }
     },
+    
     {
       "menu": {
         "name": "Printer",
@@ -302,7 +303,7 @@
     {
       "menu": {
         "name": "Camera",
-        "path": "camera",
+        "path": "Camera",
         "image": "/assets/products/camera.webp",
         "alt": "Camera image",
         "subMenu": {
@@ -348,7 +349,7 @@
             },
             {
               "title": "Access Points",
-              "path": "/"
+              "path": "/Access Point"
             }
           ]
         },

@@ -9,7 +9,7 @@ const ProductPage = lazy(
   () => import("../../../resources/UIBlocks/ProductPage")
 );
 const CategoryPage = lazy(
-  () => import("../../../resources/UIBlocks/CategoryPage")
+  () => import("./pages/CategoryPage")
 );
 const Wishlist = lazy(() => import("../../../resources/UIBlocks/Wishlist"));
 const Cart = lazy(() => import("./pages/Cart"));
