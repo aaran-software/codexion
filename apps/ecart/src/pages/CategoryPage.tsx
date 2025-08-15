@@ -399,9 +399,7 @@ const CategoryPage: React.FC = () => {
                     err={""} // or your error message if you have validation
                     className=""
                     onChange={(checked) =>
-                      setSelectedPriceRange(() =>
-                        checked ? range.id : null
-                      )
+                      setSelectedPriceRange(() => (checked ? range.id : null))
                     }
                   />
                 ))}
@@ -550,9 +548,12 @@ const CategoryPage: React.FC = () => {
                           <h4 className="text-sm lg:text-lg font-semibold line-clamp-3">
                             {product.name}
                           </h4>
-                          <h2 className="text-xl font-bold block md:hidden">
-                            ₹{product.price}
-                          </h2>
+                          {product.price !== 0 && (
+                            <h2 className="text-xl font-bold block md:hidden">
+                              ₹{product.price}
+                            </h2>
+                          )}
+
                           <h1 className="text-md text-foreground/80 line-clamp-3">
                             {product.description
                               ? product.description.replace(/<[^>]*>?/gm, "")
@@ -594,9 +595,12 @@ const CategoryPage: React.FC = () => {
 
                         {/* Price section */}
                         <div className="text-right space-y-2 hidden md:block">
-                          <h2 className="text-sm md:text-xl font-bold">
-                            ₹{product.price}
-                          </h2>
+                          {product.price !== 0 && (
+                            <h2 className="text-sm md:text-xl font-bold">
+                              ₹{product.price}
+                            </h2>
+                          )}
+
                           <p className="text-sm text-foreground/60">
                             Delivery: 3–5 days
                           </p>
@@ -629,9 +633,11 @@ const CategoryPage: React.FC = () => {
                         </h4>
 
                         {/* Price */}
-                        <h2 className="text-lg font-bold mb-2 text-center">
-                          ₹{product.price}
-                        </h2>
+                        {product.price !== 0 && (
+                          <h2 className="text-lg font-bold mb-2 text-center">
+                            ₹{product.price}
+                          </h2>
+                        )}
 
                         {/* Actions */}
                         <div className="flex gap-2 flex-col absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10">
