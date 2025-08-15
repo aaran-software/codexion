@@ -1,9 +1,9 @@
 import { Suspense, lazy, useEffect, useState } from "react";
 import LoadingScreen from "../../../../resources/components/loading/LoadingScreen";
 
-const AdverthismentBanner = lazy(
-  () => import("../../../../resources/UIBlocks/Promotion/AdverthismentBanner")
-);
+// const AdverthismentBanner = lazy(
+//   () => import("../../../../resources/UIBlocks/Promotion/AdverthismentBanner")
+// );
 
 const ProductCard = lazy(
   () => import("../../../../resources/UIBlocks/ProductCard")
@@ -32,9 +32,9 @@ const FloatContact = lazy(
   () => import("../../../../resources/UIBlocks/contact/FloatContact")
 );
 
-const CrackerAnimation = lazy(
-  () => import("../../../../resources/AnimationComponents/CrackerAnimation")
-);
+// const CrackerAnimation = lazy(
+//   () => import("../../../../resources/AnimationComponents/CrackerAnimation")
+// );
 function Home() {
   const brands = [
     { name: "DELL", logo: "/assets/brand/dell.svg" },
@@ -62,37 +62,41 @@ function Home() {
     handleScroll(); // run once on mount
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+
+  // special event
+
   // const [showMain, setShowMain] = useState(false);
 
-  const [showAnimation, setShowAnimation] = useState(false);
+  // const [showAnimation, setShowAnimation] = useState(false);
 
-  // Check on mount if animation has been shown before
-  useEffect(() => {
-    const alreadyShown = localStorage.getItem("Independence Day");
-    if (!alreadyShown) {
-      setShowAnimation(true); // show animation only first time
-    }
-  }, []);
+  // // Check on mount if animation has been shown before
+  // useEffect(() => {
+  //   const alreadyShown = localStorage.getItem("Independence Day");
+  //   if (!alreadyShown) {
+  //     setShowAnimation(true); // show animation only first time
+  //   }
+  // }, []);
 
-  const handleAnimationFinish = () => {
-    localStorage.setItem("Independence Day", "true"); // mark as shown
-    setShowAnimation(false);
-  };
+  // const handleAnimationFinish = () => {
+  //   localStorage.setItem("Independence Day", "true"); // mark as shown
+  //   setShowAnimation(false);
+  // };
 
-  if (showAnimation) {
-    return (
-      <CrackerAnimation
-        quote="Your Shopping Revolution Starts Now!"
-        duration={8000}
-        onFinish={handleAnimationFinish}
-        explosion1={`/assets/mp3/cracker.mp3`}
-        explosion2={`/assets/mp3/cracker.mp3`}
-        explosion3={`/assets/mp3/cracker.mp3`}
-        flag={`/assets/mp4/flag.mp4`}
-        logo={`assets/svg/logo.svg`}
-      />
-    );
-  }
+  // if (showAnimation) {
+  //   return (
+  //     <CrackerAnimation
+  //       quote="Your Shopping Revolution Starts Now!"
+  //       duration={8000}
+  //       onFinish={handleAnimationFinish}
+  //       explosion1={`/assets/mp3/cracker.mp3`}
+  //       explosion2={`/assets/mp3/cracker.mp3`}
+  //       explosion3={`/assets/mp3/cracker.mp3`}
+  //       flag={`/assets/mp4/flag.mp4`}
+  //       logo={`assets/svg/logo.svg`}
+  //     />
+  //   );
+  // }
 
   return (
     <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
