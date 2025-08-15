@@ -27,43 +27,47 @@ const ScrollAdverthisment2: React.FC<ScrollAdverthisment2Props> = ({
   const [showRight, setShowRight] = useState(false);
 
   const fetchProducts = async () => {
-    try {
-      // Step 1: Fetch all item names
-      const response = await apiClient.get(`${api}`);
+  try {
+    // Step 1: Fetch all item names
+    const response = await apiClient.get(`${api}`);
+    const items = response.data.data || [];
+    const baseApi = api.split("?")[0];
 
-      const items = response.data.data || [];
-      const baseApi = api.split("?")[0];
+    // Step 2: Fetch full details for each item
+    const detailPromises = items.map((item: any) => {
+      const itemName = encodeURIComponent(item.name);
+      const detailUrl = `${baseApi}/${itemName}`;
+      return apiClient
+        .get(detailUrl)
+        .then((res) => res.data.data)
+        .catch((err) => {
+          console.warn(`Item not found: ${item.name}`, err);
+          return null;
+        });
+    });
 
-      // Step 2: Fetch full details for each item
-      const detailPromises = items.map((item: any) => {
-        const itemName = encodeURIComponent(item.name);
-        const detailUrl = `${baseApi}/${itemName}`;
-        return apiClient
-          .get(detailUrl)
-          .then((res) => res.data.data)
-          .catch((err) => {
-            console.warn(`Item not found: ${item.name}`, err);
-            return null;
-          });
-      });
+    const detailResponses = await Promise.all(detailPromises);
 
-      const detailResponses = await Promise.all(detailPromises);
-      const validItems = detailResponses.filter(Boolean);
+    // Step 3: Filter only items where make_this_default is truthy
+    const validItems = detailResponses.filter(
+      (item) => item && item.make_this_default
+    );
 
-      const formatted: ScrollAdverthismentItem[] = validItems.map(
-        (item: any) => {
-          return {
-            id: item.name,
-            image: `${API_URL}/${item.table_hxwm?.[0]?.featured_image}`,
-          };
-        }
-      );
+    // Step 4: Flatten all featured images into products[]
+    const formatted: ScrollAdverthismentItem[] = validItems.flatMap(
+      (item: any) =>
+        (item.table_hxwm || []).map((row: any) => ({
+          id: String(row.name), // ensure string
+          image: `${API_URL}${row.featured_image}`,
+        }))
+    );
 
-      setProducts(formatted);
-    } catch (error) {
-      console.error("Failed to fetch products:", error);
-    }
-  };
+    setProducts(formatted);
+  } catch (error) {
+    console.error("Failed to fetch products:", error);
+  }
+};
+
 
   useEffect(() => {
     fetchProducts();

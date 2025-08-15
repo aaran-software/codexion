@@ -1,9 +1,9 @@
 import { Suspense, lazy, useEffect, useState } from "react";
 import LoadingScreen from "../../../../resources/components/loading/LoadingScreen";
 
-// const AdverthismentBanner = lazy(
-//   () => import("../../../../resources/UIBlocks/Promotion/AdverthismentBanner")
-// );
+const AdverthismentBanner = lazy(
+  () => import("../../../../resources/UIBlocks/Promotion/AdverthismentBanner")
+);
 
 const ProductCard = lazy(
   () => import("../../../../resources/UIBlocks/ProductCard")
@@ -160,11 +160,6 @@ function Home() {
         />
       </div>
 
-      {/* promotion image slider */}
-      {/* <div className=" py-5 my-15">
-        <AdverthismentBanner api={`api/resource/Slider 3`} delay={6000} />
-      </div> */}
-
       <div className=" py-5 my-15">
         <CustomAdverthismentBanner
           api={`api/resource/Slider 2`}
@@ -200,6 +195,10 @@ function Home() {
         />
       </div>
 
+  {/* promotion image slider */}
+      {/* <div className=" py-5 my-15">
+        <AdverthismentBanner api={`api/resource/Slider 3`} delay={6000} />
+      </div> */}
       <div
         className={`transition-opacity duration-500 fixed bottom-28 right-5 z-[100000] ${
           show ? "opacity-100" : "opacity-0 pointer-events-none"
