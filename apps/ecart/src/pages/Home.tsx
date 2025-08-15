@@ -1,9 +1,9 @@
 import { Suspense, lazy, useEffect, useState } from "react";
 import LoadingScreen from "../../../../resources/components/loading/LoadingScreen";
 
-const AdverthismentBanner = lazy(
-  () => import("../../../../resources/UIBlocks/Promotion/AdverthismentBanner")
-);
+// const AdverthismentBanner = lazy(
+//   () => import("../../../../resources/UIBlocks/Promotion/AdverthismentBanner")
+// );
 
 const ProductCard = lazy(
   () => import("../../../../resources/UIBlocks/ProductCard")
@@ -33,8 +33,8 @@ const FloatContact = lazy(
 );
 
 const CrackerAnimation = lazy(
-() => import("../../../../resources/AnimationComponents/CrackerAnimation")
-)
+  () => import("../../../../resources/AnimationComponents/CrackerAnimation")
+);
 function Home() {
   const brands = [
     { name: "DELL", logo: "/assets/brand/dell.svg" },
@@ -165,7 +165,7 @@ function Home() {
         <AdverthismentBanner api={`api/resource/Slider 3`} delay={6000} />
       </div> */}
 
-       <div className=" py-5 my-15">
+      <div className=" py-5 my-15">
         <CustomAdverthismentBanner
           api={`api/resource/Slider 2`}
           delay={6000}
