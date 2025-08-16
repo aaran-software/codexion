@@ -74,12 +74,7 @@ export default function Admin() {
       id: "vendororder",
       className: "w-[100%] min-h-full",
       component: <VendorOrder />,
-    },
-    {
-      id: "docs",
-      className: "w-[100%] min-h-full",
-      component: <Docs />,
-    },
+    }
   ]);
 
   return (
