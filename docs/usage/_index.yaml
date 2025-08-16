@@ -1,0 +1,9 @@
+- slug: authentication
+  order: 1
+  desc: Authenticate API
+  tags: [api, auth]
+
+- slug: endpoints
+  order: 2
+  desc: Available API endpoints
+  tags: [api, endpoints]

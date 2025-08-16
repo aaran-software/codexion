@@ -1,0 +1,8 @@
+# order.yaml
+- get-started
+- guides:
+  - installation
+  - configuration
+- api:
+  - overview
+  - authentication

@@ -1,0 +1,19 @@
+- slug: get-started
+  order: 1
+  desc: get-started
+  tags: [intro, basics]
+
+- slug: guides
+  order: 2
+  desc: guides
+  tags: [setup, install]
+
+- slug: usage
+  order: 3
+  desc: usage
+  tags: [guide, usage]
+
+- slug: api
+  order: 4
+  desc: API reference
+  tags: [api, reference]
