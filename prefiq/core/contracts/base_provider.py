@@ -1,4 +1,4 @@
-# cortex/core/contracts/base_provider.py
+# prefiq/core/contracts/base_provider.py
 
 from abc import ABC, abstractmethod
 from typing import Any, Callable, Dict, List, Optional, Type, Union
@@ -90,6 +90,8 @@ class Application:
 
 class BaseProvider(ABC):
     """Abstract base class for service providers."""
+    schema_namespace: Optional[str] = None   # e.g. "database"
+    schema_model: Optional[Any] = None       # e.g. Pydantic model
 
     def __init__(self, app: Application) -> None:
         self.app = app

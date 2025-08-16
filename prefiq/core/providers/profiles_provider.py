@@ -1,7 +1,7 @@
-# cortex/core/contracts/providers/profiles_provider.py
+# prefiq/core/contracts/providers/profiles_provider.py
 
 from typing import Any, Dict
-from cortex.core.contracts.base_provider import BaseProvider, Application
+from prefiq.core.contracts.base_provider import BaseProvider, Application
 
 
 class ProfilesProvider(BaseProvider):
