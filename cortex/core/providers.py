@@ -2,11 +2,11 @@
 
 from cortex.core.providers.settings_provider import SettingsProvider
 from cortex.core.providers.profiles_provider import ProfilesProvider
-from cortex.core.providers.database_provider import DatabaseProvider
+from cortex.providers.database_provider import DatabaseProvider
 # from cortex.core.providers.ui_provider import UiProvider
 
 # Global registry of service providers
-SERVICE_PROVIDERS = [
+PROVIDERS = [
     SettingsProvider,
     ProfilesProvider,
     DatabaseProvider,

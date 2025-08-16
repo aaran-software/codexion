@@ -90,6 +90,8 @@ class Application:
 
 class BaseProvider(ABC):
     """Abstract base class for service providers."""
+    schema_namespace: Optional[str] = None   # e.g. "database"
+    schema_model: Optional[Any] = None       # e.g. Pydantic model
 
     def __init__(self, app: Application) -> None:
         self.app = app
