@@ -2,7 +2,7 @@
 
 from prefiq.database.engines.mariadb.sync_engine import SyncMariaDBEngine
 from prefiq.database.engines.mariadb.async_engine import AsyncMariaDBEngine
-from prefiq.core.settings import get_settings
+from prefiq.settings.get_settings import get_settings
 
 
 class MariadbEngine:

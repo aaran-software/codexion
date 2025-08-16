@@ -1,6 +1,6 @@
 # prefiq/database/connection.py
 
-from prefiq.core.settings import get_settings
+from prefiq.settings.get_settings import get_settings
 
 def _resolve_db_engine():
     settings = get_settings()

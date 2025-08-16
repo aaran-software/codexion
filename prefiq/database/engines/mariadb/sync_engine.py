@@ -22,7 +22,7 @@ from typing import Optional, Sequence, Any
 from prefiq.database.engines.abstract_engine import AbstractEngine  # Base class defining interface and hooks
 from prefiq.database.engines.mariadb.retry import with_retry  # Retry wrapper for resilience
 from prefiq.database.engines.mariadb.logger import log_query  # Logs execution time and flags slow queries
-from prefiq.cortex.database.config_loader.base import use_thread_config  # Dynamic config access
+from prefiq.database.config_loader.base import use_thread_config  # Dynamic config access
 
 class SyncMariaDBEngine(AbstractEngine):
     """
