@@ -8,6 +8,7 @@ import { useAppContext } from "../../../global/AppContaxt";
 import MobileFilter from "../../../../resources/UIBlocks/filter/MobileFilter";
 import LoadingScreen from "../../../../resources/components/loading/LoadingScreen";
 import LoadingSpinner3 from "../../../../resources/components/loading/LoadingSpinner3";
+import { categoryPriceRanges } from "../../../../resources/global/library/priceRanges";
 type ProductType = {
   id: number;
   name: string;
@@ -63,47 +64,17 @@ const CategoryPage: React.FC = () => {
     null
   );
 
-  const priceRanges = useMemo(
-    () => [
-      {
-        id: 1,
-        label: `Up to ₹${Math.round(maxPrice * 0.25)}`,
-        min: 0,
-        max: maxPrice * 0.25,
-      },
-      {
-        id: 2,
-        label: `₹${Math.round(maxPrice * 0.25)} - ₹${Math.round(
-          maxPrice * 0.5
-        )}`,
-        min: maxPrice * 0.25,
-        max: maxPrice * 0.5,
-      },
-      {
-        id: 3,
-        label: `₹${Math.round(maxPrice * 0.5)} - ₹${Math.round(
-          maxPrice * 0.75
-        )}`,
-        min: maxPrice * 0.5,
-        max: maxPrice * 0.75,
-      },
-      {
-        id: 4,
-        label: `₹${Math.round(maxPrice * 0.75)} - ₹${Math.round(
-          maxPrice * 0.9
-        )}`,
-        min: maxPrice * 0.75,
-        max: maxPrice * 0.9,
-      },
-      {
-        id: 5,
-        label: `Above ₹${Math.round(maxPrice * 0.9)}`,
-        min: maxPrice * 0.9,
-        max: Infinity,
-      },
-    ],
-    [maxPrice]
-  );
+  const priceRanges = useMemo(() => {
+    // pick from static ranges if category exists
+    const cat = selectedFilters.category || ""; // fallback to ""
+  if (categoryPriceRanges[cat]) {
+    return categoryPriceRanges[cat];
+  }
+    // fallback: empty or generic ranges
+     return [
+   
+  ];
+  }, [selectedFilters.category]);
 
   // New UI States for mobile modals
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -139,6 +110,7 @@ const CategoryPage: React.FC = () => {
   const pageSize = 10;
 
   // Fetch products page-by-page
+  // Effect 1: Fetch products whenever page OR filters/sort change
   useEffect(() => {
     const fetchProducts = async () => {
       if (loading || !hasMore) return;
@@ -157,34 +129,36 @@ const CategoryPage: React.FC = () => {
           if (selectedPriceRange !== null) {
             const range = priceRanges.find((r) => r.id === selectedPriceRange);
             if (range) {
-              filters.push(["price", ">=", range.min]);
-              filters.push(["price", "<=", range.max]);
+              filters = filters.filter(
+                (item) => item.price >= range.min && item.price <= range.max
+              );
             }
           }
 
           return encodeURIComponent(JSON.stringify(filters));
         };
+
         const res = await apiClient.get(
           `/api/resource/Catalog Details?filters=${buildFilters()}&limit_start=${page * pageSize}&limit_page_length=${pageSize}`
         );
+
         const items = res.data.data || [];
 
         if (items.length === 0) {
           setHasMore(false);
-          setLoading(false);
           return;
         }
 
-        // Only fetch details for this batch
-        const detailPromises = items.map((item: any) => {
-          const itemName = encodeURIComponent(item.name);
-          return apiClient
-            .get(`/api/resource/Catalog Details/${itemName}`)
-            .then((r) => r.data.data)
-            .catch(() => null);
-        });
-
-        const detailResponses = await Promise.all(detailPromises);
+        // fetch details
+        const detailResponses = await Promise.all(
+          items.map((item: any) => {
+            const itemName = encodeURIComponent(item.name);
+            return apiClient
+              .get(`/api/resource/Catalog Details/${itemName}`)
+              .then((r) => r.data.data)
+              .catch(() => null);
+          })
+        );
 
         const formatted = detailResponses.filter(Boolean).map((item: any) => ({
           id: item.name,
@@ -193,11 +167,11 @@ const CategoryPage: React.FC = () => {
           description: item.item_description,
           image: `${API_URL}/${item.image_1}`,
           count: item.stock_qty,
-          price: item.price || item.standard_rate || 0,
+          price: item.price,
           category: item.item_group || "",
         }));
 
-        // Append new products instead of replacing
+        // Append to existing
         setAllProducts((prev) => [...prev, ...formatted]);
       } catch (err) {
         setError("Failed to fetch products");
@@ -207,9 +181,9 @@ const CategoryPage: React.FC = () => {
     };
 
     fetchProducts();
-  }, [page, API_URL]);
+  }, [page, API_URL, selectedFilters, selectedPriceRange, sortOption]);
 
-  console.log(allProducts);
+  // Effect 2: Reset products when filters/sort change
   useEffect(() => {
     setPage(0);
     setAllProducts([]);
@@ -559,12 +533,10 @@ const CategoryPage: React.FC = () => {
                               ? product.description.replace(/<[^>]*>?/gm, "")
                               : ""}
                           </h1>
-                          {/* <p className="text-sm text-foreground/60 line-clamp-2 lg:line-clamp-3">
-                            {product.description}
-                          </p> */}
-                          <div className="flex gap-2">
+
+                          {/* <div className="flex gap-2">
                             <p className="text-sm text-green-600">10% Offer</p>
-                          </div>
+                          </div> */}
 
                           {/* Action buttons */}
                           <div className="my-2 flex flex-row gap-2">
