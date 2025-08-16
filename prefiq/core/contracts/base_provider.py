@@ -1,4 +1,4 @@
-# cortex/core/contracts/base_provider.py
+# prefiq/core/contracts/base_provider.py
 
 from abc import ABC, abstractmethod
 from typing import Any, Callable, Dict, List, Optional, Type, Union

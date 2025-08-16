@@ -1,8 +1,8 @@
-# cortex/core/contracts/providers/settings_provider.py
+# prefiq/core/contracts/providers/settings_provider.py
 
 import os
 from dotenv import load_dotenv
-from cortex.core.contracts.base_provider import BaseProvider, register_provider
+from prefiq.core.contracts.base_provider import BaseProvider, register_provider
 
 
 @register_provider

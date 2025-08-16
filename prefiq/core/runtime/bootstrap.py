@@ -1,7 +1,7 @@
-# cortex/core/runtime/bootstrap.py
+# prefiq/core/runtime/bootstrap.py
 
-from cortex.core.contracts.base_provider import Application
-from cortex.core.providers.service_providers import SERVICE_PROVIDERS
+from prefiq.core.contracts.base_provider import Application
+from prefiq.core.service_providers import PROVIDERS
 
 if __name__ == "__main__":
     app = Application.get_app()
@@ -11,7 +11,7 @@ if __name__ == "__main__":
     app.on_booted(lambda: print("[App] Boot finished."))
 
     # Register all service providers from the global registry
-    for provider in SERVICE_PROVIDERS:
+    for provider in PROVIDERS:
         app.register(provider)
 
     # Boot application
