@@ -67,13 +67,19 @@ const CategoryPage: React.FC = () => {
   const priceRanges = useMemo(() => {
     // pick from static ranges if category exists
     const cat = selectedFilters.category || ""; // fallback to ""
-  if (categoryPriceRanges[cat]) {
-    return categoryPriceRanges[cat];
-  }
+    if (categoryPriceRanges[cat]) {
+      return categoryPriceRanges[cat];
+    }
     // fallback: empty or generic ranges
-     return [
-   
-  ];
+    return [
+      { id: 1, label: "Below ₹1,000", min: 0, max: 1000 },
+      { id: 2, label: "₹1,000 – ₹5,000", min: 1000, max: 5000 },
+      { id: 3, label: "₹5,000 – ₹10,000", min: 5000, max: 10000 },
+      { id: 4, label: "₹10,000 – ₹30,000", min: 10000, max: 30000 },
+      { id: 5, label: "₹30,000 – ₹60,000", min: 30000, max: 60000 },
+      { id: 6, label: "₹60,000 – ₹1,00,000", min: 60000, max: 100000 },
+      { id: 7, label: "Above ₹1,00,000", min: 100000, max: Infinity },
+    ];
   }, [selectedFilters.category]);
 
   // New UI States for mobile modals
@@ -107,7 +113,7 @@ const CategoryPage: React.FC = () => {
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  const pageSize = 10;
+  const pageSize = 6;
 
   // Fetch products page-by-page
   // Effect 1: Fetch products whenever page OR filters/sort change
