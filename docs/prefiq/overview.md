@@ -19,21 +19,21 @@ Build a modular, future-proof enterprise platform where apps are self-contained 
 
 Use a GitHub org (e.g., `codexion`) with the following top-level repos:
 
-| Repo              | Purpose                                                            | Public? | Notes                                              |
-|-------------------|--------------------------------------------------------------------|---------|----------------------------------------------------|
-| **prefiq**        | 🔧 Pure Python framework kernel & CLI                              | ✅       | Apache-2.0; pip package `prefiq`                   |
-| **cortex**        | 🧠 Main backend app (global admin, users, settings, orchestration) | ✅       | Depends on `prefiq`                                |
-| **resources**     | 🗂️ Global shared assets (frontend + backend + themes)             | ✅       | NPM `@codexion/resources`, Py `codexion-resources` |
-| **app-crm**       | 🤝 CRM app (bin/core/src)                                          | ✅       | Runs standalone or under Cortex                    |
-| **app-erp**       | 🏭 ERP app (bin/core/src)                                          | ✅       | Ditto                                              |
-| **app-ecommerce** | 🛒 Ecommerce app (bin/core/src)                                    | ✅       | Ditto                                              |
-| **app-lms**       | 📚 LMS app (bin/core/src)                                          | ✅       | Ditto                                              |
-| **app-ai**        | 🤖 AI services (bin/core/src)                                      | ✅       | Optional; model adapters & agents                  |
-| **devops**        | 🚀 Deploy (Docker, Compose, Helm, Terraform), environments         | ✅       | Images: `ghcr.io/codexion/*`                       |
-| **docs**          | 📘 Documentation site (Docusaurus/Mintlify)                        | ✅       | Autopublish to `docs.codexion.dev`                 |
-| **starters**      | 🧪 Templates & scaffolds (project/app/site)                        | ✅       | `create-prefiq-app` scaffolder                     |
-| **examples**      | 🔬 Example apps/integrations/playgrounds                           | ✅       | Learning & demos                                   |
-| **meta**          | 🧩 Org standards (RFCs, ADRs, guidelines, issue templates)         | ✅       | Source of truth for conventions                    |
+| Repo              | Purpose                                                               | Public? | Notes                                              |
+|-------------------|-----------------------------------------------------------------------|---------|----------------------------------------------------|
+| **prefiq**        | 🔧 Pure Python framework kernel & CLI                                 | ✅       | Apache-2.0; pip package `prefiq`                   |
+| **cortex**        | 🧠 Main backend app (global admin, users, settings, orchestration)    | ✅       | Depends on `prefiq`                                |
+| **resources**     | 🗂️ Global shared assets (frontend + backend + themes)                | ✅       | NPM `@codexion/resources`, Py `codexion-resources` |
+| **app-crm**       | 🤝 CRM app (bin/core/src)                                             | ✅       | Runs standalone or under Cortex                    |
+| **app-erp**       | 🏭 ERP app (bin/core/src)                                             | ✅       | Ditto                                              |
+| **app-ecommerce** | 🛒 Ecommerce app (bin/core/src)                                       | ✅       | Ditto                                              |
+| **app-lms**       | 📚 LMS app (bin/core/src)                                             | ✅       | Ditto                                              |
+| **app-ai**        | 🤖 AI services (bin/core/src)                                         | ✅       | Optional; model adapters & agents                  |
+| **devops**        | 🚀 Deploy (Docker, Compose, Helm, Terraform), environments            | ✅       | Images: `ghcr.io/codexion/*`                       |
+| **docs**          | 📘 Documentation site (Docusaurus/Mintlify)                           | ✅       | Autopublish to `docs.codexion.dev`                 |
+| **starters**      | 🧪 Templates & scaffolds (project/app/site)                           | ✅       | `create-prefiq-app` scaffolder                     |
+| **examples**      | 🔬 Example apps/integrations/playgrounds                              | ✅       | Learning & demos                                   |
+| **meta**          | 🧩 Org standards (RFCs, ADRs, guidelines, issue templates)            | ✅       | Source of truth for conventions                    |
 
 > 👇 You can start with **prefiq**, **cortex**, **resources**, and **app-crm**; add others as they mature.
 

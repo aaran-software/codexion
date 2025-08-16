@@ -3,6 +3,11 @@
   desc: get-started
   tags: [intro, basics]
 
+- slug: core
+  order: 2
+  desc: core
+  tags: [core, conventions]
+
 - slug: prefiq
   order: 2
   desc: Prefiq
