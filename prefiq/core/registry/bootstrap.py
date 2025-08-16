@@ -1,5 +1,5 @@
 from prefiq.core.contracts.base_provider import Application
-from prefiq.core.runtime.service_providers import PROVIDERS
+from cortex.runtime.service_providers import PROVIDERS
 
 def main():
     app = Application.get_app()
