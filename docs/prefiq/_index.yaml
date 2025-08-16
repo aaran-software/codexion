@@ -1,0 +1,9 @@
+- slug: overview
+  order: 1
+  desc: Core Conventions
+  tags: [prefiq, framework, conventions]
+
+- slug: endpoints
+  order: 2
+  desc: Available API endpoints
+  tags: [api, endpoints]

@@ -3,17 +3,22 @@
   desc: get-started
   tags: [intro, basics]
 
-- slug: guides
+- slug: prefiq
   order: 2
+  desc: Prefiq
+  tags: [prefiq, framework, conventions]
+
+- slug: guides
+  order: 3
   desc: guides
   tags: [setup, install]
 
 - slug: usage
-  order: 3
+  order: 4
   desc: usage
   tags: [guide, usage]
 
 - slug: api
-  order: 4
+  order: 5
   desc: API reference
   tags: [api, reference]
