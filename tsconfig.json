@@ -6,7 +6,8 @@
     "paths": {
       "@resources/*": [
         "/resources/*"
-      ]
+      ],
+//       "@/ui/*": ["./*"]
     },
     "jsx": "react-jsx",
     "module": "ESNext",

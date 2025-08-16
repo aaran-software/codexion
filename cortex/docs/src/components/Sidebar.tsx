@@ -1,82 +1,100 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "./ui/collapsible"
+import {
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarMenuSub,
+} from "./ui/sidebar-menu"
+import { ChevronRight, ChevronDown } from "lucide-react"
 
 interface DocItem {
-  slug: string;
-  order: number;
-  desc: string;
-  children?: DocItem[];
-  parentSlug?: string; // added to build full path
+  slug: string
+  order: number
+  desc: string
+  children?: DocItem[]
+  parentSlug?: string
 }
 
 interface SidebarProps {
-  onSelect: (slug: string) => void;
+  onSelect: (slug: string) => void
 }
 
 export default function Sidebar({ onSelect }: SidebarProps) {
-  const [docs, setDocs] = useState<DocItem[]>([]);
-  const [openItems, setOpenItems] = useState<Record<string, boolean>>({});
+  const [docs, setDocs] = useState<DocItem[]>([])
+  const [openItems, setOpenItems] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
     fetch("http://localhost:5001/api/docs")
-      .then(res => res.json())
+      .then((res) => res.json())
       .then((data: DocItem[]) => {
         const sortTree = (items: DocItem[], parentSlug = ""): DocItem[] =>
           items
             .sort((a, b) => a.order - b.order)
-            .map(item => {
-              const fullSlug = parentSlug ? `${parentSlug}/${item.slug}` : item.slug;
+            .map((item) => {
+              const fullSlug = parentSlug ? `${parentSlug}/${item.slug}` : item.slug
               return {
                 ...item,
                 slug: fullSlug,
                 children: item.children ? sortTree(item.children, fullSlug) : [],
-              };
-            });
-        setDocs(sortTree(data));
-      });
-  }, []);
+              }
+            })
+        setDocs(sortTree(data))
+      })
+  }, [])
 
   const toggleOpen = (slug: string) => {
-    setOpenItems(prev => ({ ...prev, [slug]: !prev[slug] }));
-  };
+    setOpenItems((prev) => ({ ...prev, [slug]: !prev[slug] }))
+  }
 
-  const renderDocs = (items: DocItem[], level = 0) => {
-    return (
-      <ul className="space-y-1">
-        {items.map(item => {
-          const hasChildren = item.children && item.children.length > 0;
-          const isOpen = openItems[item.slug] ?? false;
+  const renderDocs = (items: DocItem[]) => {
+    return items.map((item) => {
+      const hasChildren = item.children && item.children.length > 0
+      const isOpen = openItems[item.slug] ?? false
 
-          return (
-            <li key={item.slug} className={`ml-${level * 4}`}>
-              <div
-                            onClick={() => toggleOpen(item.slug)}
-                  className="flex items-center space-x-1 group">
+      return (
+        <Collapsible
+          key={item.slug}
+          open={isOpen}
+          onOpenChange={() => toggleOpen(item.slug)}
+          className="w-full"
+        >
+          <SidebarMenuItem>
+            <CollapsibleTrigger asChild>
+              <SidebarMenuButton
+                onClick={() => !hasChildren && onSelect(item.slug)}
+                className="flex items-center justify-between w-full px-2 py-1.5 rounded-md hover:bg-accent hover:text-accent-foreground text-sm transition-colors"
+              >
+                <span>{item.desc}</span>
                 {hasChildren && (
-                  <div
-                    className="text-sm focus:outline-none transition-transform duration-200 group-hover:text-blue-600"
-                  >
-                    {isOpen ? "▼" : "▶"}
-                  </div>
+                  isOpen ? (
+                    <ChevronDown className="h-4 w-4 shrink-0 opacity-70" />
+                  ) : (
+                    <ChevronRight className="h-4 w-4 shrink-0 opacity-70" />
+                  )
                 )}
-                <button
-                  onClick={() => onSelect(item.slug)}
-                  className="text-left text-gray-700 hover:bg-gray-200 rounded px-2 py-1 transition-all duration-200 w-full text-sm"
-                >
-                  {item.desc}
-                </button>
-              </div>
-              {hasChildren && isOpen && renderDocs(item.children!, level + 1)}
-            </li>
-          );
-        })}
-      </ul>
-    );
-  };
+              </SidebarMenuButton>
+            </CollapsibleTrigger>
+
+            {hasChildren && (
+              <CollapsibleContent className="pl-3 mt-1 space-y-1">
+                <SidebarMenuSub>{renderDocs(item.children!)}</SidebarMenuSub>
+              </CollapsibleContent>
+            )}
+          </SidebarMenuItem>
+        </Collapsible>
+      )
+    })
+  }
 
   return (
-    <aside className="w-64 border-r border-gray-300 overflow-y-auto h-screen p-4 bg-gray-50">
-      <h3 className="text-lg font-semibold mb-2">Docs</h3>
-      {renderDocs(docs)}
+    <aside className="w-64 border-r border-border overflow-y-auto h-screen p-4 bg-background">
+      <h3 className="text-lg font-semibold mb-3">Docs</h3>
+      <SidebarMenu>{renderDocs(docs)}</SidebarMenu>
     </aside>
-  );
+  )
 }
