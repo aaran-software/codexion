@@ -3,7 +3,7 @@
   desc: How to get started with the project
   tags: [intro, basics]
 
-- slug: endpoints
+- slug: installation
   order: 2
-  desc: List of available API endpoints
+  desc: List of Markdown
   tags: [api, endpoints]
