@@ -1,21 +1,33 @@
-# cortex/core/providers/settings_provider.py
+# prefiq/providers/settings_provider.py
+
 from pydantic import ValidationError
-from cortex.core.contracts.base_provider import Application, BaseProvider, register_provider
+from prefiq.core.contracts.base_provider import Application, BaseProvider, register_provider
+from prefiq.settings.get_settings import get_settings, clear_settings_cache
+
 
 @register_provider
 class SettingsProvider(BaseProvider):
-    def register(self) -> None:
-        merged = self._load_all_sources()
-        self.app.bind("settings", merged)
+    """
+    Loads global application settings (from env/.env) using prefiq.settings.
+    Binds them into the Application container as 'settings'.
+    Also validates config for providers that declare schema models.
+    """
 
-        # Validation step: loop over providers with declared schema
+    def register(self) -> None:
+        # Load from prefiq/settings.py (cached singleton)
+        settings = get_settings()
+        self.app.bind("settings", settings)
+
+        # Validation step: loop over providers that declare schema
         errors = []
-        for provider_cls in Application.provider_registry:
-            if getattr(provider_cls, "schema_namespace", None) and getattr(provider_cls, "schema_model", None):
-                namespace = provider_cls.schema_namespace
-                model = provider_cls.schema_model
+        for provider_cls in Application.provider_registry:  # <-- correct usage
+            namespace = getattr(provider_cls, "schema_namespace", None)
+            model = getattr(provider_cls, "schema_model", None)
+            if namespace and model:
                 try:
-                    model(**merged.get(namespace, {}))
+                    # Get namespace dict if available, otherwise pass empty dict
+                    namespace_config = getattr(settings, namespace, {})
+                    model(**namespace_config)
                 except ValidationError as e:
                     errors.append(f"[{provider_cls.__name__}] Invalid config for '{namespace}': {e}")
 
@@ -23,4 +35,11 @@ class SettingsProvider(BaseProvider):
             raise RuntimeError("Settings validation failed:\n" + "\n".join(errors))
 
     def boot(self) -> None:
-        print(f"[SettingsProvider] Loaded settings for ENV={self.env}")
+        settings = self.app.resolve("settings")
+        env = getattr(settings, "ENV", "development")
+        print(f"[SettingsProvider] Loaded settings for ENV={env}")
+
+    # Optional helper to clear cached settings (for tests)
+    def clear(self) -> None:
+        clear_settings_cache()
+        self.app.bind("settings", get_settings())
