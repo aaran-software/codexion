@@ -36,7 +36,7 @@ export default function DocViewer({slug}: DocViewerProps) {
                     {String(children).replace(/\n$/, "")}
                 </SyntaxHighlighter>
             ) : (
-                <code className="bg-gray-100 rounded px-1 py-0.5 text-sm" {...props}>
+                <code className="bg-neutral-100 rounded px-1 py-0.5 text-sm" {...props}>
                     {children}
                 </code>
             );
@@ -152,7 +152,7 @@ export default function DocViewer({slug}: DocViewerProps) {
             {slug && (
                 <>
                     <Breadcrumb slug={slug}/>
-                    <div className="prose prose-sm sm:prose lg:prose-lg max-w-none">
+                    <div className="prose prose-sm sm:prose lg:prose-lg max-w-none p-2 text-neutral-800">
                         <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
                             {content}
                         </ReactMarkdown>

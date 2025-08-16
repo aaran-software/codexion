@@ -48,14 +48,15 @@ export default function Sidebar({ onSelect }: SidebarProps) {
 
           return (
             <li key={item.slug} className={`ml-${level * 4}`}>
-              <div className="flex items-center space-x-1 group">
+              <div
+                            onClick={() => toggleOpen(item.slug)}
+                  className="flex items-center space-x-1 group">
                 {hasChildren && (
-                  <button
-                    onClick={() => toggleOpen(item.slug)}
+                  <div
                     className="text-sm focus:outline-none transition-transform duration-200 group-hover:text-blue-600"
                   >
                     {isOpen ? "▼" : "▶"}
-                  </button>
+                  </div>
                 )}
                 <button
                   onClick={() => onSelect(item.slug)}
