@@ -1,6 +1,6 @@
 import {useState} from "react";
-import Sidebar from "../../../../resources/components/sidebar/SecondSidebar";
-import DocViewer from "../../../../resources/UIBlocks/docs/DocViewer";
+import Sidebar from "../../../resources/components/sidebar/SecondSidebar";
+import DocViewer from "../../../resources/UIBlocks/docs/DocViewer";
 
 export default function Docs() {
     const [selectedSlug, setSelectedSlug] = useState<string | null>(null);

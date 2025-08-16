@@ -22,7 +22,7 @@ import { AppSidebar } from "../../../../resources/components/sidebar/app-sidebar
 import ScrollToTopButton from "../../../../resources/components/common/scrolltotopbutton";
 import ProductListing from "../../../../resources/layouts/ecart/vendor/ProductListing";
 import VendorOrder from "../../../../resources/layouts/ecart/vendor/VendorOrder";
-import Docs from "../docs/docs";
+import Docs from "../docs";
 
 export default function Admin() {
   const { token } = useAuth();

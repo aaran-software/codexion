@@ -28,7 +28,7 @@ import LoadingScreen from "../../../resources/components/loading/LoadingScreen";
 import Test from "./pages/Test";
 import ScrollToTop from "../../../resources/components/common/scrolltotop";
 import ScrollToTopButton from "../../../resources/components/common/scrolltotopbutton";
-import Docs from "./docs/docs";
+import Docs from "./docs";
 
 function AppRoutes() {
   const navigate = useNavigate();

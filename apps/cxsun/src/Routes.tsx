@@ -4,7 +4,7 @@ import Login from "../../global/auth/Login";
 import SignUp from "../../global/auth/Signup";
 import ProtectedRoute from "../../global/auth/ProtectedRoute";
 import Admin from "./pages/Admin";
-import Docs from "../../ecart/src/docs/docs";
+import Docs from "../../ecart/src/docs";
 
 function AppRoutes() {
     return (
