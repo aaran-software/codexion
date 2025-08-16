@@ -33,7 +33,7 @@ def test_add_app():
     add_app("crm", "0.9.5")
     apps = get_registered_apps()
     assert "crm" in apps
-    print("✅ App 'crm' added to apps.cfg")
+    print("✅ Docs 'crm' added to apps.cfg")
 
 
 def test_get_registered_apps():
@@ -50,11 +50,11 @@ def test_update_app_version():
     config = configparser.ConfigParser()
     config.read(CFG_PATH)
     assert config["crm"]["version"] == "1.0.0"
-    print("✅ App version updated successfully")
+    print("✅ Docs version updated successfully")
 
 
 def test_remove_app():
     remove_app("cxsun")
     apps = get_registered_apps()
     assert "cxsun" not in apps
-    print("✅ App 'cxsun' removed successfully")
+    print("✅ Docs 'cxsun' removed successfully")

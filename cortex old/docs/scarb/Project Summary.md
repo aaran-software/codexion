@@ -55,7 +55,7 @@ codexion/
 1. **Main Entry Point** → Loads configuration (CFG) from `config/`.
 2. **IoC Container Boot** → Registers all service providers from `cortex/providers`.
 3. **Services Loaded** → DB, cache, auth, event bus, etc.
-4. **App Modules Loaded** → Dynamic discovery of installed apps.
+4. **Docs Modules Loaded** → Dynamic discovery of installed apps.
 5. **Routing** → API endpoints registered for core + apps.
 6. **Business Logic Execution** → DTO validation, orchestration, service calls.
 7. **UI/API Response** → Serve templates or JSON/XML.

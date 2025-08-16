@@ -3,13 +3,13 @@ import {
   Collapsible,
   CollapsibleTrigger,
   CollapsibleContent,
-} from "./ui/collapsible"
+} from "./collapsible"
 import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarMenuSub,
-} from "./ui/sidebar-menu"
+} from "./sidebar-menu"
 import { ChevronRight, ChevronDown } from "lucide-react"
 
 interface DocItem {
@@ -24,7 +24,7 @@ interface SidebarProps {
   onSelect: (slug: string) => void
 }
 
-export default function Sidebar({ onSelect }: SidebarProps) {
+export default function SecondSidebar({ onSelect }: SidebarProps) {
   const [docs, setDocs] = useState<DocItem[]>([])
   const [openItems, setOpenItems] = useState<Record<string, boolean>>({})
 
@@ -92,8 +92,8 @@ export default function Sidebar({ onSelect }: SidebarProps) {
   }
 
   return (
-    <aside className="w-64 border-r border-border overflow-y-auto h-screen p-4 bg-background">
-      <h3 className="text-lg font-semibold mb-3">Docs</h3>
+    <aside className="w-64 border border-r-0 border-ring/30 overflow-y-auto h-screen p-4 bg-background">
+      {/*<h3 className="text-lg font-semibold mb-3">Docs</h3>*/}
       <SidebarMenu>{renderDocs(docs)}</SidebarMenu>
     </aside>
   )

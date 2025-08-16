@@ -103,7 +103,7 @@ def cprint_main_help():
 
     panel = Panel(
         table,
-        title="[bold cyan]Prefiq App Manager[/bold cyan]",
+        title="[bold cyan]Prefiq Docs Manager[/bold cyan]",
         subtitle="Use [bold yellow]prefiq <command> --help[/bold yellow] for more info.",
         border_style="cyan",
     )

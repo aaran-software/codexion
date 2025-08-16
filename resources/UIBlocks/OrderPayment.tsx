@@ -25,7 +25,7 @@ function OrderPayment() {
   }, [selectedMethod]);
 
   const paymentOptions = [
-    { value: "UPI", label: "UPI", description: "Pay by a UPI App" },
+    { value: "UPI", label: "UPI", description: "Pay by a UPI Docs" },
     {
       value: "cards",
       label: "Credit / Debit / ATM Card",

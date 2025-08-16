@@ -63,7 +63,7 @@ Use a GitHub org (e.g., `codexion`) with the following top-level repos:
 
 ## 🧩 Core Conventions
 
-### 📁 Per-App Structure (bin/core/src)
+### 📁 Per-Docs Structure (bin/core/src)
 
 ```
 app-<name>/
@@ -168,7 +168,7 @@ prefiq/
 
 ---
 
-### 2) **cortex** (Main Backend App) 🧠
+### 2) **cortex** (Main Backend Docs) 🧠
 
 ```
 cortex/

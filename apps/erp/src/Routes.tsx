@@ -7,7 +7,7 @@ import FrappeSignupForm from '../../../resources/components/auth/frappe-signup';
 function AppRoutes() {
   return (
     <Routes>
-        {/* <App /> */}
+        {/* <Docs /> */}
       <Route path='/' element={<FrappeLoginForm />} />
       <Route path='/signup' element={<FrappeSignupForm />} />
        <Route

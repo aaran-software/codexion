@@ -75,7 +75,7 @@ codexion/
 
 ## 🚀 Guiding Principles
 1. **Framework independence** – Prefiq stays pure, reusable outside Codexion.
-2. **App autonomy** – Each app runs independently with its own backend, frontend, and shared logic.
+2. **Docs autonomy** – Each app runs independently with its own backend, frontend, and shared logic.
 3. **Shared core** – Avoid duplication with `core/` modules usable by both Python & JS.
 4. **Strict separation** – Cortex holds core business logic & global settings, outside `/apps` to prevent casual tampering.
 5. **Multi‑tenant ready** – Sites structure supports separate deployments.

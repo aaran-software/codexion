@@ -6,7 +6,7 @@ import Home from "./pages/Home";
 function AppRoutes() {
   return (
     <Routes>
-        {/* <App /> */}
+        {/* <Docs /> */}
       <Route path='/' element={<Home />} />
 
     </Routes>

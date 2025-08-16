@@ -30,7 +30,7 @@ def add_app(app_name: str, version: str = "1.0.0"):
     config = configparser.ConfigParser()
     config.read(CFG_PATH)
     if app_name in config:
-        print(f"⚠️ App '{app_name}' already exists. Use `update_app_version()` instead.")
+        print(f"⚠️ Docs '{app_name}' already exists. Use `update_app_version()` instead.")
     config[app_name] = {"version": version}
     with open(CFG_PATH, "w") as f:
         config.write(f)
@@ -48,7 +48,7 @@ def update_app_version(app_name: str, version: str):
     config = configparser.ConfigParser()
     config.read(CFG_PATH)
     if app_name not in config:
-        raise ValueError(f"App '{app_name}' not found in apps.cfg")
+        raise ValueError(f"Docs '{app_name}' not found in apps.cfg")
     config[app_name]["version"] = version
     with open(CFG_PATH, "w") as f:
         config.write(f)

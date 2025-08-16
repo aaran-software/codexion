@@ -147,12 +147,12 @@ export default function DocViewer({slug}: DocViewerProps) {
     };
 
     return (
-        <div className="flex-1 overflow-y-auto bg-white p-6">
+        <div className="flex-1 overflow-y-auto scrollbar-hide bg-background px-6 pt-5 border border-ring/30">
             {!slug && <p className="text-gray-500">Select a document to view.</p>}
             {slug && (
                 <>
                     <Breadcrumb slug={slug}/>
-                    <div className="prose prose-sm sm:prose lg:prose-lg max-w-none p-2 text-neutral-800">
+                    <div className="prose prose-sm sm:prose lg:prose-lg max-w-none p-2 text-foreground">
                         <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
                             {content}
                         </ReactMarkdown>
@@ -171,7 +171,7 @@ interface BreadcrumbProps {
 function Breadcrumb({slug}: BreadcrumbProps) {
     const parts = slug.split("/");
     return (
-        <nav className="text-sm text-gray-500 mb-4" aria-label="Breadcrumb">
+        <nav className="text-sm text-foreground/60 mb-4" aria-label="Breadcrumb">
             {parts.map((part, idx) => {
                 const path = parts.slice(0, idx + 1).join("/");
                 const isLast = idx === parts.length - 1;

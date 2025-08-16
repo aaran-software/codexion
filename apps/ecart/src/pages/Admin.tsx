@@ -20,15 +20,18 @@ import Dashboard from "../../../../resources/components/dashboard/Dashboard";
 import AppHeader from "../../../../resources/components/header/AppHeader";
 import { AppSidebar } from "../../../../resources/components/sidebar/app-sidebar";
 import ScrollToTopButton from "../../../../resources/components/common/scrolltotopbutton";
+import ProductListing from "../../../../resources/layouts/ecart/vendor/ProductListing";
+import VendorOrder from "../../../../resources/layouts/ecart/vendor/VendorOrder";
+import Docs from "../docs/docs";
 
 export default function Admin() {
-const { token } = useAuth();
-const navigate = useNavigate();
-useEffect(() => {
-  if (!token) {
-    navigate("/");
-  }
-}, [token]);
+  const { token } = useAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [token]);
 
   const { component } = useParams();
   const { currentComponent, setCurrentComponent } = useAppContext();
@@ -47,26 +50,41 @@ useEffect(() => {
     if (currentComponent) {
       const titleMap: Record<string, string> = {
         admin: "Dashboard",
-        docker: "DockerCreate",
+          productlist: "Product List",
+          vendororder: "Vendor Order",
+          docs: "Docs",
+
       };
       document.title = titleMap[currentComponent];
     }
   }, [currentComponent]);
 
   const [compoent] = useState([
-
     {
-      id: "dashboard",
+      id: "",
       className: "w-[100%] min-h-full",
       component: <Dashboard />,
     },
-
-
+    {
+      id: "productlist",
+      className: "w-[100%] min-h-full",
+      component: <ProductListing />,
+    },
+    {
+      id: "vendororder",
+      className: "w-[100%] min-h-full",
+      component: <VendorOrder />,
+    },
+    {
+      id: "docs",
+      className: "w-[100%] min-h-full",
+      component: <Docs />,
+    },
   ]);
 
   return (
     <SidebarProvider className="flex flex-col min-h-screen bg-dashboard-background text-dashboard-foreground">
-      {/* Sticky App header */}
+      {/* Sticky Docs header */}
       <div className="sticky top-0 z-50 bg-background">
         <AppHeader />
       </div>

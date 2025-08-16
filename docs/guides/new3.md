@@ -115,8 +115,8 @@ app = Application()
 app.register(DatabaseProvider)
 
 # Add booting/booted callbacks
-app.add_booting_callback(lambda: print(">>> App is booting..."))
-app.add_booted_callback(lambda: print(">>> App has booted!"))
+app.add_booting_callback(lambda: print(">>> Docs is booting..."))
+app.add_booted_callback(lambda: print(">>> Docs has booted!"))
 
 # Run boot lifecycle
 app.boot()

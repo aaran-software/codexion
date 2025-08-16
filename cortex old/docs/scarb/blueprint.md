@@ -21,7 +21,7 @@
 
 * `main.py` → `erp/cortex/bootstrap.py` (deterministic boot sequence: CFG → IOC → SPV → MOD → ROUTES → HEALTH).
 * Support `--dry-run`, `--migrate-only`, `--safe-upgrade`.
-* App discovery: `app_manifest.py` or Python entry\_point + semantic version check.
+* Docs discovery: `app_manifest.py` or Python entry\_point + semantic version check.
 * Lifecycle hooks: `on_preboot`, `on_boot`, `on_ready`, `on_shutdown`, `on_upgrade`.
 * Boot logging with `trace_id`, `boot_step`, `duration`.
 

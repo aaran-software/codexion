@@ -3,7 +3,7 @@ from cortex.core.providers.di import Container
 from cortex.core.providers.registry import Registry
 from cortex.core.providers.config_loader import load_env, load_config_modules
 
-class App:
+class Docs:
     def __init__(self, env_file=".env", config_folder="config"):
         load_env(env_file)
         self.env = os.getenv("APP_ENV", "local")
