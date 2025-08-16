@@ -1,6 +1,6 @@
 import * as React from "react"
 
-// same tiny cn used locally
+// Tiny classnames helper
 function cn(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ")
 }
@@ -20,8 +20,9 @@ export const SidebarMenuButton = React.forwardRef<
   <button
     ref={ref}
     className={cn(
-      "w-full flex items-center justify-between rounded-md px-2 py-1.5 text-sm transition-colors",
-      "hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-1 focus:ring-ring",
+      "w-full cursor-pointer flex items-center text-left justify-between rounded-md px-2 py-1.5 text-sm transition-colors",
+      "hover:bg-accent hover:text-accent-foreground",
+      "focus:outline-none focus-visible:ring-0", // removed default focus ring
       className
     )}
     {...props}
@@ -30,9 +31,17 @@ export const SidebarMenuButton = React.forwardRef<
 SidebarMenuButton.displayName = "SidebarMenuButton"
 
 export function SidebarMenuSub({ children }: { children: React.ReactNode }) {
-  return <ul className="ml-4 space-y-1">{children}</ul>
+  return (
+    <ul
+      className="ml-2 space-y-2"
+      // remove any inherited focus styles
+      tabIndex={-1}
+    >
+      {children}
+    </ul>
+  )
 }
 
-// export function SidebarMenuSubItem({ children }: { children: React.ReactNode }) {
-//   return <li className="list-none">{children}</li>
-// }
+export function SidebarMenuSubItem({ children }: { children: React.ReactNode }) {
+  return <li>{children}</li>
+}
