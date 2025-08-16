@@ -366,7 +366,7 @@ Deterministic initialization with clear stages:
 
 * `main.py` → `erp/cortex/bootstrap.py` (deterministic boot sequence: CFG → IOC → SPV → MOD → ROUTES → HEALTH).
 * Support `--dry-run`, `--migrate-only`, `--safe-upgrade`.
-* App discovery: `app_manifest.py` or Python entry\_point + semantic version check.
+* Docs discovery: `app_manifest.py` or Python entry\_point + semantic version check.
 * Lifecycle hooks: `on_preboot`, `on_boot`, `on_ready`, `on_shutdown`, `on_upgrade`.
 * Boot logging with `trace_id`, `boot_step`, `duration`.
 
@@ -501,7 +501,7 @@ Deterministic initialization with clear stages:
 * `main.py` / `entry_point.py` — application entry (env detection → bootstrap).
 * `erp/cortex/bootstrap.py` — orchestrates Boot sequence (CFG → IOC → SPV → MOD → ROUTES).
 * `erp/cortex/lifecycle.py` — registers hooks: `on_preboot`, `on_boot`, `on_postboot`, `on_shutdown`.
-* App auto-discovery: look for `apps/` packages with `app_manifest.py` or `entrypoint` metadata.
+* Docs auto-discovery: look for `apps/` packages with `app_manifest.py` or `entrypoint` metadata.
 * Config override order: `.env` → `config/base.yaml` → `config/{env}.yaml` → tenant/site override.
 
 **Implementation notes**

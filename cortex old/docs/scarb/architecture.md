@@ -19,7 +19,7 @@
 * `main.py` / `entry_point.py` — application entry (env detection → bootstrap).
 * `erp/cortex/bootstrap.py` — orchestrates Boot sequence (CFG → IOC → SPV → MOD → ROUTES).
 * `erp/cortex/lifecycle.py` — registers hooks: `on_preboot`, `on_boot`, `on_postboot`, `on_shutdown`.
-* App auto-discovery: look for `apps/` packages with `app_manifest.py` or `entrypoint` metadata.
+* Docs auto-discovery: look for `apps/` packages with `app_manifest.py` or `entrypoint` metadata.
 * Config override order: `.env` → `config/base.yaml` → `config/{env}.yaml` → tenant/site override.
 
 **Implementation notes**

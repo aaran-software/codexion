@@ -25,4 +25,4 @@ def test_migrate_all_table():
     # 5. Optional: print first few for manual inspection
     recent = select_all("migrations", "app, name, order_index")
     for row in recent:
-        print(f"🧩 Migration applied → App: {row[0]}, Name: {row[1]}, Order: {row[2]}")
+        print(f"🧩 Migration applied → Docs: {row[0]}, Name: {row[1]}, Order: {row[2]}")

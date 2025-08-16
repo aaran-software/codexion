@@ -7,8 +7,8 @@ if __name__ == "__main__":
     app = Application.get_app()
 
     # Lifecycle hooks
-    app.on_booting(lambda: print("[App] Booting started..."))
-    app.on_booted(lambda: print("[App] Boot finished."))
+    app.on_booting(lambda: print("[Docs] Booting started..."))
+    app.on_booted(lambda: print("[Docs] Boot finished."))
 
     # Register all service providers from the global registry
     for provider in PROVIDERS:

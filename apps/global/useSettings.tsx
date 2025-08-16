@@ -52,12 +52,6 @@ export default function AppInitializer({ children }: { children: ReactNode }) {
       </div>
     );
   }
-  // if (!settings)
-  //   return (
-  //     <div>
-  //       {/* <LoadingSpinner /> */}
-  //     </div>
-  //   );
 
   return (
     <SettingsContext.Provider value={settings}>

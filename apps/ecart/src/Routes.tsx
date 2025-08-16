@@ -8,9 +8,7 @@ const Home = lazy(() => import("./pages/Home"));
 const ProductPage = lazy(
   () => import("../../../resources/UIBlocks/ProductPage")
 );
-const CategoryPage = lazy(
-  () => import("./pages/CategoryPage")
-);
+const CategoryPage = lazy(() => import("./pages/CategoryPage"));
 const Wishlist = lazy(() => import("../../../resources/UIBlocks/Wishlist"));
 const Cart = lazy(() => import("./pages/Cart"));
 const Footer = lazy(
@@ -30,6 +28,8 @@ import LoadingScreen from "../../../resources/components/loading/LoadingScreen";
 import Test from "./pages/Test";
 import ScrollToTop from "../../../resources/components/common/scrolltotop";
 import ScrollToTopButton from "../../../resources/components/common/scrolltotopbutton";
+import Docs from "./docs/docs";
+
 function AppRoutes() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -37,6 +37,7 @@ function AppRoutes() {
     location.pathname === "/login" ||
     location.pathname === "/signup" ||
     location.pathname === "/test" ||
+    location.pathname === "/admin" ||
     location.pathname.startsWith("/dashboard");
 
   const routeTitles: { pattern: RegExp; title: string }[] = [
@@ -101,7 +102,7 @@ function AppRoutes() {
         )}
 
         <Routes>
-          {/* <App /> */}
+          {/* <Docs /> */}
           <Route path="/" element={<Home />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<FrappeLoginForm />} />
@@ -111,6 +112,7 @@ function AppRoutes() {
           <Route path="/special/:id" element={<SpecialCategory />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/test" element={<Test />} />
+          <Route path="/docs" element={<Docs />} />
           <Route
             path="/dashboard/:component?"
             element={

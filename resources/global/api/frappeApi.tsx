@@ -25,7 +25,7 @@ export const loginFrappe = async (usr: string, pwd: string) => {
 export const logoutFrappe = async () => {
   try {
     const response = await apiClient.post("/api/method/logout");
-    if (response.data.message === "No App") {
+    if (response.data.message === "No Docs") {
       // success
       return;
     } else {
@@ -43,5 +43,5 @@ export const getLoggedInUser = async (): Promise<string | null> => {
   );
   const user = response.data.message;
   localStorage.setItem("email", user);
-  return user === "No App" ? null : user;
+  return user === "No Docs" ? null : user;
 };

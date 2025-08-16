@@ -11,45 +11,56 @@
     "position": "center",
     "height": 20,
     "font_size": 2,
-    "mode":"logo",
+    "mode": "logo",
     "company_name": "",
     "color": "",
-    "padding":0
+    "padding": 0
   },
-  
+
   "sidemenu": {
     "main": [
       {
-        "title": "Admin",
+        "title": "Dashboard",
         "icon": "LayoutDashboard",
+        "currentComponent": "",
+        "url": "/"
+      },
+      {
+        "title": "Products",
+        "icon": "Settings",
+        "currentComponent": "productlist",
+        "url": "/productlist"
+      },
+      {
+        "title": "Orders",
+        "icon": "LayoutDashboard",
+        "currentComponent": "vendororder",
+        "url": ""
+      },
+
+      {
+        "title": "Payments & Earnings",
+        "icon": "LayoutDashboard",
+        "currentComponent": "task",
         "url": ""
       },
       {
-        "title": "Theme",
-        "icon": "Settings",
-        "url": "#",
-        "items": [
-          {
-            "title": "Logo",
-            "currentComponent": "logo",
-            "url": "logo"
-          },
-          {
-            "title": "Team",
-            "currentComponent": "",
-            "url": "#"
-          },
-          {
-            "title": "Billing",
-            "currentComponent": "",
-            "url": "#"
-          },
-          {
-            "title": "Limits",
-            "currentComponent": "",
-            "url": "#"
-          }
-        ]
+        "title": "Store Settings",
+        "icon": "LayoutDashboard",
+        "currentComponent": "task",
+        "url": ""
+      },
+      {
+        "title": "Reviews",
+        "icon": "LayoutDashboard",
+        "currentComponent": "task",
+        "url": ""
+      },
+      {
+        "title": "Docs",
+        "icon": "LayoutDashboard",
+        "currentComponent": "docs",
+        "url": "docs"
       }
     ],
     "help": {},
