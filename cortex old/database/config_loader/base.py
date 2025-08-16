@@ -19,7 +19,7 @@ import contextvars
 from pydantic import BaseModel, field_validator, ConfigDict
 
 from .drivers import mariadb, postgresql, sqlite, mongodb
-from cortex.core.settings import get_settings
+from cortex.core.settings. import get_settings
 from .validators import DatabaseValidators  # Import the validators
 
 # Mapping of supported database drivers to their config builders
