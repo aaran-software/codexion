@@ -1,11 +1,12 @@
 # prefiq/providers/settings_provider.py
 
 from pydantic import ValidationError
-from prefiq.core.contracts.base_provider import Application, BaseProvider, register_provider
+from prefiq.core.contracts.base_provider import Application, BaseProvider
 from prefiq.settings.get_settings import get_settings, clear_settings_cache
+from prefiq.utils.logger import get_logger
 
+log = get_logger("prefiq.settings")
 
-@register_provider
 class SettingsProvider(BaseProvider):
     """
     Loads global application settings (from env/.env) using prefiq.settings.
@@ -37,7 +38,7 @@ class SettingsProvider(BaseProvider):
     def boot(self) -> None:
         settings = self.app.resolve("settings")
         env = getattr(settings, "ENV", "development")
-        print(f"[SettingsProvider] Loaded settings for ENV={env}")
+        log.info("settings_loaded", extra={"env": env})
 
     # Optional helper to clear cached settings (for tests)
     def clear(self) -> None:

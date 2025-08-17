@@ -14,18 +14,19 @@
 # =============================================================
 
 import time
+from prefiq.settings.get_settings import get_settings
+from prefiq.utils.logger import get_logger
 
-SLOW_QUERY_THRESHOLD = 1.0  # seconds
+_s = get_settings()
+_log = get_logger(f"{_s.LOG_NAMESPACE}.db.query")
 
-def log_query(query: str, start_time: float):
-    """
-    Log the duration of a SQL query and flag slow queries.
+# slow threshold in ms (optional; add to settings if you like)
+_SLOW_MS = 500
 
-    :param query: The SQL query string
-    :param start_time: The start time (from time.time())
-    """
-    duration = time.time() - start_time
-    if duration > SLOW_QUERY_THRESHOLD:
-        print(f"🐢 SLOW QUERY ({duration:.2f}s): {query}")
+def log_query(query: str, start_time: float) -> None:
+    elapsed_ms = int((time.time() - start_time) * 1000)
+    extra = {"elapsed_ms": elapsed_ms}
+    if elapsed_ms >= _SLOW_MS:
+        _log.warning("query_slow", extra={**extra, "query": query})
     else:
-        print(f"✅ Query executed in {duration:.2f}s: {query}")
+        _log.info("query_ok", extra={**extra, "query": query})
