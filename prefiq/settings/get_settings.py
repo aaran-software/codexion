@@ -26,6 +26,8 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "INFO"  # DEBUG | INFO | WARNING | ERROR
     LOG_FORMAT: str = "text"  # "json" or "text"
     LOG_NAMESPACE: str = "prefiq"  # base logger name
+    LOG_COLOR: str = "auto"
+    DB_CLOSE_ATEXIT: bool = True
 
     model_config = SettingsConfigDict(
         env_file=env_path,

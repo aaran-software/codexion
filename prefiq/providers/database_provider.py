@@ -1,3 +1,5 @@
+import atexit
+
 from prefiq.core.contracts.base_provider import BaseProvider
 from prefiq.database.connection import get_engine
 from prefiq.settings.get_settings import get_settings
@@ -12,11 +14,27 @@ class DatabaseProvider(BaseProvider):
         self.engine = None
         s = get_settings()
         self.log = get_logger(f"{s.LOG_NAMESPACE}.db.provider")
+        self._teardown_registered = False
 
     def register(self) -> None:
         self.engine = get_engine()
         self.app.bind("db", self.engine)
         self.log.debug("db_registered", extra={"engine_type": type(self.engine).__name__})
+
+        # register one-time process-exit teardown
+        if not self._teardown_registered:
+            atexit.register(self._close_engine_safely)
+            self._teardown_registered = True
+
+    def _close_engine_safely(self):
+        try:
+            if hasattr(self.engine, "close"):
+                res = self.engine.close()
+                # handle async close too
+                res = self._resolve_awaitable(res)
+            self.log.info("db_closed")
+        except Exception as e:
+            self.log.error("db_close_error", extra={"error": str(e)})
 
     @staticmethod
     def _resolve_awaitable(maybe_awaitable):
