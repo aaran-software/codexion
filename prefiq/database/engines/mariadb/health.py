@@ -1,25 +1,51 @@
 # =============================================================
 # Health Check Utility (health.py)
 #
-# Author: Sundar
-# Created: 2025-08-06
-#
-# Purpose:
-#   - Provide a universal health check function for any DB engine.
-#
-# Notes for Developers:
-#   - Engine must implement `test_connection()` method.
-#   - Returns `True` if connection succeeds, `False` otherwise.
+# Works for sync and async engines. Optional timeout (seconds).
 # =============================================================
+from __future__ import annotations
+import asyncio
+import inspect
+from typing import Any, Optional
 
-def is_healthy(engine) -> bool:
-    """
-    Check if a given engine is alive and responsive.
+async def _awaitable(x: Any) -> Any:
+    if inspect.iscoroutine(x):
+        return await x
+    return x  # sync value
 
-    :param engine: A database engine instance with `test_connection()` method
-    :return: True if healthy, False if any error is raised
-    """
+async def _is_healthy_async(engine, timeout: Optional[float]) -> bool:
     try:
-        return engine.test_connection()
+        res = engine.test_connection()
+        if timeout is not None:
+            res = await asyncio.wait_for(_awaitable(res), timeout=timeout)
+        else:
+            res = await _awaitable(res)
+        return bool(res)
+    except Exception:
+        return False
+
+def is_healthy(engine, timeout: Optional[float] = 3.0) -> bool:
+    """
+    True if engine.test_connection() succeeds; supports sync/async engines.
+
+    timeout: seconds for async engines (None = no timeout).
+    """
+    # If we're already in an event loop, do it fully async.
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:
+        loop = None
+
+    if loop and loop.is_running():
+        # Caller is async; schedule as a task and let them await it if they want.
+        # For convenience, run-to-completion here (small, self-contained probe).
+        return loop.run_until_complete(_is_healthy_async(engine, timeout))  # type: ignore[call-arg]
+
+    # No loop → run an event loop if needed
+    try:
+        res = engine.test_connection()
+        if inspect.isawaitable(res):
+            return asyncio.run(_is_healthy_async(engine, timeout))
+        return bool(res)
     except Exception:
         return False
