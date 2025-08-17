@@ -148,7 +148,7 @@ export function NavUser({
               <button
                 type="button"
                 onClick={() => setShowHelpMenu(true)}
-                className="flex items-center w-full text-sm px-2 py-2 text-left hover:bg-muted rounded-sm cursor-pointer"
+                className="text-foreground/70 hover:bg-primary/10 hover:text-primary flex items-center w-full text-sm px-2 py-2 text-left hover:bg-muted rounded-sm cursor-pointer"
               >
                 <CircleHelp className="w-4 mr-2 text-foreground/70" />
                 Help
