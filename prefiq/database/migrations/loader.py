@@ -8,10 +8,10 @@ from types import ModuleType
 from typing import Tuple, List, Dict
 
 from prefiq.apps.apps_cfg import get_registered_apps
-from prefiq.settings import get_settings
+from prefiq.settings.get_settings import load_settings
 from prefiq.database.migrations.hashing import compute_file_hash
 
-settings = get_settings()
+settings = load_settings()
 PROJECT_ROOT = settings.project_root
 CONFIG_PATH = os.path.join(PROJECT_ROOT, "config", "apps.cfg")
 
