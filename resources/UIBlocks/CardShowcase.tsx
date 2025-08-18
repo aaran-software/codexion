@@ -18,6 +18,7 @@ function CardShowcase({ items }) {
               src={item.image}
               className="w-[70%] lg:w-full"
               alt={item.title}
+              loading="lazy"
             />
           </div>
 
@@ -28,9 +29,7 @@ function CardShowcase({ items }) {
             }`}
           >
             {/* Title */}
-            <h1 className="text-xl md:text-3xl my-3 font-bold">
-              {item.title}
-            </h1>
+            <h1 className="text-xl md:text-3xl my-3 font-bold">{item.title}</h1>
 
             {/* Optional Description */}
             {item.description && (

@@ -17,3 +17,8 @@
   order: 5
   desc: Team Layout
   tags: [api, endpoints]
+
+  - slug: cardview
+  order: 5
+  desc: Team Layout
+  tags: [api, endpoints]

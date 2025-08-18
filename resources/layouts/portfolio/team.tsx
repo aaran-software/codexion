@@ -35,6 +35,7 @@ function Team({ title = "Meet Our Team", description, members }: TeamProps) {
               src={member.image}
               alt={member.name}
               className="w-32 h-32 object-cover rounded-full shadow-md"
+              loading="lazy"
             />
             <div className="text-2xl font-semibold">{member.name}</div>
             <div className="text-md">{member.designation}</div>

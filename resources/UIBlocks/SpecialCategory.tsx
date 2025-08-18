@@ -1,5 +1,5 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import apiClient from "../../resources/global/api/apiClients";
 import ImageButton from "../components/button/ImageBtn";
 import { useAppContext } from "../../apps/global/AppContaxt";
@@ -15,9 +15,7 @@ type ProductType = {
   prod_id: number;
 };
 
-// interface SpecialCategoryProps {
-//   id?: string;
-// }
+
 const SpecialCategory= () => {
   const { API_URL } = useAppContext();
   const location=useLocation()
@@ -27,15 +25,6 @@ const SpecialCategory= () => {
   const [, setError] = useState<string | null>(null);
   const { category } = useParams();
   const navigate = useNavigate();
-
-//   useEffect(() => {
-//   // Scroll to top whenever this page is opened
-//   window.scrollTo({
-//     top: 0,
-//     left: 0,
-//     behavior: "instant" // or "smooth" if you want animation
-//   });
-// }, []);
 
   const {id}=useParams();
   const value=location.state?.filterValue || 1;

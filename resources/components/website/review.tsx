@@ -52,7 +52,7 @@ function Review() {
             >
               <div className='text-justify'>{item.review}</div>
               <div className='flex flex-row gap-3 mt-5'>
-                <img className='w-15 h-15 rounded-full' src={item.image} alt='' />
+                <img className='w-15 h-15 rounded-full' src={item.image} alt='' loading='lazy' />
                 <div className='flex flex-col justify-center'>
                   <div className='text-2xl font-semibold capitalize'>{item.name}</div>
                   <div className='capitalize'>{item.designation}</div>

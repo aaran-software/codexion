@@ -1,17 +1,28 @@
-import React, { Suspense, useState } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import Plan from "../../../../resources/components/website/plan";
 import Carousel from "../../../../resources/components/carousel";
 import { Link as ScrollLink } from "react-scroll";
 import ScrollToTop from "../../../../resources/components/common/scrolltotopbutton";
-import Team from "../../../../resources/components/website/team";
-import Articles from "../../../../resources/components/website/articles";
-import Review from "../../../../resources/components/website/review";
-import About from "./About";
-import CardShowcase from "../../../../resources/UIBlocks/CardShowcase";
-import Contact from "./Contact";
-import HeaderPortfolio from "../../../../resources/components/header/header-portfolio";
-import FooterPortfolio from "../../../../resources/components/footer/footer-portfolio";
+const Team = lazy(() => import("../../../../resources/layouts/portfolio/team"));
+const Articles = lazy(
+  () => import("../../../../resources/components/website/articles")
+);
+const Review = lazy(
+  () => import("../../../../resources/components/website/review")
+);
+const About = lazy(() => import("./About"));
+const Contact = lazy(() => import("./Contact"));
+const HeaderPortfolio = lazy(
+  () => import("../../../../resources/components/header/header-portfolio")
+);
+const FooterPortfolio = lazy(
+  () => import("../../../../resources/components/footer/footer-portfolio")
+);
+const CardShowcase = lazy(
+  () => import("../../../../resources/UIBlocks/CardShowcase")
+);
 import LoadingScreen from "../../../../resources/components/loading/LoadingScreen";
+import CardView from "../../../../resources/UIBlocks/card/CardView";
 
 const Home: React.FC = () => {
   // Company About Card
@@ -304,9 +315,7 @@ const Home: React.FC = () => {
 
   return (
     <main>
-      <Suspense
-        fallback={<LoadingScreen image={"/assets/linkagro_logo.jpg"} />}
-      >
+      <Suspense fallback={<LoadingScreen image={"/assets/logicx_logo.png"} />}>
         <HeaderPortfolio
           logo={{
             path: "/assets/logo.png",
@@ -362,6 +371,7 @@ const Home: React.FC = () => {
                       src={slide.image}
                       alt="Home Hero"
                       className="block mx-auto"
+                      loading="lazy"
                     />
                   </div>
                 </div>
@@ -377,7 +387,7 @@ const Home: React.FC = () => {
                 className="flex flex-col p-5 lg:p-8 bg-[#17965f] gap-5 border-r-1 items-center justify-center  border-b lg:border-0 border-gray-100 last:border-b-0 pb-3"
               >
                 <div className="w-15 xl:w-20">
-                  <img src={item.icon} alt="" />
+                  <img src={item.icon} alt="" loading="lazy" />
                 </div>
                 <div className="text-lg uppercase mt-2 font-semibold text-gray-50">
                   {item.label}
@@ -393,6 +403,7 @@ const Home: React.FC = () => {
                 src={"/assets/svg/home-hero.svg"}
                 className="w-[70%] lg:w-full"
                 alt="img"
+                loading="lazy"
               />
             </div>
             <div className="flex flex-col  justify-center gap-8">
@@ -439,6 +450,7 @@ const Home: React.FC = () => {
                     setSelectedIndex(idx);
                   }}
                   alt=""
+                  loading="lazy"
                 />
               ))}
             </div>
@@ -464,6 +476,7 @@ const Home: React.FC = () => {
                       onClick={() =>
                         setSliderVisible((sliderVisible) => !sliderVisible)
                       }
+                      loading="lazy"
                       alt=""
                     />
                   ))}
@@ -555,7 +568,7 @@ const Home: React.FC = () => {
                 key={index}
                 className="flex flex-col justify-center gap-3 items-center border-b lg:border-0 border-gray-100 last:border-b-0 pb-3"
               >
-                <img className="w-15" src={item.icon} alt="" />
+                <img className="w-15" src={item.icon} alt="" loading="lazy" />
                 <div className="text-5xl text-gray-50 font-semibold">
                   {item.count}
                 </div>
