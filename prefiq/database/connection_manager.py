@@ -2,7 +2,7 @@
 from contextlib import contextmanager, asynccontextmanager
 from typing import Optional, Generator, AsyncGenerator
 
-from prefiq.database.connection import db
+from prefiq.database.connection import get_engine
 from prefiq.database.config_loader.base import (
     override_thread_config,
     override_async_config,
@@ -20,7 +20,7 @@ class ConnectionManager:
     """
 
     def __init__(self, engine=None):
-        self._engine = engine or db
+        self._engine = engine or get_engine
 
     def get_engine(self):
         """Return the active DB engine (sync or async)."""
