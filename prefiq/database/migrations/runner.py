@@ -10,16 +10,17 @@ from __future__ import annotations
 
 import datetime
 import inspect
-from typing import Any, Tuple
-from pathlib import Path
+from typing import Any
 
 from prefiq.database.connection_manager import get_engine
-from cortex.database.base_tables import m000_migration_table
 from prefiq.database.migrations.loader import (
     discover_all_app_migrations,
     resolve_and_load,
 )
 from prefiq.database.schemas.queries import insert
+from prefiq.database.schemas.builder import create
+from prefiq.database.schemas.blueprint import TableBlueprint
+from prefiq.database.dialects.registry import get_dialect
 
 # Core/system tables that should not be dropped
 PROTECTED_TABLES = {"migrations", "tenants", "users"}
@@ -45,9 +46,22 @@ def _await(x: Any) -> Any:
 # --- internal ops ------------------------------------------------------------
 
 def _ensure_migrations_table() -> None:
-    # ensure base 'migrations' table exists
-    if hasattr(m000_migration_table, "up"):
-        m000_migration_table.up()
+    """
+    Ensure base 'migrations' table exists (idempotent), without external deps.
+    Uses the schema builder + dialects to stay cross-DB.
+    """
+    def _schema(t: TableBlueprint):
+        t.id("id")
+        t.string("app", 255, nullable=False)
+        t.string("name", 255, nullable=False)
+        t.integer("order_index", nullable=False, default=0)
+        t.string("hash", 255, nullable=False)
+        t.datetime("created_at", nullable=False, default="CURRENT_TIMESTAMP")
+        t.datetime("updated_at", nullable=False, default="CURRENT_TIMESTAMP")
+        t.index("idx_migrations_app", "app")
+        t.unique("ux_migrations_app_name", ["app", "name"])
+
+    create("migrations", _schema)
 
 
 def _is_applied(app: str, name: str, hash_: str) -> bool:
@@ -59,7 +73,7 @@ def _is_applied(app: str, name: str, hash_: str) -> bool:
 
     if row:
         if row[0] != hash_:
-            print(f"⚠️  {app}.{name} hash differs from recorded hash (was changed since first apply).")
+            print(f"⚠️  {app}.{name} hash differs from recorded hash (file changed since first apply).")
         return row[0] == hash_
     return False
 
@@ -108,16 +122,13 @@ def migrate_all() -> None:
 
 
 def drop_all() -> None:
-    """
-    Drop all tables except the protected set (useful for --fresh).
-    """
     eng = _engine()
-    rows = _await(eng.fetchall("SHOW TABLES"))
-
-    # rows is typically List[Tuple[str]]
+    d = get_dialect()
+    rows = _await(eng.fetchall(d.list_tables_sql()))
     for (table_name,) in rows:
         if table_name in PROTECTED_TABLES:
             print(f"🛡️  Skipping protected table: {table_name}")
             continue
+        qname = d.quote_ident(table_name)
         print(f"🗑️  Dropping table: {table_name}")
-        _await(eng.execute(f"DROP TABLE IF EXISTS `{table_name}`;"))
+        _await(eng.execute(f"DROP TABLE IF EXISTS {qname};"))
