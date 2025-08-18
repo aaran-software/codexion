@@ -3,7 +3,7 @@
 import os
 import pytest
 
-from cortex.core.settings import clear_settings_cache
+from prefiq.settings.get_settings import clear_settings_cache
 
 
 @pytest.fixture(autouse=True)
