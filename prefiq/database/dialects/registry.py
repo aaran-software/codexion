@@ -1,81 +1,75 @@
 # prefiq/database/dialects/registry.py
-
 from __future__ import annotations
 from typing import Optional
 
+from prefiq.settings.get_settings import load_settings
 from prefiq.database.connection_manager import get_engine
+
 from prefiq.database.dialects.base import Dialect
 from prefiq.database.dialects.sqlite import SQLiteDialect
 from prefiq.database.dialects.mysql import MySQLDialect
 from prefiq.database.dialects.mariadb import MariaDBDialect
-# (Optional) add others if you have them:
+# Uncomment if you support these:
 # from prefiq.database.dialects.postgres import PostgresDialect
 # from prefiq.database.dialects.mongodb import MongoDBDialect
 
-# Optional override for tests / forcing a dialect
-_FORCED: Optional[str] = None
-
+_FORCED: Optional[str] = None  # test override, e.g. set_dialect_for_tests("sqlite")
 
 def set_dialect_for_tests(name: Optional[str]) -> None:
-    """Force a specific dialect by name for tests (e.g., 'sqlite', 'mysql', 'mariadb')."""
     global _FORCED
     _FORCED = name.lower() if name else None
 
+def _from_name_fragment(name: str) -> Dialect:
+    """Map a string (engine name/url/class) to a concrete Dialect.
+       ORDER MATTERS: check 'mariadb' BEFORE 'mysql'."""
+    n = (name or "").lower()
 
-def _from_engine_name(name: str) -> Dialect:
-    """
-    Map an engine/backend/url string to a specific Dialect.
-    IMPORTANT: check 'mariadb' BEFORE 'mysql' so MariaDB isn't misclassified.
-    """
-    n = name.lower()
-
-    # Exact family checks first
+    # Distinguish MariaDB vs MySQL explicitly
     if "mariadb" in n:
         return MariaDBDialect()
     if "mysql" in n:
         return MySQLDialect()
 
-    # Optional extras (uncomment if you support them)
+    # Optional others
     # if "postgresql" in n or "postgres" in n or "psql" in n:
     #     return PostgresDialect()
     # if "mongodb" in n or "mongo" in n:
     #     return MongoDBDialect()
 
-    # SQLite (also handle file/memory hints)
+    # SQLite (file/memory hints too)
     if "sqlite" in n or n in ("file", "memory", ":memory:"):
         return SQLiteDialect()
 
-    # Safe default
+    # Safe default for local/dev
     return SQLiteDialect()
 
-
 def get_dialect() -> Dialect:
-    """
-    Resolve the active dialect:
-
-    1) If a test override is set, use that.
-    2) Otherwise, inspect the engine object returned by get_engine().
-       We try several common attributes (dialect_name, name, driver, backend, url/database_url/dsn).
-    3) Fall back to SQLite if we can't tell.
-    """
-    # 1) explicit override for tests
+    # 0) explicit test override
     if _FORCED:
-        return _from_engine_name(_FORCED)
+        return _from_name_fragment(_FORCED)
+
+    # 1) honor explicit setting if provided
+    s = load_settings()
+    eng_setting = (getattr(s, "DB_ENGINE", "") or "").lower()
+    if eng_setting:
+        return _from_name_fragment(eng_setting)
 
     # 2) infer from engine object
     eng = get_engine()
 
-    # First pass: explicit name-like attributes
+    # first: attributes that often carry the backend name
     for attr in ("dialect_name", "name", "driver", "backend"):
         v = getattr(eng, attr, None)
         if isinstance(v, str) and v.strip():
-            return _from_engine_name(v)
+            return _from_name_fragment(v)
 
-    # Second pass: URL/DSN-like attributes
+    # second: URL/DSN-like attributes
     for attr in ("url", "database_url", "dsn"):
         v = getattr(eng, attr, None)
         if isinstance(v, str) and v.strip():
-            return _from_engine_name(v)
+            return _from_name_fragment(v)
 
-    # 3) fallback
-    return SQLiteDialect()
+    # third: fall back to the class name / module (this fixes SyncMariaDBEngine cases)
+    cls = type(eng)
+    guess = f"{cls.__module__}.{cls.__name__}"
+    return _from_name_fragment(guess)

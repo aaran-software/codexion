@@ -209,15 +209,65 @@ def todo_done(todo_id: int = typer.Argument(..., help="ID of the todo")):
     typer.echo(f"✅ Done: #{todo_id}")
 
 
+# in apps/devmeta/cli/devmeta.py
 @app.command("debug-dialect")
 def debug_dialect():
     from prefiq.database.dialects.registry import get_dialect
     from prefiq.database.connection_manager import get_engine
     d = get_dialect()
     eng = get_engine()
-    # Try to show something informative about the engine
+    dname = getattr(d, "name", None) or type(d).__name__
+    ename = type(eng).__name__
     url = getattr(eng, "url", None) or getattr(eng, "database_url", None) or getattr(eng, "dsn", None)
-    typer.echo(f"Dialect: {getattr(d, 'name', type(d).__name__)}")
-    typer.echo(f"Engine: {type(eng).__name__}")
+    typer.echo(f"Dialect: {dname}")
+    typer.echo(f"Engine: {ename}")
     if url:
         typer.echo(f"URL/DSN: {url}")
+
+
+@app.command("debug-migrations")
+def debug_migrations():
+    """
+    Show the migrations package path and every m*.py file Python can see there.
+    This doesn't depend on migrator's private APIs.
+    """
+    import importlib.util, sys, pathlib, pkgutil, typer
+
+    # Make sure the provider is bound (so imports work under your app layout)
+    _ensure_devmeta_bound()
+
+    spec = importlib.util.find_spec("apps.devmeta.database.migrations")
+    if spec is None or not getattr(spec, "submodule_search_locations", None):
+        typer.echo("✘ Could not import package: apps.devmeta.database.migrations")
+        typer.echo("   • Ensure these exist (each with __init__.py): apps/, apps/devmeta/, apps/devmeta/database/, apps/devmeta/database/migrations/")
+        typer.echo(f"   • sys.path[0] = {sys.path[0]}")
+        raise typer.Exit(code=1)
+
+    pkg_dir = pathlib.Path(list(spec.submodule_search_locations)[0])
+    typer.echo(f"Package dir: {pkg_dir}")
+
+    # List python files starting with m
+    py_files = sorted(p.name for p in pkg_dir.glob("m*.py"))
+    if not py_files:
+        typer.echo("✘ No Python migrations (m*.py) found in that directory.")
+    else:
+        typer.echo("✓ Python migrations found:")
+        for n in py_files:
+            typer.echo(f"  - {n}")
+
+    # Try importing each module to catch import errors early
+    errs = []
+    for n in py_files:
+        modname = f"apps.devmeta.database.migrations.{n[:-3]}"
+        try:
+            importlib.import_module(modname)
+        except Exception as e:
+            errs.append((modname, f"{type(e).__name__}: {e}"))
+
+    if errs:
+        typer.echo("\n⚠ Import problems:")
+        for mod, msg in errs:
+            typer.echo(f"  - {mod}: {msg}")
+        raise typer.Exit(code=2)
+
+
