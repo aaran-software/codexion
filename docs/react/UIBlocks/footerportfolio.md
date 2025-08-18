@@ -1,7 +1,7 @@
 
 ---
 
-# 📘 `FooterPortfolio` Component Documentation
+# 📘 FooterPortfolio Component Documentation
 
 ## Overview
 

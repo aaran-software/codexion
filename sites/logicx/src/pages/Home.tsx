@@ -1,5 +1,4 @@
 import React, { Suspense, useState } from "react";
-import Button from "../../../../resources/components/button/Button";
 import Plan from "../../../../resources/components/website/plan";
 import Carousel from "../../../../resources/components/carousel";
 import { Link as ScrollLink } from "react-scroll";
@@ -8,9 +7,8 @@ import Team from "../../../../resources/components/website/team";
 import Articles from "../../../../resources/components/website/articles";
 import Review from "../../../../resources/components/website/review";
 import About from "./About";
-import Services from "./Services";
+import CardShowcase from "../../../../resources/UIBlocks/CardShowcase";
 import Contact from "./Contact";
-import Industry from "./Industry";
 import HeaderPortfolio from "../../../../resources/components/header/header-portfolio";
 import FooterPortfolio from "../../../../resources/components/footer/footer-portfolio";
 import LoadingScreen from "../../../../resources/components/loading/LoadingScreen";
@@ -27,10 +25,14 @@ const Home: React.FC = () => {
   ]);
 
   const [whyChoose] = useState<{ text: string }[]>([
-    { text: "20+ Years in Business Automation & IT" },
-    { text: "Cross‑platform Integration Experts" },
-    { text: "Open‑source + Proprietary Stack Capabilities" },
-    { text: "Local Support with Global Standards" },
+    {
+      text: "20+ Years of Proven Experience in both software development and product distribution.",
+    },
+    { text: "Dual Expertise – Technology + Trading." },
+    { text: "Scalable Solutions – From startups to enterprises." },
+    {
+      text: "Long-Term Client Partnerships built on trust, innovation, and support.",
+    },
   ]);
 
   // Company Info Card
@@ -111,6 +113,195 @@ const Home: React.FC = () => {
   ];
   const [sliderVisible, setSliderVisible] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const industries = [
+    {
+      title: "Software Industry Solutions",
+      image: "/assets/industry/software.png",
+      description:
+        "We deliver tailored ERP, billing, and e-commerce solutions designed to streamline operations and accelerate growth for software companies.",
+      services: [
+        {
+          heading: "ERP for IT Services",
+          description:
+            "Manage projects, timesheets, client billing, and HR seamlessly with ERP integration.",
+        },
+        {
+          heading: "License & Subscription Management",
+          description:
+            "Automate software license distribution, renewals, and subscription billing.",
+        },
+        {
+          heading: "Client & Support Portal",
+          description:
+            "Provide a customer portal for ticketing, updates, and self-service support.",
+        },
+        {
+          heading: "Analytics & Reporting",
+          description:
+            "Get real-time insights into project profitability, resource utilization, and client satisfaction.",
+        },
+      ],
+    },
+    {
+      title: "Electronics Retail & Distribution",
+      image: "/assets/industry/electronics.png",
+      description:
+        "Our ERP and e-commerce platforms empower electronics wholesalers, retailers, and distributors to manage high-volume inventory and multi-channel sales.",
+      services: [
+        {
+          heading: "Inventory & Warehouse Management",
+          description:
+            "Handle thousands of SKUs with batch, serial number, and warranty tracking.",
+        },
+        {
+          heading: "Multi-Channel E-Commerce",
+          description:
+            "Sell electronics online and offline with unified stock, order, and billing management.",
+        },
+        {
+          heading: "Vendor & Customer Management",
+          description:
+            "Easily manage suppliers, purchase orders, and bulk customer accounts.",
+        },
+        {
+          heading: "GST-Compliant Billing",
+          description:
+            "Generate invoices with GST compliance, discounts, and flexible tax rules.",
+        },
+        {
+          heading: "After-Sales Service",
+          description:
+            "Track warranties, repairs, and replacements with automated service workflows.",
+        },
+      ],
+    },
+  ];
+
+  const projects = [
+    {
+      title: "ERP Services We Offer",
+      image: "/assets/service/erpnext.png",
+      services: [
+        {
+          heading: "Implementation & Deployment",
+          description:
+            "We handle the complete setup of ERP—on cloud or on-premise—with user access control, email alerts, backup, and SSL configuration.",
+        },
+        {
+          heading: "Module Customization",
+          description:
+            "Customize modules like Sales, Inventory, Accounting, HR, and Manufacturing to suit your unique workflow.",
+        },
+        {
+          heading: "Tally Integration",
+          description:
+            "Bridge ERP with Tally for GST filing, financial reports, and accounting sync.",
+        },
+        {
+          heading: "WooCommerce & eCommerce Integration",
+          description:
+            "Automate sales, stock, and invoices between your online store and ERP.",
+        },
+        {
+          heading: "Training & Support",
+          description:
+            "Get in-depth training for staff, and ongoing technical support via call, email, or remote tools.",
+        },
+      ],
+    },
+    {
+      title: "Ecart – E-Commerce Platform",
+      image: "/assets/service/ecart.png",
+      services: [
+        {
+          heading: "Custom Storefront",
+          description:
+            "Build and manage a fully customizable online store tailored to your brand identity.",
+        },
+        {
+          heading: "Single Vendor Store",
+          description:
+            "Set up your own branded e-commerce store where you manage all products, orders, and customers directly.",
+        },
+        {
+          heading: "Multi-Vendor Marketplace",
+          description:
+            "Launch a scalable marketplace where multiple sellers can register, list products, manage their own inventory, and receive payments through a controlled admin system.",
+        },
+        {
+          heading: "Category & Product Management",
+          description:
+            "Easily manage and organize large catalogs with support for 2000+ products across multiple categories without performance issues.",
+        },
+        {
+          heading: "Secure Payments",
+          description:
+            "Integrated payment gateways with safe checkout and multi-currency support.",
+        },
+        {
+          heading: "Order Tracking",
+          description:
+            "Track orders and deliveries in real-time with automated status updates.",
+        },
+        {
+          heading: "Mobile Friendly",
+          description:
+            "Responsive design for a smooth shopping experience across all devices.",
+        },
+      ],
+    },
+    {
+      title: "QBilling (Quick Billing)",
+      image: "/assets/service/qbilling.png",
+      services: [
+        {
+          heading: "GST-Compliant Invoicing",
+          description: "Generate professional invoices with tax compliance.",
+        },
+        {
+          heading: "POS Integration",
+          description: "Fast and simple point-of-sale billing system.",
+        },
+        {
+          heading: "Customer & Vendor Management",
+          description: "Maintain customer/vendor data with ease.",
+        },
+        {
+          heading: "Reports & Analytics",
+          description: "Get detailed sales, expenses, and stock reports.",
+        },
+      ],
+    },
+  ];
+
+  const teamData = [
+    {
+      image: "/assets/sample1.jpg",
+      name: "Desirae Dias",
+      designation: "CEO",
+      bio: "Visionary leader driving innovation and excellence.",
+    },
+    {
+      image: "/assets/sample1.jpg",
+      name: "Madelyn Torff",
+      designation: "Marketing Head",
+      bio: "Expert in growth strategies and brand management.",
+    },
+    {
+      image: "/assets/sample1.jpg",
+      name: "Tiana Gouse",
+      designation: "Project Manager",
+      bio: "Ensures projects are delivered with precision and care.",
+    },
+    {
+      image: "/assets/sample1.jpg",
+      name: "Livia Passaquin",
+      designation: "Director",
+      bio: "Guides business strategy and organizational success.",
+    },
+  ];
+
   return (
     <main>
       <Suspense
@@ -285,32 +476,6 @@ const Home: React.FC = () => {
           {/* plan details Component */}
           <Plan />
 
-          {/* Why Choose LogicX? */}
-          <section className="px-5 py-20 lg:px-[12%] bg-website-background text-website-foreground">
-            <h2 className="text-3xl font-bold text-center pb-8">
-              Why Choose LogicX?
-            </h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {whyChoose.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-start gap-4 p-4 rounded-lg shadow-md bg-gray-50"
-                >
-                  {/* Optional icon placeholder */}
-                  <div
-                    className="w-2 h-8 bg-green-600 rounded"
-                    aria-hidden="true"
-                  />
-
-                  <p className="text-lg font-medium text-gray-700">
-                    {item.text}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </section>
-
           {/* Consultation Field */}
           <div className="px-5 lg:px-[12%] py-10 flex flex-col sm:flex-row justify-between  bg-[#128d57]">
             <div className="sm:w-3/5 px-5">
@@ -342,14 +507,46 @@ const Home: React.FC = () => {
           id="industry"
           className="min-h-[100vh] bg-website-background text-website-foreground flex items-center justify-center"
         >
-          <Industry />
+          <CardShowcase items={industries} />
+
+          {/* <Industry /> */}
         </section>
 
-        {/* services Component */}
-        <section id="services" className="min-h-[100vh] pb-20">
-          <Services />
+        {/* Why Choose LogicX? */}
+        <section className="px-5 py-20 lg:px-[12%] bg-background text-website-foreground">
+          <h2 className="text-3xl font-bold text-center pb-8">
+            Why Choose LogicX?
+          </h2>
 
-          <Team />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {whyChoose.map((item, idx) => (
+              <div
+                key={idx}
+                className="flex items-start gap-4 p-4 rounded-lg shadow-md bg-gray-50"
+              >
+                {/* Optional icon placeholder */}
+                <div
+                  className="w-2 h-8 bg-primary rounded shrink-0"
+                  aria-hidden="true"
+                />
+
+                <p className="text-lg font-medium text-gray-700">{item.text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+        {/* services Component */}
+        <section
+          id="services"
+          className="min-h-[100vh] bg-website-background pb-20"
+        >
+          <CardShowcase items={projects} />
+
+          <Team
+            title="Meet Our Professionals"
+            description="Our team combines creativity, expertise, and dedication to deliver outstanding solutions for our clients."
+            members={teamData}
+          />
           <Review />
           {/* Company Info Section */}
           <div className="px-5 py-10 lg:px-[12%] grid grid-cols-1 lg:grid-cols-4 gap-10 bg-[#128d57]">

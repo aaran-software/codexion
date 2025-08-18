@@ -40,17 +40,17 @@ function Review() {
         Plan & Pricing Lorem ipsum dolor sit amet consectetur adipisicing elit.
         Laborum omnis veniam nihil assumenda quas pariatur commodi accusantium alias inventore.
       </div>
-      <div id='review' className='flex justify-center items-center gap-10 px-5 py-10 overflow-x-auto'>
+      <div id='review' className='flex justify-center items-center gap-10 py-10 overflow-x-auto'>
       <div className='w-full max-w-3xl'>
         <Carousel autoSlide={false} autoSlideInterval={7000}>
           {review.map((item, index) => (
             <div
               key={index}
               className={`flex-grow-0 flex-shrink-0 w-full py-10 px-15 rounded-md ${
-                index % 2 === 0 ? 'bg-[#f2f2f2]' : 'bg-[#17965f] text-gray-50'
+                index % 2 === 0 ? 'bg-background' : 'bg-[#17965f] text-gray-50'
               }`}
             >
-              <div>{item.review}</div>
+              <div className='text-justify'>{item.review}</div>
               <div className='flex flex-row gap-3 mt-5'>
                 <img className='w-15 h-15 rounded-full' src={item.image} alt='' />
                 <div className='flex flex-col justify-center'>
