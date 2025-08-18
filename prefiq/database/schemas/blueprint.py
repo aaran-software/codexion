@@ -1,6 +1,17 @@
-# prefiq/database/schemas/blueprint.py
-
 from typing import List, Optional, Tuple, Dict
+
+# --- add this set at top-level ---
+_SQL_KEYWORDS_NOQUOTE = {
+    "CURRENT_TIMESTAMP",
+    "CURRENT_TIMESTAMP()",
+    "CURRENT_DATE",
+    "CURRENT_DATE()",
+    "CURRENT_TIME",
+    "CURRENT_TIME()",
+    "NOW()",
+    "LOCALTIME",
+    "LOCALTIMESTAMP",
+}
 
 class TableBlueprint:
     def __init__(self, table_name: str):
@@ -22,8 +33,12 @@ class TableBlueprint:
             col += " UNIQUE"
         return col
 
+    # --- fixed: don't quote SQL time keywords ---
     def _format_default(self, default):
         if isinstance(default, str):
+            up = default.upper()
+            if up in _SQL_KEYWORDS_NOQUOTE:
+                return up
             return f"'{default}'"
         if isinstance(default, bool):
             return '1' if default else '0'
