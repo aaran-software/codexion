@@ -11,12 +11,6 @@ interface GlobalSearchProps {
   onNavigate: (path: string) => void;
 }
 
-interface GlobalSearchProps {
-  className?: string;
-  onSearchApi: string;
-  onNavigate: (path: string) => void;
-}
-
 export default function GlobalSearch({
   className = "",
   onSearchApi,

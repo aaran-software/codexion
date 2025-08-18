@@ -1,16 +1,16 @@
-import React from 'react'
-import { Routes, Route } from 'react-router-dom'
+import React, { Suspense } from "react";
+import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-
+import LoadingScreen from "../../../resources/components/loading/LoadingScreen";
 
 function AppRoutes() {
   return (
-    <Routes>
-        {/* <Docs /> */}
-      <Route path='/' element={<Home />} />
-
-    </Routes>
-  )
+    <Suspense fallback={<LoadingScreen image={"/assets/linkagro_logo.jpg"} />}>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </Suspense>
+  );
 }
 
-export default AppRoutes
+export default AppRoutes;

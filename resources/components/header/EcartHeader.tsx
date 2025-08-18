@@ -98,7 +98,9 @@ function EcartHeader() {
     <header className="sticky top-0 z-50 sm:px-5 bg-background border-b border-ring/30 shadow-lg">
       {showMobileSearch ? (
         <div className="flex justify-end p-2 gap-2 w-full">
-          <GlobalSearch className="flex-1 w-full" />
+          <GlobalSearch className="flex-1 w-full" onSearchApi={""} onNavigate={function (path: string): void {
+            throw new Error("Function not implemented.");
+          } } />
           <ImageButton
             icon="close"
             onClick={() => setShowMobileSearch(false)}
@@ -149,7 +151,9 @@ function EcartHeader() {
           <div className="flex items-center gap-3 flex-1 justify-end lg:gap-5 p-2">
             {/* Desktop Search */}
             <div className="hidden sm:block">
-              <GlobalSearch className="flex-1 md:min-w-[300px] lg:min-w-[500px]" />
+              <GlobalSearch className="flex-1 md:min-w-[300px] lg:min-w-[500px]" onSearchApi={""} onNavigate={function (path: string): void {
+                  throw new Error("Function not implemented.");
+                } } />
             </div>
 
             {/* Mobile Search Icon */}

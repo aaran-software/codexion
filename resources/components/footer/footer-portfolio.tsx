@@ -1,72 +1,26 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Link as ScrollLink } from "react-scroll";
 import FooterLink from "./FooterLink";
 
-function FooterPortfolio() {
-  const [address] = useState([
-    "address",
-    "street",
-    "Coimbatore,",
-    "pin code",
-    "Tamilnadu, India.",
-  ]);
+type FooterPortfolioProps = {
+  address: string[];
+  contact: string[];
+  company: { label: string; link: string }[];
+  project: { label: string; link: string }[];
+  legal: { label: string; link: string }[];
+  brandName: string;
+  year: number;
+};
 
-  const [contact] = useState(["info@Techmedia.in", "9843213500"]);
-  const [company] = useState([
-    {
-      label: "Home",
-      link: "home",
-    },
-    {
-      label: "About",
-      link: "about",
-    },
-    {
-      label: "Contact",
-      link: "contact",
-    },
-    {
-      label: "Product",
-      link: "industry",
-    },
-    {
-      label: "Features",
-      link: "services",
-    },
-  ]);
-  // Projects
-
-  const [project] = useState([
-    {
-      label: "Billing",
-      link: "/",
-    },
-    {
-      label: "Portfolio",
-      link: "/about",
-    },
-  ]);
-
-  const [legal] = useState([
-    {
-      label: "Privacy Policy",
-      link: "/",
-    },
-    {
-      label: "Terms & Conditions",
-      link: "/about",
-    },
-    {
-      label: "Return Policy",
-      link: "/contact",
-    },
-    {
-      label: "Accessibility",
-      link: "/blog",
-    },
-  ]);
-
+function FooterPortfolio({
+  address,
+  contact,
+  company,
+  project,
+  legal,
+  brandName,
+  year,
+}: FooterPortfolioProps) {
   return (
     <div>
       <FooterLink />
@@ -74,39 +28,41 @@ function FooterPortfolio() {
       <footer className="bg-foreground pt-10">
         <div className="mb-5">
           <div className="grid grid-cols-2 md:grid-cols-4 p-5 lg:px-[12%] gap-5 text-background bg-foreground/90">
+            
+            {/* Address & Contact */}
             <div className="flex flex-col gap-4">
-              <div className="text-sm font-bold text-[#128d57]">Tech Media</div>
+              <div className="text-lg font-bold text-primary">{brandName}</div>
               <div className="flex flex-col gap-2">
-                {address.map((address, idx) => (
+                {address.map((item, idx) => (
                   <p className="text-sm" key={idx}>
-                    {address}
+                    {item}
                   </p>
                 ))}
               </div>
               <div>
-                {contact.map((contact, idx) => (
+                {contact.map((item, idx) => (
                   <p className="text-sm" key={idx}>
-                    {contact}
+                    {item}
                   </p>
                 ))}
               </div>
             </div>
 
+            {/* Company */}
             <div className="flex flex-col gap-4">
-              <div className="text-sm font-bold text-[#128d57]">Tech Media</div>
+              <div className="text-lg font-bold text-primary">{brandName}</div>
               <div className="flex flex-col gap-2">
-                {company.map((company, idx) => (
+                {company.map((item, idx) => (
                   <ScrollLink
                     key={idx}
-                    to={company.link}
+                    to={item.link}
                     smooth={true}
                     duration={600}
                     offset={-70}
-                    // spy={true}
                     activeClass="text-[#6ab48d] border-l-4 border-[#6ab48d] pl-2"
                     className="cursor-pointer text-white hover:text-[#6ab48d] transition-all duration-200 text-sm"
                   >
-                    {company.label}
+                    {item.label}
                   </ScrollLink>
                 ))}
               </div>
@@ -114,47 +70,34 @@ function FooterPortfolio() {
 
             {/* Projects */}
             <div className="flex flex-col gap-4">
-              <div className="text-sm font-bold text-[#128d57]">Project</div>
+              <div className="text-lg font-bold text-primary">Project</div>
               <div className="flex flex-col gap-2">
-                {project.map((project, idx) => (
-                  <Link
-                    key={idx}
-                    className="flex flex-col text-sm"
-                    to={project.link}
-                  >
-                    {project.label}
+                {project.map((item, idx) => (
+                  <Link key={idx} className="flex flex-col text-sm" to={item.link}>
+                    {item.label}
                   </Link>
                 ))}
               </div>
             </div>
+
+            {/* Legal */}
             <div className="flex flex-col gap-4">
-              <div className="text-sm font-bold text-[#128d57]">Legal</div>
+              <div className="text-lg font-bold text-primary">Legal</div>
               <div className="flex flex-col gap-2">
-                {legal.map((legal, idx) => (
-                  <Link
-                    key={idx}
-                    className="flex flex-col text-sm"
-                    to={legal.link}
-                  >
-                    {legal.label}
+                {legal.map((item, idx) => (
+                  <Link key={idx} className="flex flex-col text-sm" to={item.link}>
+                    {item.label}
                   </Link>
                 ))}
               </div>
             </div>
           </div>
         </div>
+
+        {/* Footer Bottom */}
         <div className="border-t border-gray-200 bg-foreground text-white">
-          {/* <div className="flex">
-           {
-              link.map((link,idx)=>(
-                <a key={idx} target='_blank' href={link.link}>
-                  <img className='w-5 m-3' src={link.icon} alt='Facebook' />
-                </a>
-              ))
-            }
-        </div> */}
           <div className="text-sm text-center bg-foreground/90 px-2 py-7">
-            Copyright &copy; 2025 Tech Media. Powered by Aaran
+            Copyright &copy; {year} {brandName}. Powered by Aaran
           </div>
         </div>
       </footer>

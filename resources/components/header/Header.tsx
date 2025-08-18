@@ -39,7 +39,6 @@ type HeaderProps = {
   onNavigate: (path: string) => void;
   showMobileSearchInitial?: boolean;
 };
-// ...existing imports...
 
 export default function Header({
   logo,

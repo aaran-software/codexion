@@ -2,37 +2,31 @@ import { useState } from "react";
 import { Link as ScrollLink } from "react-scroll";
 import { IoMdMenu } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
-import { useAppSettings } from "../../../apps/global/useSettings";
 import { useNavigate } from "react-router-dom";
+
+type LogoConfig = {
+  path: string;
+  height?: number;
+  padding?: number;
+  position?: "start" | "center" | "end";
+  font_size?: number;
+  company_name?: string;
+  mode?: "logo" | "name" | "both";
+};
 
 type MenuItem = {
   label: string;
   path: string;
 };
 
-function HeaderPortfolio() {
-  const settings = useAppSettings();
-  if (!settings) return null;
+type HeaderPortfolioProps = {
+  logo: LogoConfig;
+  menu: MenuItem[];
+};
 
-  const defaultLogo = {
-    path: "/assets/logo.png",
-    height: 40,
-    padding: 8,
-    position: "center",
-    font_size: 2,
-    company_name: "",
-  };
-
-  const logo = settings.logo || defaultLogo;
+function HeaderPortfolio({ logo, menu }: HeaderPortfolioProps) {
   const [menuVisible, setMenuVisible] = useState(false);
   const navigate = useNavigate();
-  const [menu] = useState<MenuItem[]>([
-    { label: "Home", path: "home" },
-    { label: "About Us", path: "about" },
-    { label: "Industry", path: "industry" },
-    { label: "Services", path: "services" },
-    { label: "Contact", path: "contact" },
-  ]);
 
   return (
     <div className="bg-background flex flex-row justify-between h-20 items-center px-5 py-2 md:py-4 w-full fixed top-0 left-0 z-50 shadow-md">
@@ -41,33 +35,40 @@ function HeaderPortfolio() {
         className={`flex items-${logo.position} gap-2 cursor-pointer`}
         onClick={() => navigate("/")}
       >
-        {/* Mode 1: Only Logo */}
         {logo.mode === "logo" && (
           <img
             src={logo.path}
             alt="Logo"
-            className={`h-${logo.height} p-${logo.padding}`}
+            style={{ height: `${logo.height}px`, padding: `${logo.padding}px` }}
           />
         )}
 
-        {/* Mode 2: Only Company Name */}
         {logo.mode === "name" && (
           <h3
-            className={`text-${logo.font_size}xl p-${logo.padding} font-bold`}
+            style={{
+              fontSize: `${logo.font_size}rem`,
+              padding: `${logo.padding}px`,
+            }}
+            className="font-bold"
           >
             {logo.company_name}
           </h3>
         )}
 
-        {/* Mode 3: Both Logo + Company Name */}
         {logo.mode === "both" && (
           <>
             <img
               src={logo.path}
               alt="Logo"
-              className={`h-${logo.height} p-${logo.padding}`}
+              style={{
+                height: `${logo.height}px`,
+                padding: `${logo.padding}px`,
+              }}
             />
-            <span className={`text-${logo.font_size}xl font-bold`}>
+            <span
+              style={{ fontSize: `${logo.font_size}rem` }}
+              className="font-bold"
+            >
               {logo.company_name}
             </span>
           </>
@@ -76,36 +77,24 @@ function HeaderPortfolio() {
 
       {/* Desktop Menu */}
       <ul className="hidden md:flex flex-row justify-between gap-10 items-center">
-        {menu.map((item, index) => (
-          <li key={index} className="relative group">
+        {menu.map((item) => (
+          <li key={item.path} className="relative group">
             <ScrollLink
               to={item.path}
               smooth={true}
               duration={600}
               offset={-70}
               spy={true}
-              activeClass="text-[#6ab48d] border-b-3 border-b-[#6ab48d]"
-              className="cursor-pointer text-lg text-black hover:text-[#6ab48d] transition-all duration-200"
+              activeClass="text-primary border-b-3 border-b-[#6ab48d]"
+              className="cursor-pointer text-lg text-foreground hover:text-hover transition-all duration-200"
             >
               {item.label}
             </ScrollLink>
-            <span className="absolute left-0 bottom-0 h-0.5 w-full transform scale-x-0 origin-left group-hover:scale-x-100 group-hover:bg-[#6ab48d] transition-transform duration-100 ease-in-out"></span>
+            <span className="absolute left-0 bottom-0 h-1 w-full transform scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-100 ease-in-out"></span>
           </li>
         ))}
       </ul>
 
-      {/* Desktop Buttons */}
-      {/*<div className='md:flex gap-2 hidden'>*/}
-      {/*    <Button*/}
-      {/*        label='LOGIN'*/}
-      {/*        path='/login'*/}
-      {/*        className='bg-gradient-to-r from-[#23aa70] to-[#0e854f] text-gray-50 px-5 py-2 text-md hover:from-[#2cc984] hover:to-[#169c60]'*/}
-      {/*        children={undefined}*/}
-      {/*    />*/}
-      {/*    /!* <ModeToggle /> *!/*/}
-      {/*</div>*/}
-
-      <div></div>
       {/* Mobile Menu Icon */}
       <div
         className="flex md:hidden"
@@ -116,7 +105,7 @@ function HeaderPortfolio() {
 
       {/* Mobile Menu Dropdown */}
       <ul
-        className={`md:hidden transform transition-all duration-400 ease-in-out flex flex-col gap-5 w-full bg-black text-gray-50 p-4 absolute top-0 left-0 z-50 ${
+        className={`md:hidden fixed inset-0 transform transition-all duration-300 ease-in-out flex flex-col gap-5 bg-black text-gray-50 p-4 z-50 ${
           menuVisible
             ? "translate-y-0 opacity-100"
             : "-translate-y-full opacity-0"
@@ -130,16 +119,11 @@ function HeaderPortfolio() {
           <IoClose size={25} />
         </div>
 
-        {/* Mode toggle */}
-        {/* <div className='absolute left-0 top-0 mt-10 ml-5'>
-          <ModeToggle />
-        </div> */}
-
         {/* Mobile Links */}
         <div className="flex flex-col mt-16">
-          {menu.map((item, index) => (
+          {menu.map((item) => (
             <ScrollLink
-              key={index}
+              key={item.path}
               to={item.path}
               smooth={true}
               duration={600}
@@ -151,17 +135,6 @@ function HeaderPortfolio() {
             </ScrollLink>
           ))}
         </div>
-
-        {/* Login Button */}
-        {/*<div>*/}
-        {/*    <Button*/}
-        {/*        label='LOGIN'*/}
-        {/*        path='/login'*/}
-        {/*        onClick={() => setMenuVisible(false)}*/}
-        {/*        className='bg-gradient-to-r from-[#23aa70] to-[#0e854f] text-gray-50 px-5 py-2 text-md hover:from-[#2cc984] hover:to-[#169c60]'*/}
-        {/*        children={undefined}*/}
-        {/*    />*/}
-        {/*</div>*/}
       </ul>
     </div>
   );
