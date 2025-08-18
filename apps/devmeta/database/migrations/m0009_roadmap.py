@@ -10,7 +10,7 @@ def up():
         t.datetime("due_at", nullable=True),
         t.string("status", default="open", nullable=False),
         t.datetime("created_at", default="CURRENT_TIMESTAMP", nullable=False),
-        t.datetime("updated_at", default="CURRENT_TIMESTAMP", nullable=False)
+        t.datetime("updated_at", default="CURRENT_TIMESTAMP", nullable=False),
     ])
 
 def down():

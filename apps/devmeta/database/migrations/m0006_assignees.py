@@ -10,7 +10,7 @@ def up():
         t.string("email", nullable=True),
         t.string("role", nullable=True),
         t.datetime("created_at", default="CURRENT_TIMESTAMP", nullable=False),
-        t.datetime("updated_at", default="CURRENT_TIMESTAMP", nullable=False)
+        t.datetime("updated_at", default="CURRENT_TIMESTAMP", nullable=False),
     ])
 
 def down():

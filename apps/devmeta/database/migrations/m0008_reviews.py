@@ -9,7 +9,7 @@ def up():
         t.integer("entity_id", nullable=False),
         t.text("comments", nullable=True),
         t.integer("rating", nullable=True),
-        t.datetime("created_at", default="CURRENT_TIMESTAMP", nullable=False)
+        t.datetime("created_at", default="CURRENT_TIMESTAMP", nullable=False),
     ])
 
 def down():

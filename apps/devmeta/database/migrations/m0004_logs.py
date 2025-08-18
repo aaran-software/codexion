@@ -10,7 +10,7 @@ def up():
         t.text("details", nullable=True),
         t.text("context", nullable=True),
         t.string("user", nullable=True),
-        t.datetime("created_at", default="CURRENT_TIMESTAMP", nullable=False)
+        t.datetime("created_at", default="CURRENT_TIMESTAMP", nullable=False),
     ])
 
 def down():
