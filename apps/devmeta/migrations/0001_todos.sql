@@ -1,1 +1,0 @@
--- TODO: create table todos (id, title, status, priority, project, due_at, created_at, updated_at, completed_at)

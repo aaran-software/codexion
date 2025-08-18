@@ -1,16 +1,26 @@
 # prefiq/database/schemas/builder.py
+
 from typing import Callable, Any
 from prefiq.database.schemas.blueprint import TableBlueprint
-from prefiq.database.connection import get_engine
+from prefiq.database.connection_manager import get_engine
+from prefiq.database.dialects.registry import get_dialect
 
 def create(table_name: str, schema_callback: Callable[[TableBlueprint], Any]) -> None:
     table = TableBlueprint(table_name)
     schema_callback(table)
-    sql = (
-        f"CREATE TABLE IF NOT EXISTS `{table_name}` (\n  {table.build_columns()}\n)"
-        " ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;"
-    )
-    get_engine().execute(sql)  # <-- call the engine
+    d = get_dialect()
+    tname = d.quote_ident(table_name)
+    suffix = d.create_table_suffix()
+    sql = f"CREATE TABLE IF NOT EXISTS {tname} (\n  {table.build_columns()}\n){suffix}"
+    eng = get_engine()
+    sql_norm, _ = d.normalize_params(sql, None)
+    eng.execute(sql_norm)
 
 def dropIfExists(table_name: str) -> None:
-    get_engine().execute(f"DROP TABLE IF EXISTS `{table_name}`;")  # <-- engine
+    d = get_dialect()
+    tname = d.quote_ident(table_name)
+    sql = f"DROP TABLE IF EXISTS {tname};"
+    eng = get_engine()
+    sql_norm, _ = d.normalize_params(sql, None)
+    eng.execute(sql_norm)
+
