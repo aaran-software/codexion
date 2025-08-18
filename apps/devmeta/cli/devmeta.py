@@ -207,3 +207,17 @@ def todo_done(todo_id: int = typer.Argument(..., help="ID of the todo")):
         typer.echo(f"Todo #{todo_id} not found.")
         raise typer.Exit(code=1)
     typer.echo(f"✅ Done: #{todo_id}")
+
+
+@app.command("debug-dialect")
+def debug_dialect():
+    from prefiq.database.dialects.registry import get_dialect
+    from prefiq.database.connection_manager import get_engine
+    d = get_dialect()
+    eng = get_engine()
+    # Try to show something informative about the engine
+    url = getattr(eng, "url", None) or getattr(eng, "database_url", None) or getattr(eng, "dsn", None)
+    typer.echo(f"Dialect: {getattr(d, 'name', type(d).__name__)}")
+    typer.echo(f"Engine: {type(eng).__name__}")
+    if url:
+        typer.echo(f"URL/DSN: {url}")
