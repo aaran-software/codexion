@@ -11,7 +11,7 @@ from prefiq.database.dialects.postgres import PostgresDialect
 
 _DIALECTS: Dict[str, Dialect] = {
     "mysql": MySQLDialect(),
-    "mariadb": MySQLDialect(),
+    "mariadb": MariaDBDialect(),
     "sqlite": SQLiteDialect(),
     "postgres": PostgresDialect(),
     "postgresql": PostgresDialect(),
