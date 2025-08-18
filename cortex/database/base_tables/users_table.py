@@ -1,6 +1,6 @@
 # cortex/database/base_tables/000_migration_table.py
 
-from prefiq.database.schemas.builder import create, dropIfExists
+from prefiq.database.schemas.builder import create, drop_if_exists
 
 def up():
     create("users", lambda t: [
@@ -12,4 +12,4 @@ def up():
     ])
 
 def down():
-    dropIfExists("users")
+    drop_if_exists("users")

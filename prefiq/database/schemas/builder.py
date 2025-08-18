@@ -14,7 +14,7 @@ def create(table_name: str, schema_callback: Callable[[TableBlueprint], Any]) ->
     sql_norm, _ = d.normalize_params(sql, None)
     eng.execute(sql_norm)
 
-def dropIfExists(table_name: str) -> None:
+def drop_if_exists(table_name: str) -> None:
     d = get_dialect()
     tname = d.quote_ident(table_name)
     sql = f"DROP TABLE IF EXISTS {tname};"
@@ -24,7 +24,7 @@ def dropIfExists(table_name: str) -> None:
 
 # ----------------------- NEW: Index helpers -----------------------
 
-def createIndex(table_name: str, index_name: str, columns: Iterable[str]) -> None:
+def create_index(table_name: str, index_name: str, columns: Iterable[str]) -> None:
     """
     Create an index on `table_name` for the given columns.
     Dialect rules:
@@ -49,7 +49,7 @@ def createIndex(table_name: str, index_name: str, columns: Iterable[str]) -> Non
     sql_norm, _ = d.normalize_params(sql, None)
     eng.execute(sql_norm)
 
-def dropIndexIfExists(table_name: str, index_name: str) -> None:
+def drop_index_if_exists(table_name: str, index_name: str) -> None:
     """
     Drop an index if it exists.
     Dialect rules:

@@ -1,4 +1,4 @@
-from prefiq.database.schemas.builder import create, dropIfExists
+from prefiq.database.schemas.builder import create, drop_if_exists
 
 TABLE = "devmeta_migrations"
 
@@ -12,4 +12,4 @@ def up():
     ])
 
 def down():
-    dropIfExists(TABLE)
+    drop_if_exists(TABLE)
