@@ -93,3 +93,11 @@ def mount_devmeta_cli(container) -> bool:
     except Exception as e:
         LOG.error("cli_mount_failed", extra={"error": f"{type(e).__name__}: {e}"})
         return False
+
+@app.command("rollback")
+def cmd_rollback(steps: int = typer.Option(1, "--steps")):
+    from prefiq.core.contracts.base_provider import Application
+    appc = Application.get_app()
+    migrator = appc.resolve("devmeta.migrator")
+    done = migrator.rollback(steps=steps)
+    typer.echo(f"⏪ Rolled back {done} migration(s).")
