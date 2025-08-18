@@ -6,7 +6,7 @@ from contextlib import suppress
 from prefiq.core.contracts.base_provider import BaseProvider
 from prefiq.database.connection import get_engine
 from prefiq.settings.get_settings import load_settings
-from prefiq.utils.logger import get_logger
+from prefiq.log.logger import get_logger
 
 # NEW: import your DB settings schema (create this if you don't have it yet)
 # File suggestion: prefiq/providers/db_config.py (see below)

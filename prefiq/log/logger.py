@@ -1,4 +1,4 @@
-# prefiq/utils/logger.py
+# prefiq/log/logger.py
 
 from __future__ import annotations
 
@@ -116,11 +116,21 @@ def configure_logging(
     """
     Configure a base logger and return it. Children under this namespace inherit the handler.
     Pass `color` as "auto"/"true"/"false" for text mode coloring.
+
+    IMPORTANT: If logging is already configured (e.g., via dictConfig),
+    this function will NO-OP to avoid overwriting handlers/filters.
     """
+    base_ns = (base_logger or "prefiq").strip() or "prefiq"
+
+    # ---- NEW: do not override an existing configuration ----
+    root = logging.getLogger()
+    if root.handlers or logging.getLogger(base_ns).handlers:
+        return logging.getLogger(base_ns)
+    # --------------------------------------------------------
+
     # Normalize inputs
     level_name = (level or "INFO").upper()
     fmt_name = (fmt or "json").lower()
-    base_ns = (base_logger or "prefiq").strip() or "prefiq"
 
     logger = logging.getLogger(base_ns)
     logger.setLevel(getattr(logging, level_name, logging.INFO))
@@ -141,7 +151,6 @@ def configure_logging(
     logger.addHandler(handler)
 
     # Quiet root to avoid duplicate logs if someone logs to root accidentally
-    root = logging.getLogger()
     root.setLevel(logging.ERROR)
 
     return logger

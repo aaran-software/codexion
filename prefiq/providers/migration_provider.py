@@ -1,6 +1,6 @@
 from __future__ import annotations
 from prefiq.core.contracts.base_provider import BaseProvider
-from prefiq.utils.logger import get_logger
+from prefiq.log.logger import get_logger
 
 # import your migration modules
 from cortex.database.base_tables.m000_migration_table import up as migrations_table_up  # ensure exists

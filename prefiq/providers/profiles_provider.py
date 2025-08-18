@@ -2,7 +2,7 @@
 
 from typing import Any, Dict, Optional
 from prefiq.core.contracts.base_provider import BaseProvider, Application
-from prefiq.utils.logger import get_logger
+from prefiq.log.logger import get_logger
 
 log = get_logger("prefiq.settings")
 

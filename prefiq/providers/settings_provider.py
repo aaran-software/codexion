@@ -8,7 +8,7 @@ from typing import Any, Dict, Iterable
 from pydantic import ValidationError
 from prefiq.core.contracts.base_provider import Application, BaseProvider
 from prefiq.settings.get_settings import load_settings, clear_settings_cache
-from prefiq.utils.logger import get_logger
+from prefiq.log.logger import get_logger
 
 log = get_logger("prefiq.settings")
 

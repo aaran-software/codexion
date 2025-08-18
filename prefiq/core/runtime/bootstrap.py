@@ -6,7 +6,7 @@ from prefiq.core.contracts.base_provider import Application
 from cortex.runtime.service_providers import PROVIDERS
 
 from prefiq.settings.get_settings import load_settings
-from prefiq.utils.logger import configure_logging, get_logger
+from prefiq.log.logger import configure_logging, get_logger
 
 
 def main() -> None:

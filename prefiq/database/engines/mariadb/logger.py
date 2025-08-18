@@ -15,7 +15,7 @@
 
 import time
 from prefiq.settings.get_settings import load_settings
-from prefiq.utils.logger import get_logger
+from prefiq.log.logger import get_logger
 
 _s = load_settings()
 _log = get_logger(f"{_s.LOG_NAMESPACE}.db.query")
