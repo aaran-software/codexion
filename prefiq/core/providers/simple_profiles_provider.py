@@ -1,4 +1,4 @@
-# prefiq/core/contracts/providers/profiles_provider.py
+# prefiq/core/contracts/providers/simple_profiles_provider.py
 
 from typing import Any, Dict
 from prefiq.core.contracts.base_provider import BaseProvider, Application

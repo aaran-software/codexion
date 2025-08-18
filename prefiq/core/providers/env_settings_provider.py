@@ -1,4 +1,4 @@
-# prefiq/core/contracts/providers/settings_provider.py
+# prefiq/core/contracts/providers/env_settings_provider.py
 
 import os
 from dotenv import load_dotenv
