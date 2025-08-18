@@ -1,17 +1,15 @@
-from prefiq.database.schemas.builder import create, dropIfExists
+from prefiq.database.schemas.builder import create, drop_if_exists
 
-# Keep the same table name your migrator expects; align with MIGR_TABLE/DEFAULT_TABLE_NAME
-MIGRATIONS_TABLE = "devmeta_migrations"
+TABLE = "devmeta_migrations"
 
 def up():
-    # Create the migrations bookkeeping table in DSL form
-    create(MIGRATIONS_TABLE, lambda t: [
-        t.id(),  # INTEGER PRIMARY KEY AUTOINCREMENT
+    create(TABLE, lambda t: [
+        t.id(),
         t.string("name", unique=True, nullable=False),
         t.integer("order_index", nullable=False),
         t.string("hash", nullable=False),
-        t.timestamps(),
+        t.datetime("applied_at", default="CURRENT_TIMESTAMP", nullable=False),
     ])
 
 def down():
-    dropIfExists(MIGRATIONS_TABLE)
+    drop_if_exists(TABLE)

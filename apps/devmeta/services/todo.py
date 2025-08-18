@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, UTC
 from typing import Any, Callable, Optional, List
 
 from prefiq.log.logger import get_logger
@@ -74,7 +74,7 @@ class TodoService:
             return rows
 
     def done(self, todo_id: int) -> bool:
-        now = datetime.utcnow().isoformat(timespec="seconds")
+        now = datetime.now(UTC).isoformat(timespec="seconds")
         with self.connect_fn(self.db_path) as conn:
             cur = conn.execute(
                 "UPDATE todos SET status='done', completed_at=?, updated_at=? WHERE id = ?",

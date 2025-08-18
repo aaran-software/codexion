@@ -6,15 +6,15 @@ awesome — i went through your current state and marked what’s **done**, what
 
 ### 📦 Setup & Foundation
 
-* \[✅] Create folder structure under `apps/devmeta/` with `__init__.py` files.
-* \[✅] Add **core/provider.py** → `DevMetaProvider` (resolves SQLite path, binds migrator & services, mounts CLI).
-* \[✅] Add **cli/devmeta.py** → Typer subapp **and** mount helper (idempotent).
+* [✅] Create folder structure under `apps/devmeta/` with `__init__.py` files.
+* [✅] Add **core/provider.py** → `DevMetaProvider` (resolves SQLite path, binds migrator & services, mounts CLI).
+* [✅] Add **cli/devmeta.py** → Typer subapp **and** mount helper (idempotent).
 * [ ] Update global CLI → mount `devmeta` subapp from `apps/devmeta/cli/devmeta:app` (ensure main CLI container exposes `cli.app` or `cli` and that `DevMetaProvider.boot()` is called).
 * [ ] Update settings → add `profiles.database.devmeta` (engine=sqlite, **path=apps/devmeta/data/devmeta.sqlite**) and/or set `PREFIQ_DEV_SQLITE` env var.
 
 ### 🗄️ Database & Migrations
 
-* \[✅] **database/migration/m000\_migrations\_tbl.py** → create & ensure `dev_migrations` table (bootstrap).
+* [✅] **database/migration/m000\_migrations\_tbl.py** → create & ensure `dev_migrations` table (bootstrap).
 * [ ] **migrations/0001\_todos.sql** → create `todos` table:
   `id, title, status, priority, project, due_at, created_at, updated_at, completed_at`.
 * [ ] **migrations/0002\_indexes.sql** → indexes on `status`, `due_at`.
