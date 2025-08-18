@@ -2,7 +2,7 @@ import os
 import configparser
 from pathlib import Path
 
-from cortex.core.settings import get_settings
+from prefiq.settings import get_settings
 
 CFG_PATH = Path(get_settings().project_root) / "config" / "apps.cfg"
 

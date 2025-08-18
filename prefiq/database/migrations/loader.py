@@ -7,7 +7,7 @@ import importlib.util
 from types import ModuleType
 from typing import Tuple, List, Dict
 
-from prefiq.config.apps.apps_cfg import get_registered_apps
+from prefiq.apps.apps_cfg import get_registered_apps
 from prefiq.settings import get_settings
 from prefiq.database.migrations.hashing import compute_file_hash
 

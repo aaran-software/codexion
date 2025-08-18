@@ -1,8 +1,8 @@
 import os
 import json
 from pathlib import Path
-from cortex.config.apps.apps_cfg import get_registered_apps
-from cortex.core.settings import get_settings
+from prefiq.config.apps_cfg import get_registered_apps
+from prefiq.settings import get_settings
 
 
 def _get_json_path(app: str) -> Path:
