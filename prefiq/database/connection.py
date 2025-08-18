@@ -1,20 +1,39 @@
 # prefiq/database/connection.py
+
 from typing import Optional
 from prefiq.settings.get_settings import load_settings
+
 from prefiq.database.engines.mariadb.sync_engine import SyncMariaDBEngine
 from prefiq.database.engines.mariadb.async_engine import AsyncMariaDBEngine
 
-_engine_singleton = None  # type: Optional[object]
+# add these new imports (you’ll create these classes below)
+from prefiq.database.engines.sqlite.sync_engine import SyncSQLiteEngine
+from prefiq.database.engines.postgres.sync_engine import SyncPostgresEngine
+from prefiq.database.engines.mongo.sync_engine import SyncMongoEngine
+
+_engine_singleton: Optional[object] = None
 
 def _is_async(mode: str) -> bool:
     return (mode or "").lower() == "async"
 
 def _make_engine():
-    settings = load_settings()  # cached settings loader
-    # strict: we only support MariaDB right now
-    if settings.DB_ENGINE.lower() != "mariadb":
-        raise RuntimeError(f"Unsupported DB_ENGINE '{settings.DB_ENGINE}'. Only 'mariadb' is implemented now.")
-    return AsyncMariaDBEngine() if _is_async(settings.DB_MODE) else SyncMariaDBEngine()
+    s = load_settings()
+    eng = (s.DB_ENGINE or "").lower()
+
+    if eng == "mariadb" or eng == "mysql":
+        return AsyncMariaDBEngine() if _is_async(s.DB_MODE) else SyncMariaDBEngine()
+    if eng == "sqlite":
+        return SyncSQLiteEngine(s)
+    if eng in ("postgres", "postgresql"):
+        # sync only here for simplicity; add async variant later if needed
+        return SyncPostgresEngine(s)
+    if eng in ("mongodb", "mongo"):
+        return SyncMongoEngine(s)
+
+    raise RuntimeError(
+        f"Unsupported DB_ENGINE '{s.DB_ENGINE}'. "
+        "Use one of: mariadb, mysql, sqlite, postgres, postgresql, mongodb."
+    )
 
 def get_engine():
     global _engine_singleton
