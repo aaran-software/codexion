@@ -1,10 +1,6 @@
 import { Suspense, lazy, useEffect, useState } from "react";
 import LoadingScreen from "../../../../resources/components/loading/LoadingScreen";
 
-// const AdverthismentBanner = lazy(
-//   () => import("../../../../resources/UIBlocks/Promotion/AdverthismentBanner")
-// );
-
 const ProductCard = lazy(
   () => import("../../../../resources/UIBlocks/ProductCard")
 );
@@ -32,9 +28,6 @@ const FloatContact = lazy(
   () => import("../../../../resources/UIBlocks/contact/FloatContact")
 );
 
-// const CrackerAnimation = lazy(
-//   () => import("../../../../resources/AnimationComponents/CrackerAnimation")
-// );
 function Home() {
   const brands = [
     { name: "DELL", logo: "/assets/brand/dell.svg" },
@@ -62,7 +55,6 @@ function Home() {
     handleScroll(); // run once on mount
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
 
   // special event
 

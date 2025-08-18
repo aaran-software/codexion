@@ -1,0 +1,9 @@
+- slug: accordion
+  order: 1
+  desc: Accordion
+  tags: [accordion, react]
+
+- slug: endpoints
+  order: 2
+  desc: Available API endpoints
+  tags: [api, endpoints]

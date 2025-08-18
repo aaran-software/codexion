@@ -20,8 +20,8 @@ import Dashboard from "../../../../resources/components/dashboard/Dashboard";
 import AppHeader from "../../../../resources/components/header/AppHeader";
 import { AppSidebar } from "../../../../resources/components/sidebar/app-sidebar";
 import ScrollToTopButton from "../../../../resources/components/common/scrolltotopbutton";
-import ProductListing from "../../../../resources/layouts/ecart/vendor/ProductListing";
-import VendorOrder from "../../../../resources/layouts/ecart/vendor/VendorOrder";
+import ProductListing from "./ProductListing";
+import VendorOrder from "./VendorOrder";
 import Docs from "../docs";
 
 export default function Admin() {

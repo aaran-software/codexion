@@ -1,6 +1,9 @@
 import FormLayout from "../../../../../resources/components/common/FormLayout";
 import master from "../../../public/master.json";
-import type { ApiList, Field } from "../../../../../resources/components/common/commonform";
+import type {
+  ApiList,
+  Field,
+} from "../../../../../resources/components/common/commonform";
 import { useState } from "react";
 
 function Contacts() {
@@ -53,6 +56,8 @@ function Contacts() {
         head={head}
         formApi={formApi}
         printableFields={printableFields}
+        multipleEntry={false}
+        formName={"Contact"}
       />
     </div>
   );

@@ -1,5 +1,8 @@
 import FormLayout from "../../../../../resources/components/common/FormLayout";
-import type { ApiList, Field } from "../../../../../resources/components/common/commonform";
+import type {
+  ApiList,
+  Field,
+} from "../../../../../resources/components/common/commonform";
 import { useState } from "react";
 import master from "../../../public/master.json";
 function Products() {
@@ -51,6 +54,8 @@ function Products() {
         head={head}
         formApi={formApi}
         printableFields={printableFields}
+        multipleEntry={false}
+        formName={"Product"}
       />
     </div>
   );

@@ -1,0 +1,114 @@
+{
+  "vendor": {
+    "productlisting": {
+      "details": {
+        "title": "Account Book Details",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "inTable": true,
+            "isForm": true
+          },
+          {
+            "key": "name",
+            "label": "Image",
+            "type": "file",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "name",
+            "label": "Product Name",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "date",
+            "label": "Price",
+            "type": "dropdown",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "date",
+            "label": "Quantity",
+            "type": "dropdown",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "inTable": true,
+            "isForm": true
+          }
+        ]
+      }
+    },
+    "orderproduct": {
+      "details": {
+        "title": "Account Book Details",
+        "fields": [
+          {
+            "key": "id",
+            "label": "ID",
+            "inTable": true,
+            "isForm": true
+          },
+          {
+            "key": "name",
+            "label": "Image",
+            "type": "file",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "name",
+            "label": "Product Name",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+            {
+            "key": "date",
+            "label": "Order ID",
+            "type": "dropdown",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "date",
+            "label": "Price",
+            "type": "dropdown",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "date",
+            "label": "Quantity",
+            "type": "dropdown",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "action",
+            "label": "Action",
+            "inTable": true,
+            "isForm": true
+          }
+        ]
+      }
+    }
+  }
+}

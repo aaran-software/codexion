@@ -1,4 +1,10 @@
 import React, { useState } from "react";
+import {
+  ApiList,
+  Field,
+} from "../../../../resources/components/common/commonform";
+import vendor from "../../js/vendor.json";
+import FormLayout from "../../../../resources/components/common/FormLayout";
 
 const VendorOrder: React.FC = () => {
   const [activeButton, setActiveButton] = useState(0);
@@ -11,8 +17,50 @@ const VendorOrder: React.FC = () => {
     "READY FOR DISPATCH",
   ];
 
+  const fieldSection = vendor.vendor.orderproduct;
+  const head = Object.values(fieldSection)
+    .flatMap((section: any) => section.fields)
+    .filter((field: any) => field.inTable);
+
+  const groupedFields = Object.entries(fieldSection).map(
+    ([sectionKey, section]) => ({
+      title: section.title || sectionKey,
+      sectionKey,
+      fields: section.fields
+        .filter(
+          (field: any) =>
+            field.key !== "action" &&
+            field.key !== "id" &&
+            field.isForm === true
+        )
+        .map((field: any) => ({
+          id: field.key,
+          label: field.label,
+          type: (field.type || "textinput") as Field["type"],
+          className: "w-full",
+          errMsg: `Enter ${field.label}`,
+          ...(field.type?.includes("dropdown") && field.options
+            ? { options: field.options }
+            : {}),
+          readApi: field.readApi,
+          updateApi: field.updateApi,
+          apiKey: field.apiKey,
+          createKey: field.createKey,
+        })),
+    })
+  );
+  const printableFields = Object.values(fieldSection).flatMap((section: any) =>
+    section.fields.filter((field: any) => field.isPrint === true)
+  );
+  const [formApi] = useState<ApiList>({
+    create: "/api/resource/Customer",
+    read: "/api/resource/Customer",
+    update: "/api/resource/Customer",
+    delete: "/api/resource/Customer",
+  });
+
   return (
-    <div className="bg-background text-foreground h-full overflow-y-auto">
+    <div className="bg-dashboard-background text-dashboard-foreground h-full">
       {/* Page Title */}
       <h1 className="px-5 pt-4 text-xl font-semibold">My Orders</h1>
 
@@ -75,58 +123,15 @@ const VendorOrder: React.FC = () => {
         ))}
       </div>
 
-      {/* Order Managing List (Desktop only) */}
-      <div className="hidden lg:grid grid-cols-[30%_20%_20%_20%_10%] gap-2 mt-6 px-5 border border-ring/30 rounded-lg p-4">
-        {/* Product Info */}
-        <div className="flex gap-3 items-center">
-          <img
-            src={""}
-            alt="product"
-            className="h-16 w-16 object-contain rounded-md border border-ring/30"
-          />
-          <div>
-            <p className="font-medium">Name</p>
-            <p className="text-sm opacity-70">Quantity</p>
-            <p className="text-sm opacity-70">Item Code</p>
-          </div>
-        </div>
-
-        {/* Price */}
-        <div>
-          <p className="font-medium">Price</p>
-          <p className="text-sm opacity-70">Cash on Delivery</p>
-        </div>
-
-        {/* IDs */}
-        <div>
-          <p className="font-medium">Shipment ID</p>
-          <p className="text-sm opacity-70">Order ID</p>
-        </div>
-
-        <div>
-          <p className="font-medium">AWB</p>
-          <p className="text-sm opacity-70">Invoice ID</p>
-        </div>
-
-        {/* Actions */}
-        <div className="flex flex-col gap-2">
-          <button className="rounded-md border border-ring/30 px-3 py-1 text-sm hover:bg-foreground hover:text-background transition">
-            Confirm
-          </button>
-          <button className="rounded-md border border-ring/30 px-3 py-1 text-sm hover:bg-foreground hover:text-background transition">
-            Cancel
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile / Tablet Notice */}
-      <div className="lg:hidden flex h-screen items-center justify-center px-5">
-        <div className="rounded-xl border border-ring/30 bg-background p-6 text-center">
-          <p className="leading-relaxed">
-            This page is optimized for larger screens. Please use a desktop or
-            enlarge your window to manage orders.
-          </p>
-        </div>
+      <div className="mt-5">
+        <FormLayout
+          groupedFields={groupedFields}
+          head={head}
+          formApi={formApi}
+          printableFields={printableFields}
+          multipleEntry={false}
+          formName={"Product"}
+        />
       </div>
     </div>
   );

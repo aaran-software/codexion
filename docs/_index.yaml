@@ -27,3 +27,8 @@
   order: 5
   desc: API reference
   tags: [api, reference]
+
+- slug: react
+  order: 6
+  desc: React Components
+  tags: [react, Components]
