@@ -1,54 +1,45 @@
-import os
-import configparser
+# prefiq/apps/apps_cfg.py
+from __future__ import annotations
+
 from pathlib import Path
+from typing import Iterable, List
+import os
 
-from prefiq.settings import get_settings
+# ✅ import the function, not the module
+from prefiq.settings.get_settings import load_settings
 
-CFG_PATH = Path(get_settings().project_root) / "config" / "apps.cfg"
+def _project_root() -> Path:
+    """
+    Resolve project root lazily to avoid import-time side effects.
+    Prefer Settings.project_root, fallback to env or cwd.
+    """
+    try:
+        s = load_settings()
+        root = getattr(s, "project_root", None)
+        if root:
+            return Path(root)
+    except Exception:
+        pass
+    return Path(os.getenv("PROJECT_ROOT", ".")).resolve()
 
+def cfg_path() -> Path:
+    return _project_root() / "config" / "apps.cfg"
 
-def create_apps_cfg():
-    os.makedirs(os.path.dirname(CFG_PATH), exist_ok=True)
-    with open(CFG_PATH, "w") as f:
-        f.write("")  # Empty file
-
-
-def delete_apps_cfg():
-    if os.path.exists(CFG_PATH):
-        os.remove(CFG_PATH)
-
-
-def get_registered_apps():
-    config = configparser.ConfigParser()
-    if not os.path.exists(CFG_PATH):
+def get_registered_apps() -> List[str]:
+    """
+    Read config/apps.cfg and return a list of enabled app names.
+    Format (one per line, comments allowed with '#'):
+        accounts
+        billing
+        # reports
+    """
+    p = cfg_path()
+    if not p.exists():
         return []
-    config.read(CFG_PATH)
-    return list(config.sections())
-
-
-def add_app(app_name: str, version: str = "1.0.0"):
-    config = configparser.ConfigParser()
-    config.read(CFG_PATH)
-    if app_name in config:
-        print(f"⚠️ Docs '{app_name}' already exists. Use `update_app_version()` instead.")
-    config[app_name] = {"version": version}
-    with open(CFG_PATH, "w") as f:
-        config.write(f)
-
-
-def remove_app(app_name: str):
-    config = configparser.ConfigParser()
-    config.read(CFG_PATH)
-    config.remove_section(app_name)
-    with open(CFG_PATH, "w") as f:
-        config.write(f)
-
-
-def update_app_version(app_name: str, version: str):
-    config = configparser.ConfigParser()
-    config.read(CFG_PATH)
-    if app_name not in config:
-        raise ValueError(f"Docs '{app_name}' not found in apps.cfg")
-    config[app_name]["version"] = version
-    with open(CFG_PATH, "w") as f:
-        config.write(f)
+    apps: List[str] = []
+    for line in p.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        apps.append(line)
+    return apps

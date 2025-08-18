@@ -2,8 +2,7 @@ import atexit
 
 from prefiq.core.contracts.base_provider import BaseProvider
 from prefiq.database.connection import get_engine
-from prefiq.settings.get_settings import get_settings
-from prefiq.providers.schemas.database import DatabaseSettings
+from prefiq.settings.get_settings import load_settings
 from prefiq.utils.logger import get_logger
 import asyncio, inspect
 from contextlib import suppress
@@ -14,7 +13,7 @@ class DatabaseProvider(BaseProvider):
     def __init__(self, app):
         super().__init__(app)
         self.engine = None
-        s = get_settings()
+        s = load_settings()
         self.log = get_logger(f"{s.LOG_NAMESPACE}.db.provider")
         self._teardown_registered = False
 
@@ -24,7 +23,7 @@ class DatabaseProvider(BaseProvider):
         self.log.debug("db_registered", extra={"engine_type": type(self.engine).__name__})
 
         # NEW: honor settings flag before registering atexit
-        s = get_settings()
+        s = load_settings()
         if getattr(s, "DB_CLOSE_ATEXIT", True) and not self._teardown_registered:
             atexit.register(self._close_engine_safely)
             self._teardown_registered = True
@@ -70,7 +69,7 @@ class DatabaseProvider(BaseProvider):
         return maybe_awaitable
 
     def boot(self) -> None:
-        s = get_settings()
+        s = load_settings()
         try:
             DatabaseSettings.model_validate(
                 dict(DB_ENGINE=s.DB_ENGINE, DB_MODE=s.DB_MODE, DB_HOST=s.DB_HOST,

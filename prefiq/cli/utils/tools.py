@@ -5,7 +5,7 @@ import typer
 
 from prefiq.core.runtime.bootstrap import main as bootstrap_main
 from prefiq.core.contracts.base_provider import Application
-from prefiq.settings.get_settings import get_settings
+from prefiq.settings.get_settings import load_settings
 
 def sanity():
     """
@@ -18,7 +18,7 @@ def sanity():
     bootstrap_main()
     app = Application.get_app()
 
-    s = get_settings()
+    s = load_settings()
     typer.echo(f"✅ Settings loaded: ENV={getattr(s, 'ENV', 'development')}")
 
     db = app.resolve("db")
