@@ -3,7 +3,7 @@ from prefiq.api.health import router as health_router
 from prefiq.core.runtime.bootstrap import main as boot_main
 from prefiq.core.contracts.base_provider import Application
 from prefiq.utils.logger import get_logger
-from prefiq.settings.get_settings import get_settings
+from prefiq.settings.get_settings import load_settings
 
 app = FastAPI(title="Prefiq API")
 
@@ -13,7 +13,7 @@ def _startup():
 
 @app.on_event("shutdown")
 def _shutdown():
-    s = get_settings()
+    s = load_settings()
     log = get_logger(f"{s.LOG_NAMESPACE}.bootstrap")
     appc = Application.get_app()
     try:

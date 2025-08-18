@@ -48,7 +48,7 @@ class Settings(BaseSettings):
 def _get_cached_settings() -> Settings:
     return Settings()
 
-def get_settings() -> Settings:
+def load_settings() -> Settings:
     if os.getenv("TESTING", "0").lower() in ("1", "true"):
         return Settings()
     return _get_cached_settings()

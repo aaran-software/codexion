@@ -7,8 +7,8 @@ from typing import Any, Dict, Iterable
 
 from pydantic import ValidationError
 from prefiq.core.contracts.base_provider import Application, BaseProvider
-from prefiq.settings.get_settings import get_settings, clear_settings_cache
-from prefiq.utils.logger import get_logger
+from prefiq.settings.get_settings import load_settings, clear_settings_cache
+from prefiq.log.logger import get_logger
 
 log = get_logger("prefiq.settings")
 
@@ -22,7 +22,7 @@ class SettingsProvider(BaseProvider):
 
     def register(self) -> None:
         # Load from prefiq/settings (cached singleton) and bind
-        settings = get_settings()
+        settings = load_settings()
         self.app.bind("settings", settings)
 
         # Try to obtain the provider registry (support multiple shapes)
@@ -89,4 +89,4 @@ class SettingsProvider(BaseProvider):
     # Optional helper to clear cached settings (for tests)
     def clear(self) -> None:
         clear_settings_cache()
-        self.app.bind("settings", get_settings())
+        self.app.bind("settings", load_settings())

@@ -5,13 +5,13 @@ from __future__ import annotations
 from prefiq.core.contracts.base_provider import Application
 from cortex.runtime.service_providers import PROVIDERS
 
-from prefiq.settings.get_settings import get_settings
-from prefiq.utils.logger import configure_logging, get_logger
+from prefiq.settings.get_settings import load_settings
+from prefiq.log.logger import configure_logging, get_logger
 
 
 def main() -> None:
     # 1) Configure logging once at process start
-    settings = get_settings()
+    settings = load_settings()
     configure_logging(
         level=getattr(settings, "LOG_LEVEL", "INFO"),
         fmt=getattr(settings, "LOG_FORMAT", "json"),

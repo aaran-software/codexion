@@ -8,7 +8,7 @@ import contextvars
 from pydantic import BaseModel, field_validator, ConfigDict
 
 from .drivers import mariadb, postgresql, sqlite, mongodb
-from prefiq.settings.get_settings import get_settings        # <-- fixed import
+from prefiq.settings.get_settings import load_settings        # <-- fixed import
 from .validators import DatabaseValidators      # <-- custom validation utils
 
 # Mapping of supported database drivers to their config builders
@@ -60,7 +60,7 @@ class DatabaseConfig(BaseModel):
         autocommit: Optional[bool] = None,
         uri: Optional[str] = None,
     ):
-        settings = get_settings()
+        settings = load_settings()
         super().__init__(
             driver=(driver or settings.DB_ENGINE).lower(),
             user=user or settings.DB_USER,

@@ -14,10 +14,10 @@
 # =============================================================
 
 import time
-from prefiq.settings.get_settings import get_settings
-from prefiq.utils.logger import get_logger
+from prefiq.settings.get_settings import load_settings
+from prefiq.log.logger import get_logger
 
-_s = get_settings()
+_s = load_settings()
 _log = get_logger(f"{_s.LOG_NAMESPACE}.db.query")
 
 # slow threshold in ms (optional; add to settings if you like)
