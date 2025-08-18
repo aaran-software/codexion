@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mariadb:
+        image: mariadb:10.11
+        env:
+          MYSQL_ROOT_PASSWORD: rootpass
+          MYSQL_DATABASE: codexion_db
+        ports: ["3306:3306"]
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -prootpass || exit 1"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=30
+
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install system deps (mariadb dev headers)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libmariadb-dev
+
+      - name: Install Python deps
+        run: |
+          python -m pip install --upgrade pip
+          # Adjust if you have a requirements.txt / pyproject.toml
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install pytest mariadb pydantic pydantic-settings python-dotenv
+
+      - name: Wait for DB & create user/db (if needed)
+        env:
+          MYSQL_PWD: rootpass
+        run: |
+          for i in {1..60}; do
+            if mysqladmin ping -h 127.0.0.1 -prootpass --silent; then break; fi
+            sleep 1
+          done
+          # Create test user if your code expects non-root; otherwise skip
+          mysql -h 127.0.0.1 -uroot -prootpass -e "CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED BY 'rootpass';"
+          mysql -h 127.0.0.1 -uroot -prootpass -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;"
+          mysql -h 127.0.0.1 -uroot -prootpass -e "FLUSH PRIVILEGES;"
+
+      - name: Run smoke script
+        env:
+          # Settings consumed by your app
+          DB_ENGINE: mariadb
+          DB_MODE: sync
+          DB_HOST: 127.0.0.1
+          DB_PORT: "3306"
+          DB_USER: root
+          DB_PASS: rootpass
+          DB_NAME: codexion_db
+          LOG_LEVEL: INFO
+          DB_CLOSE_ATEXIT: "false"  # avoid atexit logging during CI teardown
+        run: |
+          python scripts/smoke.py
+
+      - name: Run tests
+        env:
+          DB_ENGINE: mariadb
+          DB_MODE: sync
+          DB_HOST: 127.0.0.1
+          DB_PORT: "3306"
+          DB_USER: root
+          DB_PASS: rootpass
+          DB_NAME: codexion_db
+          DB_CLOSE_ATEXIT: "false"
+        run: |
+          pytest -q

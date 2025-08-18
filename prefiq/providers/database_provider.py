@@ -7,6 +7,8 @@ from prefiq.providers.schemas.database import DatabaseSettings
 from prefiq.utils.logger import get_logger
 import asyncio, inspect
 from contextlib import suppress
+import logging
+
 
 class DatabaseProvider(BaseProvider):
     def __init__(self, app):
@@ -21,8 +23,9 @@ class DatabaseProvider(BaseProvider):
         self.app.bind("db", self.engine)
         self.log.debug("db_registered", extra={"engine_type": type(self.engine).__name__})
 
-        # register one-time process-exit teardown
-        if not self._teardown_registered:
+        # NEW: honor settings flag before registering atexit
+        s = get_settings()
+        if getattr(s, "DB_CLOSE_ATEXIT", True) and not self._teardown_registered:
             atexit.register(self._close_engine_safely)
             self._teardown_registered = True
 
@@ -30,11 +33,24 @@ class DatabaseProvider(BaseProvider):
         try:
             if hasattr(self.engine, "close"):
                 res = self.engine.close()
-                # handle async close too
                 res = self._resolve_awaitable(res)
-            self.log.info("db_closed")
+            # NEW: avoid logging if logging handlers are gone
+            try:
+                root = logging.getLogger()
+                if any(
+                    hasattr(h, "stream") and getattr(h.stream, "closed", False) is False
+                    for h in root.handlers
+                ):
+                    self.log.info("db_closed")
+                # else: silently skip logging (shutdown phase)
+            except Exception:
+                pass
         except Exception as e:
-            self.log.error("db_close_error", extra={"error": str(e)})
+            # Swallow logging errors at shutdown too
+            try:
+                self.log.error("db_close_error", extra={"error": str(e)})
+            except Exception:
+                pass
 
     @staticmethod
     def _resolve_awaitable(maybe_awaitable):

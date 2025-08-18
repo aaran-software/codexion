@@ -1,26 +1,15 @@
 # tests/conftest.py
-
-import os
+import asyncio, inspect
 import pytest
+from prefiq.core.contracts.base_provider import Application
 
-from prefiq.settings.get_settings import clear_settings_cache
-
-
-@pytest.fixture(autouse=True)
-def reset_settings_env(monkeypatch):
-    """
-    This fixture runs before each test:
-    - Sets TESTING=true
-    - Clears cached settings
-    - Lets you override env vars with monkeypatch
-    """
-    # Force fresh environment for every test
-    monkeypatch.setenv("TESTING", "true")
-
-    # Clear settings cache before test starts
-    clear_settings_cache()
-
+@pytest.fixture(scope="session", autouse=True)
+def boot_and_close():
+    from prefiq.core.runtime.bootstrap import main
+    main()
     yield
-
-    # Optional: clear again after test
-    clear_settings_cache()
+    db = Application.get_app().resolve("db")
+    if hasattr(db, "close"):
+        res = db.close()
+        if inspect.isawaitable(res):
+            asyncio.run(res)
