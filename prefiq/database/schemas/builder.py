@@ -1,5 +1,3 @@
-# prefiq/database/schemas/builder.py
-
 from typing import Callable, Any, Iterable
 from prefiq.database.schemas.blueprint import TableBlueprint
 from prefiq.database.connection_manager import get_engine
@@ -46,7 +44,7 @@ def dropIfExists(table_name: str) -> None:
     sql_norm, _ = d.normalize_params(sql, None)
     eng.execute(sql_norm)
 
-# snake_case alias needed by cortex.m000_migration_table
+# snake_case alias for legacy imports
 def drop_if_exists(table_name: str) -> None:
     return dropIfExists(table_name)
 
@@ -56,7 +54,7 @@ def createIndex(table_name: str, index_name: str, columns: Iterable[str]) -> Non
     """
     Create an index on `table_name` for the given columns.
       - SQLite/Postgres: CREATE INDEX IF NOT EXISTS idx ON "table" ("col"...)
-      - MySQL/MariaDB:   CREATE INDEX `idx` ON `table` (`col`...)
+      - MySQL/MariaDB:   CREATE INDEX `idx` ON `table` (`col`...) (idempotent via error swallow)
     """
     d = get_dialect()
     eng = get_engine()
@@ -68,18 +66,26 @@ def createIndex(table_name: str, index_name: str, columns: Iterable[str]) -> Non
 
     if dname in ("sqlite", "postgres", "postgresql"):
         sql = f"CREATE INDEX IF NOT EXISTS {iname} ON {tname} ({cols});"
-    else:
-        # MySQL/MariaDB have no IF NOT EXISTS in CREATE INDEX
-        sql = f"CREATE INDEX {iname} ON {tname} ({cols});"
+        sql_norm, _ = d.normalize_params(sql, None)
+        eng.execute(sql_norm)
+        return
 
+    # MySQL/MariaDB (no IF NOT EXISTS) → ignore duplicate
+    sql = f"CREATE INDEX {iname} ON {tname} ({cols});"
     sql_norm, _ = d.normalize_params(sql, None)
-    eng.execute(sql_norm)
+    try:
+        eng.execute(sql_norm)
+    except Exception as e:
+        msg = str(e).lower()
+        if ("duplicate key name" in msg) or ("errno 1061" in msg) or ("already exists" in msg):
+            return  # idempotent no-op
+        raise
 
 def dropIndexIfExists(table_name: str, index_name: str) -> None:
     """
     Drop an index if it exists.
       - SQLite/Postgres: DROP INDEX IF EXISTS "idx";
-      - MySQL/MariaDB:   DROP INDEX `idx` ON `table`;
+      - MySQL/MariaDB:   DROP INDEX `idx` ON `table`; (ignore missing)
     """
     d = get_dialect()
     eng = get_engine()
@@ -90,14 +96,22 @@ def dropIndexIfExists(table_name: str, index_name: str) -> None:
 
     if dname in ("sqlite", "postgres", "postgresql"):
         sql = f"DROP INDEX IF EXISTS {iname};"
-    else:
-        # MySQL/MariaDB require table name for DROP INDEX
-        sql = f"DROP INDEX {iname} ON {tname};"
+        sql_norm, _ = d.normalize_params(sql, None)
+        eng.execute(sql_norm)
+        return
 
+    sql = f"DROP INDEX {iname} ON {tname};"
     sql_norm, _ = d.normalize_params(sql, None)
-    eng.execute(sql_norm)
+    try:
+        eng.execute(sql_norm)
+    except Exception as e:
+        msg = str(e).lower()
+        # Common “missing index” shapes
+        if ("doesn't exist" in msg) or ("does not exist" in msg) or ("errno 1091" in msg):
+            return
+        raise
 
-# snake_case aliases for convenience
+# snake_case aliases
 def create_index(table_name: str, index_name: str, columns: Iterable[str]) -> None:
     return createIndex(table_name, index_name, columns)
 

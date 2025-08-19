@@ -1,4 +1,5 @@
 # cortex/runtime/service_providers.py
+from apps.devmeta.services.todo import TodoService
 from prefiq.providers.migration_provider import MigrationProvider
 from prefiq.providers.settings_provider import SettingsProvider
 from prefiq.providers.profiles_provider import ProfilesProvider
@@ -12,5 +13,6 @@ PROVIDERS = [
     ProfilesProvider,
     DatabaseProvider,
     MigrationProvider,
+    TodoService,
     # UiProvider,
 ]
