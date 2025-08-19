@@ -11,7 +11,7 @@ from prefiq.database.engines.mysql.pool import get_connection, close_pool, _run_
 from prefiq.database.engines.mysql.retry import with_retry_async
 
 
-class AsyncMariaDBEngine(AbstractEngine[Any]):
+class AsyncMysqlEngine(AbstractEngine[Any]):
     """
     Asynchronous Mysql engine.
     Executes queries through connection pool with retry, logging, and lifecycle hooks.

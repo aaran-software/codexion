@@ -1,7 +1,7 @@
 # prefiq/database/engines/mysql//driver.py
 
-from prefiq.database.engines.mysql.sync_engine import SyncMariaDBEngine
-from prefiq.database.engines.mysql.async_engine import AsyncMariaDBEngine
+from prefiq.database.engines.mysql.sync_engine import SyncMysqlEngine
+from prefiq.database.engines.mysql.async_engine import AsyncMysqlEngine
 from prefiq.settings.get_settings import load_settings
 
 
@@ -13,5 +13,5 @@ class MariadbEngine:
             raise ValueError("DB_ENGINE must be set in settings")
 
         if settings.DB_MODE.lower() == "async":
-            return AsyncMariaDBEngine()
-        return SyncMariaDBEngine()
+            return AsyncMysqlEngine()
+        return SyncMysqlEngine()

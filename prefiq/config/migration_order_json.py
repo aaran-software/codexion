@@ -2,14 +2,14 @@ import os
 import json
 from pathlib import Path
 from prefiq.config.apps_cfg import get_registered_apps
-from prefiq.settings import get_settings
+from prefiq.settings.get_settings import load_settings
 
 
 def _get_json_path(app: str) -> Path:
     """
     Get full path to `migration_order.json` for a given app.
     """
-    project_root = Path(get_settings().project_root)
+    project_root = Path(load_settings().project_root)
     return project_root / "apps" / app / "database" / "migration_order.json"
 
 

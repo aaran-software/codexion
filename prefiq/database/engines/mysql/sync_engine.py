@@ -14,7 +14,7 @@ from prefiq.database.engines.mysql.logger import log_query
 from prefiq.database.config_loader.base import use_thread_config
 
 
-class SyncMariaDBEngine(AbstractEngine[Any]):
+class SyncMysqlEngine(AbstractEngine[Any]):
     """
     Synchronous mysql engine using reusable config loader.
     Automatically fetches config from the active thread-local DatabaseConfig.
