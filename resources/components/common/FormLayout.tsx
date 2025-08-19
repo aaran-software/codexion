@@ -14,7 +14,7 @@ import Pagination from "../../../resources/components/pagination/pagination";
 import { useEffect, useMemo, useRef, useState } from "react";
 import CommonForm, { type FieldGroup } from "./commonform";
 import { useReactToPrint } from "react-to-print";
-import Print from "../external/Print";
+import Print from "../../layouts/printformat/Print";
 import apiClient from "../../../resources/global/api/apiClients";
 import Button from "../../../resources/components/button/Button";
 

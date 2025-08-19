@@ -13,16 +13,15 @@ const Review = lazy(
 const About = lazy(() => import("./About"));
 const Contact = lazy(() => import("./Contact"));
 const HeaderPortfolio = lazy(
-  () => import("../../../../resources/components/header/header-portfolio")
+  () => import("../../../../resources/UIBlocks/header/header-portfolio")
 );
 const FooterPortfolio = lazy(
-  () => import("../../../../resources/components/footer/footer-portfolio")
+  () => import("../../../../resources/UIBlocks/footer/footer-portfolio")
 );
 const CardShowcase = lazy(
   () => import("../../../../resources/UIBlocks/CardShowcase")
 );
 import LoadingScreen from "../../../../resources/components/loading/LoadingScreen";
-import CardView from "../../../../resources/UIBlocks/card/CardView";
 
 const Home: React.FC = () => {
   // Company About Card

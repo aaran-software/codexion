@@ -4,7 +4,7 @@ import { FiTwitter } from "react-icons/fi";
 import { FaInstagram, FaWhatsapp, FaPhoneAlt } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { useState } from "react";
-import NewUpdate from "../../../resources/components/advertisment/NewUpdate";
+import NewUpdate from "../../components/advertisment/NewUpdate";
 
 interface SocialLinks {
   whatsapp?: string;

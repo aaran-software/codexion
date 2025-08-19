@@ -51,7 +51,7 @@ import { AppSidebar } from "../../../../resources/components/sidebar/app-sidebar
 import ScrollToTopButton from "../../../../resources/components/common/scrolltotopbutton";
 import GrandStream from "./GrandStream";
 import Task from "./AdminComponents/Task";
-import AppFooter from "../../../../resources/components/footer/AppFooter";
+import AppFooter from "../../../../resources/UIBlocks/footer/AppFooter";
 
 export default function Admin() {
   const { token } = useAuth();

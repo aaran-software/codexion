@@ -12,10 +12,10 @@ const CategoryPage = lazy(() => import("./pages/CategoryPage"));
 const Wishlist = lazy(() => import("../../../resources/UIBlocks/Wishlist"));
 const Cart = lazy(() => import("./pages/Cart"));
 const Footer = lazy(
-  () => import("../../../resources/components/footer/Footer")
+  () => import("../../../resources/UIBlocks/footer/Footer")
 );
 const Header = lazy(
-  () => import("../../../resources/components/header/Header")
+  () => import("../../../resources/UIBlocks/header/Header")
 );
 const FrappeLoginForm = lazy(
   () => import("../../../resources/layouts/auth/frappe-login")

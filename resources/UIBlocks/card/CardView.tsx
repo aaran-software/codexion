@@ -1,4 +1,6 @@
 // ServicesCard.tsx
+// .  .
+// .  .
 import React from 'react';
 
 type Items = {

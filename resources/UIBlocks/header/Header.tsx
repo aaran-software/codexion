@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { LucideShoppingCart, UserCircle2 } from "lucide-react";
-import ImageButton from "../button/ImageBtn";
 import UserSubMenu from "../../../resources/UIBlocks/UserSubMenu";
-import GlobalSearch from "../input/search-box";
+import ImageButton from "../../../resources/components/button/ImageBtn";
+import GlobalSearch from "../../../resources/components/input/search-box";
 
 export type Product = {
   id: string;

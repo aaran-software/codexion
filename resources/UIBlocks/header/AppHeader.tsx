@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import ImageButton from "../button/ImageBtn";
-import { ModeToggle } from "../mode-toggle";
 import { useAppSettings } from "../../../apps/global/useSettings";
+import ImageButton from "../../../resources/components/button/ImageBtn";
+import {ModeToggle} from "../../../resources/components/mode-toggle";
 
 function AppHeader() {
   const [isOpen, setIsOpen] = useState(false);

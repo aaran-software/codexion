@@ -1,8 +1,8 @@
 import { Routes, Route } from 'react-router-dom'
 import ProtectedRoute from "../../global/auth/ProtectedRoute";
 import Admin from "./pages/Admin";
-import FrappeLoginForm from '../../../resources/components/auth/frappe-login';
-import FrappeSignupForm from '../../../resources/components/auth/frappe-signup';
+import FrappeLoginForm from '../../../resources/layouts/auth/frappe-login';
+import FrappeSignupForm from '../../../resources/layouts/auth/frappe-signup';
 
 function AppRoutes() {
   return (

@@ -1,5 +1,5 @@
 
-import NewUpdate from "../../../resources/components/advertisment/NewUpdate";
+import NewUpdate from "../../components/advertisment/NewUpdate";
 import {useState} from "react";
 
 const AppFooter: React.FC = () => {

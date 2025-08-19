@@ -1,11 +1,11 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { Card, CardContent, CardHeader, CardTitle } from "../chart/card"
-import Button from "../button/Button"
-import FloatingInput from "../input/floating-input"
+import { Card, CardContent, CardHeader, CardTitle } from "../../../resources/components/chart/card"
+import Button from "../../../resources/components/button/Button"
 import apiClient from "../../global/api/apiClients";
 import {cn} from "../../global/library/utils";
-import PasswordInput from "../input/password-input";
+import PasswordInput from "../../../resources/components/input/password-input";
+import FloatingInput from "../../../resources/components/input/floating-input";
 
 export default function FrappeSignupForm({
   className,

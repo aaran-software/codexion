@@ -46,11 +46,11 @@ import ContactType from "./Common/Contact-Types";
 import PaymentMode from "./Common/PaymentMode";
 import { useFrappeAuth } from "../../../global/auth/frappeAuthContext";
 import Dashboard from "../../../../resources/components/dashboard/Dashboard";
-import AppHeader from "../../../../resources/components/header/AppHeader";
+import AppHeader from "../../../../resources/UIBlocks/header/AppHeader";
 import { AppSidebar } from "../../../../resources/components/sidebar/app-sidebar";
 import ScrollToTopButton from "../../../../resources/components/common/scrolltotopbutton";
 import Task from "./AdminComponents/Task";
-import AppFooter from "../../../../resources/components/footer/AppFooter";
+import AppFooter from "../../../../resources/UIBlocks/footer/AppFooter";
 import Company from "./Master/Company";
 
 export default function Admin() {

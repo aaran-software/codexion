@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import SafeToWords from "../../../resources/global/external/safeToWords";
+import SafeToWords from "../../global/external/safeToWords";
 
 interface PrintProps {
   head: string[];
