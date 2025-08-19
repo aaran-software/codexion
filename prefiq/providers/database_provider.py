@@ -13,12 +13,11 @@ from prefiq.database.connection import get_engine
 from prefiq.settings.get_settings import load_settings
 from prefiq.log.logger import get_logger
 
-# Validate DB env against either MariaDB or SQLite shapes
 from prefiq.providers.db_config import DatabaseSettings
 
 
 class DatabaseProvider(BaseProvider):
-    # Let SettingsProvider auto-validate this provider too, if you use that flow
+    # lets SettingsProvider validate this provider early (optional but nice)
     schema_model = DatabaseSettings
 
     def __init__(self, app):
@@ -44,7 +43,6 @@ class DatabaseProvider(BaseProvider):
         try:
             if hasattr(self.engine, "close"):
                 res = self.engine.close()
-                # handle async close as well
                 self._resolve_awaitable(res)
 
             # avoid logging if handlers are torn down during interpreter shutdown
@@ -65,21 +63,24 @@ class DatabaseProvider(BaseProvider):
 
     @staticmethod
     def _resolve_awaitable(maybe_awaitable):
-        """Await if needed. Works even if there's an event loop already running."""
+        """Await if needed. Works even if an event loop is already running."""
         if inspect.isawaitable(maybe_awaitable) or inspect.iscoroutine(maybe_awaitable):
             try:
                 # If there's no running loop, asyncio.run is fine
-                loop = asyncio.get_running_loop()
+                asyncio.get_running_loop()
             except RuntimeError:
                 return asyncio.run(maybe_awaitable)
             else:
-                # Running loop present → create a private loop to wait
+                # Running loop present → use a private loop to await
                 new_loop = asyncio.new_event_loop()
                 try:
-                    return new_loop.run_until_complete(asyncio.ensure_future(maybe_awaitable, loop=new_loop))
+                    asyncio.set_event_loop(new_loop)
+                    task = new_loop.create_task(maybe_awaitable)  # <-- create task on this loop
+                    return new_loop.run_until_complete(task)
                 finally:
                     with suppress(Exception):
                         new_loop.run_until_complete(new_loop.shutdown_asyncgens())
+                    asyncio.set_event_loop(None)
                     new_loop.close()
         return maybe_awaitable
 
