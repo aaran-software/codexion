@@ -30,7 +30,7 @@ def _make_engine():
         return AsyncMysqlEngine() if _is_async(s.DB_MODE) else SyncMysqlEngine()
 
     if eng == "sqlite":
-        return SyncSQLiteEngine(s)
+        return SyncSQLiteEngine()
 
     if eng in ("postgres", "postgresql"):
         # sync only here for simplicity; add async variant later if needed
