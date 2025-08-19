@@ -5,7 +5,9 @@ from __future__ import annotations
 from prefiq.core.contracts.base_provider import Application
 from cortex.runtime.service_providers import PROVIDERS
 
+# use load_settings here (per your change)
 from prefiq.settings.get_settings import load_settings
+from prefiq.database.connection import get_engine
 from prefiq.log.logger import configure_logging, get_logger
 
 
@@ -32,6 +34,18 @@ def main() -> None:
 
     # 4) Boot
     app.boot()
+
+    # --- SANITY: echo which engine was picked from env ---
+    try:
+        s = load_settings()
+        engine_class = type(get_engine()).__name__
+        # console print (exactly as you requested)
+        print("ENGINE=", s.DB_ENGINE, "MODE=", s.DB_MODE, "->", engine_class)
+        # structured log too
+        log.info("db_sanity",
+                 extra={"DB_ENGINE": s.DB_ENGINE, "DB_MODE": s.DB_MODE, "engine_class": engine_class})
+    except Exception as e:
+        log.error("db_sanity_failed", extra={"error": str(e)})
 
     # 5) Post-boot: verify bindings you care about
     try:

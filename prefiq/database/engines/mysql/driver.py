@@ -1,15 +1,17 @@
-from cortex.database.engines.mariadb.sync_engine import SyncMariaDBEngine
-from cortex.database.engines.mariadb.async_engine import AsyncMariaDBEngine
-from cortex.core.settings import get_settings
+# prefiq/database/engines/mysql//driver.py
+
+from prefiq.database.engines.mysql.sync_engine import SyncMysqlEngine
+from prefiq.database.engines.mysql.async_engine import AsyncMysqlEngine
+from prefiq.settings.get_settings import load_settings
 
 
-class MySQLDBEngine:
+class MariadbEngine:
     def __new__(cls):
-        settings = get_settings()
+        settings = load_settings()
 
         if not settings.DB_ENGINE:  # <-- IMPROVE: Add validation
             raise ValueError("DB_ENGINE must be set in settings")
 
         if settings.DB_MODE.lower() == "async":
-            return AsyncMariaDBEngine()
-        return SyncMariaDBEngine()
+            return AsyncMysqlEngine()
+        return SyncMysqlEngine()

@@ -2,9 +2,9 @@ import os
 import configparser
 from pathlib import Path
 
-from prefiq.settings import get_settings
+from prefiq.settings.get_settings import load_settings
 
-CFG_PATH = Path(get_settings().project_root) / "config" / "apps.cfg"
+CFG_PATH = Path(load_settings().project_root) / "config" / "apps.cfg"
 
 
 def create_apps_cfg():

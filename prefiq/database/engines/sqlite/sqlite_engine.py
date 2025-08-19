@@ -58,7 +58,7 @@ def _apply_pragmas(conn: sqlite3.Connection) -> None:
     )
 
 
-class SyncSQLiteEngine(AbstractEngine[Any]):
+class SQLiteEngine(AbstractEngine[Any]):
     """
     Synchronous SQLite engine implementing AbstractEngine.
     """

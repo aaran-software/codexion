@@ -1,4 +1,5 @@
 # prefiq/settings/get_settings.py
+
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from functools import lru_cache
@@ -45,13 +46,13 @@ class Settings(BaseSettings):
 
 
 @lru_cache()
-def _get_cached_settings() -> Settings:
+def _load_cached_settings() -> Settings:
     return Settings()
 
 def load_settings() -> Settings:
     if os.getenv("TESTING", "0").lower() in ("1", "true"):
         return Settings()
-    return _get_cached_settings()
+    return _load_cached_settings()
 
 def clear_settings_cache():
-    _get_cached_settings.cache_clear()
+    _load_cached_settings.cache_clear()
