@@ -1,58 +1,112 @@
 # prefiq/settings/get_settings.py
 
-from pydantic import Field
-from pydantic_settings import BaseSettings, SettingsConfigDict
-from functools import lru_cache
-import os
+from __future__ import annotations
 
-env_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".env"))
+import os
+from functools import lru_cache
+from typing import Literal, Optional
+
+from pydantic import Field, field_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+# Resolve the repo .env once; allow an override via ENV_FILE if you need a different path.
+_DEFAULT_ENV_PATH = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "..", "..", ".env")
+)
+_ENV_FILE = os.getenv("ENV_FILE", _DEFAULT_ENV_PATH)
+
 
 class Settings(BaseSettings):
-    TESTING: bool = False
+    # --- meta/env ---
+    ENV: Literal["development", "test", "production"] = "development"
+    TESTING: bool = False  # tip: set TESTING=1 under pytest
 
-    DB_ENGINE: str = "mariadb"
+    # --- database ---
+    DB_ENGINE: Literal["mariadb", "mysql", "sqlite"] = "mariadb"
+    DB_MODE: Literal["sync", "async"] = "async"
     DB_HOST: str = "localhost"
     DB_PORT: int = 3306
     DB_USER: str = "root"
     DB_PASS: str = "DbPass1@@"
     DB_NAME: str = "codexion_db"
-    DB_MODE: str = "async"
 
+    # Async pool warmup (harmless/no-op for sync engines)
+    DB_POOL_WARMUP: int = Field(
+        1, ge=0, description="Number of connections to prewarm in async pool"
+    )
+
+    # --- jwt/auth (defaults OK for local dev only) ---
     JWT_SECRET_KEY: str = "your-super-secret-key"
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
 
-    DB_POOL_WARMUP: int = Field(1, description="Number of connections to prewarm in async pool")
+    # --- logging ---
+    LOG_LEVEL: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = "INFO"
+    LOG_FORMAT: Literal["json", "text"] = "text"
+    LOG_NAMESPACE: str = "prefiq"
+    LOG_COLOR: Literal["auto", "true", "false"] = "auto"
 
-    LOG_LEVEL: str = "INFO"  # DEBUG | INFO | WARNING | ERROR
-    LOG_FORMAT: str = "text"  # "json" or "text"
-    LOG_NAMESPACE: str = "prefiq"  # base logger name
-    LOG_COLOR: str = "auto"
+    # --- misc toggles ---
     DB_CLOSE_ATEXIT: bool = True
 
+    # pydantic‑settings v2 config
     model_config = SettingsConfigDict(
-        env_file=env_path,
-        extra="allow"
+        env_file=_ENV_FILE,
+        env_file_encoding="utf-8",
+        case_sensitive=False,   # nicer DX for envs
+        extra="allow",          # you already relied on this
     )
+
+    # --- computed helpers ----------------------------------------------------
 
     @property
     def project_root(self) -> str:
-        return os.path.dirname(env_path)
+        return os.path.dirname(_DEFAULT_ENV_PATH)
 
-    # @property
-    # def database_url(self) -> str:
-    #     from cortex.core.dataserve import get_database_url
-    #     return get_database_url()
+    @property
+    def is_async(self) -> bool:
+        return self.DB_MODE.lower() == "async"
 
+    # Normalize a few fields (defensive; supports weird env values)
+    @field_validator("DB_ENGINE", mode="before")
+    @classmethod
+    def _normalize_engine(cls, v: str) -> str:
+        v = (v or "").lower()
+        aliases = {"postgresql": "postgres", "sqlite3": "sqlite"}
+        return aliases.get(v, v)
+
+    @field_validator("DB_MODE", mode="before")
+    @classmethod
+    def _normalize_mode(cls, v: str) -> str:
+        return (v or "").lower()
+
+    # Example DSN helpers (optional; keep if useful elsewhere)
+    def dsn(self) -> Optional[str]:
+        if self.DB_ENGINE == "sqlite":
+            # You use DB_NAME as file path or ':memory:' in your stack.
+            return f"sqlite:///{self.DB_NAME}"
+        if self.DB_ENGINE in {"mariadb", "mysql"}:
+            return f"{self.DB_ENGINE}://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+        return None
+
+
+# --- cached loader API (stable import surface) -------------------------------
 
 @lru_cache()
 def _load_cached_settings() -> Settings:
     return Settings()
 
-def load_settings() -> Settings:
-    if os.getenv("TESTING", "0").lower() in ("1", "true"):
+
+def load_settings(*, force_refresh: bool = False) -> Settings:
+    """
+    App-wide cached settings. For tests set TESTING=1 or pass force_refresh=True.
+    """
+    if force_refresh or os.getenv("TESTING", "0").lower() in ("1", "true", "yes"):
+        # fresh object each time during tests when you ask for it
         return Settings()
     return _load_cached_settings()
 
-def clear_settings_cache():
+
+def clear_settings_cache() -> None:
     _load_cached_settings.cache_clear()
