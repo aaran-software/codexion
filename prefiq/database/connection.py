@@ -30,14 +30,7 @@ def _make_engine():
         return AsyncMysqlEngine() if _is_async(s.DB_MODE) else SyncMysqlEngine()
 
     if eng == "sqlite":
-        return SyncSQLiteEngine()
-
-    if eng in ("postgres", "postgresql"):
-        # sync only here for simplicity; add async variant later if needed
-        return SyncPostgresEngine(s)
-
-    if eng in ("mongodb", "mongo"):
-        return SyncMongoEngine(s)
+        return AsyncSQLiteEngine() if _is_async(s.DB_MODE) else SyncSQLiteEngine()
 
     raise RuntimeError(
         f"Unsupported DB_ENGINE '{s.DB_ENGINE}'. "
