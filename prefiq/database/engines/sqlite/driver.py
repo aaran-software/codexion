@@ -15,7 +15,7 @@
 #   - Keeps the API consistent with MariadbEngine.
 # =============================================================
 
-from prefiq.database.engines.sqlite.sync_engine import SyncSQLiteEngine
+from prefiq.database.engines.sqlite.sync_engine import SQLiteEngine
 from prefiq.database.engines.sqlite.async_engine import AsyncSQLiteEngine
 from prefiq.settings.get_settings import load_settings
 
@@ -36,4 +36,4 @@ class SQLiteEngine:
         if settings.DB_MODE and settings.DB_MODE.lower() == "async":
             return AsyncSQLiteEngine()
 
-        return SyncSQLiteEngine()
+        return SQLiteEngine()
