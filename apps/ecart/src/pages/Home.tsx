@@ -20,14 +20,14 @@ const PromotionSection = lazy(
 const ScrollAdverthisment2 = lazy(
   () => import("../../../../resources/UIBlocks/Promotion/ScrollAdverthisment2")
 );
-const Mainmenu = lazy(() => import("../../../../resources/UIBlocks/Mainmenu"));
+const Mainmenu = lazy(() => import("../../../../resources/UIBlocks/header/Mainmenu"));
 const BrandMarquee = lazy(
   () => import("../../../../resources/components/marquee/BrandMarquee")
 );
 const FloatContact = lazy(
   () => import("../../../../resources/UIBlocks/contact/FloatContact")
 );
-
+import menuJSON from '../../js/ecart.json'
 function Home() {
   const brands = [
     { name: "DELL", logo: "/assets/brand/dell.svg" },
@@ -92,7 +92,7 @@ function Home() {
 
   return (
     <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
-      <Mainmenu />
+        <Mainmenu menuData={menuJSON.Mainmenu} />
 
       {/* main carousel */}
       <BannerCarousel

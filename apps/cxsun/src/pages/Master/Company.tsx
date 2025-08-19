@@ -47,11 +47,10 @@ function Company() {
   return (
     <div>
       <FormLayout
-        groupedFields={groupedFields}
-        head={head}
-        formApi={formApi}
-        printableFields={printableFields}
-      />
+          groupedFields={groupedFields}
+          head={head}
+          formApi={formApi}
+          printableFields={printableFields} multipleEntry={false} formName={""}      />
     </div>
   );
 }

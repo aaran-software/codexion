@@ -13,7 +13,7 @@ const Contact = lazy(() => import("./pages/Contact"));
 const About = lazy(() => import("./pages/about"));
 const Manufacture = lazy(() => import("./pages/Manufacture"));
 const HeaderPortfolio2 = lazy(
-  () => import("../../../resources/components/header/HeaderPortfolio2")
+  () => import("../../../resources/UIBlocks/header/HeaderPortfolio2")
 );
 
 const BlogLayout1 = lazy(

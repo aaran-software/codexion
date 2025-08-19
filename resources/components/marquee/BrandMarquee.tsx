@@ -70,12 +70,12 @@ const BrandMarquee: React.FC<BrandMarqueeProps> = ({
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
-      {type === "big-text" && (
+      {/* {type === "big-text" && (
         <>
-          <div className="pointer-events-none absolute top-0 left-0 h-full w-16 bg-gradient-to-r from-black to-transparent z-10"></div>
-          <div className="pointer-events-none absolute top-0 right-0 h-full w-16 bg-gradient-to-l from-black to-transparent z-10"></div>
+          <div className="pointer-events-none absolute top-0 left-0 h-full w-16 bg-gradient-to-r from-primary/40 to-transparent z-10"></div>
+          <div className="pointer-events-none absolute top-0 right-0 h-full w-16 bg-gradient-to-l from-primary/40 to-transparent z-10"></div>
         </>
-      )}
+      )} */}
 
       <motion.div
         ref={marqueeRef}
@@ -100,7 +100,7 @@ const BrandMarquee: React.FC<BrandMarqueeProps> = ({
                 loading="eager"
               />
             ) : type === "big-text" ? (
-              <span className="text-white text-6xl md:text-8xl font-extrabold uppercase tracking-wide hover:text-yellow-400 transition-colors duration-300">
+              <span className="text-white text-3xl md:text-4xl font-extrabold uppercase tracking-wide hover:text-primary transition-colors duration-300">
                 {brand.name}
               </span>
             ) : (
