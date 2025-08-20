@@ -1,5 +1,3 @@
-# prefiq/settings/get_settings.py
-
 from __future__ import annotations
 
 import os
@@ -8,7 +6,6 @@ from typing import Literal, Optional
 
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
 
 # Resolve the repo .env once; allow an override via ENV_FILE if you need a different path.
 _DEFAULT_ENV_PATH = os.path.abspath(
@@ -54,8 +51,8 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=_ENV_FILE,
         env_file_encoding="utf-8",
-        case_sensitive=False,   # nicer DX for envs
-        extra="allow",          # you already relied on this
+        case_sensitive=False,   # env var *names* are case-insensitive
+        extra="allow",
     )
 
     # --- computed helpers ----------------------------------------------------
@@ -68,7 +65,8 @@ class Settings(BaseSettings):
     def is_async(self) -> bool:
         return self.DB_MODE.lower() == "async"
 
-    # Normalize a few fields (defensive; supports weird env values)
+    # Normalize a few fields (defensive; supports common env variants)
+
     @field_validator("DB_ENGINE", mode="before")
     @classmethod
     def _normalize_engine(cls, v: str) -> str:
@@ -80,6 +78,43 @@ class Settings(BaseSettings):
     @classmethod
     def _normalize_mode(cls, v: str) -> str:
         return (v or "").lower()
+
+    @field_validator("LOG_LEVEL", mode="before")
+    @classmethod
+    def _normalize_log_level(cls, v: str) -> str:
+        # accept 'debug', 'warn', etc.
+        s = (v or "").strip().lower()
+        map_alias = {
+            "debug": "DEBUG",
+            "info": "INFO",
+            "warning": "WARNING",
+            "warn": "WARNING",
+            "error": "ERROR",
+            "err": "ERROR",
+        }
+        return map_alias.get(s, s.upper())
+
+    @field_validator("LOG_FORMAT", mode="before")
+    @classmethod
+    def _normalize_log_format(cls, v: str) -> str:
+        # accept 'JSON'/'Text'
+        s = (v or "").strip().lower()
+        if s in {"json", "text"}:
+            return s
+        return s or "text"
+
+    @field_validator("LOG_COLOR", mode="before")
+    @classmethod
+    def _normalize_log_color(cls, v: str) -> str:
+        # accept booleans/on/off/1/0 in addition to 'auto'
+        s = (v or "").strip().lower()
+        if s in {"auto", "true", "false"}:
+            return s
+        if s in {"1", "yes", "y", "on"}:
+            return "true"
+        if s in {"0", "no", "n", "off"}:
+            return "false"
+        return "auto" if not s else s
 
     # Example DSN helpers (optional; keep if useful elsewhere)
     def dsn(self) -> Optional[str]:
