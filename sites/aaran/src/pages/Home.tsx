@@ -1,6 +1,7 @@
 import { lazy } from "react";
 import HeroBanner from "../../../../resources/UIBlocks/banner/HeroBanner";
 import StartingSection1 from "../../../../resources/UIBlocks/startingsection/StartingSection1";
+import TestimonialCarousel from "../../../../resources/UIBlocks/card/TestimonialCard";
 
 const TransparentCard = lazy(
   () => import("../../../../resources/UIBlocks/card/TransparentCard")
@@ -234,6 +235,8 @@ function Home() {
         />
       </div>
 
+      <TestimonialCarousel />
+
       <div id="contact">
         <PortfolioContact
           contact={{
@@ -243,7 +246,7 @@ function Home() {
           }}
         />
       </div>
-      
+
     </div>
   );
 }

@@ -1,47 +1,41 @@
 import { FaHome, FaPhoneAlt } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
-
+import FloatContact from "../../UIBlocks/contact/FloatContact";
+import { IconType } from "react-icons";
 type SocialLink = {
+  id: string;
   href: string;
   img: string;
   alt: string;
 };
-
+type AddressItem = {
+  title: string;
+  details: string;
+  email?: string;
+  icon: IconType;
+};
 type ContactProps = {
   title?: string;
   image?: string;
-  address: string;
-  phone: string;
-  email: string;
+  addresses: AddressItem[];
   socialLinks: SocialLink[];
+  iconSize: string;
 };
 
 export default function Contact1({
   title = "Contact Us",
-  image = "/assets/svg/contact.svg",
-  address,
-  phone,
-  email,
+  addresses,
   socialLinks,
+  iconSize,
 }: ContactProps) {
   return (
     <div className="p-6 mt-20">
       <h1 className="sr-only">{title}</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Left Image Section */}
-        <div className="flex flex-col items-center text-center space-y-4 relative">
-          <h1 className="text-3xl font-bold text-foreground">{title}</h1>
-          <img
-            className="w-60 h-60 object-contain"
-            src={image}
-            alt="portfolio contact"
-          />
-          {/*<div className="absolute inset-0 bg-foreground/20"></div>*/}
-        </div>
 
         {/* Form Section */}
-        <form className="flex flex-col space-y-4">
+        <form className="flex flex-col space-y-4 md:px-[10%]">
           <div>
             <label htmlFor="name" className="text-foreground text-lg">
               Name
@@ -84,46 +78,58 @@ export default function Contact1({
         </form>
 
         {/* Address & Social Section */}
-        <div className="space-y-6 text-white">
-          <div className="flex items-start space-x-3">
-            <FaHome className="text-2xl block my-auto text-foreground" />
-            <div>
-              <h3 className="text-foreground font-semibold">Address</h3>
-              <p className="text-foreground/70">{address}</p>
-            </div>
-          </div>
+        <div className="space-y-8 text-background">
+          {/* Multiple addresses */}
+          {addresses.map((addr, idx) => {
+            const Icon = addr.icon; 
+            return (
+              <div key={idx} className="flex items-start space-x-3 md:w-[80%]">
+                <Icon className="text-2xl block my-auto text-foreground shrink-0" />{" "}
+                {/* dynamic */}
+                <div>
+                  <h3 className="text-foreground text-lg font-semibold">
+                    {addr.title}
+                  </h3>
+                  <p className="text-foreground/70">{addr.details}</p>
+                  {addr.email && (
+                    <a
+                      href={`mailto:${addr.email}`}
+                      className="block text-primary mt-1"
+                    >
+                      {addr.email}
+                    </a>
+                  )}
+                </div>
+              </div>
+            );
+          })}
 
-          <div className="flex items-start space-x-3">
-            <FaPhoneAlt className="text-2xl block my-auto text-foreground" />
-            <div>
-              <h3 className="text-foreground font-semibold">Phone</h3>
-              <a href={`tel:${phone}`} className="text-foreground/70">
-                {phone}
-              </a>
-            </div>
-          </div>
+          <FloatContact
+            contacts={socialLinks.map((link) => {
+              // Detect platform from URL
+              let id: string = "link";
+              if (link.id === "whatsapp") id = "whatsapp";
+              else if (link.id === "instagram") id = "instagram";
+              else if (link.id === "facebook") id = "facebook";
+              else if (link.id === "linkedin") id = "linkedin";
+              else if (link.id === "email") id = "email";
+              else if (link.id === "phone") id = "phone";
 
-          <div className="flex items-start space-x-3">
-            <MdEmail className="text-2xl block my-auto text-foreground" />
-            <div>
-              <h3 className="text-foreground font-semibold">Email</h3>
-              <a href={`mailto:${email}`} className="text-foreground/70">
-                {email}
-              </a>
-            </div>
-          </div>
-
-          <div className="flex gap-4 mt-4">
-            {socialLinks.map(({ href, img, alt }) => (
-              <a key={alt} href={href} target="_blank" rel="noreferrer">
-                <img
-                  src={img}
-                  alt={alt}
-                  className="w-10 h-10 p-2 hover:scale-110 transition-transform"
-                />
-              </a>
-            ))}
-          </div>
+              return {
+                id,
+                contact: link.href,
+                imgPath: link.img,
+                defaultMessage:
+                  id === "whatsapp"
+                    ? "Hello, I’m interested in this product. Could you please share more details?"
+                    : undefined,
+              };
+            })}
+            className=""
+            horizontal={true}
+            labelPosition="top"
+            iconSize={iconSize}
+          />
         </div>
       </div>
     </div>

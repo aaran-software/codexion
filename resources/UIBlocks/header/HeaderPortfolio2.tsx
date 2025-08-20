@@ -93,7 +93,7 @@ function HeaderPortfolio2({ menu }: HeaderProps) {
         {/* Mode 2: Only Company Name */}
         {logo.mode === "name" && (
           <h3
-            className={`text-${logo.font_size}xl p-${logo.padding}  font-bold`}
+            className={`text-${logo.font_size}xl p-${logo.padding} ${logo.text_color} font-bold ${logo.font}`}
           >
             {logo.company_name}
           </h3>
@@ -107,7 +107,7 @@ function HeaderPortfolio2({ menu }: HeaderProps) {
               alt="Logo"
               className={`h-${logo.height} p-${logo.padding}`}
             />
-            <span className={`text-${logo.font_size}xl  font-bold`}>
+            <span className={`text-${logo.font_size}xl ${logo.text_color} font-bold ${logo.font}`}>
               {logo.company_name}
             </span>
           </>

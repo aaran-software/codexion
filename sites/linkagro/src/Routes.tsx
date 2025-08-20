@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import ScrollToTop from "../../../resources/components/common/scrolltotop";
-import { FaInstagram } from "react-icons/fa";
+import { FaInstagram, FaWhatsapp } from "react-icons/fa";
 import { CiFacebook } from "react-icons/ci";
 import { RiTwitterXLine } from "react-icons/ri";
 import React, { lazy, Suspense } from "react";
@@ -62,24 +62,24 @@ function AppRoutes() {
               { label: "Product", href: "/product" },
               { label: "Blogs", href: "/blog" },
               { label: "Manufacture", href: "/manufacture" },
+            { label: "Contact", href: "/contact" },
             ],
           }}
           
           consumerPolicy={{
             title: "Consumer Policy",
-            phone: "+91 98765 43210",
-            email: "info@linkagro.com",
+            phone: "+91 7395944679",
+            email: "exports@linkagro.in",
             items: [
               { label: "Privacy Policy", href: "/privacy" },
               { label: "Terms of Service", href: "/terms" },
             ],
           }}
           address={{
-            lines: ["123 Agro Street", "Tamil Nadu, India", "PIN - 600001"],
+            lines: ["3/306-A, Thandradevi Pattinam, Paramakudi-623707 Ramnad District."],
             socialLinks: [
-              { href: "https://instagram.com/linkagro", icon: <FaInstagram /> },
-              { href: "https://facebook.com/linkagro", icon: <CiFacebook /> },
-              { href: "https://twitter.com/linkagro", icon: <RiTwitterXLine /> },
+              { href: "https://www.instagram.com/linkagroexports", icon: <FaInstagram /> },
+              { href: "https://wa.me/917395944679", icon: <FaWhatsapp /> },
             ],
           }}
           updateConfig={{

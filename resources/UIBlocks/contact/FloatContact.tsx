@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 interface ContactType {
   id: "whatsapp" | "phone" | "email" | "instagram" | string;
   contact: string;
@@ -13,6 +12,7 @@ interface FloatContactProps {
   className?: string;
   horizontal?: boolean;
   labelPosition?: "left" | "right" | "top" | "bottom";
+  iconSize?:string
 }
 
 const platformColors: Record<string, string> = {
@@ -27,6 +27,7 @@ function FloatContact({
   className,
   horizontal = false,
   labelPosition = "left",
+  iconSize="w-12 h-12"
 }: FloatContactProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [canHover, setCanHover] = useState(false);
@@ -70,6 +71,21 @@ function FloatContact({
       }
 
       console.log("Opening WhatsApp URL:", url);
+      window.open(url, "_blank");
+    } else if (contact.id === "instagram") {
+      let url = contact.contact;
+
+      // If it's not already a full URL, build a profile link
+      if (!/^https?:\/\//.test(url)) {
+        url = `https://www.instagram.com/${url.replace(/^@/, "")}/`;
+      }
+
+      // If defaultMessage is provided, append as DM link (works on web & mobile)
+      if (contact.defaultMessage) {
+        const encodedMsg = encodeURIComponent(contact.defaultMessage);
+        url = `https://www.instagram.com/direct/new/?text=${encodedMsg}`;
+      }
+
       window.open(url, "_blank");
     } else if (contact.id === "phone") {
       window.location.href = `tel:${contact.contact}`;
@@ -125,7 +141,7 @@ function FloatContact({
             }}
             className={`hover:scale-105 transition cursor-pointer ${item.className}`}
           >
-            <img src={item.imgPath} alt={item.id} className="w-12 h-12" />
+            <img src={item.imgPath} alt={item.id} className={`${iconSize}`} />
           </button>
         </div>
       ))}

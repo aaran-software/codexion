@@ -1,24 +1,37 @@
-import React from "react";
+import { lazy } from "react";
 import { useInView } from "react-intersection-observer";
 import Card2 from "../../../../resources/components/card/Card2";
-
+const Team = lazy(() => import("../../../../resources/layouts/portfolio/team"));
 function About() {
   const [ref1, inView1] = useInView({ triggerOnce: true, threshold: 0.1 });
-  const [ref2, inView2] = useInView({ triggerOnce: true, threshold: 0.1 });
-  const [ref3, inView3] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [ref4, inView4] = useInView({ triggerOnce: true, threshold: 0.1 });
 
   const company = [
     {
       title: "Our Strength",
       body: `High Quality Products - Right time delivery - Best price in the market – Tailor made services - 100% Positive Feedback`,
-      animate: "animate__animated animate__fadeInLeft animate__fast",
+      animate: "animate__animated animate__fadeInRight",
     },
 
     {
       title: `Our Process`,
       body: `Coconut Husk Feeding – Crushing – Separating Peat from Fiber – Peat Washing – Drying – Compressing as blocks`,
-      animate: "animate__animated animate__fadeInRight animate__fast",
+      animate: "animate__animated animate__fadeInRight",
+    },
+  ];
+
+  const teamData = [
+    {
+      image: "/assets/sample1.jpg",
+      name: "Mr.Ramchandran ",
+      designation: "Head – Logistics & Exports",
+      bio: "+91 70 100 580 64, ram@linkagro.in",
+    },
+    {
+      image: "/assets/sample1.jpg",
+      name: "Mr.Siva",
+      designation: "Head – Production & Sourcing",
+      bio: "+91 98 948 646 79, siva@linkagro.in",
     },
   ];
   return (
@@ -37,9 +50,10 @@ function About() {
               Committed to Quality. Driven by Nature.
             </h1>
             <p className="text-sm lg:text-lg text-justify animate__animated animate__fadeIn animate__slow">
-              From South India to the World.
-Founded in 2014, Link Agro Exports stands for quality, consistency, and customer satisfaction.
-We manufacture and export premium coco peat products designed to enrich agriculture and horticulture practices.
+              From South India to the World. Founded in 2014, Link Agro Exports
+              stands for quality, consistency, and customer satisfaction. We
+              manufacture and export premium coco peat products designed to
+              enrich agriculture and horticulture practices.
             </p>
           </div>
         </div>
@@ -60,21 +74,16 @@ We manufacture and export premium coco peat products designed to enrich agricult
             are emerging globally by exporting.
           </p>
 
-          <div className="container px-5 lg:px-[10%] mb-10">
+          <div className="container px-5 lg:px-[10%] my-20">
             <Card2
               items={company}
               containerStyle={"grid-cols-1 sm:grid-cols-2"}
               lineStyle="w-3 h-12"
             />
           </div>
-          <div className="grid md:grid-cols-2 gap-12 mb-12">
+          <div className="grid md:grid-cols-2 gap-12 my-12">
             {/* Left Column */}
-            <div
-              className={`text-lg leading-relaxed mb-8 ${
-                inView2 ? "animate__animated animate__fadeInLeft" : "opacity-0"
-              }`}
-              ref={ref2}
-            >
+            <div className={`text-lg leading-relaxed `}>
               <h3 className="text-2xl font-semibold text-green-600 mb-4">
                 Over a Decade of Excellence
               </h3>
@@ -97,12 +106,7 @@ We manufacture and export premium coco peat products designed to enrich agricult
             </div>
 
             {/* Right Column - Product List */}
-            <div
-              className={`bg-gray-50 p-6 rounded-lg shadow-md ${
-                inView3 ? "animate__animated animate__fadeInRight" : "opacity-0"
-              }`}
-              ref={ref3}
-            >
+            <div className={`bg-gray-50 p-6 rounded-lg shadow-md `}>
               <h3 className="text-2xl font-semibold text-green-600 mb-4">
                 What We Deliver
               </h3>
@@ -119,7 +123,7 @@ We manufacture and export premium coco peat products designed to enrich agricult
 
           {/* Our Commitment */}
           <div
-            className={`bg-green-100 p-6 rounded-lg shadow-md  ${
+            className={`bg-green-100 p-6 mt-30 rounded-lg shadow-md  ${
               inView4 ? "animate__animated animate__fadeInUp" : "opacity-0"
             }`}
             ref={ref4}
@@ -142,6 +146,13 @@ We manufacture and export premium coco peat products designed to enrich agricult
             </p>
           </div>
         </div>
+      </div>
+      <div className="mt-10 mb-30">
+        <Team
+          title="Meet Our Professionals"
+          description="Our team combines creativity, expertise, and dedication to deliver outstanding solutions for our clients."
+          members={teamData}
+        />
       </div>
     </div>
   );

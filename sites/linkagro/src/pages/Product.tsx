@@ -1,4 +1,3 @@
-import { useInView } from "react-intersection-observer";
 import PortfolioProduct1 from "../../../../resources/UIBlocks/portfolioProducts/PortfolioProduct1";
 import Button from "../../../../resources/components/button/Button";
 
@@ -179,8 +178,7 @@ function Product() {
     {
       image: "/assets/5Kg block packing.jpg",
       title: "PACKING",
-      description:
-        `Each product is securely compressed, wrapped, and loaded to
+      description: `Each product is securely compressed, wrapped, and loaded to
 ensure maximum safety during transit.
 We provide customizable packing formats including block stacking,
 carton packing, and stretch wrapping.
@@ -211,7 +209,14 @@ export-grade packing every time.`,
               Our Premium Coco Peat Products
             </h1>
             <p className="text-sm lg:text-lg text-justify animate__animated animate__fadeIn animate__slow">
-              Our involvement in the coconut and coconut fiber industry began when our ancestors farmed and harvested coconuts on their traditional farmland. We continue this ancestral legacy in the name of Link Agro Exports by modernizing to meet current global requirements. Now our facility is equipped to produce 5Kg cocopeat blocks both in low EC and high EC varieties. With several decades of experience, we are now capable of manufacturing and exporting cocopeat products worldwide.
+              Our involvement in the coconut and coconut fiber industry began
+              when our ancestors farmed and harvested coconuts on their
+              traditional farmland. We continue this ancestral legacy in the
+              name of Link Agro Exports by modernizing to meet current global
+              requirements. Now our facility is equipped to produce 5Kg cocopeat
+              blocks both in low EC and high EC varieties. With several decades
+              of experience, we are now capable of manufacturing and exporting
+              cocopeat products worldwide.
             </p>
             <Button
               label="Contact Now"
@@ -224,22 +229,12 @@ export-grade packing every time.`,
       <div className="px-5 lg:px-[10%]">
         {product.map((item, index) => (
           <div key={index} className="">
-            <PortfolioProduct1 item={item} reverse={index % 2 === 0} />
-
+            <div className="mt-20">
+              <PortfolioProduct1 item={item} reverse={index % 2 === 0} />
+            </div>
             {item.tables?.map((table, tIndex) => {
-              const { ref, inView } = useInView({
-                triggerOnce: true,
-                threshold: 0.1,
-              });
-
               return (
-                <div
-                  key={tIndex}
-                  ref={ref}
-                  className={`my-6 animate__animated ${
-                    inView ? "animate__fadeInUp" : "opacity-0"
-                  }`}
-                >
+                <div key={tIndex} className={`my-10 animate__animated `}>
                   <h3 className="text-lg mb-2">{table.title}</h3>
                   <table className="w-full border border-ring/30">
                     {table.columns && table.columns.length > 0 && (
@@ -260,7 +255,10 @@ export-grade packing every time.`,
                       {table.data.map((row, rIndex) => (
                         <tr key={rIndex} className="border border-ring/30">
                           {row.map((cell, cIndex) => (
-                            <td key={cIndex} className="px-4 py-2 textra-sm border border-ring/30">
+                            <td
+                              key={cIndex}
+                              className="px-4 py-2 textra-sm border border-ring/30"
+                            >
                               {cell}
                             </td>
                           ))}

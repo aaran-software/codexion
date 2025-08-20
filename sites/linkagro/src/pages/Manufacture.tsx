@@ -1,5 +1,6 @@
 import React from "react";
 import PortfolioProduct1 from "../../../../resources/UIBlocks/portfolioProducts/PortfolioProduct1";
+import ImageCarousel from "../../../../resources/UIBlocks/carousel/ImageCarousel";
 
 const steps = [
   {
@@ -42,48 +43,29 @@ const steps = [
     title: "Cocopeat compressed into 5KG Blocks",
     description:
       "Once dried and filtered, the cocopeat is compressed into standard 5KG blocks for easy handling.",
-    image: "/assets/manufacturing/7 Cocopeat compressed as 5KG Blocks.jpg",
+    image: "/assets/manufacturing/7 Cocopeat compressed as 5KG Blocks.jpeg",
   },
   {
     title: "5KG Blocks Ready to Ship",
     description:
       "The final compressed blocks are packaged and made ready for export or direct client delivery.",
-    image: "/assets/manufacturing/8 5Kg blocks ready to be shipped.jpg",
+    image: "/assets/manufacturing/8 5Kg blocks ready to be shipped.jpeg",
   },
 ];
 
 function Manufacture() {
   return (
     <div className="">
-      <div className="relative h-[50vh] sm:h-[70vh] w-full">
-        {/* Background Image */}
-        <img
-          src="/assets/Benefits Application 2.jpg"
-          alt="Sample"
-          className="h-full w-full object-fit"
-        />
+      <ImageCarousel
+        images={[
+          { id: "1", image: "/assets/manufacturing/slider1.jpg" },
+          { id: "2", image: "/assets/manufacturing/slider2.jpg" },
+          { id: "3", image: "/assets/manufacturing/slider3.jpeg" },
+        ]}
+        interval={6000}
+      />
 
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-foreground/60"></div>
-
-        {/* Text Content */}
-        <div className="absolute inset-0 flex items-center">
-          <div className="md:w-2/3 px-5 lg:px-[10%] text-white space-y-4">
-            <h1 className="text-2xl lg:text-4xl font-bold animate__animated animate__fadeIn animate__fast">
-              Our Cocopeat Manufacturing Process
-            </h1>
-            <p className="text-sm sm:text-md lg:text-lg text-justify animate__animated animate__fadeIn animate__slow">
-              At Link Agro Exports, our cocopeat production journey is a careful
-              blend of tradition, innovation, and sustainability. Explore each
-              stage of our manufacturing process — from sourcing premium coconut
-              husks to delivering high-quality, low EC cocopeat blocks ready for
-              global export. Every step is meticulously designed to ensure
-              superior quality, purity, and performance in horticulture,
-              hydroponics, and farming applications..
-            </p>
-          </div>
-        </div>
-      </div>
+     
       <div className="px-5 lg:px-[10%] py-12">
         <h2 className="text-4xl font-bold text-center mb-12 animate__animated animate__fadeInDown animate__fast">
           Cocopeat Manufacturing Process
@@ -101,3 +83,34 @@ function Manufacture() {
 }
 
 export default Manufacture;
+
+
+//  <div className="relative h-[50vh] sm:h-[70vh] w-full">
+//         {/* Background Image */}
+//         <img
+//           src="/assets/Benefits Application 2.jpg"
+//           alt="Sample"
+//           className="h-full w-full object-fit"
+//         />
+
+//         {/* Overlay */}
+//         <div className="absolute inset-0 bg-foreground/60"></div>
+
+//         {/* Text Content */}
+//         <div className="absolute inset-0 flex items-center">
+//           <div className="md:w-2/3 px-5 lg:px-[10%] text-white space-y-4">
+//             <h1 className="text-2xl lg:text-4xl font-bold animate__animated animate__fadeIn animate__fast">
+//               Our Cocopeat Manufacturing Process
+//             </h1>
+//             <p className="text-sm sm:text-md lg:text-lg text-justify animate__animated animate__fadeIn animate__slow">
+//               At Link Agro Exports, our cocopeat production journey is a careful
+//               blend of tradition, innovation, and sustainability. Explore each
+//               stage of our manufacturing process — from sourcing premium coconut
+//               husks to delivering high-quality, low EC cocopeat blocks ready for
+//               global export. Every step is meticulously designed to ensure
+//               superior quality, purity, and performance in horticulture,
+//               hydroponics, and farming applications..
+//             </p>
+//           </div>
+//         </div>
+//       </div>

@@ -11,7 +11,7 @@ export interface ScrollAdverthismentItem {
 
 interface ScrollAdverthisment2Props {
   title: string;
-  api: string; // e.g. "/api/resource/Item"
+  api: string;
 }
 
 const ScrollAdverthisment2: React.FC<ScrollAdverthisment2Props> = ({
@@ -19,7 +19,6 @@ const ScrollAdverthisment2: React.FC<ScrollAdverthisment2Props> = ({
   api,
 }) => {
   const { API_URL } = useAppContext();
-
   const navigate = useNavigate();
   const [products, setProducts] = useState<ScrollAdverthismentItem[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -27,47 +26,46 @@ const ScrollAdverthisment2: React.FC<ScrollAdverthisment2Props> = ({
   const [showRight, setShowRight] = useState(false);
 
   const fetchProducts = async () => {
-  try {
-    // Step 1: Fetch all item names
-    const response = await apiClient.get(`${api}`);
-    const items = response.data.data || [];
-    const baseApi = api.split("?")[0];
+    try {
+      // Step 1: Fetch all item names
+      const response = await apiClient.get(`${api}`);
+      const items = response.data.data || [];
+      const baseApi = api.split("?")[0];
 
-    // Step 2: Fetch full details for each item
-    const detailPromises = items.map((item: any) => {
-      const itemName = encodeURIComponent(item.name);
-      const detailUrl = `${baseApi}/${itemName}`;
-      return apiClient
-        .get(detailUrl)
-        .then((res) => res.data.data)
-        .catch((err) => {
-          console.warn(`Item not found: ${item.name}`, err);
-          return null;
-        });
-    });
+      // Step 2: Fetch full details for each item
+      const detailPromises = items.map((item: any) => {
+        const itemName = encodeURIComponent(item.name);
+        const detailUrl = `${baseApi}/${itemName}`;
+        return apiClient
+          .get(detailUrl)
+          .then((res) => res.data.data)
+          .catch((err) => {
+            console.warn(`Item not found: ${item.name}`, err);
+            return null;
+          });
+      });
 
-    const detailResponses = await Promise.all(detailPromises);
+      const detailResponses = await Promise.all(detailPromises);
 
-    // Step 3: Filter only items where make_this_default is truthy
-    const validItems = detailResponses.filter(
-      (item) => item && item.make_this_default
-    );
+      // Step 3: Filter only items where make_this_default is truthy
+      const validItems = detailResponses.filter(
+        (item) => item && item.make_this_default
+      );
 
-    // Step 4: Flatten all featured images into products[]
-    const formatted: ScrollAdverthismentItem[] = validItems.flatMap(
-      (item: any) =>
-        (item.table_hxwm || []).map((row: any) => ({
-          id: String(row.name), // ensure string
-          image: `${API_URL}${row.featured_image}`,
-        }))
-    );
+      // Step 4: Flatten all featured images into products[]
+      const formatted: ScrollAdverthismentItem[] = validItems.flatMap(
+        (item: any) =>
+          (item.table_hxwm || []).map((row: any) => ({
+            id: String(row.name), // ensure string
+            image: `${API_URL}${row.featured_image}`,
+          }))
+      );
 
-    setProducts(formatted);
-  } catch (error) {
-    console.error("Failed to fetch products:", error);
-  }
-};
-
+      setProducts(formatted);
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
+    }
+  };
 
   useEffect(() => {
     fetchProducts();
@@ -133,7 +131,10 @@ const ScrollAdverthisment2: React.FC<ScrollAdverthisment2Props> = ({
         />
       )}
 
-      <div ref={scrollRef} className="overflow-x-auto overflow-y-hidden scrollbar-hide mt-4">
+      <div
+        ref={scrollRef}
+        className="overflow-x-auto overflow-y-hidden scrollbar-hide mt-4"
+      >
         <div className="flex gap-4 min-w-max py-2">
           {products.map((product) => (
             <div

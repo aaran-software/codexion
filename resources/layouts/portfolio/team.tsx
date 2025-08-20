@@ -13,7 +13,7 @@ type TeamProps = {
 
 function Team({ title = "Meet Our Team", description, members }: TeamProps) {
   return (
-    <section className="py-20 lg:px-[12%] px-5 flex flex-col gap-8 bg-background text-website-foreground">
+    <section className="lg:px-[12%] px-5 flex flex-col gap-8 bg-background text-website-foreground">
       {/* Title */}
       <div className="text-center font-semibold text-4xl">{title}</div>
 
