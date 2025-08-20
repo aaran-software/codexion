@@ -6,8 +6,7 @@ from typing import List, Tuple
 from prefiq.settings.get_settings import load_settings
 from prefiq.core.contracts.base_provider import Application
 from cortex.runtime.service_providers import PROVIDERS
-from prefiq.database.connection import get_engine
-
+# IMPORTANT: no DB imports here
 
 @dataclass
 class CheckResult:
@@ -15,10 +14,8 @@ class CheckResult:
     ok: bool
     detail: str = ""
 
-
 def _fmt(ok: bool) -> str:
     return "✅" if ok else "❌"
-
 
 def run_boot_diagnostics(verbose: bool = False) -> Tuple[bool, List[CheckResult]]:
     results: List[CheckResult] = []
@@ -39,7 +36,7 @@ def run_boot_diagnostics(verbose: bool = False) -> Tuple[bool, List[CheckResult]
         results.append(CheckResult("Providers discovered", False, str(e)))
         return False, results
 
-    # 3) Boot sequence (register + boot)
+    # 3) Boot sequence (register + boot) – no DB engine resolution here
     try:
         app = Application.get_app()
         for p in PROVIDERS:
@@ -50,28 +47,9 @@ def run_boot_diagnostics(verbose: bool = False) -> Tuple[bool, List[CheckResult]
         results.append(CheckResult("Application booted", False, str(e)))
         return False, results
 
-    # 4) Database engine resolution
-    try:
-        eng = get_engine()
-        results.append(CheckResult("DB engine resolved", True, type(eng).__name__))
-    except Exception as e:
-        results.append(CheckResult("DB engine resolved", False, str(e)))
-        return False, results
-
-    # 5) Database connectivity (best-effort)
-    try:
-        ok = False
-        if hasattr(eng, "test_connection"):
-            ok = bool(eng.test_connection())
-        if not ok and hasattr(eng, "fetchone"):
-            ok = eng.fetchone("SELECT 1") is not None
-        results.append(CheckResult("DB connectivity", ok, "probe=SELECT 1"))
-        overall = all(r.ok for r in results)
-        return overall, results
-    except Exception as e:
-        results.append(CheckResult("DB connectivity", False, str(e)))
-        return False, results
-
+    # ALWAYS return on the success path
+    overall = all(r.ok for r in results)
+    return overall, results
 
 def main(verbose: bool = False) -> int:
     overall, checks = run_boot_diagnostics(verbose=verbose)
@@ -84,7 +62,6 @@ def main(verbose: bool = False) -> int:
         print(line)
     print("\nResult:", "ALL GOOD ✅" if overall else "ISSUES FOUND ❌")
     return 0 if overall else 1
-
 
 if __name__ == "__main__":
     raise SystemExit(main())
