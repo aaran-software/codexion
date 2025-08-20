@@ -1,8 +1,27 @@
 import { lazy } from "react";
-import TransparentCard from "../../../../resources/UIBlocks/card/TransparentCard";
-import AnimatedCard from "../../../../resources/UIBlocks/card/animatedCard";
-import Pricing from "../../../../resources/UIBlocks/pricingcard/Pricing";
-import PortfolioContact from "../../../../resources/UIBlocks/contact/PortfolioContact";
+import HeroBanner from "../../../../resources/UIBlocks/banner/HeroBanner";
+import StartingSection1 from "../../../../resources/UIBlocks/startingsection/StartingSection1";
+
+const TransparentCard = lazy(
+  () => import("../../../../resources/UIBlocks/card/TransparentCard")
+);
+const AnimatedCard = lazy(
+  () => import("../../../../resources/UIBlocks/card/animatedCard")
+);
+const Pricing = lazy(
+  () => import("../../../../resources/UIBlocks/pricingcard/Pricing")
+);
+const PortfolioContact = lazy(
+  () => import("../../../../resources/UIBlocks/contact/PortfolioContact")
+);
+const FlexColCard = lazy(
+  () => import("../../../../resources/UIBlocks/card/FlexColCard")
+);
+const ProductShowcase = lazy(
+  () =>
+    import("../../../../resources/UIBlocks/portfolioProducts/ProductShowcase")
+);
+
 const BrandMarquee = lazy(
   () => import("../../../../resources/components/marquee/BrandMarquee")
 );
@@ -91,35 +110,99 @@ function Home() {
     },
   ];
 
+  const data = [
+    {
+      id: "sales",
+      label: "Sales",
+      title: "Define and automate your sales process",
+      description:
+        "Give your sales team the means to sell efficiently across channels with a structured and repeatable sales process.",
+      navLink: "/sales",
+      image: "assets/dashboard.png",
+      subImages: [
+        "assets/react.svg",
+        "/assets/react.svg",
+        "/assets/react.svg",
+        "/assets/react.svg",
+      ],
+    },
+    {
+      id: "marketing",
+      label: "Marketing",
+      title: "Plan and execute marketing campaigns",
+      description:
+        "Automate campaign workflows, capture leads, and analyze performance for better ROI.",
+      navLink: "/marketing",
+      image: "assets/dashboard.png",
+      subImages: ["assets/react.svg"],
+    },
+    {
+      id: "service",
+      label: "Service",
+      title: "Deliver better customer support",
+      description:
+        "Track tickets, resolve issues faster, and improve customer satisfaction.",
+      navLink: "/service",
+      image: "assets/dashboard.png",
+      subImages: ["/assets/react.svg"],
+    },
+  ];
+
+  const product = [
+    {
+      id: 1,
+      title: "Linkagro Exports Portfolio",
+      description: "A modern personal portfolio site.",
+      category: "website",
+      image: "/assets/product/linkagro.png",
+      link: "https://fabulous-queijadas-684a73.netlify.app/",
+    },
+    {
+      id: 2,
+      title: "Tech media eCart",
+      description: "Mobile app for shopping.",
+      category: "app",
+      image: "/assets/product/techmedia.png",
+      link: "https://techmedia.in",
+    },
+    {
+      id: 3,
+      title: "Logicx Portfolio",
+      description: "Corporate business website.",
+      category: "website",
+      image: "/assets/product/logicx.png",
+      link: "https://logicx.in/",
+    },
+    {
+      id: 4,
+      title: "Aaran Portfolio",
+      description: "Corporate business website.",
+      category: "website",
+      image: "/assets/product/aaran.png",
+      link: "https://grand-florentine-b254ee.netlify.app/",
+    },
+    {
+      id: 5,
+      title: "ERPNext",
+      description: "Corporate business website.",
+      category: "app",
+      image: "/assets/product/linkagro.png",
+      link: "https://example.com/company",
+    },
+  ];
+
   return (
     <div>
-      <div className="relative min-h-screen flex flex-col items-center justify-center text-center px-4">
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-gray-900 mb-4">
-          Streamline Your
-          <span className="emoji">💼</span> Business,
-          <br />
-          Unlock
-          <span className="emoji">🔓</span> Your Growth!
-        </h1>
-
-        <p className="text-gray-600 text-base md:text-lg max-w-xl mb-8">
-          Manage your budget, track expenses, invest wisely, and achieve your
-          financial goals— all in one intuitive app with savings goals and
-          investment tracking.
-        </p>
-
-        <button className="bg-gradient-to-r from-primary to-primary/40 text-white px-8 py-3 rounded-full shadow-[0_8px_15px_rgba(0,0,0,0.2)] hover:scale-105 transition-transform duration-300 cursor-pointer">
-          Get Started
-        </button>
-
-        {/* Optional Background Blocks */}
-        <div className="absolute bottom-0 left-1/4 w-24 h-24 bg-white/30 rounded-lg blur-2xl"></div>
-        <div className="absolute bottom-0 right-1/4 w-32 h-32 bg-white/20 rounded-lg blur-3xl"></div>
+      <div id="home">
+        <StartingSection1 />
       </div>
 
-      <TransparentCard image="assets/dashboard.png" />
+      <div className="px-6 md:px-[10%] ">
+        <FlexColCard items={data} heading="automate your sales" />
+      </div>
 
       <div className="mt-24"></div>
+
       <AnimatedCard
         cards={cardData}
         title={"Our Products"}
@@ -127,21 +210,40 @@ function Home() {
           "Explore our wide range of products crafted with quality and precision. Designed to meet your needs and deliver the best experience."
         }
       />
+
       <div className="mt-20">
+        <TransparentCard image="assets/dashboard.png" />
+      </div>
+
+      <div className="mt-20 px-4 md:px-[10%]">
         <Pricing plans={plans} />
       </div>
 
-      <div className="my-10 py-10 md:py-10 ">
+      <div className="my-10 md:my-20 py-10 md:py-10 ">
         <BrandMarquee type="big-text" brands={brands} speed={30} height={16} />
       </div>
 
-      <PortfolioContact
-        contact={{
-          address: "Mahavishnu Nagar, Tiruppur, Tamil Nadu",
-          phone: ["+91 98765 43210", "+91 91234 56789"], // multiple numbers
-          email: ["hello@example.com", "support@example.com"], // multiple emails
-        }}
-      />
+      <div className="px-4 flex flex-col gap-10 md:px-[10%]" id="product">
+        <ProductShowcase products={product} />
+        <HeroBanner
+          badgeText="⚡ Trusted Protection for Every Doorstep"
+          title="Your safety is our mission. Your trust is our commitment"
+          subtitle="Click below to schedule your free risk assessment and learn how we can help protect your world."
+          buttonText="Start Protecting Your Presence"
+          buttonLink="/contact"
+        />
+      </div>
+
+      <div id="contact">
+        <PortfolioContact
+          contact={{
+            address: "Mahavishnu Nagar, Tiruppur, Tamil Nadu",
+            phone: ["+91 98765 43210", "+91 91234 56789"], // multiple numbers
+            email: ["hello@example.com", "support@example.com"], // multiple emails
+          }}
+        />
+      </div>
+      
     </div>
   );
 }

@@ -6,11 +6,8 @@ import {
   FaLinkedinIn,
   FaTwitter,
 } from "react-icons/fa";
-import { CiFacebook } from "react-icons/ci";
-import { RiTwitterXLine } from "react-icons/ri";
 import { lazy, Suspense } from "react";
 import LoadingScreen from "../../../resources/components/loading/LoadingScreen";
-import FooterLayout2 from "../../../resources/UIBlocks/footer/FooterLayout2";
 import TransparentHeader from "../../../resources/UIBlocks/header/TransparentHeader";
 import PortfolioFooter from "../../../resources/UIBlocks/footer/PortfolioFooter2";
 const Home = lazy(() => import("./pages/Home"));
@@ -20,20 +17,9 @@ function AppRoutes() {
     <div className="overflow-y-hidden">
       <ScrollToTop />
       <Suspense
-        fallback={<LoadingScreen image={"/assets/linkagro_logo.jpg"} />}
+        fallback={<LoadingScreen image={"/assets/svg/aaran_logo.svg"} />}
       >
         <TransparentHeader
-          logo={{
-            path: "/assets/svg/logo.png",
-            mode: "logo",
-            company_name: "Codexion",
-            font_size: 2,
-            height: 80,
-            padding: 6,
-            position: "center",
-            // box_shadow: "0 4px 10px rgba(0,0,0,0.3)",
-            // text_shadow: "2px 2px 4px rgba(0,0,0,0.3)",
-          }}
           menu={[
             { label: "Home", path: "home" },
             { label: "About Us", path: "about" },
@@ -47,7 +33,7 @@ function AppRoutes() {
         </Routes>
 
         <PortfolioFooter
-          logo="assets/svg/logo.png"
+          logo="assets/svg/aaran_logo.svg"
           newsletterTitle="Subscribe Our Newsletter"
           newsletterPlaceholder="Email Address"
           newsletterButton="Submit Now"

@@ -23,7 +23,7 @@ const BlogLayout1 = lazy(
 const Blog = React.lazy(() => import("./pages/Blog"));
 function AppRoutes() {
   return (
-    <div className="overflow-y-hidden">
+    <div className="overflow-y-hidden bg-background">
       <ScrollToTop />
       <Suspense
         fallback={

@@ -100,11 +100,11 @@ const BrandMarquee: React.FC<BrandMarqueeProps> = ({
                 loading="eager"
               />
             ) : type === "big-text" ? (
-              <span className="text-white text-3xl md:text-4xl font-extrabold uppercase tracking-wide hover:text-primary transition-colors duration-300">
+              <span className="text-foreground text-3xl md:text-4xl font-extrabold uppercase tracking-wide hover:text-primary transition-colors duration-300">
                 {brand.name}
               </span>
             ) : (
-              <span className="text-lg font-semibold text-gray-700 hover:text-black transition duration-300">
+              <span className="text-lg font-semibold text-foreground hover:text-black transition duration-300">
                 {brand.name}
               </span>
             )}

@@ -77,7 +77,7 @@ export default function Contact1({
           </div>
           <button
             type="button"
-            className="bg-update hover:bg-create text-create-foreground py-2 px-6 rounded-md font-semibold"
+            className="bg-primary hover:bg-hover text-create-foreground py-2 px-6 rounded-md font-semibold cursor-pointer"
           >
             Submit
           </button>

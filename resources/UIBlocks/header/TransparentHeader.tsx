@@ -5,19 +5,7 @@ import { IoClose } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/button/Button";
 import { useInView } from "react-intersection-observer";
-
-type LogoConfig = {
-  path: string;
-  height?: number;
-  padding?: number;
-  position?: "start" | "center" | "end";
-  font_size?: number;
-  company_name?: string;
-  mode?: "logo" | "name" | "both";
-  //   for logo
-  box_shadow?: string; // | "2px 2px 4px rgba(0,0,0,0.3)"
-  text_shadow?: string; // | "2px 2px 4px rgba(0,0,0,0.3)"
-};
+import { useAppSettings } from "../../../apps/global/useSettings";
 
 type MenuItem = {
   label: string;
@@ -25,18 +13,32 @@ type MenuItem = {
 };
 
 type TransparentHeaderProps = {
-  logo: LogoConfig;
   menu: MenuItem[];
 };
 
-function TransparentHeader({ logo, menu }: TransparentHeaderProps) {
-  const [menuVisible, setMenuVisible] = useState(false);
-  const [menuref, inView] = useInView({ triggerOnce: false, threshold: 0.1 });
+function TransparentHeader({ menu }: TransparentHeaderProps) {
+  const settings = useAppSettings();
+  if (!settings) return null;
 
+  const defaultLogo = {
+    path: "/assets/logo.png",
+    height: 20,
+    padding: 8,
+    position: "center",
+    font_size: 2,
+    company_name: "",
+    text_color: "",
+  };
+
+  const logo = settings.logo || defaultLogo;
+  const [menuVisible, setMenuVisible] = useState(false);
   const navigate = useNavigate();
 
+  const [menuref, inView] = useInView({ triggerOnce: false, threshold: 0.1 });
+
   return (
-    <div className="bg-background/0 lg:px-[12%] flex flex-row justify-between h-20 items-center px-5 py-2 md:py-4 w-full z-50">
+   <div className="fixed top-0 left-0 w-full bg-background/30 backdrop-blur-md lg:px-[12%] flex flex-row justify-between h-20 items-center px-5 py-2 md:py-4 z-50">
+ {/* <div className="bg-background/0 lg:px-[12%] flex flex-row justify-between h-20 items-center px-5 py-2 md:py-4 w-full z-50"></div> */}
       {/* Logo */}
       <div
         ref={menuref}
@@ -50,7 +52,6 @@ function TransparentHeader({ logo, menu }: TransparentHeaderProps) {
             style={{
               height: `${logo.height}px`,
               padding: `${logo.padding}px`,
-              boxShadow: logo.box_shadow,
             }}
           />
         )}
@@ -60,7 +61,6 @@ function TransparentHeader({ logo, menu }: TransparentHeaderProps) {
             style={{
               fontSize: `${logo.font_size}rem`,
               padding: `${logo.padding}px`,
-              textShadow: logo.text_shadow,
             }}
             className="font-bold"
           >
@@ -76,13 +76,11 @@ function TransparentHeader({ logo, menu }: TransparentHeaderProps) {
               style={{
                 height: `${logo.height}px`,
                 padding: `${logo.padding}px`,
-                boxShadow: logo.box_shadow,
               }}
             />
             <span
               style={{
                 fontSize: `${logo.font_size}rem`,
-                textShadow: logo.text_shadow,
               }}
               className="font-bold"
             >

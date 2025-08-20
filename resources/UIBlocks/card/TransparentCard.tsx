@@ -35,10 +35,10 @@ const TransparentCard: React.FC<TransparentCardProps> = ({ image }) => {
   return (
     <div
       ref={cardRef}
-      className="w-[90%] md:w-[70%] mx-auto rounded-2xl shadow-2xl overflow-hidden bg-white/10 border border-white/30 transition-transform duration-500 ease-out"
+      className="w-[80%] px-5 md:w-[70%] mx-auto overflow-hidden border border-white/30 transition-transform duration-500 ease-out"
       style={{ transform: `scale(${scale})` }}
     >
-      <div className="p-3 overflow-hidden shadow w-full">
+      <div className="overflow-hidden w-full">
         <div className="aspect-[16/9] w-full">
           <img
             src={image}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Check, ChevronDown, ChevronUp, Star } from "lucide-react";
-
+import { useInView } from "react-intersection-observer";
 interface Feature {
   id: number;
   text: string;
@@ -27,8 +27,10 @@ const Pricing: React.FC<PricingProps> = ({ plans }) => {
     setExpanded((prev) => ({ ...prev, [planId]: !prev[planId] }));
   };
 
+  // const [priceref, inView] = useInView({ triggerOnce: false, threshold: 0.2 });
+
   return (
-    <div className="px-6 py-16 md:px-20 bg-gray-50">
+    <div className="py-16">
       {/* Heading */}
       <div className="text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-bold">Choose Your Plan</h2>
@@ -61,16 +63,30 @@ const Pricing: React.FC<PricingProps> = ({ plans }) => {
 
       {/* Plans */}
       <div className="grid gap-8 md:grid-cols-3 max-w-6xl mx-auto">
-        {plans.map((plan) => {
+        {plans.map((plan, index) => {
+           const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
           const showAll = expanded[plan.id];
           const featuresToShow = showAll
             ? plan.features
             : plan.features.slice(0, 7);
 
+          // figure out which animation to use
+          let animationClass = "opacity-0";
+          if (inView) {
+            if (index === 0) {
+              animationClass = "animate__fadeInLeft";
+            } else if (index === plans.length - 1) {
+              animationClass = "animate__fadeInRight";
+            } else {
+              animationClass = "animate__fadeInUp";
+            }
+          }
           return (
             <div
+              ref={ref}
               key={plan.id}
-              className={`relative bg-white shadow-lg rounded-2xl p-8 flex flex-col transition hover:shadow-2xl ${
+              style={{ animationDelay: `${index * 0.2}s` }}
+              className={`relative bg-white shadow-lg rounded-2xl p-8 flex flex-col transition hover:shadow-2xl animate__animated ${animationClass}  ${
                 plan.highlight ? "border-2 border-primary scale-105" : ""
               }`}
             >

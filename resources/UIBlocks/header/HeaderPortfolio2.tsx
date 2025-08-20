@@ -73,7 +73,7 @@ function HeaderPortfolio2({ menu }: HeaderProps) {
   return (
     <div
       className={`${
-        scrolled ? "bg-background" : "bg-background/20"
+        scrolled ? "bg-background text-foreground" : "bg-background/50"
       } flex flex-row justify-between h-20 items-center px-5 py-2 md:py-4 w-full fixed top-0 left-0 z-50 shadow-lg transition-colors duration-300`}
     >
       {/* Logo */}
@@ -93,7 +93,7 @@ function HeaderPortfolio2({ menu }: HeaderProps) {
         {/* Mode 2: Only Company Name */}
         {logo.mode === "name" && (
           <h3
-            className={`text-${logo.font_size}xl p-${logo.padding} ${logo.text_color} font-bold`}
+            className={`text-${logo.font_size}xl p-${logo.padding}  font-bold`}
           >
             {logo.company_name}
           </h3>
@@ -107,7 +107,7 @@ function HeaderPortfolio2({ menu }: HeaderProps) {
               alt="Logo"
               className={`h-${logo.height} p-${logo.padding}`}
             />
-            <span className={`text-${logo.font_size}xl ${logo.text_color} font-bold`}>
+            <span className={`text-${logo.font_size}xl  font-bold`}>
               {logo.company_name}
             </span>
           </>
@@ -119,11 +119,11 @@ function HeaderPortfolio2({ menu }: HeaderProps) {
         {menu.map((item, index) => (
           <li
             key={index}
-            className="relative group cursor-pointer text-lg text-black hover:text-[#47240b] hover:font-bold transition-all duration-200"
+            className="relative group cursor-pointer text-lg text-foreground hover:text-primary hover:font-bold transition-all duration-200"
             onClick={() => handleNav(item.path)}
           >
             {item.label}
-            <span className="absolute left-0 bottom-0 h-1 w-full transform scale-x-0 origin-left group-hover:scale-x-100 group-hover:bg-[#47240b] transition-transform duration-300 ease-in-out" />
+            <span className="absolute left-0 bottom-0 h-1 w-full transform scale-x-0 origin-left group-hover:scale-x-100 group-hover:bg-primary transition-transform duration-300 ease-in-out" />
           </li>
         ))}
       </ul>

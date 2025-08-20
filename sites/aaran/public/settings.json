@@ -8,11 +8,11 @@
   },
 
   "logo": {
-    "path": "/assets/svg/logo.png",
+    "path": "/assets/svg/aaran_logo.svg",
     "position": "center",
-    "height": "20",
+    "height": "60",
     "font_size": "2",
-    "company_name": "Link Agro Exports",
+    "company_name": "AARAN",
     "mode":"logo",
     "color": "",
     "text_color": "text-white",

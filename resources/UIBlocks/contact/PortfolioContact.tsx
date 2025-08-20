@@ -18,7 +18,7 @@ function PortfolioContact({ contact }: PortfolioContactProps) {
   ].filter((item) => item.value);
 
   return (
-    <div className="px-[10%] bg-white">
+    <div className="px-4 md:px-[10%]">
       <h1 className="text-5xl font-bold py-10 text-center">
         Have Any Questions?
       </h1>
@@ -81,7 +81,7 @@ function PortfolioContact({ contact }: PortfolioContactProps) {
       </div>
 
       {/* Contact Info Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-10">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-20">
         {contactDetails.map((item, index) => (
           <div
             key={index}

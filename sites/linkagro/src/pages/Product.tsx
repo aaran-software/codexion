@@ -216,7 +216,7 @@ export-grade packing every time.`,
             <Button
               label="Contact Now"
               path="/contact"
-              className="border border-ring/40"
+              className="border border-ring/40 bg-primary"
             />
           </div>
         </div>
@@ -240,11 +240,11 @@ export-grade packing every time.`,
                     inView ? "animate__fadeInUp" : "opacity-0"
                   }`}
                 >
-                  <h3 className="text-lg font-semibold mb-2">{table.title}</h3>
+                  <h3 className="text-lg mb-2">{table.title}</h3>
                   <table className="w-full border border-ring/30">
                     {table.columns && table.columns.length > 0 && (
                       <thead>
-                        <tr className="bg-green-100">
+                        <tr className="bg-primary text-background">
                           {table.columns.map((col, cIndex) => (
                             <th
                               key={cIndex}
