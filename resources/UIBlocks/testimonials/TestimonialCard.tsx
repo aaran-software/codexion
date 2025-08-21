@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ImageButton from "../../components/button/ImageBtn";
+
 type Testimonial = {
   id: number;
   company: string;
@@ -8,49 +9,15 @@ type Testimonial = {
   client: string;
 };
 
-const sampleTestimonials: Testimonial[] = [
-  {
-    id: 1,
-    company: "TechCorp",
-    logo: "/logos/techcorp.png",
-    feedback:
-      "The software streamlined our operations and improved efficiency across departments. The software streamlined our operations and improved efficiency across departments. The software streamlined our operations and improved efficiency across departments.",
-    client: "John Doe, CTO",
-  },
-  {
-    id: 2,
-    company: "HealthPlus",
-    logo: "/logos/healthplus.png",
-    feedback:
-      "We reduced costs by 25% after implementing the ERP system. Highly recommended!",
-    client: "Sarah Lee, Operations Head",
-  },
-  {
-    id: 3,
-    company: "EduSmart",
-    logo: "/logos/edusmart.png",
-    feedback:
-      "Very user-friendly and adaptable to our unique needs in the education sector.",
-    client: "Michael Tan, Director",
-  },
-  {
-    id: 4,
-    company: "BuildMax",
-    logo: "/logos/buildmax.png",
-    feedback:
-      "The support team was fantastic, and the transition was smoother than expected.",
-    client: "Priya Sharma, Project Manager",
-  },
-];
+type TestimonialCarouselProps = {
+  testimonials: Testimonial[];
+};
 
-export default function TestimonialCarousel() {
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+export default function TestimonialCarousel({
+  testimonials,
+}: TestimonialCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [numVisible, setNumVisible] = useState(2);
-
-  useEffect(() => {
-    setTestimonials(sampleTestimonials);
-  }, []);
 
   // Responsive layout
   useEffect(() => {
@@ -90,7 +57,7 @@ export default function TestimonialCarousel() {
               className="p-4 flex-shrink-0"
               style={{ width: `${100 / numVisible}%` }}
             >
-              <div className="bg-white rounded-xl border border-ring/30 shadow-lg p-6 h-full flex flex-col justify-between">
+              <div className="bg-background rounded-xl border border-ring/30 shadow-lg p-6 h-full flex flex-col justify-between min-h-[280px]">
                 {/* Logo + Company */}
                 <div className="flex items-center gap-3 mb-4">
                   <img
@@ -117,13 +84,13 @@ export default function TestimonialCarousel() {
         icon="left"
         onClick={prevSlide}
         disabled={currentIndex === 0}
-        className="absolute left-2 top-1/2 -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full disabled:opacity-30"
+        className="absolute left-0 top-1/2 -translate-y-1/2 bg-primary/30 text-foreground p-2 !rounded-full disabled:opacity-30"
       />
       <ImageButton
         icon="right"
         onClick={nextSlide}
         disabled={currentIndex >= testimonials.length - numVisible}
-        className="absolute right-2 top-1/2 -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full disabled:opacity-30"
+        className="absolute right-0 top-1/2 -translate-y-1/2 bg-primary/30 text-foreground p-2 !rounded-full disabled:opacity-30"
       />
     </div>
   );

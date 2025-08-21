@@ -72,13 +72,13 @@ const CategoryPage: React.FC = () => {
     }
     // fallback: empty or generic ranges
     return [
-      { id: 1, label: "Below ₹1,000", min: 0, max: 1000 },
-      { id: 2, label: "₹1,000 – ₹5,000", min: 1000, max: 5000 },
-      { id: 3, label: "₹5,000 – ₹10,000", min: 5000, max: 10000 },
-      { id: 4, label: "₹10,000 – ₹30,000", min: 10000, max: 30000 },
-      { id: 5, label: "₹30,000 – ₹60,000", min: 30000, max: 60000 },
-      { id: 6, label: "₹60,000 – ₹1,00,000", min: 60000, max: 100000 },
-      { id: 7, label: "Above ₹1,00,000", min: 100000, max: Infinity },
+      { id: 1, label: "Below ₹ 1,000", min: 0, max: 1000 },
+      { id: 2, label: "₹ 1,000 – ₹ 5,000", min: 1000, max: 5000 },
+      { id: 3, label: "₹ 5,000 – ₹ 10,000", min: 5000, max: 10000 },
+      { id: 4, label: "₹ 10,000 – ₹ 30,000", min: 10000, max: 30000 },
+      { id: 5, label: "₹ 30,000 – ₹ 60,000", min: 30000, max: 60000 },
+      { id: 6, label: "₹ 60,000 – ₹ 1,00,000", min: 60000, max: 100000 },
+      { id: 7, label: "Above ₹ 1,00,000", min: 100000, max: Infinity },
     ];
   }, [selectedFilters.category]);
 
@@ -530,7 +530,7 @@ const CategoryPage: React.FC = () => {
                           </h4>
                           {product.price !== 0 && (
                             <h2 className="text-xl font-bold block md:hidden">
-                              ₹{product.price}
+                              ₹ {product.price}
                             </h2>
                           )}
 
@@ -575,7 +575,7 @@ const CategoryPage: React.FC = () => {
                         <div className="text-right space-y-2 hidden md:block">
                           {product.price !== 0 && (
                             <h2 className="text-sm md:text-xl font-bold">
-                              ₹{product.price}
+                              ₹ {product.price}
                             </h2>
                           )}
 
@@ -613,7 +613,7 @@ const CategoryPage: React.FC = () => {
                         {/* Price */}
                         {product.price !== 0 && (
                           <h2 className="text-lg font-bold mb-2 text-center">
-                            ₹{product.price}
+                            ₹ {product.price}
                           </h2>
                         )}
 

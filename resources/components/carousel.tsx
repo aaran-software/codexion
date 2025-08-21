@@ -73,8 +73,8 @@ const Carousel: React.FC<CarouselProps> = ({
                 {slides.map((_, i) => (
                     <div
                         key={i}
-                        className={`transition-all w-2 h-2 rounded-full ${
-                            curr === i ? "bg-gray-50 p-1" : "bg-gray-50/50"
+                        className={`transition-all w-3 h-3 rounded-full ${
+                            curr === i ? "bg-primary p-1" : "bg-background"
                         }`}
                     />
                 ))}

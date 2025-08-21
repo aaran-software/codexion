@@ -231,7 +231,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                   </p>
                   {product.price !== 0 && (
                     <p className="text-center text-xl font-bold mt-1">
-                      ₹{product.price}
+                      ₹ {product.price}
                     </p>
                   )}
                 </div>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Carousel from '../carousel';
+import Carousel from '../../components/carousel';
 
 type ReviewType = {
   review: string;

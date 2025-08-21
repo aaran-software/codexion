@@ -1,5 +1,6 @@
 import Contact1 from "../../../../resources/layouts/contactLayouts/Contact1";
 import { FaHome, FaIndustry } from "react-icons/fa";
+import { IoBusiness } from "react-icons/io5";
 import { TbTruckDelivery } from "react-icons/tb";
 function Contact() {
     
@@ -14,7 +15,7 @@ function Contact() {
 No: 3/306-A, Thandradevi Pattinam,
 Paramakudi-623707
 Ramnad District.`,
-icon: FaHome,
+icon: IoBusiness ,
           },
           {
             title: "Logistics Centre",

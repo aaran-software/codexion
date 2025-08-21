@@ -4,7 +4,7 @@ function CardShowcase({ items }) {
       {items.map((item, index) => (
         <div
           key={index}
-          className={`px-5 lg:px-[12%] grid mt-5 lg:grid-cols-2 gap-15 items-center ${
+          className={`px-5 lg:px-[12%] grid mt-5 md:grid-cols-2 gap-15 items-center ${
             index % 2 === 0 ? "lg:grid-flow-col-dense" : ""
           }`}
         >
@@ -16,7 +16,7 @@ function CardShowcase({ items }) {
           >
             <img
               src={item.image}
-              className="w-[70%] lg:w-full"
+              className="w-[70%] lg:w-full object-scale-down"
               alt={item.title}
               loading="lazy"
             />
@@ -29,7 +29,7 @@ function CardShowcase({ items }) {
             }`}
           >
             {/* Title */}
-            <h1 className="text-xl md:text-3xl my-3 font-bold">{item.title}</h1>
+            <h1 className="text-xl md:text-2xl my-3 font-bold">{item.title}</h1>
 
             {/* Optional Description */}
             {item.description && (

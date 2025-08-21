@@ -1,69 +1,60 @@
 import React, { lazy, Suspense, useState } from "react";
-import Plan from "../../../../resources/components/website/plan";
-import Carousel from "../../../../resources/components/carousel";
-import { Link as ScrollLink } from "react-scroll";
+import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
+import { AiFillClockCircle } from "react-icons/ai";
 import ScrollToTop from "../../../../resources/components/common/scrolltotopbutton";
 const Team = lazy(() => import("../../../../resources/layouts/portfolio/team"));
 const Articles = lazy(
   () => import("../../../../resources/components/website/articles")
 );
-const Review = lazy(
-  () => import("../../../../resources/components/website/review")
+const PortfolioContact = lazy(
+  () => import("../../../../resources/UIBlocks/contact/PortfolioContact")
 );
-const About = lazy(() => import("./About"));
-const Contact = lazy(() => import("./Contact"));
 const HeaderPortfolio = lazy(
   () => import("../../../../resources/UIBlocks/header/header-portfolio")
-);
-const FooterPortfolio = lazy(
-  () => import("../../../../resources/UIBlocks/footer/footer-portfolio")
 );
 const CardShowcase = lazy(
   () => import("../../../../resources/UIBlocks/CardShowcase")
 );
 import LoadingScreen from "../../../../resources/components/loading/LoadingScreen";
-
+import TestimonialCarousel from "../../../../resources/UIBlocks/testimonials/TestimonialCard";
+import Consultant from "../../../../resources/UIBlocks/consultant/consultant";
+import HighlighCard from "../../../../resources/UIBlocks/card/HighlighCard";
+import GallaryCarousel from "../../../../resources/UIBlocks/carousel/GallaryCarousel";
+import { FaEnvelope, FaPhoneAlt } from "react-icons/fa";
+import PortfolioFooter3 from "../../../../resources/UIBlocks/footer/PortfolioFooter3";
+import { Article } from "../../../../resources/components/website/articles";
+import HeroCarousel, {
+  Slide,
+} from "../../../../resources/UIBlocks/carousel/HeroCarousel";
+import HighlightCardWithIcon from "../../../../resources/UIBlocks/card/HighlightedCardwithIcon";
+const BrandMarquee = lazy(
+  () => import("../../../../resources/components/marquee/BrandMarquee")
+);
+import { FaEye, FaBullseye, FaHandshake } from "react-icons/fa";
 const Home: React.FC = () => {
   // Company About Card
 
-  const [card] = useState<{ icon: string; label: string }[]>([
-    { icon: "/assets/svg/ideas.svg", label: "ERP Strategy" },
-    { icon: "/assets/svg/research.svg", label: "Industry Expertise" },
-    { icon: "/assets/svg/seo.svg", label: "E-Commerce" },
-    { icon: "/assets/svg/design.svg", label: "Custom Design" },
-    { icon: "/assets/svg/support.svg", label: "Training & Support" },
-  ]);
-
-  const [whyChoose] = useState<{ text: string }[]>([
+  const contactItems = [
     {
-      text: "20+ Years of Proven Experience in both software development and product distribution.",
+      icon: FaPhoneAlt,
+      value: "+91 98765 43210",
+      href: "https://wa.me/919543439311",
     },
-    { text: "Dual Expertise – Technology + Trading." },
-    { text: "Scalable Solutions – From startups to enterprises." },
+    { icon: AiFillClockCircle, value: "Mon-Sat: 9.00-18.00" },
     {
-      text: "Long-Term Client Partnerships built on trust, innovation, and support.",
+      icon: FaEnvelope,
+      value: "info@logicx.com",
+      href: "mailto:info@example.com",
     },
-  ]);
+  ];
 
-  // Company Info Card
-  const [companyInfo] = useState<
-    { icon: string; count: string | number; field: string }[]
-  >([
-    { icon: "/assets/svg/client.svg", count: "310k", field: "Client Request" },
-    { icon: "/assets/svg/member.svg", count: 150, field: "Experts" },
-    { icon: "/assets/svg/experience.svg", count: 15, field: "Experience" },
-    { icon: "/assets/svg/award.svg", count: 120, field: "Award" },
-  ]);
-
-  const slides = [
+  const slidesData: Slide[] = [
     {
       id: 1,
       title1: "Smarter Operations.",
       title2: "Simplified ERP.",
       description:
         "Tailored ERP solutions to streamline your business—from inventory to invoicing, everything in one place.",
-      buttonLabel: "GET STARTED",
-      buttonPath: "/contact",
       image: "/assets/svg/home-hero.svg",
       bgClass: "bg-website-background text-website-foreground",
     },
@@ -73,8 +64,6 @@ const Home: React.FC = () => {
       title2: "Limitless Growth.",
       description:
         "Connect your ERP with Tally, WooCommerce, payment gateways, and more—for seamless business automation.",
-      buttonLabel: "LEARN MORE",
-      buttonPath: "/about",
       image: "/assets/svg/create.svg",
       bgClass: "bg-website-background text-website-foreground",
     },
@@ -84,8 +73,6 @@ const Home: React.FC = () => {
       title2: "Exact Fit ERP.",
       description:
         "We don’t just deploy—our domain experts craft workflows for retail, textile, manufacturing & service sectors.",
-      buttonLabel: "EXPLORE MORE",
-      buttonPath: "/design",
       image: "/assets/svg/home-hero.svg",
       bgClass: "bg-website-background text-website-foreground",
     },
@@ -95,8 +82,6 @@ const Home: React.FC = () => {
       title2: "Better Decisions.",
       description:
         "Leverage analytics and reporting tools to make data-driven decisions and boost efficiency.",
-      buttonLabel: "DISCOVER HOW",
-      buttonPath: "/analytics",
       image: "/assets/svg/slider.svg",
       bgClass: "bg-website-background text-website-foreground",
     },
@@ -106,14 +91,20 @@ const Home: React.FC = () => {
       title2: "Real Results.",
       description:
         "From cloud hosting to training and migration, we stay with you at every step of your ERP journey.",
-      buttonLabel: "GET IN TOUCH",
-      buttonPath: "/contact-us",
       image: "/assets/svg/slider.svg",
       bgClass: "bg-website-background text-website-foreground",
     },
   ];
 
-  const portfolio = [
+  const [card] = useState<{ icon: string; label: string }[]>([
+    { icon: "/assets/svg/ideas.svg", label: "ERP Strategy" },
+    { icon: "/assets/svg/research.svg", label: "Industry Expertise" },
+    { icon: "/assets/svg/seo.svg", label: "E-Commerce" },
+    { icon: "/assets/svg/design.svg", label: "Custom Design" },
+    { icon: "/assets/svg/support.svg", label: "Training & Support" },
+  ]);
+
+  const portfolioImages = [
     "/assets/sample1.jpg",
     "/assets/sample2.jpg",
     "/assets/sample4.jpg",
@@ -121,13 +112,26 @@ const Home: React.FC = () => {
     "/assets/sample2.jpg",
     "/assets/sample4.jpg",
   ];
-  const [sliderVisible, setSliderVisible] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const [whyChoose] = useState<{ text: string }[]>([
+    {
+      text: "20+ Years of Proven Experience in Software Development and IT Solutions",
+    },
+    {
+      text: "Expertise Across Multiple Technologies – Web, Mobile, Cloud, and AI",
+    },
+    {
+      text: "Scalable & Custom Software Solutions for Startups to Enterprises",
+    },
+    {
+      text: "Long-Term Client Partnerships based on Trust, Innovation, and Reliable Support",
+    },
+  ]);
 
   const industries = [
     {
       title: "Software Industry Solutions",
-      image: "/assets/industry/software.png",
+      image: "/assets/service/erpnext.png",
       description:
         "We deliver tailored ERP, billing, and e-commerce solutions designed to streamline operations and accelerate growth for software companies.",
       services: [
@@ -187,6 +191,35 @@ const Home: React.FC = () => {
       ],
     },
   ];
+
+  // Company Info Card
+  const companyInfo = [
+    {
+      icon: "/assets/svg/client.svg",
+      count: 310,
+      symbol: "k",
+      field: "Client Request",
+    },
+    {
+      icon: "/assets/svg/member.svg",
+      count: 150,
+      symbol: "",
+      field: "Experts",
+    },
+    {
+      icon: "/assets/svg/experience.svg",
+      count: 15,
+      symbol: "",
+      field: "Experience",
+    },
+    { icon: "/assets/svg/award.svg", count: 120, symbol: "", field: "Award" },
+  ];
+
+  const cta = {
+    title: "Start your ERP journey with a free consultation today.",
+    buttonText: "CONTACT US",
+    buttonLink: "#contact",
+  };
 
   const projects = [
     {
@@ -262,7 +295,7 @@ const Home: React.FC = () => {
       ],
     },
     {
-      title: "QBilling (Quick Billing)",
+      title: "QBill (Quick Bill)",
       image: "/assets/service/qbilling.png",
       services: [
         {
@@ -312,6 +345,129 @@ const Home: React.FC = () => {
     },
   ];
 
+  const brands = [
+    { name: "DELL", logo: "/assets/client/dell.svg" },
+    { name: "ACER", logo: "/assets/client/acer.svg" },
+    { name: "HP", logo: "/assets/client/hp.svg" },
+    { name: "LENOVO", logo: "/assets/client/lenovo.svg" },
+    { name: "BENQ", logo: "/assets/client/benq.svg" },
+    { name: "SAMSUNG", logo: "/assets/client/samsung.svg" },
+    { name: "APPLE", logo: "/assets/client/apple.svg" },
+  ];
+
+  const Testimonials = [
+    {
+      id: 1,
+      company: "TechCorp",
+      logo: "/assets/client/client.png",
+      feedback: "The software streamlined our operations...",
+      client: "John Doe, CTO",
+    },
+    {
+      id: 2,
+      company: "HealthPlus",
+      logo: "/assets/client/client.png",
+      feedback: "We reduced costs by 25% after implementing... ",
+      client: "Sarah Lee, Operations Head",
+    },
+    {
+      id: 3,
+      company: "HealthPlus",
+      logo: "/assets/client/client.png",
+      feedback: "We reduced costs by 25% after implementing... ",
+      client: "Sarah Lee, Operations Head",
+    },
+  ];
+
+  const [address] = useState([
+    {
+      title: "Address",
+      text: "Moon Street , 446 Jupiter, JP 44600",
+    },
+    {
+      title: "Email",
+      text: "info@logicx.in",
+    },
+    {
+      title: "Phone",
+      text: "9843213500",
+    },
+    {
+      title: "Time",
+      text: "Mon - Sat : 9AM - 6PM",
+    },
+  ]);
+
+  // footer
+
+  const contacts = [
+    {
+      icon: FaPhoneAlt,
+      value: "+91 98765 43210",
+      href: "https://wa.me/919543439311",
+    },
+    { icon: AiFillClockCircle, value: "Mon-Sat: 9.00-18.00" },
+    {
+      icon: FaEnvelope,
+      value: "info@logicx.com",
+      href: "mailto:info@example.com",
+    },
+  ];
+
+  const socialLinks = [
+    { href: "https://facebook.com", icon: <FaFacebookF /> },
+    { href: "https://twitter.com", icon: <FaTwitter /> },
+    { href: "https://instagram.com", icon: <FaInstagram /> },
+  ];
+
+  const pages = [
+    { label: "Home", href: "/" },
+    { label: "About", href: "/about" },
+    { label: "Services", href: "/services" },
+    { label: "Contact", href: "/contact" },
+  ];
+
+  const newsletterText = "Subscribe to get the latest updates.";
+
+  const articlesData: Article[] = [
+    {
+      image: "/assets/sample1.jpg",
+      title: "The Best Place to Invest Your Money",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+      path: "/blog",
+    },
+    {
+      image: "/assets/sample2.jpg",
+      title: "How to Save Money Effectively",
+      description:
+        "Tips and tricks to manage your finances and save smartly...",
+      path: "/blog",
+    },
+    {
+      image: "/assets/sample3.jpg",
+      title: "Top 10 Investment Strategies",
+      description: "Explore the best ways to grow your wealth efficiently...",
+      path: "/blog",
+    },
+  ];
+
+  const items = [
+    {
+      title: "Our Vision",
+      text: "To be a global leader in software innovation, creating solutions that empower businesses and enrich lives.",
+      icon: <FaEye />,
+    },
+    {
+      title: "Our Mission",
+      text: "Deliver cutting-edge, scalable software solutions that drive efficiency, growth, and digital transformation for our clients.",
+      icon: <FaBullseye />,
+    },
+    {
+      title: "Our Values",
+      text: "Integrity, innovation, collaboration, and excellence guide every project we undertake and every relationship we build.",
+      icon: <FaHandshake />,
+    },
+  ];
   return (
     <main>
       <Suspense fallback={<LoadingScreen image={"/assets/logicx_logo.png"} />}>
@@ -332,52 +488,16 @@ const Home: React.FC = () => {
             { label: "Services", path: "services" },
             { label: "Contact", path: "contact" },
           ]}
+          contact={contactItems}
+          contactHeader={true}
         />
-
         <section id="home" className="pt-20">
           {/* Top view */}
-          <Carousel autoSlide={true} autoSlideInterval={7000}>
-            {slides.map((slide, index) => (
-              <div
-                key={slide.id}
-                className={`lg:px-[12%] py-10 ${slide.bgClass}`}
-              >
-                <div
-                  className={`flex ${index % 2 === 0 ? "md:flex-row gap-5 flex-col" : "md:flex-row-reverse gap-5 flex-col-reverse"} w-full lg:py-20 ${slide.bgClass}`}
-                >
-                  <div
-                    className={`md:w-[50%] flex flex-col md:px-5 justify-center items-center md:items-start md:py-10 ${index % 2 === 0 ? "" : "lg:pl-20"} lg:py-0 gap-4 md:gap-8 `}
-                  >
-                    <div>
-                      <h1 className="text-2xl lg:text-4xl  xl:text-5xl font-bold text-center md:text-start">
-                        {slide.title1}
-                      </h1>
-                      <h1 className="text-2xl lg:text-4xl xl:text-5xl font-bold text-center mt-2 md:text-start">
-                        {slide.title2}
-                      </h1>
-                    </div>
-                    <h4 className="text-lg text-center md:text-left px-5 md:px-0 leading-tight line-clamp-2 md:leading-snug max-w-xl">
-                      {slide.description}
-                    </h4>
-                    {/* <Button
-                      label={slide.buttonLabel}
-                      path={slide.buttonPath}
-                      className="bg-gradient-to-r from-[#23aa70] to-[#0e854f] text-gray-50 md:px-10 md:py-4 text-sm md:text-xl hover:bg-gradient-to-r hover:from-[#23aa70] hover:to-[#23aa70] !cursor-pointer"
-                    /> */}
-                  </div>
-                  <div className="sm:w-[50%] w-[70%] block mx-auto">
-                    <img
-                      src={slide.image}
-                      alt="Home Hero"
-                      className="block mx-auto"
-                      loading="lazy"
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </Carousel>
-
+          <HeroCarousel
+            slides={slidesData}
+            autoSlide={true}
+            autoSlideInterval={7000}
+          />
           {/* Company About Card */}
           <div className="grid grid-cols-1 lg:grid-cols-5">
             {card.map((item, index) => (
@@ -394,9 +514,11 @@ const Home: React.FC = () => {
               </div>
             ))}
           </div>
+        </section>
 
-          {/* Invite Part */}
-          <div className="px-5 lg:px-[12%] grid lg:grid-cols-2 gap-15 py-20">
+        {/* About Part */}
+        <div id="about" className="flex flex-col gap-15 pb-20">
+          <div className="px-5 lg:px-[12%] grid lg:grid-cols-2 gap-15 pt-20 pb-10">
             <div className="flex justify-center items-center">
               <img
                 src={"/assets/svg/home-hero.svg"}
@@ -405,6 +527,7 @@ const Home: React.FC = () => {
                 loading="lazy"
               />
             </div>
+
             <div className="flex flex-col  justify-center gap-8">
               <h1 className="text-xl md:text-3xl lg:text-4xl font-bold">
                 Leading ERP Solution Provider in India
@@ -426,132 +549,46 @@ const Home: React.FC = () => {
               </p>
             </div>
           </div>
-
-          {/* portfolio Section */}
-          <div className="flex flex-col gap-3 pt-5 bg-website-background text-website-foreground">
-            <h1 className="text-2xl text-center md:text-3xl lg:text-4xl font-bold p-5">
-              Our ERP Success Stories
-            </h1>
-            <p className="text-center p-5 lg:px-[12%]">
-              From textile manufacturers to retail chains and IT service
-              providers, LogicX has delivered tailored ERP solutions that
-              transform operations. With 20+ years of experience, we help Indian
-              SMEs automate workflows, improve visibility, and scale with
-              confidence.
-            </p>
-            <div className="grid grid-cols-2 md:grid-cols-3 mt-20">
-              {portfolio.map((img, idx) => (
-                <img
-                  key={idx}
-                  src={img}
-                  onClick={() => {
-                    setSliderVisible((sliderVisible) => !sliderVisible);
-                    setSelectedIndex(idx);
-                  }}
-                  alt=""
-                  loading="lazy"
-                />
-              ))}
-            </div>
+          <HighlightCardWithIcon
+            className="grid-cols-1 md:grid-cols-3"
+            sectionTitle=""
+            items={items}
+          />
+          <HighlighCard sectionTitle="Why Choose LogicX?" items={whyChoose} />
+        </div>
+        {/* portfolio Section */}
+        <div className="flex flex-col gap-3 pt-5">
+          <h1 className="text-2xl text-center md:text-3xl lg:text-4xl font-bold p-5">
+            Our ERP Success Stories
+          </h1>
+          <p className="text-center p-5 lg:px-[12%]">
+            From textile manufacturers to retail chains and IT service
+            providers, LogicX has delivered tailored ERP solutions that
+            transform operations. With 20+ years of experience, we help Indian
+            SMEs automate workflows, improve visibility, and scale with
+            confidence.
+          </p>
+          <div className="mt-10">
+            <GallaryCarousel images={portfolioImages} />
           </div>
-          {sliderVisible && (
-            <div
-              className="bg-black/80 w-full h-full fixed top-0 left-0 z-50 flex items-center justify-center"
-              onClick={() => setSliderVisible(false)}
-            >
-              <div
-                className="w-[50%] relative"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <Carousel
-                  autoSlide={true}
-                  startIndex={selectedIndex}
-                  autoSlideInterval={7000}
-                >
-                  {portfolio.map((img, idx) => (
-                    <img
-                      key={idx}
-                      src={img}
-                      onClick={() =>
-                        setSliderVisible((sliderVisible) => !sliderVisible)
-                      }
-                      loading="lazy"
-                      alt=""
-                    />
-                  ))}
-                </Carousel>
-              </div>
-            </div>
-          )}
-          <div className="pt-10"></div>
-
-          {/* plan details Component */}
-          <Plan />
-
-          {/* Consultation Field */}
-          <div className="px-5 lg:px-[12%] py-10 flex flex-col sm:flex-row justify-between  bg-[#128d57]">
-            <div className="sm:w-3/5 px-5">
-              <h1 className="text-2xl text-gray-50 my-5 font-semibold">
-                Start your ERP journey with a free consultation today.
-              </h1>
-            </div>
-            <div className="sm:w-1/4 flex items-center justify-center">
-              <ScrollLink
-                to="contact"
-                smooth={true}
-                duration={600}
-                offset={-70} // Adjust for any sticky headers
-                className="bg-gray-50 w-max font-semibold text-[#23ab70] rounded-sm border border-gray-50 hover:bg-[#128d57] hover:text-gray-50 px-4 py-2 text-center text-sm md:text-xl cursor-pointer"
-              >
-                CONTACT US
-              </ScrollLink>
-            </div>
-          </div>
-        </section>
-
-        {/* About Component */}
-        <section id="about" className="min-h-[100vh] pb-20">
-          <About />
-        </section>
-
+        </div>
         {/* industry Component */}
         <section
           id="industry"
-          className="min-h-[100vh] bg-website-background text-website-foreground flex items-center justify-center"
+          className="min-h-[100vh] text-website-foreground flex items-center justify-center"
         >
           <CardShowcase items={industries} />
-
-          {/* <Industry /> */}
         </section>
-
+        <div className="py-20 ">
+          <Consultant
+            companyInfo={companyInfo}
+            backgroundImage="/assets/software.avif"
+            cta={cta}
+          />
+        </div>
         {/* Why Choose LogicX? */}
-        <section className="px-5 py-20 lg:px-[12%] bg-background text-website-foreground">
-          <h2 className="text-3xl font-bold text-center pb-8">
-            Why Choose LogicX?
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {whyChoose.map((item, idx) => (
-              <div
-                key={idx}
-                className="flex items-start gap-4 p-4 rounded-lg shadow-md bg-gray-50"
-              >
-                {/* Optional icon placeholder */}
-                <div
-                  className="w-2 h-8 bg-primary rounded shrink-0"
-                  aria-hidden="true"
-                />
-
-                <p className="text-lg font-medium text-gray-700">{item.text}</p>
-              </div>
-            ))}
-          </div>
-        </section>
         {/* services Component */}
-        <section
-          id="services"
-          className="min-h-[100vh] bg-website-background pb-20"
-        >
+        <section id="services" className="min-h-[100vh] pb-10">
           <CardShowcase items={projects} />
 
           <Team
@@ -559,55 +596,47 @@ const Home: React.FC = () => {
             description="Our team combines creativity, expertise, and dedication to deliver outstanding solutions for our clients."
             members={teamData}
           />
-          <Review />
-          {/* Company Info Section */}
-          <div className="px-5 py-10 lg:px-[12%] grid grid-cols-1 lg:grid-cols-4 gap-10 bg-[#128d57]">
-            {companyInfo.map((item, index) => (
-              <div
-                key={index}
-                className="flex flex-col justify-center gap-3 items-center border-b lg:border-0 border-gray-100 last:border-b-0 pb-3"
-              >
-                <img className="w-15" src={item.icon} alt="" loading="lazy" />
-                <div className="text-5xl text-gray-50 font-semibold">
-                  {item.count}
-                </div>
-                <div className="text-gray-50 uppercase text-xl">
-                  {item.field}
-                </div>
-              </div>
-            ))}
+
+          <div className="my-10 py-10 md:py-10 bg-website-background">
+            <BrandMarquee type="logo" brands={brands} speed={30} height={16} />
           </div>
-          <Articles />
+
+          <div className="mt-20">
+            <h1 className="text-2xl md:text-4xl text-center font-bold">
+              What Our Client Says
+            </h1>
+            <TestimonialCarousel testimonials={Testimonials} />
+          </div>
+        </section>
+        <div className="px-5">
+          <Articles
+            sectionTitle="Latest Posts & Articles"
+            sectionDescription="Discover the latest insights, tips, and guides from our experts to help you succeed."
+            articles={articlesData}
+          />
+        </div>
+        <section
+          id="contact"
+          className="min-h-[100vh] flex flex-col mb-20 gap-20"
+        >
+          <PortfolioContact />
+          <HighlighCard
+            sectionTitle="Contact ERP Experts | LogicX Coimbatore"
+            items={address}
+          />
         </section>
 
-        {/* contact Component */}
-        <section id="contact" className="min-h-[100vh]">
-          <Contact />
-        </section>
-
-        <FooterPortfolio
-          address={["123 Street", "Coimbatore", "Tamil Nadu, India - 641001"]}
-          contact={["info@techmedia.in", "+91 9843213500"]}
-          company={[
-            { label: "Home", link: "home" },
-            { label: "About Us", link: "about" },
-            { label: "Industry", link: "industry" },
-            { label: "Services", link: "services" },
-            { label: "Contact", link: "contact" },
-          ]}
-          project={[
-            { label: "ERPNext", link: "/billing" },
-            { label: "Ecart", link: "/billing" },
-            { label: "Portfolio", link: "/portfolio" },
-          ]}
-          legal={[
-            { label: "Privacy Policy", link: "/privacy" },
-            { label: "Terms & Conditions", link: "/terms" },
-          ]}
-          brandName="Tech Media"
-          year={2025}
+        <PortfolioFooter3
+          address="436, Avinashi Road, Near CITU Office, Tiruppur, Tamil Nadu 641602"
+          contacts={contacts}
+          socialLinks={socialLinks}
+          pages={pages}
+          newsletterText={newsletterText}
+          newsletterPlaceholder="Your email"
+          newsletterButtonText="Subscribe"
+          companyName="Logicx"
+          companyLogo={"/assets/svg/logicx_logo.svg"}
         />
-
         <ScrollToTop />
       </Suspense>
     </main>

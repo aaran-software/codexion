@@ -18,12 +18,12 @@ function PortfolioProduct1({ item, reverse = false }: PortfolioProduct1Props) {
     ? reverse
       ? "animate__fadeInLeft"
       : "animate__fadeInRight"
-    : "";
+    : "opacity-0";
   const animationClass2 = inView
     ? reverse
       ? "animate__fadeInRight"
       : "animate__fadeInLeft"
-    : "";
+    : "opacity-0";
 
   return (
     <div>
@@ -32,10 +32,10 @@ function PortfolioProduct1({ item, reverse = false }: PortfolioProduct1Props) {
           reverse ? "md:flex-row-reverse" : ""
         } items-center gap-6`}
         ref={ref}
-        style={{ animationDelay: `${0.5}s` }}
       >
         {/* Image */}
-        <div className={`w-full md:w-1/2 animate__animated ${animationClass2}`}>
+        
+        <div className={`w-full md:w-1/2 animate__animated ${animationClass2}`} style={{ animationDelay: `${0.3}s` }} >
           <img
             src={item.image}
             alt={item.title}
@@ -45,7 +45,7 @@ function PortfolioProduct1({ item, reverse = false }: PortfolioProduct1Props) {
 
         {/* Text */}
         <div
-          className={`w-full md:w-1/2 text-center md:text-left animate__animated ${animationClass}`}
+          className={`w-full md:w-1/2 text-center md:text-left animate__animated ${animationClass}`} style={{ animationDelay: `${0.3}s` }}
         >
           <h1 className="text-2xl font-bold mb-2">{item.title}</h1>
           <h3 className="text-lg text-gray-600 text-justify">

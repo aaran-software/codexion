@@ -109,7 +109,7 @@ const SpecialCategory= () => {
                   {product.name}
                 </h4>
                 <h2 className="text-xl font-bold block md:hidden">
-                  ₹{product.price}
+                  ₹ {product.price}
                 </h2>
                 <h1 className="text-sm text-foreground/50 line-clamp-2">
             {product.description

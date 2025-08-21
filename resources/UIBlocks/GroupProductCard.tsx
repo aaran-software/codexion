@@ -194,7 +194,7 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
                   </p>
                   {product.price !== 0 && (
                     <p className="text-center font-bold mt-1 text-xl">
-                      ₹{product.price}
+                      ₹ {product.price}
                     </p>
                   )}
                 </div>

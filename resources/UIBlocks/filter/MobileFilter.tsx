@@ -25,10 +25,6 @@ type FilterProps = {
   maxPrice: number;
   selectedPriceRange: number | null;
   setSelectedPriceRange: React.Dispatch<React.SetStateAction<number | null>>;
-  invoice: boolean;
-  setInvoice: React.Dispatch<React.SetStateAction<boolean>>;
-  availability: boolean;
-  setAvailability: React.Dispatch<React.SetStateAction<boolean>>;
   onClose: () => void;
 };
 
@@ -39,41 +35,37 @@ const MobileFilter = ({
   maxPrice,
   selectedPriceRange,
   setSelectedPriceRange,
-  invoice,
-  setInvoice,
-  availability,
-  setAvailability,
   onClose,
 }: FilterProps) => {
   // same price range calculation as desktop
   const priceRanges: PriceRange[] = [
     {
       id: 1,
-      label: `Up to ₹${Math.round(maxPrice * 0.25)}`,
+      label: `Up to ₹ ${Math.round(maxPrice * 0.25)}`,
       min: 0,
       max: maxPrice * 0.25,
     },
     {
       id: 2,
-      label: `₹${Math.round(maxPrice * 0.25)} - ₹${Math.round(maxPrice * 0.5)}`,
+      label: `₹ ${Math.round(maxPrice * 0.25)} - ₹ ${Math.round(maxPrice * 0.5)}`,
       min: maxPrice * 0.25,
       max: maxPrice * 0.5,
     },
     {
       id: 3,
-      label: `₹${Math.round(maxPrice * 0.5)} - ₹${Math.round(maxPrice * 0.75)}`,
+      label: `₹ ${Math.round(maxPrice * 0.5)} - ₹ ${Math.round(maxPrice * 0.75)}`,
       min: maxPrice * 0.5,
       max: maxPrice * 0.75,
     },
     {
       id: 4,
-      label: `₹${Math.round(maxPrice * 0.75)} - ₹${Math.round(maxPrice * 0.9)}`,
+      label: `₹ ${Math.round(maxPrice * 0.75)} - ₹ ${Math.round(maxPrice * 0.9)}`,
       min: maxPrice * 0.75,
       max: maxPrice * 0.9,
     },
     {
       id: 5,
-      label: `Above ₹${Math.round(maxPrice * 0.9)}`,
+      label: `Above ₹ ${Math.round(maxPrice * 0.9)}`,
       min: maxPrice * 0.9,
       max: Infinity,
     },

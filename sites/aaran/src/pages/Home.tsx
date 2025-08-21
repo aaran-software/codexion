@@ -1,7 +1,8 @@
 import { lazy } from "react";
 import HeroBanner from "../../../../resources/UIBlocks/banner/HeroBanner";
 import StartingSection1 from "../../../../resources/UIBlocks/startingsection/StartingSection1";
-import TestimonialCarousel from "../../../../resources/UIBlocks/card/TestimonialCard";
+import TestimonialCarousel from "../../../../resources/UIBlocks/testimonials/TestimonialCard";
+import ContactCard from "../../../../resources/UIBlocks/card/ContactCard";
 
 const TransparentCard = lazy(
   () => import("../../../../resources/UIBlocks/card/TransparentCard")
@@ -192,6 +193,22 @@ function Home() {
     },
   ];
 
+  const Testimonials = [
+    {
+      id: 1,
+      company: "TechCorp",
+      logo: "/logos/techcorp.png",
+      feedback: "The software streamlined our operations...",
+      client: "John Doe, CTO",
+    },
+    {
+      id: 2,
+      company: "HealthPlus",
+      logo: "/logos/healthplus.png",
+      feedback: "We reduced costs by 25% after implementing...",
+      client: "Sarah Lee, Operations Head",
+    },
+  ];
   return (
     <div>
       <div id="home">
@@ -235,10 +252,16 @@ function Home() {
         />
       </div>
 
-      <TestimonialCarousel />
+      <div className="my-25">
+        <h1 className="text-2xl md:text-4xl text-center font-bold">
+          What Our Client Says
+        </h1>
+        <TestimonialCarousel testimonials={Testimonials} />
+      </div>
 
       <div id="contact">
-        <PortfolioContact
+        <PortfolioContact />
+        <ContactCard
           contact={{
             address: "Mahavishnu Nagar, Tiruppur, Tamil Nadu",
             phone: ["+91 98765 43210", "+91 91234 56789"], // multiple numbers
@@ -246,7 +269,6 @@ function Home() {
           }}
         />
       </div>
-
     </div>
   );
 }

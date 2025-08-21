@@ -106,3 +106,27 @@ function FooterPortfolio({
 }
 
 export default FooterPortfolio;
+
+
+ {/* <FooterPortfolio
+          address={["123 Street", "Coimbatore", "Tamil Nadu, India - 641001"]}
+          contact={["info@techmedia.in", "+91 9843213500"]}
+          company={[
+            { label: "Home", link: "home" },
+            { label: "About Us", link: "about" },
+            { label: "Industry", link: "industry" },
+            { label: "Services", link: "services" },
+            { label: "Contact", link: "contact" },
+          ]}
+          project={[
+            { label: "ERPNext", link: "/billing" },
+            { label: "Ecart", link: "/billing" },
+            { label: "Portfolio", link: "/portfolio" },
+          ]}
+          legal={[
+            { label: "Privacy Policy", link: "/privacy" },
+            { label: "Terms & Conditions", link: "/terms" },
+          ]}
+          brandName="Tech Media"
+          year={2025}
+        /> */}

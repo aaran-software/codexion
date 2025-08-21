@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LucideShoppingCart, UserCircle2 } from "lucide-react";
-import GlobalSearch from "../input/search-box.tsx";
-import ImageButton from "../button/ImageBtn.tsx";
-import { ModeToggle } from "../mode-toggle";
+import GlobalSearch from "../../components/input/search-box";
+import ImageButton from "../../components/button/ImageBtn";
+import { ModeToggle } from "../../components/mode-toggle";
 import { useAppSettings } from "../../../apps/global/useSettings";
 import { useAuth } from "../../../apps/global/auth/AuthContext";
 import UserSubMenu from "../../UIBlocks/UserSubMenu";
