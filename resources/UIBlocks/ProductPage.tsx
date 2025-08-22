@@ -13,6 +13,7 @@ import { useAppContext } from "../../apps/global/AppContaxt";
 import ZoomImage from "../components/image/ZoomImage";
 import FloatContact from "./contact/FloatContact";
 import ImageButton from "../../resources/components/button/ImageBtn";
+import { IoPricetags } from "react-icons/io5";
 
 interface Product {
   id: number;
@@ -48,64 +49,6 @@ function ProductPage() {
   const navigate = useNavigate();
   const productUrl = window.location.href; //purpose to send product URL to WhatsApp
 
-  // const [offer] = useState([
-  //   {
-  //     title: "",
-  //     content:
-  //       "5% cashback on Flipkart Axis Bank Credit Card upto ₹4,000 per statement quarter",
-  //     tooltip: { message: "T&C message..." },
-  //   },
-  //   {
-  //     title: "Bank Offer",
-  //     content:
-  //       "5% cashback on Flipkart Axis Bank Credit Card upto ₹4,000 per statement quarter",
-  //     tooltip: { message: "T&C message..." },
-  //   },
-  //   {
-  //     title: "Bank Offer",
-  //     content:
-  //       "5% cashback on Flipkart Axis Bank Credit Card upto ₹4,000 per statement quarter",
-  //     tooltip: { message: "T&C message..." },
-  //   },
-  //   {
-  //     title: "Bank Offer",
-  //     content:
-  //       "5% cashback on Flipkart Axis Bank Credit Card upto ₹4,000 per statement quarter",
-  //     tooltip: { message: "T&C message..." },
-  //   },
-  //   {
-  //     title: "Bank Offer",
-  //     content:
-  //       "5% cashback on Flipkart Axis Bank Credit Card upto ₹4,000 per statement quarter",
-  //     tooltip: { message: "T&C message..." },
-  //   },
-  //   {
-  //     title: "Bank Offer",
-  //     content:
-  //       "5% cashback on Flipkart Axis Bank Credit Card upto ₹4,000 per statement quarter",
-  //     tooltip: { message: "T&C message..." },
-  //   },
-  //   {
-  //     title: "Bank Offer",
-  //     content:
-  //       "5% cashback on Flipkart Axis Bank Credit Card upto ₹4,000 per statement quarter",
-  //     tooltip: { message: "T&C message..." },
-  //   },
-  //   {
-  //     title: "Bank Offer",
-  //     content:
-  //       "5% cashback on Flipkart Axis Bank Credit Card upto ₹4,000 per statement quarter",
-  //     tooltip: { message: "T&C message..." },
-  //   },
-  //   {
-  //     title: "Bank Offer",
-  //     content:
-  //       "5% cashback on Flipkart Axis Bank Credit Card upto ₹4,000 per statement quarter",
-  //     tooltip: { message: "T&C message..." },
-  //   },
-  // ]);
-  // const [showAllOffers, setShowAllOffers] = useState(false);
-  // const visibleOffers = showAllOffers ? offer : offer.slice(0, 5);
   const { API_URL } = useAppContext();
 
   useEffect(() => {
@@ -312,9 +255,9 @@ function ProductPage() {
             <span>76876 rating</span> & <span>7868 Reviews</span>
           </div> */}
           <p className="text-2xl font-bold flex gap-2">
-            ₹{product.offer_price}{" "}
+            ₹ {product.offer_price}{" "}
             <span className="line-through text-sm font-normal block my-auto">
-              ₹{product.actual_price}
+              ₹ {product.actual_price}
             </span>
             <span className="text-sm font-normal block my-auto">
               {" "}
@@ -323,7 +266,7 @@ function ProductPage() {
             {/* {product.offer > 0 && (
               <div className="flex items-center">
                 <span className="line-through text-sm text-foreground/30">
-                  ₹{prePrice}
+                  ₹ {prePrice}
                 </span>
                 <span className="text-sm ml-2 text-create">
                   {product.slideOffer ? product.slideOffer : product.offer} %
@@ -357,7 +300,7 @@ function ProductPage() {
             </button>
           )} */}
 
-          <div className="flex justify-between mt-5 gap-4">
+          <div className="flex  justify-between mt-5 gap-4">
             {/* <Button
               className="flex-1 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
               label={" Add to Cart"}
@@ -389,6 +332,19 @@ function ProductPage() {
                 window.open(url, "_blank");
               }}
             />
+          </div>
+          <div className="w-[100%] sm:w-[80%] md:w-[50%] flex flex-col gap-5 border-ring/30 rounded-lg bg-primary/10 p-5">
+            <div className="flex gap-4">
+              <IoPricetags className="w-8 h-8 shrink-0 text-primary" />
+              <h1 className="text-lg font-bold">Save Extra on Your Purchase</h1>
+            </div>
+            <p>
+              Make your paymrnt through <span className="font-bold">UPI /  NEFT</span> and avoid online transaction
+              charges.
+            </p>
+            <p>
+              for assistance, connect with us on <span className="font-bold">Mobile / Whatsapp: +91 9894244450</span>
+            </p>
           </div>
           {/* Specifications */}
 

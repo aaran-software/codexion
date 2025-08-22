@@ -14,7 +14,7 @@ import Pagination from "../../../resources/components/pagination/pagination";
 import { useEffect, useMemo, useRef, useState } from "react";
 import CommonForm, { type FieldGroup } from "./commonform";
 import { useReactToPrint } from "react-to-print";
-import Print from "../external/Print";
+import Print from "../../layouts/printformat/Print";
 import apiClient from "../../../resources/global/api/apiClients";
 import Button from "../../../resources/components/button/Button";
 
@@ -36,116 +36,60 @@ function FormLayout({
   multipleEntry,
   formName,
 }: FormLayoutProps) {
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const res = await apiClient.get(formApi.read);
-  //       // console.log("data:", res.data)
-  //       const list = res.data || [];
-  //       // console.log("list:", list)
-
-  //       const detailedData = await Promise.all(
-  //         list.map(async (entry: any) => {
-  //           const key = entry.id || entry.key;
-  //           const url = `${formApi.read}/${encodeURIComponent(key)}`;
-
-  //           try {
-  //             const detailRes = await apiClient.get(url);
-  //             return detailRes.data || null;
-  //           } catch (err) {
-  //             console.warn(`❌ Detail fetch failed for ${url}`, err);
-  //             return null;
-  //           }
-  //         })
-  //       );
-
-  //       // console.log("details", detailedData);
-  //       const rows: TableRowData[] = detailedData
-  //         .filter(Boolean)
-  //         .map((entry: any) => {
-  //           const row: TableRowData = { id: "" };
-
-  //           head.forEach((h) => {
-  //             const key = h.key;
-  //             const value = entry[key];
-  //             row[key] =
-  //               typeof value === "object"
-  //                 ? JSON.stringify(value)
-  //                 : String(value ?? "");
-  //           });
-
-  //           if (!row.id) {
-  //             row.id = String(
-  //               entry.id ??
-  //                 entry.name ??
-  //                 `row-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`
-  //             );
-  //           }
-
-  //           return row;
-  //         });
-
-  //       setTableData(rows);
-  //     } catch (err) {
-  //       console.error("❌ Failed to fetch data:", err);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [formApi.read, head]);
   useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const res = await apiClient.get(formApi.read);
-      const list = res.data.data || [];
+    const fetchData = async () => {
+      try {
+        const res = await apiClient.get(formApi.read);
+        const list = res.data.data || [];
 
-      const detailedData = await Promise.all(
-        list.map(async (entry: any) => {
-          const key = entry.id || entry.key;
-          const url = `${formApi.read}/${encodeURIComponent(key)}`;
+        const detailedData = await Promise.all(
+          list.map(async (entry: any) => {
+            const key = entry.id || entry.key;
+            const url = `${formApi.read}/${encodeURIComponent(key)}`;
 
-          try {
-            const detailRes = await apiClient.get(url);
-            return detailRes.data || null;
-          } catch (err) {
-            console.warn(`❌ Detail fetch failed for ${url}`, err);
-            return null;
-          }
-        })
-      );
+            try {
+              const detailRes = await apiClient.get(url);
+              return detailRes.data || null;
+            } catch (err) {
+              console.warn(`❌ Detail fetch failed for ${url}`, err);
+              return null;
+            }
+          })
+        );
 
-      const rows: TableRowData[] = detailedData
-        .filter(Boolean)
-        .map((entry: any) => {
-          const row: TableRowData = { id: "" };
+        const rows: TableRowData[] = detailedData
+          .filter(Boolean)
+          .map((entry: any) => {
+            const row: TableRowData = { id: "" };
 
-          head.forEach((h) => {
-            const key = h.key;
-            const value = entry[key];
-            row[key] =
-              typeof value === "object" ? JSON.stringify(value) : String(value ?? "");
+            head.forEach((h) => {
+              const key = h.key;
+              const value = entry[key];
+              row[key] =
+                typeof value === "object"
+                  ? JSON.stringify(value)
+                  : String(value ?? "");
+            });
+
+            if (!row.id) {
+              row.id = String(
+                entry.id ??
+                  entry.name ??
+                  `row-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`
+              );
+            }
+
+            return row;
           });
 
-          if (!row.id) {
-            row.id = String(
-              entry.id ??
-              entry.name ??
-              `row-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`
-            );
-          }
+        setTableData(rows);
+      } catch (err) {
+        console.error("❌ Failed to fetch data:", err);
+      }
+    };
 
-          return row;
-        });
-
-      setTableData(rows);
-    } catch (err) {
-      console.error("❌ Failed to fetch data:", err);
-    }
-  };
-
-  fetchData();
-}, [formApi.read, head]);
-
+    fetchData();
+  }, [formApi.read, head]);
 
   const [tableData, setTableData] = useState<TableRowData[]>([]);
 
@@ -198,13 +142,6 @@ function FormLayout({
           updated[index] = { ...updated[index], ...formData };
         }
       } else {
-        // Creating new single row
-        // updated.push({
-        //     id: `perm-${Date.now()}-${Math.random()
-        //         .toString(36)
-        //         .substring(2, 5)}`,
-        //     ...formData,
-        // });
         updated.push(formData);
       }
     }

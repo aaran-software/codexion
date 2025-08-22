@@ -1,39 +1,68 @@
-import React from 'react'
-import Contact1 from '../../../../resources/layouts/contactLayouts/Contact1'
-
+import Contact1 from "../../../../resources/layouts/contactLayouts/Contact1";
+import { FaHome, FaIndustry } from "react-icons/fa";
+import { IoBusiness } from "react-icons/io5";
+import { TbTruckDelivery } from "react-icons/tb";
 function Contact() {
-    return (
-        <div>
-            <Contact1
-                address="Tamilnadu"
-                phone="+91 0000000000"
-                email="linkagroexports@gmail.com"
-                socialLinks={[
-                    {
-                        href: 'https://www.instagram.com/kumaranraja_22/',
-                        img: '/assets/svg/instagram.svg',
-                        alt: 'Instagram',
-                    },
-                    {
-                        href: 'https://www.linkedin.com/in/muthukumaran-r/',
-                        img: '/assets/svg/linkedin.svg',
-                        alt: 'LinkedIn',
-                    },
-                    {
-                        href: 'https://www.facebook.com/kumaranraja22/',
-                        img: '/assets/svg/facebook.svg',
-                        alt: 'Facebook',
-                    },
-                    {
-                        href: 'https://wa.me/919543439311?text=Hi there!',
-                        img: '/assets/svg/whatsapp.svg',
-                        alt: 'WhatsApp',
-                    },
-                ]}
-            />
+    
 
-        </div>
-    )
+  return (
+    <div>
+      <Contact1
+        addresses={[
+          {
+            title: "Registered Office",
+            details: `Link Agro Exports
+No: 3/306-A, Thandradevi Pattinam,
+Paramakudi-623707
+Ramnad District.`,
+icon: IoBusiness ,
+          },
+          {
+            title: "Logistics Centre",
+            details: `Link Agro Exports
+274, North Masi Street,
+Madurai – 625001`,
+icon: TbTruckDelivery ,
+          },
+          {
+            title: "Plant Address",
+            details: `Tamarakularm,
+Uchipuli Post,
+Ramanathapuram District
+Tamilnadu - 623534`,
+icon: FaIndustry,
+          },
+        ]}
+        socialLinks={[
+          {
+            id: "instagram",
+            href: "linkagroexports",
+            img: "/assets/svg/instagram.svg",
+            alt: "Instagram",
+          },
+          {
+            id: "whatsapp",
+            href: "917395944679",
+            img: "/assets/svg/whatsapp.svg",
+            alt: "WhatsApp",
+          },
+          {
+            id: "email",
+            href: "exports@linkagro.in",
+            img: "/assets/svg/email.svg",
+            alt: "WhatsApp",
+          },
+          {
+            id: "phone",
+            href: "7395944679",
+            img: "/assets/svg/phone.svg",
+            alt: "WhatsApp",
+          },
+        ]}
+        iconSize="w-8 h-8"
+      />
+    </div>
+  );
 }
 
-export default Contact
+export default Contact;

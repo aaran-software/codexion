@@ -9,7 +9,7 @@ function LoadingScreen({ image }: LoadingScreenProps) {
       <img
         src={image}
         alt="Loading Logo"
-        className="w-72 h-72 mb-6 mt-30"
+        className="w-72  mb-6 mt-30"
       />
 
       {/* Spinner centered vertically */}

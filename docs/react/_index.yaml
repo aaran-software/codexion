@@ -1,0 +1,24 @@
+- slug: accordion
+  order: 2
+  desc: Accordion
+  tags: [accordion, react]
+
+- slug: UIBlocks/footerportfolio
+  order: 3
+  desc: Footer Portfolio
+  tags: [api, endpoints]
+
+- slug: UIBlocks/cardshowcase
+  order: 4
+  desc: Flex Card
+  tags: [api, endpoints]
+
+- slug: team
+  order: 5
+  desc: Team Layout
+  tags: [api, endpoints]
+
+  - slug: cardview
+  order: 5
+  desc: Team Layout
+  tags: [api, endpoints]

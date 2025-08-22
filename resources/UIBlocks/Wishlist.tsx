@@ -100,7 +100,7 @@ export default function Wishlist() {
             Seller: <strong>Raja</strong>
           </p>
           <h2 className="text-xl mt-2 font-bold text-create">
-            ₹{Number(item.price * item.quantity).toFixed(2)}
+            ₹ {Number(item.price * item.quantity).toFixed(2)}
           </h2>
         </div>
 

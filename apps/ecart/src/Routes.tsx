@@ -12,13 +12,13 @@ const CategoryPage = lazy(() => import("./pages/CategoryPage"));
 const Wishlist = lazy(() => import("../../../resources/UIBlocks/Wishlist"));
 const Cart = lazy(() => import("./pages/Cart"));
 const Footer = lazy(
-  () => import("../../../resources/components/footer/Footer")
+  () => import("../../../resources/UIBlocks/footer/Footer")
 );
 const Header = lazy(
-  () => import("../../../resources/components/header/Header")
+  () => import("../../../resources/UIBlocks/header/Header")
 );
 const FrappeLoginForm = lazy(
-  () => import("../../../resources/components/auth/frappe-login")
+  () => import("../../../resources/layouts/auth/frappe-login")
 );
 const SpecialCategory = lazy(
   () => import("../../../resources/UIBlocks/SpecialCategory")
@@ -28,6 +28,7 @@ import LoadingScreen from "../../../resources/components/loading/LoadingScreen";
 import Test from "./pages/Test";
 import ScrollToTop from "../../../resources/components/common/scrolltotop";
 import ScrollToTopButton from "../../../resources/components/common/scrolltotopbutton";
+import DocViewer from "../../../resources/UIBlocks/docs/DocViewer";
 import Docs from "./docs";
 
 function AppRoutes() {
@@ -112,7 +113,10 @@ function AppRoutes() {
           <Route path="/special/:id" element={<SpecialCategory />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/test" element={<Test />} />
-          <Route path="/docs" element={<Docs />} />
+         <Route path="/docs" element={<Docs />}>
+          <Route path=":slug/*" element={<DocViewer slug={null} />} /> {/* nested route */}
+        </Route>
+
           <Route
             path="/dashboard/:component?"
             element={

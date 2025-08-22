@@ -220,7 +220,7 @@ function OrderPayment() {
                   <div className="flex-1 p-4">
                     <div className="text-sm text-gray-600 bg-yellow-50 p-3 border border-ring/30 rounded mb-4">
                       MAZSONE does not levy any charges for availing EMI. Charges, if any, are levied
-                      by the bank. A processing fee of ₹299 will be charged by the bank/lender.
+                      by the bank. A processing fee of ₹ 299 will be charged by the bank/lender.
                     </div>
 
                     {(emiPlansByBank[selectedEmiBank] || []).map((plan) => {

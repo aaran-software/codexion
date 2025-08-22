@@ -22,6 +22,7 @@ function DynamicCard({ Card, rounded = false, containerStyle }: DynamicCardProps
           <div
             ref={ref}
             key={index}
+            style={{ animationDelay: `${index * 0.2}s` }}
             className={`p-4 block m-auto transition-all duration-700 ${
               inView ? card.animate : 'opacity-0'
             }`}

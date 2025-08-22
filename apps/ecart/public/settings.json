@@ -42,7 +42,35 @@
         "title": "Payments & Earnings",
         "icon": "LayoutDashboard",
         "currentComponent": "task",
-        "url": ""
+        "url": "",
+        "items": [
+          {
+            "title": "Earning Overview",
+            "currentComponent": "sales",
+            "url": "sales"
+          },
+          {
+            "title": "Transaction Statements",
+            "currentComponent": "purchase",
+            "url": "purchase"
+          },
+          {
+            "title": "Commission Fees",
+            "currentComponent": "receipt",
+            "url": "receipt"
+          },
+          {
+            "title": "Download Invoice",
+            "currentComponent": "payment",
+            "url": "payment"
+          }
+          ,
+          {
+            "title": "Payment Method",
+            "currentComponent": "payment",
+            "url": "payment"
+          }
+        ]
       },
       {
         "title": "Store Settings",

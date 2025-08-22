@@ -16,23 +16,5 @@
     "company_name": "",
     "color": "",
     "padding": "2"
-  },
-
-  "sidemenu": {
-    "main": [
-      {
-        "title": "Dashboard",
-        "icon": "LayoutDashboard",
-        "url": ""
-      },
-      {
-        "title": "Docker",
-        "currentComponent": "docker",
-        "icon": "LayoutDashboard",
-        "url": "docker"
-      }
-    ],
-    "help": {},
-    "document": {}
   }
 }

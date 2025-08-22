@@ -203,7 +203,7 @@ const ProductCard2: React.FC<ProductCardProps> = ({ title, api, ribbon }) => {
                   </p>
 
                   <p className="text-center font-bold mt-1 text-base">
-                    ₹{product.price}
+                    ₹ {product.price}
                   </p>
                 </div>
               )

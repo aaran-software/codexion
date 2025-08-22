@@ -16,32 +16,32 @@ function Home() {
     {
       image: "/assets/product/bb6501.png",
       title: "COCO PEAT BRIQUETTE (650Grams)",
-      animate: "animate__animated animate__fadeInDown animate__faster",
+      animate: "animate__animated animate__fadeInRight",
     },
     {
       image: "/assets/product/coco-coins.png",
       title: "COCOPEAT GROW BAGS & DISCS",
-      animate: "animate__animated animate__fadeInDown animate__fast",
+      animate: "animate__animated animate__fadeInRight",
     },
     {
       image: "/assets/product/CoirFiber.jpeg",
       title: "COCO COIR FIBER",
-      animate: "animate__animated animate__fadeInDown animate__slow",
+      animate: "animate__animated animate__fadeInRight",
     },
     {
       image: "/assets/product/Cocopeat5kgBlock.png",
       title: "Coco Peat 5KG Blocks",
-      animate: "animate__animated animate__fadeInUp animate__slow",
+      animate: "animate__animated animate__fadeInRight",
     },
     {
       image: "/assets/product/Coco husk chips block 1.png",
       title: "COCO HUSK CHIPS",
-      animate: "animate__animated animate__fadeInUp animate__fast",
+      animate: "animate__animated animate__fadeInRight",
     },
     {
       image: "/assets/product/Cocodiscsseedling.png",
       title: "Coco disc seedling",
-      animate: "animate__animated animate__fadeInUp animate__faster",
+      animate: "animate__animated animate__fadeInRight",
     },
   ];
 
@@ -90,7 +90,9 @@ packing options.`,
         ))}
       </Carousel>
 
-      <h1 className="text-center font-bold text-4xl mt-5 animate__animated animate__fadeInDown animate__fast">Link Agro Exports</h1>
+      <h1 className="text-center font-bold text-4xl my-15 animate__animated animate__fadeInDown animate__fast">
+        Link Agro Exports
+      </h1>
       <div className="container mx-auto px-5 md:px-[10%]">
         <Card2
           items={company}
@@ -98,7 +100,7 @@ packing options.`,
           lineStyle="w-3 h-12"
         />
       </div>
-      <div className="relative h-[80vh] sm:h-[60vh] md:h-[70vh] mt-10 w-full">
+      <div className="relative h-[80vh] sm:h-[60vh] md:h-[70vh] mt-20 w-full">
         {/* Background Image */}
         <img
           src="/assets/Homepage1.jpg"
@@ -122,16 +124,18 @@ packing options.`,
               geographical feasibility enables us producing good quality coir
               and coco-peat products.
             </p>
-            <Button
-              label="Read More"
-              path="/about"
-              className="border border-ring/40"
-            />
+            <div className="mt-8">
+              <Button
+                label="Read More"
+                path="/about"
+                className="border border-ring/40 bg-primary"
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="px-5 lg:px-[10%]">
+      <div className="px-5 lg:px-[10%] my-20">
         <h1 className="text-center font-bold text-4xl my-5">Our Products</h1>
         <DynamicCard
           Card={product}

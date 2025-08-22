@@ -91,14 +91,14 @@ const FooterLayout1: React.FC<FooterLayoutProps> = ({
           <p className="my-3">
             <a
               href={`tel:${consumerPolicy.phone}`}
-              className="underline flex items-center gap-1"
+              className="flex items-center gap-1"
             >
               <FaPhone className="rotate-90" /> {consumerPolicy.phone}
             </a>
             <br />
             <a
               href={`mailto:${consumerPolicy.email}`}
-              className="underline flex items-center gap-1"
+              className="flex items-center gap-1"
             >
               <MdEmail /> {consumerPolicy.email}
             </a>

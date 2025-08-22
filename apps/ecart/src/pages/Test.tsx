@@ -1,4 +1,3 @@
-import React from 'react'
 import DrawingPad from '../../../../resources/layouts/DrawingPad'
 function Test() {
   return (

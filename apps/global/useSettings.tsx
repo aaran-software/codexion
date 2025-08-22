@@ -6,7 +6,7 @@ import {
   type ReactNode,
 } from "react";
 import { useAppContext } from "./AppContaxt";
-// import LoadingSpinner from "../../resources/components/loading/LoadingSpinner";
+import LoadingSpinner from "../../resources/components/loading/LoadingSpinner";
 const SettingsContext = createContext<any>(null);
 
 export function useAppSettings() {
@@ -50,6 +50,11 @@ export default function AppInitializer({ children }: { children: ReactNode }) {
       <div className="flex items-center justify-center h-screen w-screen text-red-600 text-lg font-semibold">
         Missing APP_TYPE environment variable
       </div>
+    );
+  }
+  if (!settings) {
+    return (
+        <LoadingSpinner />
     );
   }
 

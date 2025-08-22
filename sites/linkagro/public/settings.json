@@ -15,8 +15,9 @@
     "company_name": "Link Agro Exports",
     "mode":"both",
     "color": "",
-    "text_color": "text-white",
-    "padding": "2"
+    "text_color": "text-[#045a07]",
+    "padding": "2",
+    "font":"font-lunera"
   },
 
   "sidemenu": {

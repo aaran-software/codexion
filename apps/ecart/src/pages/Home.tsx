@@ -1,10 +1,6 @@
 import { Suspense, lazy, useEffect, useState } from "react";
 import LoadingScreen from "../../../../resources/components/loading/LoadingScreen";
 
-// const AdverthismentBanner = lazy(
-//   () => import("../../../../resources/UIBlocks/Promotion/AdverthismentBanner")
-// );
-
 const ProductCard = lazy(
   () => import("../../../../resources/UIBlocks/ProductCard")
 );
@@ -24,17 +20,14 @@ const PromotionSection = lazy(
 const ScrollAdverthisment2 = lazy(
   () => import("../../../../resources/UIBlocks/Promotion/ScrollAdverthisment2")
 );
-const Mainmenu = lazy(() => import("../../../../resources/UIBlocks/Mainmenu"));
+const Mainmenu = lazy(() => import("../../../../resources/UIBlocks/header/Mainmenu"));
 const BrandMarquee = lazy(
   () => import("../../../../resources/components/marquee/BrandMarquee")
 );
 const FloatContact = lazy(
   () => import("../../../../resources/UIBlocks/contact/FloatContact")
 );
-
-// const CrackerAnimation = lazy(
-//   () => import("../../../../resources/AnimationComponents/CrackerAnimation")
-// );
+import menuJSON from '../../js/ecart.json'
 function Home() {
   const brands = [
     { name: "DELL", logo: "/assets/brand/dell.svg" },
@@ -62,7 +55,6 @@ function Home() {
     handleScroll(); // run once on mount
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
 
   // special event
 
@@ -100,7 +92,7 @@ function Home() {
 
   return (
     <Suspense fallback={<LoadingScreen image={"/assets/svg/logo.svg"} />}>
-      <Mainmenu />
+        <Mainmenu menuData={menuJSON.Mainmenu} />
 
       {/* main carousel */}
       <BannerCarousel
