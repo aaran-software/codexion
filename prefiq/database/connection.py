@@ -8,11 +8,6 @@ from typing import Optional, Any
 
 from prefiq.settings.get_settings import load_settings, clear_settings_cache
 
-# Engines we actually support right now
-from prefiq.database.engines.mariadb.sync_engine import SyncMariaDBEngine
-from prefiq.database.engines.mariadb.async_engine import AsyncMariaDBEngine
-from prefiq.database.engines.sqlite.sync_engine import SQLiteEngine
-
 _engine_singleton: Optional[Any] = None  # lazy, process-wide
 
 
@@ -22,7 +17,14 @@ def _is_async(mode: str | None) -> bool:
 
 def _normalize(name: str | None) -> str:
     n = (name or "").strip().lower()
-    aliases = {"sqlite3": "sqlite", "postgresql": "postgres"}  # future-friendly
+    # Map common aliases
+    aliases = {
+        "sqlite3": "sqlite",
+        "postgresql": "postgres",
+        "pg": "postgres",
+        # If you want MySQL to ride the MariaDB engines, uncomment:
+        # "mysql": "mariadb",
+    }
     return aliases.get(n, n)
 
 
@@ -31,16 +33,30 @@ def _make_engine() -> Any:
     eng = _normalize(getattr(s, "DB_ENGINE", None))
     mode = getattr(s, "DB_MODE", "sync")
 
+    # --- MariaDB (and optionally MySQL via alias above) ---
     if eng == "mariadb":
-        return AsyncMariaDBEngine() if _is_async(mode) else SyncMariaDBEngine()
+        if _is_async(mode):
+            from prefiq.database.engines.mariadb.async_engine import AsyncMariaDBEngine
+            return AsyncMariaDBEngine()
+        from prefiq.database.engines.mariadb.sync_engine import SyncMariaDBEngine
+        return SyncMariaDBEngine()
 
+    # --- Postgres ---
+    if eng == "postgres":
+        if _is_async(mode):
+            from prefiq.database.engines.postgres.async_engine import AsyncPostgresEngine
+            return AsyncPostgresEngine()
+        from prefiq.database.engines.postgres.sync_engine import SyncPostgresEngine
+        return SyncPostgresEngine()
+
+    # --- SQLite (sync-only here) ---
     if eng == "sqlite":
-        # SQLite stack is sync-only (for now)
+        from prefiq.database.engines.sqlite.sync_engine import SQLiteEngine
         return SQLiteEngine()
 
     raise RuntimeError(
         f"Unsupported DB_ENGINE {getattr(s, 'DB_ENGINE', None)!r}. "
-        "Use one of: mariadb, sqlite."
+        "Use one of: mariadb, postgres, sqlite."
     )
 
 
@@ -96,6 +112,7 @@ def swap_engine(engine: str, *, mode: str | None = None) -> Any:
 
     swap_engine("sqlite")
     swap_engine("mariadb", mode="async")
+    swap_engine("postgres", mode="sync")
     """
     os.environ["DB_ENGINE"] = engine
     if mode is not None:

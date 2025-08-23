@@ -1,52 +1,46 @@
-# prefiq/cli/migrate.py
-
+# prefiq/cli/database/migrate.py
+from __future__ import annotations
 import typer
-from typing import Optional
 
-# --- Apply logging configuration early (dictConfig + SQL filter) ---
-# This import executes the dictConfig defined in prefiq/log/logging_config.py
-# BEFORE any of the providers/bootstrap code starts logging.
-import prefiq.log.logging_config  # noqa: F401
-
-from prefiq.log.logger import get_logger
-from prefiq.core.runtime.bootstrap import main as bootstrap_main
 from prefiq.core.contracts.base_provider import Application
+from cortex.runtime.service_providers import PROVIDERS
+from prefiq.log.logger import get_logger
 
-log = get_logger("prefiq.migrate")  # matches keys in logging_config
+log = get_logger("prefiq.run.migrate")
+migrate_app = typer.Typer(help="Database migration runner")
 
-def migrate(
-    seed: bool = typer.Option(False, "--seed", help="Run seeders after migrations"),
-    fresh: bool = typer.Option(False, "--fresh", help="Drop all non-protected tables then migrate"),
-    steps: Optional[int] = typer.Option(None, "--steps", help="Rollback N steps before migrating"),
-    env: Optional[str] = typer.Option(None, "--env", help="dev|prod|stage|test"),
-):
-    # Normalize environment first so logging reflects the right env if used in messages
-    from prefiq.cli.core.server import _apply_env
-    _apply_env(env)
-
-    # Providers bind & boot — logs from here onward are filtered/configured
-    log.info("boot_start (migrate)")
-    bootstrap_main()
-
+def _boot_app():
     appc = Application.get_app()
-    migrator = appc.resolve("migrator")
-    if not migrator:
-        raise RuntimeError("Migrator service not available. Is MigrationProvider registered?")
+    for p in PROVIDERS:
+        appc.register(p)
+    appc.boot()
+    return appc
 
-    if steps:
-        msg = f"⏪ Rolling back {steps} step(s) before migrating..."
-        typer.echo(msg)
-        log.info("rollback_requested", extra={"steps": steps})
+@migrate_app.command()
+def migrate(
+    seed: bool = typer.Option(False, "--seed", help="Run seeders after migrating"),
+    fresh: bool = typer.Option(False, "--fresh", help="Drop all tables then run migrations"),
+    steps: int = typer.Option(0, "--steps", help="Rollback this many steps before migrating (0=none)"),
+):
+    """
+    Run database migrations with optional seeding or fresh (drop+recreate).
+    """
+    appc = _boot_app()
+    migrator = appc.resolve("migrator")
+    if migrator is None:
+        raise typer.Exit(code=2)
+
+    # Optional rollback N steps first
+    if steps and steps > 0:
+        log.info("rollback_start", extra={"steps": steps})
         migrator.rollback(steps=steps)
+        log.info("rollback_done", extra={"steps": steps})
 
     if fresh:
-        typer.echo("🧹 Dropping tables (fresh) and migrating...")
-        log.info("fresh_migrate_requested", extra={"seed": seed})
+        log.info("fresh_start")
         migrator.fresh(seed=seed)
+        log.info("fresh_done")
     else:
-        typer.echo("📦 Applying migrations...")
-        log.info("migrate_requested", extra={"seed": seed})
+        log.info("migrate_start")
         migrator.migrate(seed=seed)
-
-    typer.echo("✅ Migrations complete.")
-    log.info("migrations_complete")
+        log.info("migrate_done")

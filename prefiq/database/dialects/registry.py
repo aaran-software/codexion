@@ -9,15 +9,16 @@ from prefiq.database.dialects.base import Dialect
 from prefiq.database.dialects.sqlite import SQLiteDialect
 from prefiq.database.dialects.mysql import MySQLDialect
 from prefiq.database.dialects.mariadb import MariaDBDialect
-# Uncomment if you support these:
-# from prefiq.database.dialects.postgres import PostgresDialect
-# from prefiq.database.dialects.mongodb import MongoDBDialect
+from prefiq.database.dialects.postgres import PostgresDialect
+# from prefiq.database.dialects.mongodb import MongoDBDialect  # not wired into SQL migrations
 
 _FORCED: Optional[str] = None  # test override, e.g. set_dialect_for_tests("sqlite")
+
 
 def set_dialect_for_tests(name: Optional[str]) -> None:
     global _FORCED
     _FORCED = name.lower() if name else None
+
 
 def _from_name_fragment(name: str) -> Dialect:
     """Map a string (engine name/url/class) to a concrete Dialect.
@@ -30,11 +31,9 @@ def _from_name_fragment(name: str) -> Dialect:
     if "mysql" in n:
         return MySQLDialect()
 
-    # Optional others
-    # if "postgresql" in n or "postgres" in n or "psql" in n:
-    #     return PostgresDialect()
-    # if "mongodb" in n or "mongo" in n:
-    #     return MongoDBDialect()
+    # Postgres
+    if "postgresql" in n or "postgres" in n or "psql" in n:
+        return PostgresDialect()
 
     # SQLite (file/memory hints too)
     if "sqlite" in n or n in ("file", "memory", ":memory:"):
@@ -42,6 +41,7 @@ def _from_name_fragment(name: str) -> Dialect:
 
     # Safe default for local/dev
     return SQLiteDialect()
+
 
 def get_dialect() -> Dialect:
     # 0) explicit test override

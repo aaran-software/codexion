@@ -1,3 +1,4 @@
+# prefiq/settings/get_settings.py
 from __future__ import annotations
 
 import os
@@ -20,7 +21,7 @@ class Settings(BaseSettings):
     TESTING: bool = False  # tip: set TESTING=1 under pytest
 
     # --- database ---
-    DB_ENGINE: Literal["mariadb", "mysql", "sqlite"] = "mariadb"
+    DB_ENGINE: Literal["mariadb", "mysql", "sqlite", "postgres"] = "mariadb"
     DB_MODE: Literal["sync", "async"] = "async"
     DB_HOST: str = "localhost"
     DB_PORT: int = 3306
@@ -47,7 +48,7 @@ class Settings(BaseSettings):
     # --- misc toggles ---
     DB_CLOSE_ATEXIT: bool = True
 
-    # pydantic‑settings v2 config
+    # pydantic-settings v2 config
     model_config = SettingsConfigDict(
         env_file=_ENV_FILE,
         env_file_encoding="utf-8",
@@ -71,7 +72,7 @@ class Settings(BaseSettings):
     @classmethod
     def _normalize_engine(cls, v: str) -> str:
         v = (v or "").lower()
-        aliases = {"postgresql": "postgres", "sqlite3": "sqlite"}
+        aliases = {"postgresql": "postgres", "sqlite3": "sqlite", "pg": "postgres"}
         return aliases.get(v, v)
 
     @field_validator("DB_MODE", mode="before")
@@ -123,6 +124,12 @@ class Settings(BaseSettings):
             return f"sqlite:///{self.DB_NAME}"
         if self.DB_ENGINE in {"mariadb", "mysql"}:
             return f"{self.DB_ENGINE}://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+        if self.DB_ENGINE == "postgres":
+            # libpq-style URL
+            return (
+                f"postgresql://{self.DB_USER}:{self.DB_PASS}"
+                f"@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+            )
         return None
 
 

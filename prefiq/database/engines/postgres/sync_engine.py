@@ -1,33 +1,19 @@
-# prefiq/database/engines/postgres/sync_engine.py
-from typing import Any, Optional
-try:
-    import psycopg  # psycopg 3
-except Exception:
-    psycopg = None
+from __future__ import annotations
 
-class SyncPostgresEngine:
-    def __init__(self, settings) -> None:
-        if psycopg is None:
-            raise RuntimeError("psycopg (v3) not installed. pip install psycopg[binary]")
-        host = getattr(settings, "DB_HOST", "127.0.0.1")
-        port = int(getattr(settings, "DB_PORT", 5432))
-        user = getattr(settings, "DB_USER", "postgres")
-        password = getattr(settings, "DB_PASS", "")
-        db = getattr(settings, "DB_NAME", "postgres")
-        self._conn = psycopg.connect(
-            host=host, port=port, user=user, password=password, dbname=db, autocommit=True
-        )
+from typing import Any, Optional, Sequence, Tuple
 
-    def execute(self, sql: str, params: Optional[Any] = None) -> None:
-        with self._conn.cursor() as cur:
-            cur.execute(sql, params)
+# Reuse the async engine under the hood and provide a sync-looking API.
+# This keeps the placeholder style ($1) consistent with our PostgresDialect.
+from .async_engine import AsyncPostgresEngine
 
-    def close(self) -> None:
-        try:
-            self._conn.close()
-        except Exception:
-            pass
 
-    @property
-    def name(self) -> str:
-        return "postgres"
+class SyncPostgresEngine(AsyncPostgresEngine):
+    """
+    Sync facade backed by AsyncPostgresEngine.
+    Public methods are the same: execute(), fetchone(), fetchall(), close().
+    """
+
+    driver = "asyncpg(sync-wrapper)"  # for diagnostics
+
+    # All behavior is inherited; the asyncpg-backed _run() provides blocking calls.
+    # If later you prefer psycopg (true sync), swap the parent implementation accordingly.

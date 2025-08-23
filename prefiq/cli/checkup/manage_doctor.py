@@ -20,3 +20,13 @@ def database(
     from prefiq.cli.checkup.database_doctor import main as db_doctor_main  # lazy import
     code = db_doctor_main(verbose=verbose, strict=strict)
     raise typer.Exit(code)
+
+
+@doctor_app.command("migrate")
+def migrate(
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="Verbose output"),
+):
+    """Verify migration wiring (migrator binding, boot sanity)."""
+    from prefiq.cli.checkup.migration_doctor import main as mig_doctor_main  # lazy import
+    code = mig_doctor_main(verbose=verbose)
+    raise typer.Exit(code)
