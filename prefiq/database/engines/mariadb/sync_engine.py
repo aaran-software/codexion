@@ -1,12 +1,9 @@
-# =============================================================
-# SyncMariaDBEngine (sync_engine.py)
-# =============================================================
-
+# prefiq/database/engines/mariadb/sync_engine.py
 from __future__ import annotations
 
 import time
 from contextlib import contextmanager
-from typing import Optional, Sequence, Any, cast
+from typing import Optional, Sequence, Any
 
 import mariadb
 
@@ -50,16 +47,11 @@ class SyncMariaDBEngine(AbstractEngine[Any]):
     # -------- connection guard / narrowing --------
 
     def _get_conn(self) -> mariadb.Connection:
-        """
-        Ensure we have a live connection and return it.
-        This function *narrows* self.conn for the type checker.
-        """
+        """Ensure we have a live connection and return it (type-narrowed)."""
         if self.conn is None:
             self.connect()
-        conn = self.conn
-        # Type-narrowing assert so static checker knows conn is not None
-        assert conn is not None, "Failed to establish MariaDB connection"
-        return conn
+        assert self.conn is not None, "Failed to establish MariaDB connection"
+        return self.conn
 
     def _validate_connection(self) -> mariadb.Connection:
         """
@@ -107,7 +99,6 @@ class SyncMariaDBEngine(AbstractEngine[Any]):
     def transaction(self):
         """
         Pin the connection for a multi-statement transaction.
-
         Usage:
             with db.transaction() as cur:
                 cur.execute("INSERT ...", (...,))
@@ -153,65 +144,78 @@ class SyncMariaDBEngine(AbstractEngine[Any]):
 
     # -------- queries --------
 
-    def execute(self, query: str, params: Optional[tuple] = None) -> None:
+    def execute(self, query: str, params: Optional[Sequence[Any]] = None) -> None:
         """Run a single write query (INSERT/UPDATE/DELETE)."""
         conn = self._validate_connection()
         self._run_hooks("before", query, params)
-        start_time = time.time()
+        t0 = time.time()
+        tup = tuple(params) if params is not None else None
 
         def action():
             with conn.cursor() as cur:
-                cur.execute(query, params or ())
+                if tup is not None:
+                    cur.execute(query, tup)
+                else:
+                    cur.execute(query)
             conn.commit()
 
         with_retry(action)
-        log_query(query, start_time)
+        log_query(query, t0)
         self._run_hooks("after", query, params)
 
-    def executemany(self, query: str, param_list: Sequence[tuple]) -> None:
+    def executemany(self, query: str, param_list: Sequence[Sequence[Any]]) -> None:
         """Run bulk insert/update with many param sets."""
         conn = self._validate_connection()
         self._run_hooks("before", query, None)
-        start_time = time.time()
+        t0 = time.time()
 
         def action():
             with conn.cursor() as cur:
-                cur.executemany(query, list(param_list))
+                # executemany expects a sequence of sequences
+                cur.executemany(query, [tuple(p) for p in param_list])
             conn.commit()
 
         with_retry(action)
-        log_query(query, start_time)
+        log_query(query, t0)
         self._run_hooks("after", query, None)
 
-    def fetchone(self, query: str, params: Optional[tuple] = None) -> Any:
+    def fetchone(self, query: str, params: Optional[Sequence[Any]] = None) -> Any:
         """Fetch a single row from the result set."""
         conn = self._validate_connection()
         self._run_hooks("before", query, params)
-        start_time = time.time()
+        t0 = time.time()
+        tup = tuple(params) if params is not None else None
 
         def action():
             with conn.cursor() as cur:
-                cur.execute(query, params or ())
+                if tup is not None:
+                    cur.execute(query, tup)
+                else:
+                    cur.execute(query)
                 return cur.fetchone()
 
         result = with_retry(action)
-        log_query(query, start_time)
+        log_query(query, t0)
         self._run_hooks("after", query, params)
         return result
 
-    def fetchall(self, query: str, params: Optional[tuple] = None) -> list[Any]:
+    def fetchall(self, query: str, params: Optional[Sequence[Any]] = None) -> list[Any]:
         """Fetch all rows from the result set."""
         conn = self._validate_connection()
         self._run_hooks("before", query, params)
-        start_time = time.time()
+        t0 = time.time()
+        tup = tuple(params) if params is not None else None
 
         def action():
             with conn.cursor() as cur:
-                cur.execute(query, params or ())
+                if tup is not None:
+                    cur.execute(query, tup)
+                else:
+                    cur.execute(query)
                 return list(cur.fetchall())
 
         result = with_retry(action)
-        log_query(query, start_time)
+        log_query(query, t0)
         self._run_hooks("after", query, params)
         return result
 
