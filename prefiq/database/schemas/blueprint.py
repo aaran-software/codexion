@@ -1,5 +1,11 @@
 # prefiq/database/schemas/blueprint.py
-from __future__ import annotations
-from prefiq.database.schemas.router import impl
-TableBlueprint = impl()[0].TableBlueprint
+
+# Runtime driver resolution happens in builder.create(). This shim only exists
+# for type annotations like:  def schema(t: bp.TableBlueprint): ...
+# Do NOT bind a concrete class here to avoid locking the driver at import time.
+
+class TableBlueprint:  # typing placeholder
+    pass
+
 __all__ = ["TableBlueprint"]
+
