@@ -1,137 +1,62 @@
 # prefiq/providers/database_provider.py
 
+# prefiq/providers/database_provider.py
 from __future__ import annotations
 
 import atexit
-import asyncio
-import inspect
-import logging
-from contextlib import suppress
+import os
+from typing import Any
 
-from prefiq.core.contracts.base_provider import BaseProvider
-from prefiq.database.connection import get_engine
-from prefiq.settings.get_settings import load_settings
-from prefiq.log.logger import get_logger
-
-from prefiq.providers.db_config import DatabaseSettings
-
+from prefiq.core.contracts.base_provider import BaseProvider  # adjust if your path differs
+from prefiq.database.connection import get_engine, reset_engine
+from prefiq.database.connection_manager import connection_manager
+from prefiq.database.engines.abstract_engine import AbstractEngine
+from prefiq.database.engines.mariadb.pool import prewarm, close_pool
+# from prefiq.database.hooks import default_before_hook, default_after_hook
 
 class DatabaseProvider(BaseProvider):
-    # lets SettingsProvider validate this provider early (optional but nice)
-    schema_model = DatabaseSettings
-
-    def __init__(self, app):
-        super().__init__(app)
-        self.engine = None
-        s = load_settings()
-        self.log = get_logger(f"{s.LOG_NAMESPACE}.db.provider")
-        self._teardown_registered = False
+    """
+    Binds 'db' (engine singleton) into the container.
+    - Sets default before/after hooks (can be replaced later).
+    - Optionally pre-warms MariaDB pool based on env.
+    - Closes pools/handles at process exit.
+    """
 
     def register(self) -> None:
-        # Build engine from current settings
-        self.engine = get_engine()
-        self.app.bind("db", self.engine)
-        self.log.debug("db_registered", extra={"engine_type": type(self.engine).__name__})
-
-        # Honor settings flag before registering atexit
-        s = load_settings()
-        if getattr(s, "DB_CLOSE_ATEXIT", True) and not self._teardown_registered:
-            atexit.register(self._close_engine_safely)
-            self._teardown_registered = True
-
-    def _close_engine_safely(self) -> None:
-        try:
-            if hasattr(self.engine, "close"):
-                res = self.engine.close()
-                self._resolve_awaitable(res)
-
-            # avoid logging if handlers are torn down during interpreter shutdown
-            try:
-                root = logging.getLogger()
-                if any(
-                    hasattr(h, "stream") and getattr(h.stream, "closed", False) is False
-                    for h in root.handlers
-                ):
-                    self.log.info("db_closed")
-            except Exception:
-                pass
-        except Exception as e:
-            try:
-                self.log.error("db_close_error", extra={"error": str(e)})
-            except Exception:
-                pass
-
-    @staticmethod
-    def _resolve_awaitable(maybe_awaitable):
-        """Await if needed. Works even if an event loop is already running."""
-        if inspect.isawaitable(maybe_awaitable) or inspect.iscoroutine(maybe_awaitable):
-            try:
-                # If there's no running loop, asyncio.run is fine
-                asyncio.get_running_loop()
-            except RuntimeError:
-                return asyncio.run(maybe_awaitable)
-            else:
-                # Running loop present → use a private loop to await
-                new_loop = asyncio.new_event_loop()
-                try:
-                    asyncio.set_event_loop(new_loop)
-                    task = new_loop.create_task(maybe_awaitable)  # <-- create task on this loop
-                    return new_loop.run_until_complete(task)
-                finally:
-                    with suppress(Exception):
-                        new_loop.run_until_complete(new_loop.shutdown_asyncgens())
-                    asyncio.set_event_loop(None)
-                    new_loop.close()
-        return maybe_awaitable
+        # Construct (or reuse) the engine and bind into app container
+        engine: AbstractEngine[Any] = get_engine()
+        # Set default hooks (users can override later)
+        engine.set_before_execute_hook(default_before_hook)
+        engine.set_after_execute_hook(default_after_hook)
+        self.app.bind("db", engine)
 
     def boot(self) -> None:
-        s = load_settings()
+        # Optional: prewarm MariaDB pool if env says so
+        warm = int(os.getenv("DB_POOL_WARMUP", "0") or "0")
+        if warm > 0:
+            try:
+                # Only MariaDB async pool exposes prewarm; noop for others
+                self.app.logger.info(f"DB: prewarming {warm} MariaDB connections")
+                self.app.run_async(prewarm(warm))  # if your app has a helper to run coroutines
+            except Exception:
+                # best effort; don't block boot
+                pass
 
-        # Validate DB env with schema (supports mariadb or sqlite)
+        # Close pool/engine at process exit
+        atexit.register(self._shutdown)
+
+    def _shutdown(self) -> None:
         try:
-            DatabaseSettings.model_validate(
-                dict(
-                    DB_ENGINE=s.DB_ENGINE,
-                    DB_MODE=s.DB_MODE,
-                    DB_HOST=getattr(s, "DB_HOST", None),
-                    DB_PORT=getattr(s, "DB_PORT", None),
-                    DB_USER=getattr(s, "DB_USER", None),
-                    DB_PASS=getattr(s, "DB_PASS", None),
-                    DB_NAME=s.DB_NAME,
-                    DB_POOL_WARMUP=getattr(s, "DB_POOL_WARMUP", 1),
-                )
-            )
-        except Exception as e:
-            self.log.error("db_settings_invalid", extra={"error": str(e)})
-            raise
-
-        self.log.info(
-            "db_settings",
-            extra={
-                "engine": s.DB_ENGINE,
-                "mode": s.DB_MODE,
-                "host": getattr(s, "DB_HOST", None),
-                "port": getattr(s, "DB_PORT", None),
-                "db": s.DB_NAME,
-                "user": getattr(s, "DB_USER", None),
-            },
-        )
-
-        # Connectivity probe (works for sync or async engines)
+            # MariaDB async pool
+            self.app.run_async(close_pool())  # best-effort if async
+        except Exception:
+            pass
         try:
-            ok = self._resolve_awaitable(getattr(self.engine, "test_connection")())
-            if not ok:
-                try:
-                    probe = self._resolve_awaitable(self.engine.fetchone("SELECT 1"))
-                    ok = probe is not None
-                except Exception as probe_err:
-                    self.log.error("db_probe_error", extra={"error": str(probe_err)})
-                    raise
-
-            (self.log.info if ok else self.log.error)("db_connectivity", extra={"ok": bool(ok)})
-        except (ConnectionError, OSError, TimeoutError, asyncio.TimeoutError) as e:
-            self.log.error("db_connectivity_error", extra={"error": str(e)})
-            raise
-        except RuntimeError as e:
-            self.log.error("db_runtime_error", extra={"error": str(e)})
-            raise
+            # Engines often expose close(); our connection layer has reset_engine()
+            connection_manager.close()
+        except Exception:
+            pass
+        try:
+            reset_engine()
+        except Exception:
+            pass

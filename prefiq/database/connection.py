@@ -1,55 +1,50 @@
 # prefiq/database/connection.py
 from __future__ import annotations
 
-from typing import Optional
-from prefiq.settings.get_settings import load_settings
+import os
+from typing import Optional, Any
 
-# NOTE: these imports assume you actually have these engine classes.
-# If you don't, see the "Missing files" section below.
+from prefiq.settings.get_settings import load_settings, clear_settings_cache
+
+# Engines we actually support right now
 from prefiq.database.engines.mariadb.sync_engine import SyncMariaDBEngine
 from prefiq.database.engines.mariadb.async_engine import AsyncMariaDBEngine
-from prefiq.database.engines.mysql.sync_engine import SyncMysqlEngine
-from prefiq.database.engines.mysql.async_engine import AsyncMysqlEngine
 from prefiq.database.engines.sqlite.sync_engine import SQLiteEngine
 
-_engine_singleton: Optional[object] = None  # lazy singleton
+_engine_singleton: Optional[Any] = None  # lazy, process-wide
 
 
-def _is_async(mode: str) -> bool:
-    return (mode or "").lower() == "async"
+def _is_async(mode: str | None) -> bool:
+    return (mode or "").strip().lower() == "async"
 
 
-def _normalize_engine_name(name: str) -> str:
-    n = (name or "").lower()
-    # allow aliases; expand later if you add more engines
-    aliases = {"postgresql": "postgres", "sqlite3": "sqlite"}
+def _normalize(name: str | None) -> str:
+    n = (name or "").strip().lower()
+    aliases = {"sqlite3": "sqlite", "postgresql": "postgres"}  # future-friendly
     return aliases.get(n, n)
 
 
-def _make_engine():
+def _make_engine() -> Any:
     s = load_settings()
-    eng = _normalize_engine_name(getattr(s, "DB_ENGINE", ""))
+    eng = _normalize(getattr(s, "DB_ENGINE", None))
+    mode = getattr(s, "DB_MODE", "sync")
 
     if eng == "mariadb":
-        return AsyncMariaDBEngine() if _is_async(s.DB_MODE) else SyncMariaDBEngine()
-
-    if eng == "mysql":
-        return AsyncMysqlEngine() if _is_async(s.DB_MODE) else SyncMysqlEngine()
+        return AsyncMariaDBEngine() if _is_async(mode) else SyncMariaDBEngine()
 
     if eng == "sqlite":
-        # single (sync) engine in this stack
+        # SQLite stack is sync-only (for now)
         return SQLiteEngine()
 
-    # If you add postgres etc., map them here before enabling in error text
     raise RuntimeError(
-        f"Unsupported DB_ENGINE '{s.DB_ENGINE}'. "
-        "Use one of: mariadb, mysql, sqlite."
+        f"Unsupported DB_ENGINE {getattr(s, 'DB_ENGINE', None)!r}. "
+        "Use one of: mariadb, sqlite."
     )
 
 
-def get_engine():
+def get_engine() -> Any:
     """
-    Return the process‑wide DB engine instance (lazy singleton).
+    Return the global DB engine (singleton). Constructed lazily from .env.
     """
     global _engine_singleton
     if _engine_singleton is None:
@@ -57,14 +52,43 @@ def get_engine():
     return _engine_singleton
 
 
-def reset_engine():
+def reset_engine() -> None:
     """
-    Drop the cached engine. Useful in tests when env changes or you need a fresh pool.
+    Drop the cached engine instance. Any open connections will be closed best-effort.
     """
     global _engine_singleton
-    if _engine_singleton and hasattr(_engine_singleton, "close"):
+    eng = _engine_singleton
+    if eng and hasattr(eng, "close"):
         try:
-            _engine_singleton.close()
+            eng.close()  # sync engines; async engines expose close() coroutine in our stack as well
         except Exception:
             pass
     _engine_singleton = None
+
+
+def reload_engine_from_env(*, force_refresh: bool = True) -> Any:
+    """
+    Re-read .env (if changed) and rebuild the engine singleton.
+
+    Typical usage:
+        os.environ["DB_ENGINE"] = "sqlite"
+        reload_engine_from_env()
+    """
+    if force_refresh:
+        clear_settings_cache()
+    reset_engine()
+    return get_engine()
+
+
+def swap_engine(engine: str, *, mode: str | None = None) -> Any:
+    """
+    Programmatic “hot-swap” (handy in tests or dev tools).
+    This writes into process env, clears settings cache, and rebuilds the engine.
+
+    swap_engine("sqlite")
+    swap_engine("mariadb", mode="async")
+    """
+    os.environ["DB_ENGINE"] = engine
+    if mode is not None:
+        os.environ["DB_MODE"] = mode
+    return reload_engine_from_env(force_refresh=True)

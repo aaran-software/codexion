@@ -1,195 +1,110 @@
-from __future__ import annotations
+# prefiq/cli/checkup/database_doctor.py
 
-from dataclasses import dataclass
-from typing import List, Tuple, Optional
+from __future__ import annotations
+import asyncio
+import inspect
+import os
+from typing import Any
 
 from prefiq.settings.get_settings import load_settings
-from cortex.runtime.service_providers import PROVIDERS
+from prefiq.database.connection import get_engine, reset_engine
+from prefiq.database.connection_manager import connection_manager
+# REMOVE this import if present:
+# from prefiq.database.health import is_healthy
+from prefiq.database.engines.abstract_engine import AbstractEngine
 
 
-@dataclass
-class CheckResult:
-    name: str
-    ok: bool
-    detail: str = ""
+def _engine_name(e: Any) -> str:
+    cls = type(e).__name__
+    if "Maria" in cls:
+        return f"MariaDB/{cls}"
+    if "SQLite" in cls or "Sqlite" in cls:
+        return f"SQLite/{cls}"
+    return cls
 
+def _print_header():
+    s = load_settings()
+    print("=== Prefiq Database Doctor ===")
+    print(f"DB_ENGINE={getattr(s, 'DB_ENGINE', None)!r}  DB_MODE={getattr(s, 'DB_MODE', None)!r}")
 
-def _fmt(ok: bool) -> str:
-    return "✅" if ok else "❌"
-
-
-def _db_provider_configured() -> tuple[bool, str]:
+def _probe_health(engine: Any, timeout: float | None = 3.0) -> bool:
     """
-    Detect whether a DatabaseProvider-like class is present in PROVIDERS,
-    without importing the provider module directly.
+    Works for both sync and async engines without leaking coroutines.
     """
-    seen = []
-    for p in PROVIDERS:
-        name = getattr(p, "__name__", "")
-        module = getattr(p, "__module__", "")
-        qual = f"{module}.{name}" if module and name else name or module
-        seen.append(name or qual)
-        # accept common names/modules without importing heavy deps
-        if name == "DatabaseProvider" or "database_provider" in module:
-            return True, qual or name
-    return False, ", ".join(seen) if seen else "none"
-
-
-def _try_import_engine():
-    # Import lazily only if provider is configured
     try:
-        from prefiq.database.connection import get_engine  # type: ignore
-        return get_engine, None
-    except Exception as e:
-        return None, e
+        res = engine.test_connection()
+        if inspect.isawaitable(res):
+            if timeout is not None and timeout > 0:
+                return bool(asyncio.run(asyncio.wait_for(res, timeout=timeout)))
+            return bool(asyncio.run(res))
+        return bool(res)
+    except Exception:
+        return False
 
+def _sync_smoketest(engine: AbstractEngine[Any]) -> None:
+    print("-> Running sync smoke test (BEGIN/COMMIT, SELECT 1)")
+    if hasattr(engine, "transaction"):
+        with engine.transaction():  # type: ignore[call-arg]
+            pass
+    one = engine.fetchone("SELECT 1")
+    ok = bool(one is not None)
+    print(f"   SELECT 1 => {ok}")
 
-def _probe_connection(engine) -> tuple[bool, str]:
-    if hasattr(engine, "test_connection"):
-        try:
-            return bool(engine.test_connection()), "engine.test_connection()"
-        except Exception as e:
-            return False, f"engine.test_connection() failed: {e}"
-
-    sql = "SELECT 1"
-    if hasattr(engine, "execute"):
-        try:
-            cur = engine.execute(sql)  # type: ignore[call-arg]
-            _ = getattr(cur, "fetchone", lambda: (1,))()
-            return True, sql
-        except Exception as e:
-            return False, f"{sql} via engine.execute failed: {e}"
-
-    if hasattr(engine, "connect"):
-        try:
-            with engine.connect() as conn:
-                cur = conn.execute(sql)  # type: ignore[attr-defined]
-                _ = getattr(cur, "fetchone", lambda: (1,))()
-            return True, sql
-        except Exception as e:
-            return False, f"{sql} via engine.connect() failed: {e}"
-
-    if hasattr(engine, "fetchone"):
-        try:
-            row = engine.fetchone(sql)
-            return row is not None, sql
-        except Exception as e:
-            return False, f"{sql} via engine.fetchone failed: {e}"
-
-    return False, "No known execution method on engine"
-
-
-def _probe_metadata(engine) -> List[CheckResult]:
-    checks: List[CheckResult] = []
-    try:
-        checks.append(CheckResult("Engine type", True, type(engine).__name__))
-    except Exception as e:
-        checks.append(CheckResult("Engine type", False, str(e)))
-
-    try:
-        ver = None
-        if hasattr(engine, "server_version"):
-            ver = engine.server_version
-        elif hasattr(engine, "version"):
-            ver = engine.version
-        elif hasattr(engine, "execute"):
-            try:
-                cur = engine.execute("SELECT sqlite_version()")
-                row = getattr(cur, "fetchone", lambda: None)()
-                if row:
-                    ver = row[0]
-            except Exception:
-                pass
-        checks.append(CheckResult("Server version", True, str(ver) if ver else "unknown (skipped)"))
-    except Exception as e:
-        checks.append(CheckResult("Server version", False, str(e)))
-
-    return checks
-
-
-def run_database_diagnostics(*, verbose: bool = False, strict: bool = False) -> tuple[bool, List[CheckResult]]:
-    results: List[CheckResult] = []
-
-    # 0) Settings
-    try:
-        settings = load_settings()
-        results.append(CheckResult("Settings loaded", True,
-                                   f"ENGINE={settings.DB_ENGINE} MODE={settings.DB_MODE} HOST={getattr(settings, 'DB_HOST', '')}"))
-    except Exception as e:
-        results.append(CheckResult("Settings loaded", False, str(e)))
-        return False, results
-
-    # 1) Is DatabaseProvider configured?
-    has_db_provider, prov_detail = _db_provider_configured()
-    if not has_db_provider:
-        results.append(CheckResult("Database provider configured", False,
-                                   f"Not found in PROVIDERS (seen: {prov_detail})."))
-        results.append(CheckResult("Database checks", True, "skipped (no provider)"))
-        # In non-strict mode, missing provider is informative, not fatal.
-        return (False if strict else True), results
-    else:
-        results.append(CheckResult("Database provider configured", True, prov_detail))
-
-    # 2) (Optional) Sync mode guard — skip async for now
-    if getattr(settings, "DB_MODE", "").lower() == "async":
-        results.append(CheckResult("DB mode supported", False,
-                                   "Async mode not yet supported by doctor (set DB_MODE=sync to test)"))
-        overall = all(r.ok for r in results)
-        return overall, results
-
-    # 3) Resolve engine (lazy import)
-    get_engine, import_err = _try_import_engine()
-    if import_err or get_engine is None:
-        results.append(CheckResult("Engine resolver import", False, f"{import_err}"))
-        return False, results
-
-    try:
-        engine = get_engine()
-        results.append(CheckResult("Engine resolved", True, type(engine).__name__))
-    except Exception as e:
-        results.append(CheckResult("Engine resolved", False, str(e)))
-        return False, results
-
-    # 4) Connectivity
-    ok, how = _probe_connection(engine)
-    results.append(CheckResult("DB connectivity", ok, how))
-    if not ok:
-        overall = all(r.ok for r in results)
-        return overall, results
-
-    # 5) Metadata + non-destructive perms
-    results.extend(_probe_metadata(engine))
-    try:
-        env = getattr(settings, "ENV", "development")
-        if env != "production" and hasattr(engine, "execute"):
-            try:
-                engine.execute("CREATE TEMP TABLE __prefiq_probe__(id INTEGER)")
-                engine.execute("DROP TABLE __prefiq_probe__")
-                results.append(CheckResult("DDL permission (temp)", True, "CREATE TEMP TABLE"))
-            except Exception as e:
-                results.append(CheckResult("DDL permission (temp)", False, str(e)))
-        else:
-            results.append(CheckResult("DDL permission (temp)", True, "skipped"))
-    except Exception as e:
-        results.append(CheckResult("DDL permission (temp)", False, str(e)))
-
-    overall = all(r.ok for r in results)
-    return overall, results
-
+async def _async_smoketest(engine: Any) -> None:
+    print("-> Running async smoke test (BEGIN/COMMIT, SELECT 1)")
+    if hasattr(engine, "transaction"):
+        async with engine.transaction():  # type: ignore[misc]
+            pass
+    row = await engine.fetchone("SELECT 1")
+    ok = bool(row is not None)
+    print(f"   SELECT 1 => {ok}")
 
 def main(verbose: bool = False, strict: bool = False) -> int:
-    overall, checks = run_database_diagnostics(verbose=verbose, strict=strict)
+    _print_header()
+    engine = get_engine()
+    print(f"Engine: {_engine_name(engine)}")
 
-    print("\nPrefiq Database Doctor")
-    print("----------------------")
-    for c in checks:
-        line = f"{_fmt(c.ok)} {c.name}"
-        if c.detail:
-            line += f"  ·  {c.detail}"
-        print(line)
-    print("\nResult:", "ALL GOOD ✅" if overall else "ISSUES FOUND ❌")
-    return 0 if overall else 1
+    # health check (no dangling coroutine warnings)
+    healthy = _probe_health(engine, timeout=3.0)
+    print(f"Health: {'OK' if healthy else 'FAIL'}")
 
+    try:
+        if asyncio.iscoroutinefunction(getattr(engine, "begin", None)):  # async engine
+            asyncio.run(_async_smoketest(engine))
+        else:
+            _sync_smoketest(engine)
+    except Exception as e:
+        print(f"Smoke test error: {type(e).__name__}: {e}")
+        return 2
 
-if __name__ == "__main__":
-    raise SystemExit(main())
+    if strict and not healthy:
+        return 1
+
+    if verbose:
+        s = load_settings()
+        masked = (s.dsn() or "").replace(s.DB_PASS, "*****") if getattr(s, "DB_PASS", None) else (s.dsn() or "")
+        print(f"[verbose] DSN: {masked}")
+        try:
+            import time
+            t0 = time.perf_counter()
+            ok = _probe_health(engine, timeout=3.0)
+            dt = (time.perf_counter() - t0) * 1000
+            print(f"[verbose] ping: {'OK' if ok else 'FAIL'} in {dt:.1f} ms")
+        except Exception as e:
+            print(f"[verbose] ping error: {e}")
+
+    # Optional swap demo preserved if you had it before
+    if os.getenv("DB_DOCTOR_SWAP_DEMO", "0") == "1":
+        from prefiq.database.connection import swap_engine
+        current = load_settings().DB_ENGINE or ""
+        target = "sqlite" if current.lower() == "mariadb" else "mariadb"
+        print(f"Swapping engine to: {target}")
+        try:
+            swap_engine(target)
+            eng2 = get_engine()
+            print(f"Now using: {_engine_name(eng2)}")
+        finally:
+            reset_engine()
+
+    print("Database doctor finished.")
+    return 0

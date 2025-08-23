@@ -11,7 +11,7 @@ from prefiq.providers.database_provider import DatabaseProvider
 PROVIDERS = [
     SettingsProvider,
     ProfilesProvider,
-    # DatabaseProvider,
+    DatabaseProvider,
     # MigrationProvider,
     # DevMetaProvider
     # UiProvider,
