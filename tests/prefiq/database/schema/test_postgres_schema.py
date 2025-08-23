@@ -9,27 +9,48 @@ from prefiq.database.schemas import queries as q
 
 def _can_connect_pg(host: str, port: int, user: str, password: str, db: str) -> tuple[bool, str]:
     """
-    Try a real psycopg connection (2s timeout). Return (ok, reason_if_not_ok).
+    Try a real connection with either psycopg (v3) or psycopg2 (v2).
+    Returns (ok, reason_if_not_ok).
     """
+    # Try psycopg (v3) first
     try:
-        import psycopg
+        import psycopg  # type: ignore
+        try:
+            conn = psycopg.connect(
+                host=host,
+                port=port,
+                user=user,
+                password=password,
+                dbname=db,
+                connect_timeout=2,
+                options="-c statement_timeout=2000",
+            )
+            conn.close()
+            return True, ""
+        except Exception as e:
+            return False, f"cannot connect with psycopg: {e!s}"
     except Exception:
-        return False, "psycopg driver not installed"
+        pass
 
+    # Fallback to psycopg2 (v2)
     try:
-        conn = psycopg.connect(
-            host=host,
-            port=port,
-            user=user,
-            password=password,
-            dbname=db,
-            connect_timeout=2,  # seconds
-            options="-c statement_timeout=2000",
-        )
-        conn.close()
-        return True, ""
-    except Exception as e:
-        return False, f"cannot connect to Postgres at {host}:{port} db={db} user={user} · {e!s}"
+        import psycopg2  # type: ignore
+        try:
+            conn = psycopg2.connect(
+                host=host,
+                port=port,
+                user=user,
+                password=password,
+                dbname=db,
+                connect_timeout=2,
+                options="-c statement_timeout=2000",
+            )
+            conn.close()
+            return True, ""
+        except Exception as e:
+            return False, f"cannot connect with psycopg2: {e!s}"
+    except Exception:
+        return False, "neither psycopg nor psycopg2 is installed"
 
 
 @pytest.mark.postgres
