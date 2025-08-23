@@ -18,7 +18,7 @@ export default function Card2({
   lineStyle,
 }: Card2Props) {
   return (
-    <div className={`grid pt-10 gap-8 ${containerStyle}`}>
+    <div className={`grid gap-8 ${containerStyle}`}>
       {items.map((item, idx) => {
         const { ref, inView } = useInView({ triggerOnce: true });
 

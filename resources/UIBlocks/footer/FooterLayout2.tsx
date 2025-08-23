@@ -3,6 +3,7 @@ import NewUpdate from "../../../resources/components/advertisment/NewUpdate";
 import { useState } from "react";
 import { FaPhone } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
+import React from "react";
 
 interface FooterColumn {
   title: string;
@@ -26,7 +27,7 @@ interface FooterLayoutProps {
   mapLink: string;
   version: string;
   copyrights: string;
-  copyrights_company:string
+  copyrights_company: string;
 }
 
 const FooterLayout1: React.FC<FooterLayoutProps> = ({
@@ -83,8 +84,16 @@ const FooterLayout1: React.FC<FooterLayoutProps> = ({
           <p className="text-white leading-6">
             {address.lines.map((line, idx) => (
               <span key={idx}>
-                {line}
-                <br />
+                {line.split(",").map((part, i, arr) => (
+                  <React.Fragment key={i}>
+                    {part.trim()}
+                    {i < arr.length - 1 && ","} {/* keep comma */}
+                    {i < arr.length - 1 && <br />}{" "}
+                    {/* break line after comma */}
+                  </React.Fragment>
+                ))}
+                {idx < address.lines.length - 1 && <br />}{" "}
+                {/* break between lines */}
               </span>
             ))}
           </p>
@@ -93,14 +102,14 @@ const FooterLayout1: React.FC<FooterLayoutProps> = ({
               href={`tel:${consumerPolicy.phone}`}
               className="flex items-center gap-1"
             >
-              <FaPhone className="rotate-90" /> {consumerPolicy.phone}
+              <FaPhone className="rotate-90 shrink-0 w-5 h-5" /> {consumerPolicy.phone}
             </a>
             <br />
             <a
               href={`mailto:${consumerPolicy.email}`}
               className="flex items-center gap-1"
             >
-              <MdEmail /> {consumerPolicy.email}
+              <MdEmail className="shrink-0 w-5 h-5" /> {consumerPolicy.email}
             </a>
           </p>
           <div className="flex gap-3 mt-1">
@@ -154,7 +163,10 @@ const FooterLayout1: React.FC<FooterLayoutProps> = ({
       <div className="flex flex-row gap-3 justify-between border-t border-white/10">
         <div></div>
         <div className="text-center py-3 bg-neutral-900">
-          &copy; {copyrights} <a href="https://my.codexsun.com/" className="underline">{copyrights_company}</a>
+          &copy; {copyrights}{" "}
+          <a href="https://my.codexsun.com/" target="_blank">
+            {copyrights_company}
+          </a>
         </div>
         <div
           className="block my-auto text-background/50 pr-5 cursor-pointer whitespace-nowrap"

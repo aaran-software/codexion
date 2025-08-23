@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { IoMdMenu } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAppSettings } from "../../../apps/global/useSettings";
-
 type MenuItem = {
   label: string;
   path: string;
@@ -11,9 +10,10 @@ type MenuItem = {
 
 type HeaderProps = {
   menu: MenuItem[];
+  transparent?:boolean
 };
 
-function HeaderPortfolio2({ menu }: HeaderProps) {
+function HeaderPortfolio2({ menu,transparent=false }: HeaderProps) {
   const settings = useAppSettings();
   if (!settings) return null;
 
@@ -22,14 +22,17 @@ function HeaderPortfolio2({ menu }: HeaderProps) {
     height: 20,
     padding: 8,
     position: "center",
-    font_size: 2,
+    font_size: 25,
+    font_subsize: 15,
     company_name: "",
+    company_subname: "",
     text_color: "",
   };
 
   const logo = settings.logo || defaultLogo;
   const [menuVisible, setMenuVisible] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const menuRef = useRef<HTMLUListElement>(null);
   const toggleRef = useRef<HTMLDivElement>(null);
   const handleNav = (path: string) => {
@@ -73,14 +76,22 @@ function HeaderPortfolio2({ menu }: HeaderProps) {
   return (
     <div
       className={`${
-        scrolled ? "bg-background text-foreground" : "bg-background/50"
-      } flex flex-row justify-between h-20 items-center px-5 py-2 md:py-4 w-full fixed top-0 left-0 z-50 shadow-lg transition-colors duration-300`}
+        transparent ? scrolled ? "bg-background text-foreground" : "bg-background/50":"bg-background"} flex flex-row justify-between h-20 items-center px-5 py-2 md:py-4 w-full fixed top-0 left-0 z-50 shadow-lg transition-colors duration-300`}
     >
       {/* Logo */}
       <div
         className={`flex items-${logo.position} gap-2 cursor-pointer`}
         onClick={() => navigate("/")}
       >
+        <style>
+          {`
+            @media (max-width: 1024px) {
+              .company-name {
+                font-size: ${logo.font_size - 5}px !important; 
+              }
+            }
+          `}
+        </style>
         {/* Mode 1: Only Logo */}
         {logo.mode === "logo" && (
           <img
@@ -93,9 +104,16 @@ function HeaderPortfolio2({ menu }: HeaderProps) {
         {/* Mode 2: Only Company Name */}
         {logo.mode === "name" && (
           <h3
-            className={`text-${logo.font_size}xl p-${logo.padding} ${logo.text_color} font-bold ${logo.font}`}
+            className={`company-name p-${logo.padding} ${logo.text_color} font-extrabold ${logo.font}`}
+            style={{ fontSize: `${logo.font_size}px` }}
           >
-            {logo.company_name}
+            {logo.company_name} <br />
+            <span
+              className="company-subname font-normal"
+              style={{ fontSize: `${logo.font_subsize}px` }}
+            >
+              {logo.company_subname}
+            </span>
           </h3>
         )}
 
@@ -107,8 +125,17 @@ function HeaderPortfolio2({ menu }: HeaderProps) {
               alt="Logo"
               className={`h-${logo.height} p-${logo.padding}`}
             />
-            <span className={`text-${logo.font_size}xl ${logo.text_color} font-bold ${logo.font}`}>
+            <span
+              className={`company-name flex flex-col leading-tight ${logo.text_color} font-extrabold ${logo.font}`}
+              style={{ fontSize: `${logo.font_size}px` }}
+            >
               {logo.company_name}
+              <span
+                className="company-subname font-normal"
+                style={{ fontSize: `${logo.font_subsize}px` }}
+              >
+                {logo.company_subname}
+              </span>
             </span>
           </>
         )}
@@ -116,16 +143,26 @@ function HeaderPortfolio2({ menu }: HeaderProps) {
 
       {/* Desktop Menu */}
       <ul className="hidden md:flex flex-row justify-between gap-10 items-center">
-        {menu.map((item, index) => (
-          <li
-            key={index}
-            className="relative group cursor-pointer text-lg text-foreground hover:text-primary hover:font-bold transition-all duration-200"
-            onClick={() => handleNav(item.path)}
-          >
-            {item.label}
-            <span className="absolute left-0 bottom-0 h-1 w-full transform scale-x-0 origin-left group-hover:scale-x-100 group-hover:bg-primary transition-transform duration-300 ease-in-out" />
-          </li>
-        ))}
+        {menu.map((item, index) => {
+          const isActive = location.pathname === item.path; // <-- check active
+          return (
+            <li
+              key={index}
+              className={`relative group cursor-pointer text-lg transition-all duration-300
+                ${
+                  isActive
+                    ? "text-hover font-bold border-b-4 border-hover" // <-- active style
+                    : "text-foreground hover:text-hover hover:font-bold"
+                }`}
+              onClick={() => handleNav(item.path)}
+            >
+              {item.label}
+              {!isActive && (
+                <span className="absolute left-0 bottom-0 h-1 w-full transform scale-x-0 origin-left group-hover:scale-x-100 group-hover:bg-hover transition-transform duration-300 ease-in-out" />
+              )}
+            </li>
+          );
+        })}
       </ul>
 
       {/* Mobile Menu Icon */}
@@ -140,7 +177,7 @@ function HeaderPortfolio2({ menu }: HeaderProps) {
       {/* Mobile Dropdown */}
       <ul
         ref={menuRef}
-        className={`md:hidden transform transition-all duration-400 ease-in-out flex flex-col gap-5 w-full bg-black text-gray-50 p-4 absolute top-0 left-0 z-50 ${
+        className={`md:hidden transform transition-all duration-400 ease-in-out flex flex-col gap-5 w-full bg-footer text-background p-4 absolute top-0 left-0 z-50 ${
           menuVisible
             ? "translate-y-0 opacity-100"
             : "-translate-y-full opacity-0"

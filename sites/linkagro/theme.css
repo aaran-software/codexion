@@ -60,6 +60,7 @@
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
+  --color-hover: var(--hover);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
@@ -113,6 +114,8 @@
   --color-profit: var(--profit);
   --color-loss: var(--loss);
   --color-input-warning: var(--input-warning);
+  --color-footer: var(--footer);
+  --color-tag: var(--tag);
 }
 
 @layer base {
@@ -126,6 +129,7 @@
     --popover-foreground: oklch(0.145 0 0);
     --primary: #448d47;
     --primary-foreground: oklch(0.985 0 0);
+    --hover: #3A3182;
     --secondary: oklch(0.97 0 0);
     --secondary-foreground: oklch(0.205 0 0);
     --muted: oklch(0.97 0 0);
@@ -174,6 +178,10 @@
     --profit: #0cdf10;
     --loss: #d50808;
     --input-warning: #fef2f2;
+
+    --footer: #18281E;
+    --tag: #3A3182;
+
   }
 
   .dark {
@@ -185,6 +193,7 @@
     --popover-foreground: oklch(0.985 0 0);
     --primary: #448d47;
     --primary-foreground: oklch(0.205 0 0);
+    --hover: #3A3182;
     --secondary: oklch(0.269 0 0);
     --secondary-foreground: oklch(0.985 0 0);
     --muted: oklch(0.269 0 0);
@@ -232,5 +241,9 @@
     --profit: #099849;
     --loss: #d50808d5;
     --input-warning: #000000;
+
+    --footer: #18281E;
+    --tag: #3A3182;
+
   }
 }

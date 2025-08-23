@@ -260,7 +260,7 @@ function Home() {
       </div>
 
       <div id="contact">
-        <PortfolioContact />
+        <PortfolioContact mapSrc={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3298.8954649636466!2d79.01264938194326!3d9.311330379605293!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b0194ceb3bc85e9%3A0x5260d3415a34fe6b!2sUchipuli%2C%20Tamil%20Nadu!5e1!3m2!1sen!2sin!4v1755938160114!5m2!1sen!2sin`} />
         <ContactCard
           contact={{
             address: "Mahavishnu Nagar, Tiruppur, Tamil Nadu",

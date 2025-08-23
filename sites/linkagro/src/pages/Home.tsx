@@ -1,15 +1,60 @@
 import DynamicCard from "../../../../resources/components/card/DynamicCard";
-import Carousel from "../../../../resources/components/carousel";
-import Button from "../../../../resources/components/button/Button";
 import Card2 from "../../../../resources/components/card/Card2";
+import HeroCarousel, {
+  Slide,
+} from "../../../../resources/UIBlocks/carousel/HeroCarousel";
+import BlogCarouselCard from "../../../../resources/UIBlocks/carousel/BlogCarouselCard";
+import { useState } from "react";
+import ProcessHighlightSection from "../../../../resources/UIBlocks/process/ProcessHighlightSection";
+import PortfolioContact from "../../../../resources/UIBlocks/contact/PortfolioContact";
+import { LinkAgroBlogs } from "./Blog";
 
 function Home() {
-  const images = [
-    "/assets/Benefits Application 2.jpg",
-    "/assets/Homepage4.jpg",
-    "/assets/banner1.jpg",
-    "/assets/banner2.jpg",
-    "/assets/banner3.jpg",
+  const slidesData: Slide[] = [
+    {
+      id: 1,
+      title1: "Sustainable Coco Peat.",
+      title2: "Trusted Worldwide.",
+      description:
+        "Link Agro Exports manufactures and exports premium coco peat products, trusted by growers and horticulturists across the globe.",
+      image: "/assets/product/Cocopeat5kgBlock.png",
+      bgClass: "",
+      backdrop: "assets/backdrop/bg6.png",
+      backdropposition: "-top-65 md:-top-55 md:-right-20 lg:-top-20 lg:-right-120",
+    },
+    {
+      id: 2,
+      title1: "Made in Tamil Nadu.",
+      title2: "Quality from Source.",
+      description:
+        "Our plant in Uchipuli, Tamil Nadu, is surrounded by abundant coconut farms and excellent groundwater, ensuring high-quality raw material.",
+      image: "/assets/product/bb6501.png",
+      bgClass: "",
+      backdrop: "assets/backdrop/bg5.png",
+      backdropposition: "-top-75 -left-5 md:-left-70 md:-top-40 lg:-left-150 lg:top-0",
+    },
+    {
+      id: 3,
+      title1: "Eco-Friendly Process.",
+      title2: "Natural & Reliable.",
+      description:
+        "We produce coir and coco peat products using sustainable methods that preserve natural resources and support green farming.",
+      image: "/assets/product/Coco husk chips block 1.png",
+      bgClass: "",
+      backdrop: "assets/backdrop/bg9.png",
+      backdropposition: "-top-80 right-0 md:-top-80 lg:-top-20",
+    },
+    {
+      id: 4,
+      title1: "Perfect for Cultivation.",
+      title2: "Proven Growth Medium.",
+      description:
+        "Our coco peat ensures optimal water retention, aeration, and root development—ideal for nurseries, greenhouses, and hydroponics.",
+      image: "/assets/product/discs.png",
+      bgClass: "",
+      backdrop: "assets/backdrop/bg5.png",
+      backdropposition: "-top-70 -left-30 md:-top-60 md:-left-80 lg:-left-150 lg:-top-30",
+    },
   ];
 
   const product = [
@@ -77,77 +122,93 @@ packing options.`,
       animate: "animate__animated animate__fadeInRight animate__fast",
     },
   ];
+
+  const blogs = [...LinkAgroBlogs];
+
+  const [processSteps] = useState([
+    {
+      number: 1,
+      title: "Our process",
+      description:
+        "We manufacture and customize coir substrates as per customer requirements with our experienced team and we guide you on the best possible growing solutions.",
+    },
+    {
+      number: 2,
+      title: "Region",
+      description:
+        "We are located in a place with tropical climates where we grow lush green coconut trees. Our raw materials are sourced from local farmers situated here that ensure their livelihood. And abundance of ground water source available here enables us manufacture good quality Low-EC cocopeat.",
+    },
+    {
+      number: 3,
+      title: "Logistics & Export",
+      description:
+        "We have our own exports and logistics team with experienced professionals. Our team directly coordinates with buyers and export agency to ensure uninterrupted transport and shipping of cocopeat across the globe.",
+    },
+    {
+      number: 4,
+      title: "Quality",
+      description:
+        "We have a separate team of people who involve in ensuring quality in each and every step of cocopeat manufacturing process. Right from sourcing coconut husk to producing various cocopeat final products our team follows the quality parameters to deliver top-notch products.",
+    },
+  ]);
+
+
   return (
     <div className="">
-      <Carousel autoSlide autoSlideInterval={4000} startIndex={0}>
-        {images.map((src, index) => (
-          <img
-            key={index}
-            src={src}
-            alt={`Slide ${index + 1}`}
-            className="w-full h-[60vh] md:h-[80vh] object-fit"
-          />
-        ))}
-      </Carousel>
-
-      <h1 className="text-center font-bold text-4xl my-15 animate__animated animate__fadeInDown animate__fast">
-        Link Agro Exports
-      </h1>
-      <div className="container mx-auto px-5 md:px-[10%]">
-        <Card2
-          items={company}
-          containerStyle={"grid-cols-1 sm:grid-cols-3"}
-          lineStyle="w-3 h-12"
+      <div className="">
+        <HeroCarousel
+          slides={slidesData}
+          autoSlide={true}
+          autoSlideInterval={7000}
         />
       </div>
-      <div className="relative h-[80vh] sm:h-[60vh] md:h-[70vh] mt-20 w-full">
-        {/* Background Image */}
-        <img
-          src="/assets/Homepage1.jpg"
-          alt="Sample"
-          className="h-full w-full object-cover"
-        />
 
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-foreground/60"></div>
-
-        {/* Text Content */}
-        <div className="absolute inset-0 flex items-center animate__animated animate__fadeInRight animate__fast">
-          <div className="md:w-2/3 px-[10%] text-white space-y-4">
-            <h1 className="text-4xl font-bold">Link Agro Exports</h1>
-            <p className="text-sm md:text-md">
-              Link Agro Exports is a distinguished manufacturer and exporter of
-              high-quality coco peat products. Our plant is located in Uchipuli,
-              Tamilnadu which is known for its conducive climate for coconut
-              cultivation, particularly for tender coconut (green coconut). And
-              this place has excellent ground water source. Hence this
-              geographical feasibility enables us producing good quality coir
-              and coco-peat products.
-            </p>
-            <div className="mt-8">
-              <Button
-                label="Read More"
-                path="/about"
-                className="border border-ring/40 bg-primary"
-              />
-            </div>
-          </div>
+      <div className="bg-primary py-20 flex flex-col gap-10">
+        <h1 className="text-center font-bold text-primary-foreground text-4xl animate__animated animate__fadeInDown animate__fast">
+          Link Agro Exports
+        </h1>
+        <div className="container mx-auto px-5 md:px-[10%]">
+          <Card2
+            items={company}
+            containerStyle={"grid-cols-1 sm:grid-cols-3"}
+            lineStyle="w-3 h-12"
+          />
         </div>
       </div>
 
-      <div className="px-5 lg:px-[10%] my-20">
-        <h1 className="text-center font-bold text-4xl my-5">Our Products</h1>
-        <DynamicCard
-          Card={product}
-          containerStyle="grid-cols-1 sm:grid-cols-2 md:grid-cols-3"
-        />
+      <div className="relative bg-cover py-10 bg-center">
+        {/* Section Content */}
+        <div className="px-5 lg:px-[10%] py-20 relative z-10">
+          <h1 className="text-center font-bold text-4xl my-5">Our Products</h1>
+          <DynamicCard
+            Card={product}
+            containerStyle="grid-cols-1 sm:grid-cols-2 md:grid-cols-3"
+          />
+        </div>
       </div>
 
-      {/* <Button
-        label="View More"
-        path="/product"
-        className="border border-ring/40 !rounded-full block mx-auto my-3 w-max"
-      /> */}
+      <ProcessHighlightSection
+        title="Why choose us?"
+        description="Link Agro Cocopeat - 100% Eco-friendly and Organic soilless growing substrate"
+        imageUrl="/assets/img2.jpg"
+        bgimage="/assets/cocobg.jpg"
+        steps={processSteps}
+      />
+
+      {/* <div className="my-25">
+        <h1 className="text-2xl md:text-4xl text-center font-bold">
+          What Our Client Says
+        </h1>
+        <TestimonialCarousel testimonials={Testimonials} autoSlide={true} />
+      </div> */}
+
+      <div className="md:px-[10%] p-4 mt-10">
+        <BlogCarouselCard blogs={blogs} title={"Latest Posts & Articles"} />
+      </div>
+
+      <div className="mb-20">
+        <PortfolioContact mapSrc={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3298.8954649636466!2d79.01264938194326!3d9.311330379605293!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b0194ceb3bc85e9%3A0x5260d3415a34fe6b!2sUchipuli%2C%20Tamil%20Nadu!5e1!3m2!1sen!2sin!4v1755938160114!5m2!1sen!2sin`} />
+      </div>
     </div>
   );
 }

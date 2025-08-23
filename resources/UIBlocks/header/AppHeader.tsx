@@ -69,10 +69,19 @@ function AppHeader() {
       {/* --- Top Bar --- */}
       <div className="flex items-center justify-between gap-5">
         {/* Logo */}
-        <div
+         <div
           className={`flex items-${logo.position} gap-2 cursor-pointer`}
           onClick={() => navigate("/")}
         >
+          <style>
+            {`
+            @media (max-width: 1024px) {
+              .company-name {
+                font-size: ${logo.font_size - 5}px !important; 
+              }
+            }
+          `}
+          </style>
           {/* Mode 1: Only Logo */}
           {logo.mode === "logo" && (
             <img
@@ -85,9 +94,16 @@ function AppHeader() {
           {/* Mode 2: Only Company Name */}
           {logo.mode === "name" && (
             <h3
-              className={`text-${logo.font_size}xl p-${logo.padding} font-bold`}
+              className={`company-name p-${logo.padding} ${logo.text_color} font-extrabold ${logo.font}`}
+              style={{ fontSize: `${logo.font_size}px` }}
             >
-              {logo.company_name}
+              {logo.company_name} <br />
+              <span
+                className="company-subname font-normal"
+                style={{ fontSize: `${logo.font_subsize}px` }}
+              >
+                {logo.company_subname}
+              </span>
             </h3>
           )}
 
@@ -99,8 +115,17 @@ function AppHeader() {
                 alt="Logo"
                 className={`h-${logo.height} p-${logo.padding}`}
               />
-              <span className={`text-${logo.font_size}xl font-bold`}>
+              <span
+                className={`company-name flex flex-col leading-tight ${logo.text_color} font-extrabold ${logo.font}`}
+                style={{ fontSize: `${logo.font_size}px` }}
+              >
                 {logo.company_name}
+                <span
+                  className="company-subname font-normal"
+                  style={{ fontSize: `${logo.font_subsize}px` }}
+                >
+                  {logo.company_subname}
+                </span>
               </span>
             </>
           )}

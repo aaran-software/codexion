@@ -24,7 +24,7 @@ type ButtonProps = ButtonAsLink | ButtonAsButton;
 // Main component
 const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
   ({ label, path, className = "", onClick, children, ...rest }, ref) => {
-    const classes = `${className} px-4 py-2 rounded-md cursor-pointer`;
+    const classes = `${className} px-4 py-2 rounded-md cursor-pointer transition-all duration-500`;
 
     if (path) {
       return (

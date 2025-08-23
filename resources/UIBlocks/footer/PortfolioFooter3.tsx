@@ -1,11 +1,12 @@
 import React, { JSX } from "react";
 import { IconType } from "react-icons";
-import { href } from "react-router-dom";
+import { useAppSettings } from "../../../apps/global/useSettings";
+import { useNavigate } from "react-router-dom";
 
 type ContactInfo = {
   icon: IconType;
   value: string;
-  href?:string
+  href?: string;
 };
 
 type SocialLink = {
@@ -27,7 +28,7 @@ type FooterProps = {
   newsletterPlaceholder?: string;
   newsletterButtonText?: string;
   companyName: string;
-  companyLogo: string;
+  textColor?: string;
 };
 
 const PortfolioFooter3: React.FC<FooterProps> = ({
@@ -39,13 +40,30 @@ const PortfolioFooter3: React.FC<FooterProps> = ({
   newsletterPlaceholder = "Enter your email",
   newsletterButtonText = "Subscribe",
   companyName,
-  companyLogo,
+  textColor,
 }) => {
+  const settings = useAppSettings();
+  const navigate = useNavigate();
+
+  if (!settings) return null;
+
+  const defaultLogo = {
+    height: 20,
+    padding: 8,
+    position: "center",
+    font_size: 25,
+    font_subsize: 15,
+    company_name: "",
+    company_subname: "",
+    text_color: "",
+    footer_logo: "",
+  };
+  const logo = settings.logo || defaultLogo;
   return (
-    <footer className="bg-gray-800 text-white pt-12 pb-6">
+    <footer className="bg-footer text-white pt-12 pb-6">
       {/* Top Contact Section */}
 
-      <div className="flex flex-col md:flex-row justify-evenly gap-4 md:px-[10%]">
+      <div className="flex flex-col md:flex-row justify-evenly gap-4 px-5 lg:px-[10%]">
         {contacts.map((item, idx) => {
           const IconComponent = item.icon;
           return (
@@ -54,7 +72,11 @@ const PortfolioFooter3: React.FC<FooterProps> = ({
               className="flex items-center gap-2 border-b-2 border-ring/30 p-5 border-b-primary w-full text-sm"
             >
               <IconComponent className="w-12 h-12 p-2 shrink-0  hover:scale-110" />
-              <a href={item.href}  target="_blank" className="text-lg font-bold border-l-2 pl-2 border-primary cursor-pointer">
+              <a
+                href={item.href}
+                target="_blank"
+                className="text-lg font-bold border-l-2 pl-2 border-primary cursor-pointer"
+              >
                 {item.value}
               </a>
             </div>
@@ -63,11 +85,79 @@ const PortfolioFooter3: React.FC<FooterProps> = ({
       </div>
 
       {/* Main Footer */}
-      <div className="md:px-[10%] mx-auto px-5 grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+      <div className="lg:px-[10%] mx-auto px-5 grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
         {/* Company Info */}
         <div className="space-y-4">
-          <img src={companyLogo} alt="" className="w-[50%] hover:scale-105" />
-          <p>{address}</p>
+          <div
+            className={`flex items-${logo.position} gap-2 cursor-pointer`}
+            onClick={() => navigate("/")}
+          >
+            <style>
+              {`
+            @media (max-width: 1024px) {
+              .company-name {
+                font-size: ${logo.font_size - 5}px !important; 
+              }
+            }
+          `}
+            </style>
+            {/* Mode 1: Only Logo */}
+            {logo.mode === "logo" && (
+              <img
+                src={logo.footer_logo}
+                alt="Logo"
+                className={`h-${logo.height} p-${logo.padding}`}
+              />
+            )}
+
+            {/* Mode 2: Only Company Name */}
+            {logo.mode === "name" && (
+              <h3
+                className={`company-name p-${logo.padding} ${textColor ? textColor : logo.text_color} font-extrabold ${logo.font}`}
+                style={{ fontSize: `${logo.font_size}px` }}
+              >
+                {logo.company_name} <br />
+                <span
+                  className="company-subname font-normal"
+                  style={{ fontSize: `${logo.font_subsize}px` }}
+                >
+                  {logo.company_subname}
+                </span>
+              </h3>
+            )}
+
+            {/* Mode 3: Both Logo + Company Name */}
+            {logo.mode === "both" && (
+              <>
+                <img
+                  src={logo.footer_logo}
+                  alt="Logo"
+                  className={`h-${logo.height} p-${logo.padding}`}
+                />
+                <span
+                  className={`company-name flex flex-col leading-tight  ${textColor ? textColor : logo.text_color} font-extrabold ${logo.font}`}
+                  style={{ fontSize: `${logo.font_size}px` }}
+                >
+                  {logo.company_name}
+                  <span
+                    className="company-subname font-normal"
+                    style={{ fontSize: `${logo.font_subsize}px` }}
+                  >
+                    {logo.company_subname}
+                  </span>
+                </span>
+              </>
+            )}
+          </div>
+          <p className="leading-relaxed text-background/90">
+            {address.split(",").map((line, idx, arr) => (
+              <span key={idx}>
+                {line.trim()}
+                {idx < arr.length - 1 ? "," : "."}
+                <br />
+              </span>
+            ))}
+          </p>
           <div className="flex gap-3 mt-2">
             {socialLinks?.map((item, idx) => (
               <a
@@ -75,7 +165,7 @@ const PortfolioFooter3: React.FC<FooterProps> = ({
                 href={item.href}
                 target="_blank"
                 rel="noreferrer"
-                className="p-2 rounded-full bg-primary text-background hover:opacity-90 transition hover:scale-105"
+                className="p-2 rounded-full bg-primary text-background hover:opacity-90 transition hover:scale-115"
               >
                 {item.icon}
               </a>
@@ -89,7 +179,7 @@ const PortfolioFooter3: React.FC<FooterProps> = ({
           <ul className="space-y-1">
             {pages?.map((page, idx) => (
               <li key={idx}>
-                <a href={page.href} className="text-primary">
+                <a href={page.href} className="text-background/90">
                   {page.label}
                 </a>
               </li>
@@ -99,16 +189,16 @@ const PortfolioFooter3: React.FC<FooterProps> = ({
 
         <div className="flex flex-col gap-4">
           <h3 className="font-bold text-lg">Subscribe</h3>
-          <p>{newsletterText}</p>
-          <form className="flex items-center h-max bg-white rounded-full overflow-hidden w-full ">
+          <p className="text-background/90">{newsletterText}</p>
+          <form className="flex items-center h-max bg-white rounded-full overflow-hidden w-max md:w-full">
             <input
               type="email"
               placeholder={newsletterPlaceholder}
-              className="flex-1 px-2 py-3 text-gray-800 outline-none"
+              className="flex-1 px-4 py-2 text-gray-800 outline-none min-w-0"
             />
             <button
               type="submit"
-              className="bg-gradient-to-r from-primary to-primary/30 hover:to-primary px-6 py-3 m-1 cursor-pointer text-foreground whitespace-normal font-medium rounded-r-full"
+              className="bg-primary text-primary-foreground px-3 py-2 m-1 cursor-pointer whitespace-nowrap font-medium rounded-r-full flex-shrink-0"
             >
               {newsletterButtonText}
             </button>

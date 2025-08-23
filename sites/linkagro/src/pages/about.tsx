@@ -22,34 +22,38 @@ function About() {
 
   const teamData = [
     {
-      image: "/assets/sample1.jpg",
+      image: "/assets/team/ram.jpg",
       name: "Mr.Ramchandran ",
       designation: "Head – Logistics & Exports",
-      bio: "+91 70 100 580 64, ram@linkagro.in",
+      bio: "",
+      email: "ram@linkagro.in",
+      phone: "+91 70100 58064",
     },
     {
-      image: "/assets/sample1.jpg",
-      name: "Mr.Siva",
+      image: "/assets/team/siva.jpg",
+      name: "Mr.Thirumurugan",
       designation: "Head – Production & Sourcing",
-      bio: "+91 98 948 646 79, siva@linkagro.in",
+      bio: "",
+      email: "thiru@linkagro.in",
+      phone: "+91 98948 64679",
     },
   ];
   return (
     <div className="">
       {/* Hero Section */}
-      <div className="relative h-[50vh] sm:h-[70vh] w-full">
+      <div className="relative h-[40vh] sm:h-[50vh] mt-20 w-full">
         <img
           src="/assets/Homepage1.jpg"
           alt="Sample"
           className="h-full w-full object-cover"
         />
-        <div className="absolute inset-0 bg-foreground/60" />
+        <div className="absolute inset-0 bg-foreground/70" />
         <div className="absolute inset-0 flex items-center">
-          <div className="md:w-2/3 px-5 lg:px-[10%] text-white space-y-4">
+          <div className="md:w-2/3 px-5 lg:px-[10%] text-background space-y-4">
             <h1 className="text-2xl lg:text-4xl font-bold animate__animated animate__fadeIn animate__fast">
               Committed to Quality. Driven by Nature.
             </h1>
-            <p className="text-sm lg:text-lg text-justify animate__animated animate__fadeIn animate__slow">
+            <p className="text-sm lg:text-lg text-background/80 text-justify animate__animated animate__fadeIn animate__slow">
               From South India to the World. Founded in 2014, Link Agro Exports
               stands for quality, consistency, and customer satisfaction. We
               manufacture and export premium coco peat products designed to
@@ -60,7 +64,7 @@ function About() {
       </div>
 
       {/* About Content Section */}
-      <div className="text-gray-800 py-16 px-5 lg:px-[10%]">
+      <div className="text-foreground/80 pt-20 px-5 lg:px-[10%]">
         <div className="mx-auto">
           <p
             className={`text-lg leading-relaxed first-letter:text-2xl first-letter:font-bold ${
@@ -81,10 +85,10 @@ function About() {
               lineStyle="w-3 h-12"
             />
           </div>
-          <div className="grid md:grid-cols-2 gap-12 my-12">
+          <div className="grid md:grid-cols-2 gap-12">
             {/* Left Column */}
             <div className={`text-lg leading-relaxed `}>
-              <h3 className="text-2xl font-semibold text-green-600 mb-4">
+              <h3 className="text-2xl font-semibold text-primary mb-4">
                 Over a Decade of Excellence
               </h3>
               <p className="text-base leading-relaxed">
@@ -106,8 +110,8 @@ function About() {
             </div>
 
             {/* Right Column - Product List */}
-            <div className={`bg-gray-50 p-6 rounded-lg shadow-md `}>
-              <h3 className="text-2xl font-semibold text-green-600 mb-4">
+            <div className={`bg-white p-6 rounded-lg shadow-md `}>
+              <h3 className="text-2xl font-semibold text-primary mb-4">
                 What We Deliver
               </h3>
               <ul className="list-disc list-inside space-y-2 text-base">
@@ -123,15 +127,15 @@ function About() {
 
           {/* Our Commitment */}
           <div
-            className={`bg-green-100 p-6 mt-30 rounded-lg shadow-md  ${
+            className={`bg-primary p-6 mt-20 rounded-lg shadow-md  ${
               inView4 ? "animate__animated animate__fadeInUp" : "opacity-0"
             }`}
             ref={ref4}
           >
-            <h3 className="text-2xl font-semibold text-green-700 mb-4">
+            <h3 className="text-2xl font-semibold text-primary-foreground mb-4">
               Our Commitment
             </h3>
-            <p className="text-base leading-relaxed">
+            <p className="text-base text-primary-foreground leading-relaxed">
               We, at Link Agro Exports, adhere to the highest quality standards
               and consistently produce flawless end products. We believe our
               success depends on delivering the best possible quality to our
@@ -152,6 +156,7 @@ function About() {
           title="Meet Our Professionals"
           description="Our team combines creativity, expertise, and dedication to deliver outstanding solutions for our clients."
           members={teamData}
+          gridClass="grid-cols-1 sm:grid-cols-2"
         />
       </div>
     </div>

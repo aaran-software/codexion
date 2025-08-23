@@ -1,7 +1,8 @@
+interface PortfolioContactProps {
+  mapSrc: string;
+}
 
-function PortfolioContact() {
-  
-
+function PortfolioContact({ mapSrc }: PortfolioContactProps) {
   return (
     <div className="px-4 md:px-[10%]">
       <h1 className="text-5xl font-bold py-10 text-center">
@@ -9,10 +10,10 @@ function PortfolioContact() {
       </h1>
 
       {/* Map + Form */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 mt-5 gap-12">
         <div className="flex items-center">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3914.688007214001!2d77.33172007452157!3d11.136597752448083!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba9065f168ee73d%3A0x3d454757d01e842f!2sMahavishnu%20Nagar%2C%20Pitchampalayam%20Pudur%2C%20Tiruppur%2C%20Chettipalayam%2C%20Tamil%20Nadu%20641603!5e0!3m2!1sen!2sin!4v1755594962938!5m2!1sen!2sin"
+            src={mapSrc}
             width="600"
             height="450"
             loading="lazy"
@@ -64,8 +65,6 @@ function PortfolioContact() {
           </form>
         </div>
       </div>
-
-      
     </div>
   );
 }

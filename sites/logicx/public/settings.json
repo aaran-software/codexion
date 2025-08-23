@@ -12,9 +12,11 @@
     "position": "center",
     "height": "20",
     "font_size": "2",
-    "mode":"logo",
-    "company_name": "",
+    "mode": "logo",
+    "company_name": "Logicx",
     "color": "",
-    "padding": "2"
+    "padding": "2",
+    "font_subsize": "",
+    "company_subname": ""
   }
 }
