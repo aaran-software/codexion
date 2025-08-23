@@ -1,17 +1,44 @@
+from __future__ import annotations
 import os
-import types
+import uuid
+import contextlib
 import pytest
 
-@pytest.fixture(autouse=True)
-def _ensure_testing_env(monkeypatch):
-    # Make settings loader skip the global cache
-    monkeypatch.setenv("TESTING", "1")
-    yield
+from prefiq.settings.get_settings import clear_settings_cache
+from prefiq.database.connection import reload_engine_from_env, reset_engine
 
-class DummySettings(types.SimpleNamespace):
-    # Defaults used by the doctors
-    ENV: str = "development"
-    DB_ENGINE: str = "sqlite"
-    DB_MODE: str = "sync"
-    DB_HOST: str = "127.0.0.1"
-    DB_NAME: str = ":memory:"
+
+def _restore_env(snapshot: dict[str, str | None]) -> None:
+    for k, v in snapshot.items():
+        if v is None:
+            os.environ.pop(k, None)
+        else:
+            os.environ[k] = v
+
+@pytest.fixture(scope="function")
+def engine_swap():
+    snaps: dict[str, str | None] = {}
+    keys = ["DB_ENGINE", "DB_MODE", "DB_HOST", "DB_PORT", "DB_USER", "DB_PASS", "DB_NAME"]
+    for k in keys:
+        snaps[k] = os.environ.get(k)
+
+    @contextlib.contextmanager
+    def _ctx(**overrides):
+        try:
+            for k, v in overrides.items():
+                os.environ[k] = str(v)
+            clear_settings_cache()
+            reset_engine()
+            reload_engine_from_env(force_refresh=True)
+            yield
+        finally:
+            _restore_env(snaps)
+            clear_settings_cache()
+            reset_engine()
+            reload_engine_from_env(force_refresh=True)
+
+    return _ctx
+
+@pytest.fixture()
+def unique_table():
+    return f"ut_{uuid.uuid4().hex[:10]}"

@@ -1,4 +1,3 @@
-# prefiq/database/schemas/router.py
 from __future__ import annotations
 from typing import Literal
 
@@ -14,7 +13,7 @@ def current_driver() -> Driver:
         return "mysql_like"
     if "postgres" in n:
         return "postgres"
-    return "sqlite"  # safe default
+    return "sqlite"
 
 def impl():
     drv = current_driver()
