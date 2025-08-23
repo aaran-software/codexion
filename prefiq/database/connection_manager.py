@@ -1,6 +1,8 @@
 # prefiq/database/connection_manager.py
 from __future__ import annotations
 
+import asyncio
+import inspect
 from contextlib import contextmanager, asynccontextmanager
 from typing import Any, Generator, AsyncGenerator
 
@@ -36,10 +38,22 @@ class ConnectionManager:
     def close(self) -> None:
         """
         Close connections/pool if the engine exposes close().
+        Supports both sync and async engines.
         """
         eng = self.get_engine()
         try:
-            eng.close()
+            if not hasattr(eng, "close"):
+                return
+            res = eng.close()
+            if inspect.isawaitable(res):
+                # If we're in a plain CLI/atexit (no running loop), use asyncio.run
+                try:
+                    asyncio.get_running_loop()
+                except RuntimeError:
+                    asyncio.run(res)
+                else:
+                    # If a loop is already running, fire-and-forget is the safest here.
+                    asyncio.create_task(res)
         except Exception:
             pass
 

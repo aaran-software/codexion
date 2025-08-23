@@ -1,6 +1,8 @@
 # prefiq/database/connection.py
 from __future__ import annotations
 
+import asyncio
+import inspect
 import os
 from typing import Optional, Any
 
@@ -60,7 +62,14 @@ def reset_engine() -> None:
     eng = _engine_singleton
     if eng and hasattr(eng, "close"):
         try:
-            eng.close()  # sync engines; async engines expose close() coroutine in our stack as well
+            res = eng.close()
+            if inspect.isawaitable(res):
+                try:
+                    asyncio.get_running_loop()
+                except RuntimeError:
+                    asyncio.run(res)
+                else:
+                    asyncio.create_task(res)
         except Exception:
             pass
     _engine_singleton = None
