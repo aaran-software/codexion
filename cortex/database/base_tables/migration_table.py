@@ -1,4 +1,4 @@
-# cortex/database/base_tables/m000_migration_table.py
+# cortex/database/base_tables/migration_table.py
 
 from prefiq.database.schemas.builder import create, drop_if_exists
 
