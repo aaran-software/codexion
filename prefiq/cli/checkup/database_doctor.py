@@ -55,29 +55,89 @@ def _display_dsn(engine: Any) -> str:
     return _mask_dsn(load_settings().dsn())
 
 def _select1_ok(row: Any) -> bool:
+    """
+    Return True iff the first value equals 1.
+    Accepts 1, True, "1", (1,), [1], etc.
+    """
     if row is None:
         return False
     try:
         first = row[0] if isinstance(row, (list, tuple)) else row
-        return first == 1 or first is True or str(first) == "1"
+        if first is True:
+            return True
+        if isinstance(first, (int, float)):
+            return int(first) == 1
+        return str(first) == "1"
     except Exception:
         return False
 
+def _first_value(row: Any) -> Any:
+    try:
+        return row[0] if isinstance(row, (list, tuple)) else row
+    except Exception:
+        return row
+
+def _await_if_needed(x: Any, timeout: float | None) -> Any:
+    if inspect.isawaitable(x):
+        if timeout and timeout > 0:
+            return asyncio.run(asyncio.wait_for(x, timeout=timeout))
+        return asyncio.run(x)
+    return x
+
+def _get_scalar(engine: Any, sql: str, timeout: float | None = 3.0) -> Any:
+    """
+    Portable scalar fetch:
+      1) engine.fetch_value(sql)
+      2) engine.scalar(sql)
+      3) engine.fetchone(sql) -> first col
+      4) raw DB-API via engine.raw_connection()/connection/conn
+      5) last resort: engine.execute(sql) returning cursor-like
+    Returns the first column value or raises on error.
+    """
+    # 1) fetch_value
+    if hasattr(engine, "fetch_value") and callable(getattr(engine, "fetch_value")):
+        res = _await_if_needed(engine.fetch_value(sql), timeout)
+        return res
+    # 2) scalar
+    if hasattr(engine, "scalar") and callable(getattr(engine, "scalar")):
+        res = _await_if_needed(engine.scalar(sql), timeout)
+        return res
+    # 3) fetchone
+    if hasattr(engine, "fetchone") and callable(getattr(engine, "fetchone")):
+        row = _await_if_needed(engine.fetchone(sql), timeout)
+        return _first_value(row)
+    # 4) raw DB-API fallback
+    conn = None
+    for attr in ("raw_connection", "connection", "conn"):
+        if hasattr(engine, attr):
+            obj = getattr(engine, attr)
+            conn = obj() if callable(obj) else obj
+            if conn:
+                break
+    if conn and hasattr(conn, "cursor"):
+        cur = conn.cursor()
+        cur.execute(sql)
+        row = cur.fetchone()
+        try:
+            cur.close()
+        except Exception:
+            pass
+        return _first_value(row)
+    # 5) generic execute -> cursor-like
+    if hasattr(engine, "execute") and callable(getattr(engine, "execute")):
+        cur = _await_if_needed(engine.execute(sql), timeout)
+        if cur is not None and hasattr(cur, "fetchone"):
+            row = cur.fetchone()
+            return _first_value(row)
+    raise RuntimeError("No compatible scalar fetch method found on engine")
+
 def _probe_health(engine: Any, timeout: float | None = 3.0) -> bool:
     """
-    Portable health probe:
-      - engine.fetchone('SELECT 1')
-      - if awaitable, run with optional timeout
+    Portable health probe: fetch scalar 1 from 'SELECT 1'
     """
     try:
-        res = engine.fetchone("SELECT 1")
-        if inspect.isawaitable(res):
-            if timeout and timeout > 0:
-                row = asyncio.run(asyncio.wait_for(res, timeout=timeout))
-            else:
-                row = asyncio.run(res)
-            return _select1_ok(row)
-        return _select1_ok(res)
+        val = _get_scalar(engine, "SELECT 1", timeout=timeout)
+        return _select1_ok(val)
     except Exception:
         return False
 
@@ -87,9 +147,9 @@ def _pool_stats(engine: Any) -> dict[str, Any]:
     """
     stats: dict[str, Any] = {}
     try:
-        if hasattr(engine, "pool_stats") and callable(engine.pool_stats):
+        if hasattr(engine, "pool_stats") and callable(engine.pool_stats):  # type: ignore[attr-defined]
             stats = dict(engine.pool_stats())  # type: ignore[call-arg]
-        elif hasattr(engine, "get_pool_info") and callable(engine.get_pool_info):
+        elif hasattr(engine, "get_pool_info") and callable(engine.get_pool_info):  # type: ignore[attr-defined]
             stats = dict(engine.get_pool_info())  # type: ignore[call-arg]
         elif hasattr(engine, "pool"):
             pool = getattr(engine, "pool")
@@ -132,10 +192,9 @@ def main(verbose: bool = False, strict: bool = False) -> int:
     # smoke test (SELECT 1 only — no BEGIN/COMMIT to avoid driver hangs)
     try:
         print("-> Running smoke test (SELECT 1)")
-        row = engine.fetchone("SELECT 1")
-        if inspect.isawaitable(row):
-            row = asyncio.run(row)
-        print(f"   SELECT 1 => {_select1_ok(row)}")
+        val = _get_scalar(engine, "SELECT 1", timeout=3.0)
+        ok = _select1_ok(val)
+        print(f"   SELECT 1 => {val!r}  ({'OK' if ok else 'FAIL'})")
     except Exception as e:
         print(f"Smoke test error: {type(e).__name__}: {e}")
         # not fatal unless strict
