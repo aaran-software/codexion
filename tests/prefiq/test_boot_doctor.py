@@ -1,55 +1,60 @@
-# ---------------------------------------------------------------------------
-# tests/test_boot_doctor.py (lightweight unit test)
-from __future__ import annotations
-
 import types
-import sys
-import builtins
+from typing import List
 
-# The test focuses on BootDoctor orchestration; it stubs heavy dependencies
+import pytest
 
-def test_boot_doctor_runs(monkeypatch):
-    # Stub Application
-    class _App:
-        provider_registry = []
-        _instance = None
+# Module under test
+import prefiq.cli.checkup.boot_doctor as boot_doctor
+
+
+def test_boot_doctor_happy_path(monkeypatch):
+    """Settings load -> providers discovered -> application booted."""
+    # 1) load_settings -> dummy
+    from tests.conftest import DummySettings
+    monkeypatch.setattr(
+        boot_doctor, "load_settings", lambda *a, **k: DummySettings(), raising=True
+    )
+
+    # 2) PROVIDERS -> two fake providers
+    class P1: __name__ = "SettingsProvider"
+    class P2: __name__ = "ProfilesProvider"
+    monkeypatch.setattr(boot_doctor, "PROVIDERS", [P1, P2], raising=True)
+
+    # 3) Application.get_app() -> fake app that records registrations + boot
+    class FakeApp:
         def __init__(self):
-            self._providers = []
-        @classmethod
-        def get_app(cls):
-            cls._instance = cls._instance or _App()
-            return cls._instance
-        def register(self, p):
-            self._providers.append(p if isinstance(p, type) else type(p))
-        def boot(self):
-            return None
+            self.registered: List[type] = []
+            self.boot_called = False
+        def register(self, p): self.registered.append(p)
+        def boot(self): self.boot_called = True
 
-    # Fake module for Application
-    m = types.ModuleType("prefiq.core.contracts.base_provider")
-    m.Application = _App
-    monkeypatch.setitem(sys.modules, "prefiq.core.contracts.base_provider", m)
+    monkeypatch.setattr(
+        boot_doctor.Application,
+        "get_app",
+        classmethod(lambda cls: FakeApp()),
+        raising=True,
+    )
 
-    # Fake settings
-    class _S: ENV = "test"; DB_ENGINE = "sqlite"; DB_MODE = "sync"
-    def _ls(): return _S()
-    sm = types.ModuleType("prefiq.settings.get_settings")
-    sm.load_settings = _ls
-    monkeypatch.setitem(sys.modules, "prefiq.settings.get_settings", sm)
+    ok, results = boot_doctor.run_boot_diagnostics()
+    assert ok is True
 
-    # Fake providers list
-    pm = types.ModuleType("cortex.runtime.service_providers")
-    pm.PROVIDERS = []
-    monkeypatch.setitem(sys.modules, "cortex.runtime.service_providers", pm)
+    # Names + success flags in order
+    assert [(r.name, r.ok) for r in results] == [
+        ("Settings loaded", True),
+        ("Providers discovered", True),
+        ("Application booted", True),
+    ]
 
-    # Fake engine
-    em = types.ModuleType("prefiq.database.connection")
-    class _E:
-        def test_connection(self):
-            return True
-    em.get_engine = lambda: _E()
-    monkeypatch.setitem(sys.modules, "prefiq.database.connection", em)
 
-    # Import and run
-    from prefiq.cli.checkup.boot_doctor import BootDoctor
-    r = BootDoctor().run()
-    assert r.ok, r.to_text()
+def test_boot_doctor_settings_failure(monkeypatch):
+    """If settings fail to load, doctor exits early with a single failing check."""
+    def _raise(*a, **k):
+        raise RuntimeError("boom")
+    monkeypatch.setattr(boot_doctor, "load_settings", _raise, raising=True)
+
+    ok, results = boot_doctor.run_boot_diagnostics()
+    assert ok is False
+    assert len(results) == 1
+    assert results[0].name == "Settings loaded"
+    assert results[0].ok is False
+    assert "boom" in results[0].detail

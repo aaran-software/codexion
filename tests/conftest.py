@@ -1,15 +1,17 @@
-# tests/conftest.py
-import asyncio, inspect
+import os
+import types
 import pytest
-from prefiq.core.contracts.base_provider import Application
 
-@pytest.fixture(scope="session", autouse=True)
-def boot_and_close():
-    from prefiq.core.runtime.bootstrap import main
-    main()
+@pytest.fixture(autouse=True)
+def _ensure_testing_env(monkeypatch):
+    # Make settings loader skip the global cache
+    monkeypatch.setenv("TESTING", "1")
     yield
-    db = Application.get_app().resolve("db")
-    if hasattr(db, "close"):
-        res = db.close()
-        if inspect.isawaitable(res):
-            asyncio.run(res)
+
+class DummySettings(types.SimpleNamespace):
+    # Defaults used by the doctors
+    ENV: str = "development"
+    DB_ENGINE: str = "sqlite"
+    DB_MODE: str = "sync"
+    DB_HOST: str = "127.0.0.1"
+    DB_NAME: str = ":memory:"
