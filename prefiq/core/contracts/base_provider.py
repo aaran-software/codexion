@@ -19,6 +19,7 @@ class Application:
         return cls._instance
 
     def __init__(self) -> None:
+        self.logger = None
         if not hasattr(self, "_initialized"):
             self._providers: List["BaseProvider"] = []
             self._booting_callbacks: List[Callable[[], None]] = []
@@ -86,6 +87,9 @@ class Application:
     def get_app(cls) -> "Application":
         """Return the global singleton application instance."""
         return cls()
+
+    def run_async(self, param):
+        pass
 
 
 class BaseProvider(ABC):
