@@ -41,26 +41,31 @@ def ensure_migrations_table() -> None:
     """
     def _schema(t: Any):
         parts = [
-            t.id(),
-            t.string("app"),
-            t.string("name"),
-            t.integer("order_index"),
-            t.string("hash"),
+            t.id(),                      # auto-increment / serial / integer pk (blueprint-resolved)
+            t.string("app", nullable=False),
+            t.string("name", nullable=False),
+            t.integer("order_index", nullable=False),
+            t.string("hash", nullable=False),
+            # IMPORTANT: timestamps() should be dialect-aware (no ON UPDATE on SQLite/Postgres)
             t.timestamps(),
         ]
-        # Optional conveniences if your blueprint exposes them:
+
+        # Unique constraint on (app, name) to prevent duplicates
         if hasattr(t, "unique"):
             parts.append(t.unique(["app", "name"]))
+
+        # Index on app to speed lookups; some builders accept str or list[str]
         if hasattr(t, "index"):
-            # some builders accept str or list[str]
             try:
                 parts.append(t.index("idx_migrations_app", ["app"]))
             except TypeError:
                 parts.append(t.index("idx_migrations_app", "app"))
+
         return parts
 
     create("migrations", _schema)
 
-# camelCase alias (if you use both styles elsewhere)
+
+# Optional camelCase alias (if used elsewhere)
 def ensureMigrationsTable() -> None:
     ensure_migrations_table()

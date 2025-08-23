@@ -1,4 +1,5 @@
 # prefiq/database/migrations/runner.py
+
 from __future__ import annotations
 
 import datetime
@@ -10,8 +11,8 @@ from prefiq.database.migrations.base import Migrations
 from prefiq.database.migrations.discover import discover_all
 from prefiq.database.migrations.hashing import compute_callable_hash
 from prefiq.database.schemas.builder import ensure_migrations_table
-from prefiq.database.schemas.queries import insert, select_all
 from prefiq.database.dialects.registry import get_dialect
+from prefiq.database.schemas import queries as q
 
 PROTECTED_TABLES = {"migrations"}
 
@@ -27,49 +28,49 @@ def _await(x: Any) -> Any:
     return x
 
 
-def _applied_map():
+def _applied_map() -> dict[tuple[str, str], str]:
     """
     {(app, name): hash}
     """
-    rows = select_all("migrations", columns="app, name, hash") or []
+    rows = q.select_all("migrations", columns="app, name, hash") or []
     return {(r[0], r[1]): (r[2] or "") for r in rows}
 
 
 def _record(app: str, name: str, index: int, h: str) -> None:
-    insert(
+    now = datetime.datetime.now(datetime.UTC)
+    q.insert(
         "migrations",
         {
             "app": app,
             "name": name,
             "order_index": index,
             "hash": h,
-            "created_at": datetime.datetime.now(datetime.UTC),
-            "updated_at": datetime.datetime.now(datetime.UTC),
+            "created_at": now,
+            "updated_at": now,
         },
     )
 
 
+
 def migrate_all() -> None:
-    # 1) ensure meta table
     ensure_migrations_table()
 
-    # 2) figure out what's already applied (by hash)
     applied = _applied_map()
+    seen: set[tuple[str, str]] = set(applied.keys())  # ← track during this run
 
-    # 3) discover classes and apply in ORDER_INDEX
-    for i, cls in enumerate(discover_all()):  # -> List[type[Migrations]]
+    for i, cls in enumerate(discover_all()):
         app = getattr(cls, "APP_NAME", "core")
-        # prefer base helper if present; else fall back to TABLE_NAME/class name
         name = (
             cls.derived_table_name()
             if hasattr(cls, "derived_table_name")
             else getattr(cls, "TABLE_NAME", cls.__name__)
         )
         index = int(getattr(cls, "ORDER_INDEX", i))
-        h = compute_callable_hash(cls.up)  # hash the logic we actually run
+        h = compute_callable_hash(cls.up)
+        key = (app, name)
 
-        if (app, name) in applied:
-            if applied[(app, name)] == h:
+        if key in seen:
+            if applied.get(key) == h:
                 print(f"🟡 Skipping {app}.{name} (already applied)")
             else:
                 print(f"⚠️  {app}.{name} drift detected; recorded hash differs; skipping.")
@@ -79,6 +80,7 @@ def migrate_all() -> None:
         inst: Migrations = cls()
         inst.up()
         _record(app, name, index, h)
+        seen.add(key)  # ← mark immediately
 
 
 def drop_all() -> None:
