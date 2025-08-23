@@ -1,5 +1,4 @@
 from __future__ import annotations
-import os
 import socket
 import asyncio
 import pytest
@@ -20,8 +19,8 @@ def _port_open(host: str, port: int, timeout=1.5) -> bool:
 
 
 def _exists_sql() -> str:
-    # default to public schema
-    return "SELECT 1 FROM information_schema.tables WHERE table_schema='public' AND table_name='migrations'"
+    # Postgres-robust existence check (avoids schema quoting issues)
+    return "SELECT to_regclass('public.migrations')"
 
 
 def _first_value(row):
@@ -85,32 +84,23 @@ def _table_exists(engine) -> bool:
 
 
 @pytest.mark.postgres
-def test_postgres_migrations_table_exists(engine_swap):
-    # STRICTLY use PG_* for this test to avoid conftest’s SQLite env.
-    pg_db = os.getenv("PG_DB")
-    pg_user = os.getenv("PG_USER", "postgres")  # sensible default user
-    pg_pass = os.getenv("PG_PASS", "")          # allow trust/peer setups
-    pg_host = os.getenv("PG_HOST", "127.0.0.1")
-    pg_port = int(os.getenv("PG_PORT", "5432"))
+def test_postgres_migrations_table_exists(engine_swap, pg_cli):
+    if not pg_cli:
+        pytest.skip("Pass --pg-db (and optionally --pg-user/--pg-pass/--pg-host/--pg-port) to run this test")
 
-    if not pg_db:
-        pytest.skip("Set PG_DB (and optionally PG_USER/PG_PASS) to run Postgres migration test")
+    if not _port_open(pg_cli["host"], pg_cli["port"]):
+        pytest.skip(f"Postgres not reachable at {pg_cli['host']}:{pg_cli['port']}")
 
-    if not _port_open(pg_host, pg_port):
-        pytest.skip(f"Postgres not reachable at {pg_host}:{pg_port}")
-
-    mode = os.getenv("PG_MODE", "sync").lower()
-    if mode not in ("sync", "async"):
-        mode = "sync"
+    mode = pg_cli["mode"] if pg_cli["mode"] in ("sync", "async") else "sync"
 
     with engine_swap(
         DB_ENGINE="postgres",
         DB_MODE=mode,
-        DB_HOST=pg_host,
-        DB_PORT=str(pg_port),
-        DB_USER=pg_user,
-        DB_PASS=pg_pass,
-        DB_NAME=pg_db,
+        DB_HOST=pg_cli["host"],
+        DB_PORT=str(pg_cli["port"]),
+        DB_USER=pg_cli["user"],
+        DB_PASS=pg_cli["password"],
+        DB_NAME=pg_cli["db"],
     ):
         app = Application.get_app()
         app._providers.clear(); app._services.clear(); app._booted = False  # type: ignore[attr-defined]
