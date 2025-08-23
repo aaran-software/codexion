@@ -1,5 +1,5 @@
+# tests/prefiq/database/migration/test_mariadb_migrations.py
 from __future__ import annotations
-import os
 import socket
 import asyncio
 import pytest
@@ -20,7 +20,13 @@ def _port_open(host: str, port: int, timeout=1.5) -> bool:
 
 
 def _exists_sql() -> str:
-    return "SELECT 1 FROM information_schema.tables WHERE table_name='migrations'"
+    # MariaDB/MySQL: check current DB (DATABASE()) for 'migrations' table
+    return (
+        "SELECT 1 "
+        "FROM information_schema.tables "
+        "WHERE table_schema = DATABASE() AND table_name = 'migrations' "
+        "LIMIT 1"
+    )
 
 
 def _first_value(row):
@@ -75,7 +81,6 @@ def _table_exists(engine) -> bool:
     try:
         return _table_exists_sync(engine)
     except Exception:
-        loop = None
         try:
             loop = asyncio.get_event_loop()
         except RuntimeError:
@@ -85,32 +90,31 @@ def _table_exists(engine) -> bool:
 
 
 @pytest.mark.mariadb
-def test_mariadb_migrations_table_exists(engine_swap):
-    # STRICTLY use MDB_* for this test to avoid conftest’s SQLite env.
-    mdb_db = os.getenv("MDB_DB")
-    mdb_user = os.getenv("MDB_USER")
-    mdb_pass = os.getenv("MDB_PASS")
-    mdb_host = os.getenv("MDB_HOST", "127.0.0.1")
-    mdb_port = int(os.getenv("MDB_PORT", "3306"))
+def test_mariadb_migrations_table_exists(engine_swap, mysql_cli):
+    # Optional: skip cleanly if mariadb driver not installed
+    try:
+        import mariadb  # noqa: F401
+    except Exception:
+        pytest.skip("mariadb driver not installed")
 
-    if not all([mdb_db, mdb_user, mdb_pass]):
-        pytest.skip("Set MDB_DB/MDB_USER/MDB_PASS to run MariaDB migration test")
+    host = mysql_cli["host"]
+    port = int(mysql_cli["port"])
+    user = mysql_cli["user"]
+    password = mysql_cli["password"]
+    db = mysql_cli["db"]
+    mode = mysql_cli["mode"] if mysql_cli["mode"] in ("sync", "async") else "sync"
 
-    if not _port_open(mdb_host, mdb_port):
-        pytest.skip(f"MariaDB not reachable at {mdb_host}:{mdb_port}")
-
-    mode = os.getenv("MDB_MODE", "async").lower()
-    if mode not in ("sync", "async"):
-        mode = "async"
+    if not _port_open(host, port):
+        pytest.skip(f"MariaDB not reachable at {host}:{port}")
 
     with engine_swap(
         DB_ENGINE="mariadb",
         DB_MODE=mode,
-        DB_HOST=mdb_host,
-        DB_PORT=str(mdb_port),
-        DB_USER=mdb_user,
-        DB_PASS=mdb_pass,
-        DB_NAME=mdb_db,
+        DB_HOST=host,
+        DB_PORT=str(port),
+        DB_USER=user,
+        DB_PASS=password,
+        DB_NAME=db,
     ):
         app = Application.get_app()
         app._providers.clear(); app._services.clear(); app._booted = False  # type: ignore[attr-defined]

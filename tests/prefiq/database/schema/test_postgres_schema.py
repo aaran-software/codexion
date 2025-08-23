@@ -1,56 +1,58 @@
+# tests/prefiq/database/schema/test_postgres_schema.py
 from __future__ import annotations
-import os, socket
 import pytest
 
-from prefiq.settings.get_settings import load_settings
 from prefiq.database.schemas import blueprint as bp
 from prefiq.database.schemas import builder as bld
 from prefiq.database.schemas import queries as q
 
-def _truthy(x: str) -> bool:
-    return x.strip().lower() in ("1", "true", "yes", "y", "on")
 
-def _from_settings_bool(name: str, default: bool = False) -> bool:
+def _can_connect_pg(host: str, port: int, user: str, password: str, db: str) -> tuple[bool, str]:
+    """
+    Try a real psycopg connection (2s timeout). Return (ok, reason_if_not_ok).
+    """
     try:
-        s = load_settings()
-        v = getattr(s, name, default)
-        return _truthy(v) if isinstance(v, str) else bool(v)
+        import psycopg
     except Exception:
-        return default
+        return False, "psycopg driver not installed"
 
-def _port_open(host: str, port: int, timeout: float = 0.3) -> bool:
     try:
-        with socket.create_connection((host, port), timeout=timeout):
-            return True
-    except Exception:
-        return False
+        conn = psycopg.connect(
+            host=host,
+            port=port,
+            user=user,
+            password=password,
+            dbname=db,
+            connect_timeout=2,  # seconds
+            options="-c statement_timeout=2000",
+        )
+        conn.close()
+        return True, ""
+    except Exception as e:
+        return False, f"cannot connect to Postgres at {host}:{port} db={db} user={user} · {e!s}"
 
-def _pg_enabled_and_ready() -> tuple[bool, str]:
-    # enabled via env or settings
-    enabled = (_truthy(os.getenv("DB_TEST_PG", "")) or _from_settings_bool("DB_TEST_PG", False))
-    if not enabled:
-        return False, "Enable with DB_TEST_PG=1 (env or settings)"
-    # quick reachability probe
-    s = load_settings()
-    host = os.getenv("DB_HOST", getattr(s, "DB_HOST", "127.0.0.1"))
-    port = int(os.getenv("DB_PORT", getattr(s, "DB_PORT", 5432)))
-    if not _port_open(host, port):
-        return False, f"Postgres not reachable at {host}:{port}"
-    return True, ""
 
-_ok, _why = _pg_enabled_and_ready()
-pytestmark = pytest.mark.skipif(not _ok, reason=_why or "PG disabled")
+@pytest.mark.postgres
+def test_postgres_schema_crud(engine_swap, unique_table, pg_cli):
+    host = str(pg_cli["host"])
+    port = int(pg_cli["port"])
+    user = str(pg_cli["user"])
+    password = str(pg_cli["password"])
+    db = str(pg_cli["db"])
+    mode = pg_cli["mode"] if pg_cli["mode"] in ("sync", "async") else "sync"
 
-def test_postgres_schema_crud(engine_swap, unique_table):
-    # Use a safe default DB; override via DB_NAME_PG if you want (e.g., prefiq_dev)
+    ok, why = _can_connect_pg(host, port, user, password, db)
+    if not ok:
+        pytest.skip(why)
+
     with engine_swap(
         DB_ENGINE="postgres",
-        DB_MODE="async",
-        DB_HOST=os.getenv("DB_HOST", "127.0.0.1"),
-        DB_PORT=os.getenv("DB_PORT", "5432"),
-        DB_USER=os.getenv("DB_USER", "postgres"),
-        DB_PASS=os.getenv("DB_PASS", "DbPass1@@"),
-        DB_NAME=os.getenv("DB_NAME_PG", "postgres"),
+        DB_MODE=mode,
+        DB_HOST=host,
+        DB_PORT=str(port),
+        DB_USER=user,
+        DB_PASS=password,
+        DB_NAME=db,
     ):
         tname = unique_table
 
@@ -62,18 +64,19 @@ def test_postgres_schema_crud(engine_swap, unique_table):
             t.index("idx_name", "name")
             t.unique("uq_name", ["name"])
 
+        # Clean slate
         bld.dropIfExists(tname)
         bld.create(tname, schema)
 
+        # %s placeholders get translated for Postgres ($1,$2,…) by the queries layer
         q.insert(tname, {"name": "alice", "active": True})
-        q.update(tname, {"active": True}, 'name = %s', ("alice",))
+        q.update(tname, {"active": True}, "name = %s", ("alice",))
 
-        row = q.select_one(tname, "name, active", 'name = %s', ("alice",))
+        row = q.select_one(tname, "name, active", "name = %s", ("alice",))
         assert row is not None and str(row[0]).lower() == "alice"
 
         assert q.count(tname) == 1
-        q.delete(tname, 'name = %s', ("alice",))
+        q.delete(tname, "name = %s", ("alice",))
         assert q.count(tname) == 0
 
         bld.dropIfExists(tname)
-
