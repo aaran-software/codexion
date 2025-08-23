@@ -2,7 +2,7 @@
 
 from prefiq.database.schemas.builder import create, drop_if_exists
 
-def up():
+def migrations_table_up():
     create("migrations", lambda t: [
         t.id(),
         t.string("app"),
@@ -12,5 +12,5 @@ def up():
         t.timestamps()
     ])
 
-def down():
+def migrations_table_down():
     drop_if_exists("migrations")
