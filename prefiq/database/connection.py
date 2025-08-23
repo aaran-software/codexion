@@ -10,7 +10,7 @@ from prefiq.database.engines.mariadb.sync_engine import SyncMariaDBEngine
 from prefiq.database.engines.mariadb.async_engine import AsyncMariaDBEngine
 from prefiq.database.engines.mysql.sync_engine import SyncMysqlEngine
 from prefiq.database.engines.mysql.async_engine import AsyncMysqlEngine
-from prefiq.database.engines.sqlite.sqlite_engine import SQLiteEngine
+from prefiq.database.engines.sqlite.sync_engine import SQLiteEngine
 
 _engine_singleton: Optional[object] = None  # lazy singleton
 

@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from typing import List, Tuple, Optional
 
 from prefiq.settings.get_settings import load_settings
+from cortex.runtime.service_providers import PROVIDERS
 
 
 @dataclass
@@ -17,38 +18,40 @@ def _fmt(ok: bool) -> str:
     return "✅" if ok else "❌"
 
 
+def _db_provider_configured() -> tuple[bool, str]:
+    """
+    Detect whether a DatabaseProvider-like class is present in PROVIDERS,
+    without importing the provider module directly.
+    """
+    seen = []
+    for p in PROVIDERS:
+        name = getattr(p, "__name__", "")
+        module = getattr(p, "__module__", "")
+        qual = f"{module}.{name}" if module and name else name or module
+        seen.append(name or qual)
+        # accept common names/modules without importing heavy deps
+        if name == "DatabaseProvider" or "database_provider" in module:
+            return True, qual or name
+    return False, ", ".join(seen) if seen else "none"
+
+
 def _try_import_engine():
-    """
-    Import DB engine resolution lazily so merely importing the doctor doesn't
-    drag DB modules (keeps 'prefiq doctor boot' clean).
-    """
+    # Import lazily only if provider is configured
     try:
-        # Prefer the central resolver used by your stack
         from prefiq.database.connection import get_engine  # type: ignore
         return get_engine, None
     except Exception as e:
         return None, e
 
 
-def _probe_connection(engine) -> Tuple[bool, str]:
-    """
-    Try a very safe connectivity probe.
-    Supports engines that expose:
-      - test_connection()
-      - execute()/fetchone()
-      - .connect() context manager that yields connection with execute()
-    """
-    # 1) Dedicated helper (if provided by your engine)
+def _probe_connection(engine) -> tuple[bool, str]:
     if hasattr(engine, "test_connection"):
         try:
-            ok = bool(engine.test_connection())
-            return ok, "engine.test_connection()"
+            return bool(engine.test_connection()), "engine.test_connection()"
         except Exception as e:
             return False, f"engine.test_connection() failed: {e}"
 
-    # 2) Direct lightweight SELECT 1
     sql = "SELECT 1"
-    # a) engine.execute returns cursor/record?
     if hasattr(engine, "execute"):
         try:
             cur = engine.execute(sql)  # type: ignore[call-arg]
@@ -57,7 +60,6 @@ def _probe_connection(engine) -> Tuple[bool, str]:
         except Exception as e:
             return False, f"{sql} via engine.execute failed: {e}"
 
-    # b) context-managed connection (SQLAlchemy-ish or custom)
     if hasattr(engine, "connect"):
         try:
             with engine.connect() as conn:
@@ -67,7 +69,6 @@ def _probe_connection(engine) -> Tuple[bool, str]:
         except Exception as e:
             return False, f"{sql} via engine.connect() failed: {e}"
 
-    # c) Fallback: best effort attribute
     if hasattr(engine, "fetchone"):
         try:
             row = engine.fetchone(sql)
@@ -80,45 +81,36 @@ def _probe_connection(engine) -> Tuple[bool, str]:
 
 def _probe_metadata(engine) -> List[CheckResult]:
     checks: List[CheckResult] = []
-
-    # Driver info
     try:
-        name = type(engine).__name__
-        checks.append(CheckResult("Engine type", True, name))
+        checks.append(CheckResult("Engine type", True, type(engine).__name__))
     except Exception as e:
         checks.append(CheckResult("Engine type", False, str(e)))
 
-    # Version (best-effort)
     try:
+        ver = None
         if hasattr(engine, "server_version"):
-            ver = engine.server_version  # attr
+            ver = engine.server_version
         elif hasattr(engine, "version"):
             ver = engine.version
-        else:
-            # attempt a DB-specific query
-            ver = None
-            if hasattr(engine, "execute"):
-                try:
-                    cur = engine.execute("SELECT sqlite_version()")  # works on sqlite
-                    row = getattr(cur, "fetchone", lambda: None)()
-                    if row:
-                        ver = row[0]
-                except Exception:
-                    pass
-        if ver:
-            checks.append(CheckResult("Server version", True, str(ver)))
-        else:
-            checks.append(CheckResult("Server version", True, "unknown (skipped)"))
+        elif hasattr(engine, "execute"):
+            try:
+                cur = engine.execute("SELECT sqlite_version()")
+                row = getattr(cur, "fetchone", lambda: None)()
+                if row:
+                    ver = row[0]
+            except Exception:
+                pass
+        checks.append(CheckResult("Server version", True, str(ver) if ver else "unknown (skipped)"))
     except Exception as e:
         checks.append(CheckResult("Server version", False, str(e)))
 
     return checks
 
 
-def run_database_diagnostics(verbose: bool = False) -> Tuple[bool, List[CheckResult]]:
+def run_database_diagnostics(*, verbose: bool = False, strict: bool = False) -> tuple[bool, List[CheckResult]]:
     results: List[CheckResult] = []
 
-    # 0) Read settings first
+    # 0) Settings
     try:
         settings = load_settings()
         results.append(CheckResult("Settings loaded", True,
@@ -127,14 +119,25 @@ def run_database_diagnostics(verbose: bool = False) -> Tuple[bool, List[CheckRes
         results.append(CheckResult("Settings loaded", False, str(e)))
         return False, results
 
-    # 1) Ensure sync mode for now (skip cleanly for async)
+    # 1) Is DatabaseProvider configured?
+    has_db_provider, prov_detail = _db_provider_configured()
+    if not has_db_provider:
+        results.append(CheckResult("Database provider configured", False,
+                                   f"Not found in PROVIDERS (seen: {prov_detail})."))
+        results.append(CheckResult("Database checks", True, "skipped (no provider)"))
+        # In non-strict mode, missing provider is informative, not fatal.
+        return (False if strict else True), results
+    else:
+        results.append(CheckResult("Database provider configured", True, prov_detail))
+
+    # 2) (Optional) Sync mode guard — skip async for now
     if getattr(settings, "DB_MODE", "").lower() == "async":
         results.append(CheckResult("DB mode supported", False,
                                    "Async mode not yet supported by doctor (set DB_MODE=sync to test)"))
         overall = all(r.ok for r in results)
         return overall, results
 
-    # 2) Resolve engine (lazy import)
+    # 3) Resolve engine (lazy import)
     get_engine, import_err = _try_import_engine()
     if import_err or get_engine is None:
         results.append(CheckResult("Engine resolver import", False, f"{import_err}"))
@@ -147,23 +150,18 @@ def run_database_diagnostics(verbose: bool = False) -> Tuple[bool, List[CheckRes
         results.append(CheckResult("Engine resolved", False, str(e)))
         return False, results
 
-    # 3) Connectivity probe
+    # 4) Connectivity
     ok, how = _probe_connection(engine)
     results.append(CheckResult("DB connectivity", ok, how))
     if not ok:
-        # stop early if we can't even connect
         overall = all(r.ok for r in results)
         return overall, results
 
-    # 4) Metadata checks (best effort)
+    # 5) Metadata + non-destructive perms
     results.extend(_probe_metadata(engine))
-
-    # 5) Permissions (non-destructive)
-    # Only attempt in non-production + only if engine has execute()
     try:
         env = getattr(settings, "ENV", "development")
         if env != "production" and hasattr(engine, "execute"):
-            # create a temp object where safe; SQLite supports temporary tables easily
             try:
                 engine.execute("CREATE TEMP TABLE __prefiq_probe__(id INTEGER)")
                 engine.execute("DROP TABLE __prefiq_probe__")
@@ -179,8 +177,8 @@ def run_database_diagnostics(verbose: bool = False) -> Tuple[bool, List[CheckRes
     return overall, results
 
 
-def main(verbose: bool = False) -> int:
-    overall, checks = run_database_diagnostics(verbose=verbose)
+def main(verbose: bool = False, strict: bool = False) -> int:
+    overall, checks = run_database_diagnostics(verbose=verbose, strict=strict)
 
     print("\nPrefiq Database Doctor")
     print("----------------------")
