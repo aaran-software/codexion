@@ -1,18 +1,18 @@
 # prefiq/cli/checkup/database_doctor.py
-
 from __future__ import annotations
 import asyncio
 import inspect
 import os
-from typing import Any
+import time
+from typing import Any, Optional
 
 from prefiq.settings.get_settings import load_settings
 from prefiq.database.connection import get_engine, reset_engine
 from prefiq.database.connection_manager import connection_manager
-# REMOVE this import if present:
-# from prefiq.database.health import is_healthy
 from prefiq.database.engines.abstract_engine import AbstractEngine
 
+
+# --------------------------- helpers ---------------------------
 
 def _engine_name(e: Any) -> str:
     cls = type(e).__name__
@@ -27,6 +27,15 @@ def _print_header():
     print("=== Prefiq Database Doctor ===")
     print(f"DB_ENGINE={getattr(s, 'DB_ENGINE', None)!r}  DB_MODE={getattr(s, 'DB_MODE', None)!r}")
 
+def _mask_dsn(dsn: Optional[str]) -> str:
+    if not dsn:
+        return "<none>"
+    s = load_settings()
+    pw = getattr(s, "DB_PASS", None)
+    if pw and pw in dsn:
+        return dsn.replace(pw, "*****")
+    return dsn
+
 def _probe_health(engine: Any, timeout: float | None = 3.0) -> bool:
     """
     Works for both sync and async engines without leaking coroutines.
@@ -40,6 +49,29 @@ def _probe_health(engine: Any, timeout: float | None = 3.0) -> bool:
         return bool(res)
     except Exception:
         return False
+
+def _pool_stats(engine: Any) -> dict[str, Any]:
+    """
+    Best-effort pool stats across engines. Returns a small dict suitable for printing.
+    """
+    stats: dict[str, Any] = {}
+    # Common patterns:
+    # - engine.pool.size / in_use / free
+    # - engine.pool_stats() -> dict
+    # - engine.get_pool_info() -> dict
+    try:
+        if hasattr(engine, "pool_stats") and callable(engine.pool_stats):
+            stats = dict(engine.pool_stats())  # type: ignore[call-arg]
+        elif hasattr(engine, "get_pool_info") and callable(engine.get_pool_info):
+            stats = dict(engine.get_pool_info())  # type: ignore[call-arg]
+        elif hasattr(engine, "pool"):
+            pool = engine.pool
+            for key in ("size", "min_size", "max_size", "in_use", "free"):
+                if hasattr(pool, key):
+                    stats[key] = getattr(pool, key)
+    except Exception:
+        pass
+    return stats
 
 def _sync_smoketest(engine: AbstractEngine[Any]) -> None:
     print("-> Running sync smoke test (BEGIN/COMMIT, SELECT 1)")
@@ -59,15 +91,35 @@ async def _async_smoketest(engine: Any) -> None:
     ok = bool(row is not None)
     print(f"   SELECT 1 => {ok}")
 
+
+# --------------------------- entrypoint ---------------------------
+
 def main(verbose: bool = False, strict: bool = False) -> int:
     _print_header()
     engine = get_engine()
     print(f"Engine: {_engine_name(engine)}")
 
-    # health check (no dangling coroutine warnings)
-    healthy = _probe_health(engine, timeout=3.0)
-    print(f"Health: {'OK' if healthy else 'FAIL'}")
+    # verbose: show DSN (masked), warmup, and pool stats
+    if verbose:
+        s = load_settings()
+        print(f"[verbose] DSN: {_mask_dsn(s.dsn())}")
+        print(f"[verbose] DB_POOL_WARMUP: {getattr(s, 'DB_POOL_WARMUP', 0)}")
+        st = _pool_stats(engine)
+        if st:
+            print(f"[verbose] pool: {st}")
 
+    # health (with optional timing when verbose)
+    t0 = time.perf_counter()
+    healthy = _probe_health(engine, timeout=3.0)
+    dt_ms = (time.perf_counter() - t0) * 1000.0
+    print(f"Health: {'OK' if healthy else 'FAIL'}" + (f"  ({dt_ms:.1f} ms)" if verbose else ""))
+
+    # strict mode: fail fast if unhealthy
+    if strict and not healthy:
+        print("Strict mode: health check failed.")
+        return 1
+
+    # smoke test
     try:
         if asyncio.iscoroutinefunction(getattr(engine, "begin", None)):  # async engine
             asyncio.run(_async_smoketest(engine))
@@ -77,27 +129,11 @@ def main(verbose: bool = False, strict: bool = False) -> int:
         print(f"Smoke test error: {type(e).__name__}: {e}")
         return 2
 
-    if strict and not healthy:
-        return 1
-
-    if verbose:
-        s = load_settings()
-        masked = (s.dsn() or "").replace(s.DB_PASS, "*****") if getattr(s, "DB_PASS", None) else (s.dsn() or "")
-        print(f"[verbose] DSN: {masked}")
-        try:
-            import time
-            t0 = time.perf_counter()
-            ok = _probe_health(engine, timeout=3.0)
-            dt = (time.perf_counter() - t0) * 1000
-            print(f"[verbose] ping: {'OK' if ok else 'FAIL'} in {dt:.1f} ms")
-        except Exception as e:
-            print(f"[verbose] ping error: {e}")
-
-    # Optional swap demo preserved if you had it before
+    # optional swap demo (kept; disabled by default)
     if os.getenv("DB_DOCTOR_SWAP_DEMO", "0") == "1":
         from prefiq.database.connection import swap_engine
-        current = load_settings().DB_ENGINE or ""
-        target = "sqlite" if current.lower() == "mariadb" else "mariadb"
+        current = (load_settings().DB_ENGINE or "").lower()
+        target = "sqlite" if current == "mariadb" else "mariadb"
         print(f"Swapping engine to: {target}")
         try:
             swap_engine(target)
