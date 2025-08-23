@@ -1,15 +1,20 @@
-# cortex/database/base_tables/000_migration_table.py
+# cortex/database/migration/tenants.py
 
-from prefiq.database.schemas.builder import create, drop_if_exists
+from prefiq.database.migrations.base import Migrations
 
-def up():
-    create("users", lambda t: [
-        t.id(),
-        t.string("name"),
-        t.string("email"),
-        t.boolean("is_active"),
-        t.timestamps()
-    ])
+class User(Migrations):
+    APP_NAME    = "cortex"
+    TABLE_NAME  = "Users"
+    ORDER_INDEX = 0
 
-def down():
-    drop_if_exists("users")
+    def up(self) -> None:
+        self.create("Users", lambda t: [
+            t.id(),
+            t.string("name"),
+            t.string("email").unique(),
+            t.string("password_hash"),
+            t.timestamps(),
+        ])
+
+    def down(self) -> None:
+        self.drop_if_exists("Users")
