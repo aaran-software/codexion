@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Optional
 
 from prefiq.settings.get_settings import load_settings
-from prefiq.database.connection_manager import get_engine
+from prefiq.database.connection import get_engine
 
 from prefiq.database.dialects.base import Dialect
 from prefiq.database.dialects.sqlite import SQLiteDialect

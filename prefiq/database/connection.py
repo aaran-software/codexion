@@ -23,7 +23,7 @@ def _normalize(name: str | None) -> str:
         "postgresql": "postgres",
         "pg": "postgres",
         # If you want MySQL to ride the MariaDB engines, uncomment:
-        # "mysql": "mariadb",
+        "mysql": "mariadb",
     }
     return aliases.get(n, n)
 

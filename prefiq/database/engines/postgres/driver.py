@@ -1,15 +1,16 @@
-from prefiq.database.engines.mariadb.sync_engine import SyncMariaDBEngine
-from prefiq.database.engines.mariadb.async_engine import AsyncMariaDBEngine
-from prefiq.settings.get_settings import load_settings
+# prefiq/database/engines/postgres/driver.py
 
+from __future__ import annotations
+from prefiq.settings.get_settings import load_settings
+from prefiq.database.engines.postgres.async_engine import AsyncPostgresEngine
+from prefiq.database.engines.postgres.sync_engine import SyncPostgresEngine
 
 class PostgresDBEngine:
     def __new__(cls):
         settings = load_settings()
-
-        if not settings.DB_ENGINE:  # <-- IMPROVE: Add validation
+        if not settings.DB_ENGINE:
             raise ValueError("DB_ENGINE must be set in settings")
 
         if settings.DB_MODE.lower() == "async":
-            return AsyncMariaDBEngine()
-        return SyncMariaDBEngine()
+            return AsyncPostgresEngine()
+        return SyncPostgresEngine()

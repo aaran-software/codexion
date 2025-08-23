@@ -5,7 +5,7 @@ import os
 from functools import lru_cache
 from typing import Literal, Optional
 
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 _DEFAULT_ENV_PATH = os.path.abspath(
@@ -123,6 +123,13 @@ class Settings(BaseSettings):
                 f"@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
             )
         return None
+
+    @model_validator(mode="after")
+    def _default_pg_port(self):
+        # If user didn't override, pick the typical port by engine
+        if (self.DB_ENGINE == "postgres") and (self.DB_PORT in (0, 3306)):
+            object.__setattr__(self, "DB_PORT", 5432)
+        return self
 
 
 @lru_cache()
