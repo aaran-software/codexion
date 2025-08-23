@@ -1,53 +1,90 @@
 # prefiq/database/migrations/discover.py
 from __future__ import annotations
-import os, sys, glob, importlib.util
-from types import ModuleType
-from typing import List, Type
+import importlib.util
+import importlib.machinery
+import sys
+from pathlib import Path
+from typing import Iterable, List, Set, Tuple, Type
 
 from prefiq.settings.get_settings import load_settings
-from prefiq.apps.apps_cfg import get_registered_apps
 from prefiq.database.migrations.base import Migrations
 
-def _import_py(path: str) -> ModuleType:
-    name = os.path.splitext(os.path.basename(path))[0]
-    spec = importlib.util.spec_from_file_location(name, path)
-    if spec is None or spec.loader is None:
-        raise ImportError(f"Cannot import migration module at {path}")
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    # keep a weak mapping so sys.modules has a stable ref for hashing later
-    sys.modules.setdefault(name, mod)
-    return mod
 
-def import_all_migration_modules() -> List[ModuleType]:
-    """Import all *.py under apps/<app>/database/migration and optional cortex/database/migration."""
-    s = load_settings()
-    root = s.project_root
-    loaded: List[ModuleType] = []
+def _candidate_dirs(project_root: str, app: str) -> Iterable[Path]:
+    # 1) apps/<app>/database/migration
+    yield Path(project_root) / "apps" / app / "database" / "migration"
+    # 2) <app>/database/migration  (your current layout)
+    yield Path(project_root) / "cortex" / "database" / "migrations"
 
-    # App-scoped migrations: apps/<app>/database/migration/*.py
-    for app in get_registered_apps():
-        folder = os.path.join(root, "apps", app, "database", "migration")
-        if not os.path.isdir(folder):
-            continue
-        for path in sorted(glob.glob(os.path.join(folder, "*.py"))):
-            base = os.path.basename(path)
-            if base.startswith("_"):
+
+def _migration_files(project_root: str, apps: Iterable[str]) -> Iterable[Path]:
+    seen: Set[Path] = set()
+    for app in apps:
+        for p in _candidate_dirs(project_root, app):
+            if not p.exists():
                 continue
-            loaded.append(_import_py(path))
+            for f in sorted(p.glob("*.py")):
+                if f.name.startswith("_"):
+                    continue
+                if f not in seen:
+                    seen.add(f)
+                    yield f
 
-    # Optional: core/cortex migrations too, if you keep any there
-    extra = os.path.join(root, "cortex", "database", "migration")
-    if os.path.isdir(extra):
-        for path in sorted(glob.glob(os.path.join(extra, "*.py"))):
-            base = os.path.basename(path)
-            if base.startswith("_"):
-                continue
-            loaded.append(_import_py(path))
 
-    return loaded
+def get_registered_apps() -> List[str]:
+    # tests may monkeypatch this
+    settings = load_settings()
+    apps = getattr(settings, "REGISTERED_APPS", None)
+    if isinstance(apps, (list, tuple)) and apps:
+        return list(apps)
+    # sensible default for your repo
+    return ["cortex"]
+
 
 def discover_all() -> List[Type[Migrations]]:
-    """Load all modules, then return subclasses of Migrations ordered by ORDER_INDEX."""
-    import_all_migration_modules()
-    return sorted(Migrations.__subclasses__(), key=lambda c: c.ORDER_INDEX)
+    """
+    Discover migration classes across registered apps and return them ordered.
+    Ensures modules are reloaded fresh each call so module-level state (e.g., CALLED)
+    does not leak across tests.
+    """
+    settings = load_settings()
+    project_root = getattr(settings, "project_root", str(Path.cwd()))
+    apps = get_registered_apps()
+
+    classes: List[Type[Migrations]] = []
+    seen_keys: Set[Tuple[str, str]] = set()
+
+    for file_path in _migration_files(project_root, apps):
+        mod_name = file_path.stem  # keep simple name in sys.modules
+
+        # Purge any stale module so the file is executed afresh
+        if mod_name in sys.modules:
+            del sys.modules[mod_name]
+
+        spec = importlib.util.spec_from_file_location(mod_name, str(file_path))
+        if spec is None or spec.loader is None:
+            continue
+        module = importlib.util.module_from_spec(spec)
+        loader = spec.loader  # type: ignore[assignment]
+        assert isinstance(loader, importlib.machinery.SourceFileLoader)
+        loader.exec_module(module)
+        sys.modules[mod_name] = module
+
+        for attr in module.__dict__.values():
+            if isinstance(attr, type) and issubclass(attr, Migrations) and attr is not Migrations:
+                app = getattr(attr, "APP_NAME", "core")
+                name = getattr(attr, "TABLE_NAME", attr.__name__)
+                key = (app, name)
+                if key in seen_keys:
+                    continue
+                seen_keys.add(key)
+                classes.append(attr)
+
+    def _order_key(cls: Type[Migrations]):
+        idx = int(getattr(cls, "ORDER_INDEX", 0))
+        app = getattr(cls, "APP_NAME", "core")
+        name = getattr(cls, "TABLE_NAME", cls.__name__)
+        return (idx, app, name)
+
+    classes.sort(key=_order_key)
+    return classes

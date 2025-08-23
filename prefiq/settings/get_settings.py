@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import os
 from functools import lru_cache
-from typing import Literal, Optional
+from typing import Literal, Optional, ClassVar
 
 from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -27,6 +27,7 @@ class Settings(BaseSettings):
     DB_USER: str = "root"
     DB_PASS: str = "DbPass1@@"
     DB_NAME: str = "codexion_db"
+    REGISTERED_APPS: ClassVar[list[str]] = ["cortex"]
 
     # Async pool warmup (harmless/no-op for sync engines)
     DB_POOL_WARMUP: int = Field(

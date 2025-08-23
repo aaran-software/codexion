@@ -51,12 +51,11 @@ def _record(app: str, name: str, index: int, h: str) -> None:
     )
 
 
-
 def migrate_all() -> None:
     ensure_migrations_table()
 
     applied = _applied_map()
-    seen: set[tuple[str, str]] = set(applied.keys())  # ← track during this run
+    seen: set[tuple[str, str]] = set(applied.keys())
 
     for i, cls in enumerate(discover_all()):
         app = getattr(cls, "APP_NAME", "core")
@@ -66,21 +65,34 @@ def migrate_all() -> None:
             else getattr(cls, "TABLE_NAME", cls.__name__)
         )
         index = int(getattr(cls, "ORDER_INDEX", i))
-        h = compute_callable_hash(cls.up)
         key = (app, name)
 
+        # Skip duplicates without hashing (prevents any accidental side effects)
         if key in seen:
-            if applied.get(key) == h:
+            if key in applied:
+                print(f"🟡 Skipping {app}.{name} (already applied)")
+            else:
+                print(f"🟡 Skipping duplicate {app}.{name} in this run")
+            continue
+
+        # If it was previously applied, only now compute hash to compare
+        if key in applied:
+            h = compute_callable_hash(cls.up)
+            if applied[key] == h:
                 print(f"🟡 Skipping {app}.{name} (already applied)")
             else:
                 print(f"⚠️  {app}.{name} drift detected; recorded hash differs; skipping.")
+            seen.add(key)
             continue
 
+        # First-time apply: compute hash once and record it (truthy for tests)
+        h = compute_callable_hash(cls.up)
         print(f"✅ Applying {app}.{name} ...")
         inst: Migrations = cls()
         inst.up()
         _record(app, name, index, h)
-        seen.add(key)  # ← mark immediately
+        seen.add(key)
+        applied[key] = h  # keep in-memory state consistent this run
 
 
 def drop_all() -> None:
