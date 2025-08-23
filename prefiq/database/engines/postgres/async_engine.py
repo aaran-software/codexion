@@ -1,3 +1,4 @@
+# prefiq/database/engines/postgres/async_engine.py
 from __future__ import annotations
 
 import asyncio
@@ -17,11 +18,12 @@ else:
 class AsyncPostgresEngine:
     """
     Minimal async Postgres engine built on asyncpg.
-    Matches the call surface used elsewhere: execute(), fetchone(), fetchall(), close().
 
-    IMPORTANT: We pass connection parameters (host/port/user/password/database)
-    instead of a DSN string so special characters in credentials (like '@') do not
-    corrupt parsing.
+    IMPORTANT:
+      * No shared pool — each call opens/closes its own connection.
+      * This avoids cross-event-loop issues when sync wrappers call asyncio.run()
+        multiple times in the same process (e.g., CLI tools), which can cause
+        'another operation is in progress' with pooled connections.
     """
 
     dialect_name = "postgres"
@@ -41,23 +43,15 @@ class AsyncPostgresEngine:
         password = getattr(s, "DB_PASS", "")
         database = getattr(s, "DB_NAME", "postgres")
 
-        # Store connection params for create_pool()
+        # Store connection params for connect()
         self._params: Dict[str, Any] = dict(
             host=host, port=port, user=user, password=password, database=database
         )
 
-        # Human-friendly URL for doctor logs (password masked)
+        # Display URL for diagnostics (mask password)
         self.url = f"postgresql://{user}:*****@{host}:{port}/{database}"
 
-        self._pool: Optional[asyncpg.Pool] = None
-
     # ---------- internals ----------
-
-    async def _ensure_pool(self) -> asyncpg.Pool:
-        if self._pool is None:
-            warm = max(1, int(getattr(load_settings(), "DB_POOL_WARMUP", 1)))
-            self._pool = await asyncpg.create_pool(min_size=1, max_size=warm, **self._params)
-        return self._pool
 
     @staticmethod
     def _row_to_tuple(row: Any) -> Tuple[Any, ...]:
@@ -72,38 +66,59 @@ class AsyncPostgresEngine:
     # ---------- public API (async) ----------
 
     async def aexecute(self, sql: str, params: Sequence[Any] | None = None) -> Any:
-        pool = await self._ensure_pool()
-        async with pool.acquire() as conn:
+        conn = await asyncpg.connect(**self._params)
+        try:
             return await conn.execute(sql, *(params or ()))
+        finally:
+            await conn.close()
 
     async def afetchone(self, sql: str, params: Sequence[Any] | None = None) -> Optional[Tuple[Any, ...]]:
-        pool = await self._ensure_pool()
-        async with pool.acquire() as conn:
+        conn = await asyncpg.connect(**self._params)
+        try:
             rec = await conn.fetchrow(sql, *(params or ()))
             return self._row_to_tuple(rec) if rec is not None else None
+        finally:
+            await conn.close()
 
     async def afetchall(self, sql: str, params: Sequence[Any] | None = None) -> list[Tuple[Any, ...]]:
-        pool = await self._ensure_pool()
-        async with pool.acquire() as conn:
+        conn = await asyncpg.connect(**self._params)
+        try:
             rows = await conn.fetch(sql, *(params or ()))
             return [self._row_to_tuple(r) for r in rows]
+        finally:
+            await conn.close()
 
     async def aclose(self) -> None:
-        if self._pool is not None:
-            await self._pool.close()
-            self._pool = None
+        # no shared pool; nothing to close
+        return None
 
     # ---------- sync facade (for callers that don't await) ----------
 
     def _run(self, coro):
+        # If there is *no* running loop, use asyncio.run (simple & safe)
         try:
             asyncio.get_running_loop()
         except RuntimeError:
             return asyncio.run(coro)
-        # If a loop is already running in this thread,
-        # use it to run the coroutine to completion.
-        loop = asyncio.get_event_loop()
-        return loop.run_until_complete(coro)  # type: ignore[call-arg]
+        # If a loop is already running in this thread, create a new loop
+        # in a temporary thread for this call (avoid blocking the running loop)
+        from concurrent.futures import ThreadPoolExecutor
+
+        def _runner() -> Any:
+            loop = asyncio.new_event_loop()
+            try:
+                asyncio.set_event_loop(loop)
+                return loop.run_until_complete(coro)
+            finally:
+                try:
+                    loop.run_until_complete(asyncio.sleep(0))
+                except Exception:
+                    pass
+                loop.close()
+
+        with ThreadPoolExecutor(max_workers=1) as ex:
+            fut = ex.submit(_runner)
+            return fut.result()
 
     # Synchronous wrappers expected by queries/builder:
     def execute(self, sql: str, params: Sequence[Any] | None = None) -> Any:
