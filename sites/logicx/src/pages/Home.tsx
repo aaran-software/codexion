@@ -480,6 +480,10 @@ const Home: React.FC = () => {
             height: 60,
             padding: 6,
             position: "center",
+            font:"",
+            text_color:"",
+            company_subname:"",
+            font_subsize:2
           }}
           menu={[
             { label: "Home", path: "home" },

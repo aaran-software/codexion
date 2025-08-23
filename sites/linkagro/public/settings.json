@@ -8,16 +8,19 @@
   },
 
   "logo": {
-    "path": "/assets/linkagro_logo.png",
+    "path": "/assets/logo/logo.svg",
     "position": "center",
-    "height": "20",
-    "font_size": "2",
+    "height": 20,
+    "font_size": 27,
+    "font_subsize":13,
     "company_name": "Link Agro Exports",
+    "company_subname":"",
     "mode":"both",
     "color": "",
-    "text_color": "text-[#045a07]",
+    "text_color": "text-[#3A3182]",
     "padding": "2",
-    "font":"font-lunera"
+    "font":"font-lunera",
+    "footer_logo": "/assets/logo/footer_logo.svg"
   },
 
   "sidemenu": {

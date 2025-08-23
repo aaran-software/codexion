@@ -7,12 +7,16 @@ import ContactHeader, { ContactItem } from "./ContactHeader";
 
 type LogoConfig = {
   path: string;
-  height?: number;
-  padding?: number;
-  position?: "start" | "center" | "end";
-  font_size?: number;
+  height: number;
+  padding: number;
+  position: "start" | "center" | "end";
+  font_size: number;
   company_name?: string;
   mode?: "logo" | "name" | "both";
+  font: string;
+  text_color: string;
+  company_subname: string;
+  font_subsize: number;
 };
 
 type MenuItem = {
@@ -69,44 +73,59 @@ function HeaderPortfolio({
           className={`flex items-${logo.position} gap-2 cursor-pointer`}
           onClick={() => navigate("/")}
         >
+          <style>
+            {`
+            @media (max-width: 1024px) {
+              .company-name {
+                font-size: ${logo.font_size - 5}px !important; 
+              }
+            }
+          `}
+          </style>
+          {/* Mode 1: Only Logo */}
           {logo.mode === "logo" && (
             <img
               src={logo.path}
               alt="Logo"
-              style={{
-                height: `${logo.height}px`,
-                padding: `${logo.padding}px`,
-              }}
+              className={`h-${logo.height} p-${logo.padding}`}
             />
           )}
 
+          {/* Mode 2: Only Company Name */}
           {logo.mode === "name" && (
             <h3
-              style={{
-                fontSize: `${logo.font_size}rem`,
-                padding: `${logo.padding}px`,
-              }}
-              className="font-bold"
+              className={`company-name p-${logo.padding} ${logo.text_color} font-extrabold ${logo.font}`}
+              style={{ fontSize: `${logo.font_size}px` }}
             >
-              {logo.company_name}
+              {logo.company_name} <br />
+              <span
+                className="company-subname font-normal"
+                style={{ fontSize: `${logo.font_subsize}px` }}
+              >
+                {logo.company_subname}
+              </span>
             </h3>
           )}
 
+          {/* Mode 3: Both Logo + Company Name */}
           {logo.mode === "both" && (
             <>
               <img
                 src={logo.path}
                 alt="Logo"
-                style={{
-                  height: `${logo.height}px`,
-                  padding: `${logo.padding}px`,
-                }}
+                className={`h-${logo.height} p-${logo.padding}`}
               />
               <span
-                style={{ fontSize: `${logo.font_size}rem` }}
-                className="font-bold"
+                className={`company-name flex flex-col leading-tight ${logo.text_color} font-extrabold ${logo.font}`}
+                style={{ fontSize: `${logo.font_size}px` }}
               >
                 {logo.company_name}
+                <span
+                  className="company-subname font-normal"
+                  style={{ fontSize: `${logo.font_subsize}px` }}
+                >
+                  {logo.company_subname}
+                </span>
               </span>
             </>
           )}

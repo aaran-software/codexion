@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ImageButton from "../../components/button/ImageBtn";
 
 type Testimonial = {
@@ -11,40 +11,74 @@ type Testimonial = {
 
 type TestimonialCarouselProps = {
   testimonials: Testimonial[];
+  autoSlide?: boolean;       // enable/disable auto-slide
+  autoSlideInterval?: number; // interval in ms
 };
 
 export default function TestimonialCarousel({
   testimonials,
+  autoSlide = false,
+  autoSlideInterval = 6000, // default: 3s
 }: TestimonialCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [numVisible, setNumVisible] = useState(2);
+  const [numVisible] = useState(1);
 
-  // Responsive layout
-  useEffect(() => {
-    const updateVisible = () => {
-      if (window.innerWidth < 640) setNumVisible(1);
-      else setNumVisible(2);
-    };
-    updateVisible();
-    window.addEventListener("resize", updateVisible);
-    return () => window.removeEventListener("resize", updateVisible);
-  }, []);
+  // keep touch values in refs so they persist
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
 
   const nextSlide = () => {
     if (currentIndex < testimonials.length - numVisible) {
-      setCurrentIndex(currentIndex + 1);
+      setCurrentIndex((prev) => prev + 1);
+    } else {
+      // loop back to start
+      setCurrentIndex(0);
     }
   };
 
   const prevSlide = () => {
     if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
+      setCurrentIndex((prev) => prev - 1);
+    } else {
+      // loop to last
+      setCurrentIndex(testimonials.length - numVisible);
+    }
+  };
+
+  // Auto-slide effect
+  useEffect(() => {
+    if (!autoSlide) return;
+    const interval = setInterval(() => {
+      nextSlide();
+    }, autoSlideInterval);
+    return () => clearInterval(interval);
+  }, [currentIndex, autoSlide, autoSlideInterval]);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.changedTouches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.changedTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX.current - touchEndX.current > 50) {
+      nextSlide(); // swipe left
+    }
+    if (touchEndX.current - touchStartX.current > 50) {
+      prevSlide(); // swipe right
     }
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto p-6 relative">
-      <div className="overflow-hidden">
+    <div className="w-full md:w-[60%] mx-auto p-6 relative">
+      <div
+        className="overflow-hidden"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
         <div
           className="flex transition-transform duration-500"
           style={{
@@ -57,41 +91,47 @@ export default function TestimonialCarousel({
               className="p-4 flex-shrink-0"
               style={{ width: `${100 / numVisible}%` }}
             >
-              <div className="bg-background rounded-xl border border-ring/30 shadow-lg p-6 h-full flex flex-col justify-between min-h-[280px]">
+              <div className="bg-background rounded-xl border border-ring/30 shadow-lg p-6 h-full flex flex-col gap-5 justify-between min-h-[280px]">
                 {/* Logo + Company */}
-                <div className="flex items-center gap-3 mb-4">
-                  <img
-                    src={t.logo}
-                    alt={t.company}
-                    className="w-12 h-12 object-contain"
-                  />
-                  <h4 className="font-semibold text-lg">{t.company}</h4>
+                <img
+                  src={t.logo}
+                  alt={t.company}
+                  className="w-36 h-36 object-cover rounded-full block mx-auto"
+                />
+                <div>
+                  <h4 className="font-semibold text-lg text-center">
+                    {t.company}
+                  </h4>
+
+                  {/* Feedback */}
+                  <p className="text-gray-600 italic mb-4 text-center">
+                    “{t.feedback}”
+                  </p>
+
+                  {/* Client */}
+                  <p className="text-sm font-medium text-gray-800 text-center">
+                    {t.client}
+                  </p>
                 </div>
-
-                {/* Feedback */}
-                <p className="text-gray-600 italic mb-4">“{t.feedback}”</p>
-
-                {/* Client */}
-                <p className="text-sm font-medium text-gray-800">{t.client}</p>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Controls */}
-      <ImageButton
-        icon="left"
-        onClick={prevSlide}
-        disabled={currentIndex === 0}
-        className="absolute left-0 top-1/2 -translate-y-1/2 bg-primary/30 text-foreground p-2 !rounded-full disabled:opacity-30"
-      />
-      <ImageButton
-        icon="right"
-        onClick={nextSlide}
-        disabled={currentIndex >= testimonials.length - numVisible}
-        className="absolute right-0 top-1/2 -translate-y-1/2 bg-primary/30 text-foreground p-2 !rounded-full disabled:opacity-30"
-      />
+      {/* Controls (hidden on mobile) */}
+      <div className="hidden md:block">
+        <ImageButton
+          icon="left"
+          onClick={prevSlide}
+          className="absolute left-0 top-1/2 -translate-y-1/2 bg-primary/30 text-foreground p-2 !rounded-full"
+        />
+        <ImageButton
+          icon="right"
+          onClick={nextSlide}
+          className="absolute right-0 top-1/2 -translate-y-1/2 bg-primary/30 text-foreground p-2 !rounded-full"
+        />
+      </div>
     </div>
   );
 }

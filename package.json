@@ -73,16 +73,11 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
-    "dropzone": "^6.0.0-beta.2",
     "fireworks-js": "^2.10.8",
     "framer-motion": "^12.18.1",
     "howler": "^2.2.4",
-    "lodash": "^4.17.21",
     "lucide-react": "^0.525.0",
     "number-to-words": "^1.2.4",
-    "primeicons": "^7.0.0",
-    "primereact": "^10.9.6",
-    "quill": "^2.0.3",
     "react": "^18.3.1",
     "react-barcode": "^1.6.1",
     "react-confetti": "^6.4.0",
@@ -94,15 +89,10 @@
     "react-markdown": "^10.1.0",
     "react-router-dom": "^7.7.0",
     "react-scroll": "^1.9.3",
-    "react-spring": "^10.0.1",
     "react-syntax-highlighter": "^15.6.1",
     "react-to-print": "^3.1.1",
-    "react-with-gesture": "^4.0.8",
     "recharts": "^3.1.0",
-    "rehype-autolink-headings": "^7.1.0",
-    "rehype-slug": "^6.0.0",
     "remark-gfm": "^4.0.1",
-    "tailwind-merge": "^3.3.1",
-    "tailwind-variants": "^2.1.0"
+    "tailwind-merge": "^3.3.1"
   }
 }

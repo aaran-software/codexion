@@ -101,7 +101,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
           {images.map((image) => (
             <div
               key={image.id}
-              className="relative group w-screen h-[80vh] cursor-pointer flex-shrink-0 snap-start"
+              className="relative group w-screen h-[90vh] cursor-pointer flex-shrink-0 snap-start"
             >
               <img
                 src={image.image}

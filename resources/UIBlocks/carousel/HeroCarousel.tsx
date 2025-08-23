@@ -5,11 +5,13 @@ import Carousel from "../../components/carousel";
 
 export type Slide = {
   id: string | number;
-  bgClass?: string;     
+  bgClass?: string;
   title1: string;
   title2?: string;
   description: string;
   image: string;
+  backdrop?: string;
+  backdropposition?: string;
 };
 
 export type HeroCarouselProps = {
@@ -23,7 +25,7 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({
   autoSlide = true,
   autoSlideInterval = 7000,
 }) => {
-  // Motion variants for staggered animations
+  // Motion variants
   const textVariant = (delay: number) => ({
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8, delay } },
@@ -39,26 +41,30 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({
       {slides.map((slide, index) => (
         <div
           key={slide.id}
-          className={`lg:px-[12%] py-10 ${slide.bgClass}`}
+          className={`lg:px-[12%] h-[90vh] mt-20 md:mt-0 md:h-[100vh] overflow-hidden relative ${slide.bgClass}`}
         >
+          {/* Background */}
+          <img
+            src={slide.backdrop}
+            alt=""
+            className={`absolute w-full h-full z-0 blur-[3px] object-contain ${slide.backdropposition}`}
+          />
+
+          {/* Content Wrapper */}
           <div
-            className={`flex ${
+            className={`flex gap-10 z-10 items-center justify-center h-full ${
               index % 2 === 0
-                ? "md:flex-row gap-5 flex-col"
-                : "md:flex-row-reverse gap-5 flex-col-reverse"
-            } w-full lg:py-20 ${slide.bgClass}`}
+                ? "flex-col md:flex-row"
+                : "flex-col-reverse md:flex-row-reverse"
+            } w-full ${slide.bgClass}`}
           >
             {/* Text Section */}
             <div
-              className={`md:w-[50%] flex flex-col md:px-5 justify-center items-center md:items-start md:py-10 ${
+              className={`w-full md:w-[50%] p-5 z-10 flex flex-col md:px-5 justify-center items-center md:items-start ${
                 index % 2 === 0 ? "" : "lg:pl-20"
-              } lg:py-0 gap-4 md:gap-8`}
+              } gap-4 md:gap-8`}
             >
-              <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: false }}
-              >
+              <motion.div initial="hidden" whileInView="visible">
                 <motion.h1
                   variants={textVariant(0.2)}
                   className="text-2xl lg:text-4xl xl:text-5xl font-bold text-center md:text-start"
@@ -68,7 +74,7 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({
                 {slide.title2 && (
                   <motion.h1
                     variants={textVariant(0.4)}
-                    className="text-2xl lg:text-4xl xl:text-5xl font-bold text-center mt-2 md:text-start"
+                    className="text-lg md:text-2xl lg:text-4xl xl:text-5xl font-bold text-center mt-2 md:text-start"
                   >
                     {slide.title2}
                   </motion.h1>
@@ -78,8 +84,7 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({
                 variants={textVariant(0.6)}
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: false }}
-                className="text-lg text-center md:text-left px-5 md:px-0 leading-tight line-clamp-2 md:leading-snug max-w-xl"
+                className="text-md text-center md:text-left px-5 md:px-0 leading-tight md:leading-snug max-w-xl"
               >
                 {slide.description}
               </motion.h4>
@@ -87,16 +92,15 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({
 
             {/* Image Section */}
             <motion.div
-              className="sm:w-[50%] w-[70%] block mx-auto"
+              className="w-[80%]  z-1 flex justify-center"
               variants={imageVariant(0.8)}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: false }}
             >
               <img
                 src={slide.image}
                 alt="Hero Slide"
-                className="block mx-auto"
+                className="block w-[80%]  p-5 object-contain"
                 loading="lazy"
               />
             </motion.div>

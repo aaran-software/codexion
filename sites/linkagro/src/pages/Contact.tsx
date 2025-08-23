@@ -1,12 +1,12 @@
 import Contact1 from "../../../../resources/layouts/contactLayouts/Contact1";
-import { FaHome, FaIndustry } from "react-icons/fa";
+import { FaIndustry } from "react-icons/fa";
 import { IoBusiness } from "react-icons/io5";
 import { TbTruckDelivery } from "react-icons/tb";
 function Contact() {
     
 
   return (
-    <div>
+    <div className="px-[10%] my-25">
       <Contact1
         addresses={[
           {

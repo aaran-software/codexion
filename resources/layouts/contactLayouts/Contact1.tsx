@@ -1,6 +1,7 @@
 import { FaHome, FaPhoneAlt } from "react-icons/fa";
 import FloatContact from "../../UIBlocks/contact/FloatContact";
 import { IconType } from "react-icons";
+import Button from '../../components/button/Button'
 type SocialLink = {
   id: string;
   href: string;
@@ -28,7 +29,7 @@ export default function Contact1({
   iconSize,
 }: ContactProps) {
   return (
-    <div className="p-6 mt-20">
+    <div className="">
       <h1 className="sr-only">{title}</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -69,12 +70,11 @@ export default function Contact1({
               rows={5}
             />
           </div>
-          <button
+          <Button
             type="button"
+            label="Submit"
             className="bg-primary hover:bg-hover text-create-foreground py-2 px-6 rounded-md font-semibold cursor-pointer"
-          >
-            Submit
-          </button>
+          />
         </form>
 
         {/* Address & Social Section */}

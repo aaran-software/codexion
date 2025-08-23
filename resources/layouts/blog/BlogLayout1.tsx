@@ -1,21 +1,8 @@
 import { useState } from "react";
 import GlobalSearch from "../../components/input/search-box";
 import Timeline from "../../components/timeline/timeline";
-import React from "react";
-
-const samplePost = {
-  title: "How to Build a Responsive Blog Layout with Tailwind CSS",
-  description:
-    "In this guide, we’ll walk you through the steps to build a clean, responsive blog layout using Tailwind CSS and React. You'll learn how to structure components, apply spacing, and ensure mobile-first responsiveness...",
-  coverImage: "/assets/tomato-3919426_1280.jpg",
-  author: {
-    name: "John Doe",
-    avatar: "/assets/product/bb6501.png",
-  },
-  date: "August 3, 2025",
-  category: "Frontend Development",
-  tags: ["React", "Tailwind CSS", "UI Design"],
-};
+import { useNavigate, useParams } from "react-router-dom";
+import { LinkAgroBlogs } from "../../../sites/linkagro/src/pages/Blog";
 
 const recentPosts = [
   {
@@ -57,12 +44,21 @@ const initialComments = [
     icon: <span>✅</span>,
   },
 ];
-function BlogLayout1() {
-  const post = samplePost;
 
+function BlogLayout1() {
+  const navigate=useNavigate()
+  const { id } = useParams();
+  const post = LinkAgroBlogs.find((p) => p.id === Number(id));
   const [comments, setComments] = useState(initialComments);
   const [newComment, setNewComment] = useState("");
-
+  const recentBlogs = LinkAgroBlogs.filter((p) => p.id !== Number(id));
+  if (!post) {
+    return (
+      <div className="p-10 text-center">
+        <h1 className="text-2xl font-bold">Blog not found ❌</h1>
+      </div>
+    );
+  }
   const handleSubmit = () => {
     if (!newComment.trim()) return;
     const newEntry = {
@@ -71,64 +67,69 @@ function BlogLayout1() {
         day: "numeric",
         year: "numeric",
       }),
-      title: "Password changed",
-      description: "User updated password for security.",
+      title: "New Comment",
+      description: newComment,
       user: { name: "Muthu", initial: "M" },
-      icon: <span>🔒</span>,
+      icon: <span>💬</span>,
     };
     setComments([newEntry, ...comments]);
     setNewComment("");
   };
+
+  const handleBlog = (id: number) => {
+    navigate(`/blog/${id}`);
+  };
   return (
     <div>
-      {/* Banner Section */}
-      <div className="relative h-[50vh] md:h-[70vh] w-full">
+      {/* Banner */}
+      {/* <div className="relative h-[50vh] md:h-[70vh] w-full">
         <img
-          src="/assets/Benefits Application 2.jpg"
+          src={post.coverImage}
           alt="Sample"
           className="h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-foreground/60" />
         <div className="absolute inset-0 flex items-center">
           <div className="md:w-2/3 px-5 lg:px-[10%] text-white space-y-4">
-            <h1 className="text-2xl lg:text-4xl font-bold animate__animated animate__fadeIn animate__fast">
-              Blogs
-            </h1>
-            <p className="text-sm sm:text-md lg:text-lg text-justify animate__animated animate__fadeIn animate__slow">
+            <h1 className="text-2xl lg:text-4xl font-bold">Blogs</h1>
+            <p className="text-sm sm:text-md lg:text-lg text-justify">
               Explore insightful articles, practical tips, and fresh
-              perspectives on topics that matter — curated to inform, inspire,
-              and ignite conversation.
+              perspectives.
             </p>
           </div>
         </div>
-      </div>
+      </div> */}
 
-      {/* Main Content Grid */}
-      <div className="grid lg:grid-cols-[70%_30%] gap-8 mt-5 px-5 md:px-[10%]">
-        {/* Blog Post */}
-        <div className="flex flex-col gap-6 lg:overflow-y-auto scrollbar-hide pr-2">
+      {/* Content */}
+      <div className="grid lg:grid-cols-[70%_30%] gap-8 mt-25 px-5 md:px-[10%]">
+        <div>
           <img
             src={post.coverImage}
             alt="Blog Cover"
             className="rounded-xl w-full object-cover"
           />
 
-          <div className="flex items-center gap-3 text-sm text-muted-foreground">
+          {/* Author */}
+          <div className="flex items-center gap-3 text-sm text-muted-foreground mt-4">
             <img
               src={post.author.avatar}
-              className="rounded-full w-7 h-7 object-scale-down"
+              className="rounded-full w-8 h-8 object-cover"
               alt="Author"
             />
             <p className="font-semibold text-black">{post.author.name}</p>
-            <span>•</span>
-            <p>{post.date}</p>
+            <div className="flex items-center gap-1">
+              <span className="w-2 h-2 border rounded-full bg-primary"></span>
+              <p>{post.date}</p>
+            </div>
           </div>
 
-          <h1 className="text-4xl font-bold text-gray-900 leading-tight">
+          {/* Title */}
+          <h1 className="text-4xl font-bold text-gray-900 leading-tight my-3">
             {post.title}
           </h1>
 
-          <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+          {/* Tags & Category */}
+          <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground mt-2">
             <p className="font-medium">Category:</p>
             <span className="px-3 py-1 bg-foreground/10 rounded-full">
               {post.category}
@@ -144,56 +145,68 @@ function BlogLayout1() {
             ))}
           </div>
 
-          <p className="text-lg text-gray-700 leading-relaxed mt-3">
-            {post.description}
-          </p>
+          {/* Content HTML */}
+          <div
+            className="
+              [&>h2]:text-4xl [&>h2]:font-bold [&>h2]:mt-4 [&>h2]:mb-2 [&>h2]:text-foreground/80
+              [&>h3]:text-2xl [&>h3]:font-semibold [&>h3]:mt-3 [&>h3]:mb-2 [&>h3]:text-foreground/80
+              [&>h4]:text-lg [&>h4]:font-medium [&>h4]:mt-2 [&>h4]:mb-1 [&>h4]:text-foreground/80
+              [&>p]:text-sm [&>p]:leading-relaxed [&>p]:mb-3 [&>p]:text-foreground/80
+              [&>ul]:list-disc [&>ul]:pl-5 [&>ul]:mb-3
+              [&>li]:text-sm [&>li]:leading-snug [&>li]:mb-1 [&>li]:text-foreground/80
+              [&>strong]:text-foreground
+            "
+            dangerouslySetInnerHTML={{ __html: post.description }}
+          />
 
-          <div className="mt-10 border-t pt-6 space-y-6">
-            <h2 className="text-2xl font-semibold">Comments</h2>
+          {/* Comments */}
 
-            <Timeline items={comments} showCollapse isHeading={false} />
-
-            {/* Comment Input */}
-            <div className="mt-6 space-y-3">
-              <textarea
-                className="w-full border rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-                rows={4}
-                placeholder="Write a comment..."
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-              />
-              <button
-                onClick={handleSubmit}
-                className="bg-primary text-white px-5 py-2 rounded-md hover:bg-primary/90 transition"
-              >
-                Submit Comment
-              </button>
+          {post.isComment && (
+            <div className="mt-10 border-t pt-6 space-y-6">
+              <h2 className="text-2xl font-semibold">Comments</h2>
+              <Timeline items={comments} showCollapse isHeading={false} />
+              <div className="mt-6 space-y-3">
+                <textarea
+                  className="w-full border rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                  rows={4}
+                  placeholder="Write a comment..."
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                />
+                <button
+                  onClick={handleSubmit}
+                  className="bg-primary text-white px-5 py-2 rounded-md hover:bg-primary/90 transition"
+                >
+                  Submit Comment
+                </button>
+              </div>
             </div>
-          </div>
+          )}
+
+          <div className="mb-20"></div>
         </div>
 
         {/* Sidebar */}
-        <div className="flex flex-col gap-6 h-full pr-1 lg:border-l lg:pl-5 border-ring/30">
-          <hr className="lg:hidden border-ring/30" />
-          <GlobalSearch />
+        <div className="flex flex-col gap-6 h-full pr-1 pb-20 md:pb-0 lg:border-l lg:pl-5 border-ring/30">
+          <GlobalSearch onSearchApi={""} onNavigate={() => {}} />
           <h2 className="text-xl font-semibold border-b pb-2">Recent Posts</h2>
-
-          {recentPosts.map((recent, idx) => (
+          {recentBlogs.map((recent, idx) => (
             <div
               key={idx}
-              className="grid grid-cols-[30%_70%] gap-4 items-start"
+              className="grid grid-cols-[30%_70%] gap-4 items-start cursor-pointer"
+              onClick={()=>{handleBlog(recent.id)}}
             >
               <img
-                src={recent.thumbnail}
+                src={recent.coverImage}
                 alt="Thumbnail"
-                className="rounded-md w-full object-scale-down aspect-video"
+                className="rounded-md w-full h-full object-scale-down "
               />
               <div className="flex flex-col">
                 <h3 className="text-lg font-bold text-gray-800 line-clamp-2">
                   {recent.title}
                 </h3>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
-                  <p className="font-medium">{recent.author}</p>
+                  <p className="font-medium">{recent.author.name}</p>
                   <span>•</span>
                   <p>{recent.date}</p>
                 </div>

@@ -190,8 +190,8 @@ export-grade packing every time.`,
   ];
 
   return (
-    <div className="">
-      <div className="relative h-[50vh] sm:h-[70vh] w-full">
+    <div className="mt-20">
+      <div className="relative h-[40vh] sm:h-[50vh] w-full">
         {/* Background Image */}
         <img
           src="/assets/IMG_8034[1].JPG"
@@ -200,15 +200,15 @@ export-grade packing every time.`,
         />
 
         {/* Overlay */}
-        <div className="absolute inset-0 bg-foreground/60"></div>
+        <div className="absolute inset-0 bg-foreground/70"></div>
 
         {/* Text Content */}
         <div className="absolute inset-0 flex items-center">
-          <div className="md:w-2/3 px-5 lg:px-[10%] text-white space-y-4">
+          <div className="md:w-2/3 px-5 lg:px-[10%] text-background space-y-4">
             <h1 className="text-2xl lg:text-4xl font-bold animate__animated animate__fadeIn animate__fast">
               Our Premium Coco Peat Products
             </h1>
-            <p className="text-sm lg:text-lg text-justify animate__animated animate__fadeIn animate__slow">
+            <p className="text-sm lg:text-lg text-background/80 text-justify animate__animated animate__fadeIn animate__slow">
               Our involvement in the coconut and coconut fiber industry began
               when our ancestors farmed and harvested coconuts on their
               traditional farmland. We continue this ancestral legacy in the
@@ -221,7 +221,7 @@ export-grade packing every time.`,
             <Button
               label="Contact Now"
               path="/contact"
-              className="border border-ring/40 bg-primary"
+              className="border border-ring/40 bg-primary hover:bg-hover"
             />
           </div>
         </div>
@@ -229,7 +229,7 @@ export-grade packing every time.`,
       <div className="px-5 lg:px-[10%]">
         {product.map((item, index) => (
           <div key={index} className="">
-            <div className="mt-20">
+            <div className="">
               <PortfolioProduct1 item={item} reverse={index % 2 === 0} />
             </div>
             {item.tables?.map((table, tIndex) => {
