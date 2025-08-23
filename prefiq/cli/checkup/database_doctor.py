@@ -6,6 +6,7 @@ import inspect
 import os
 import time
 from typing import Any, Optional
+from collections.abc import Sequence, Mapping
 
 from prefiq.settings.get_settings import load_settings
 from prefiq.database.connection import get_engine, reset_engine
@@ -28,10 +29,12 @@ def _engine_name(e: Any) -> str:
         return f"Postgres/{cls}"
     return cls
 
+
 def _print_header() -> None:
     s = load_settings()
     print("=== Prefiq Database Doctor ===")
     print(f"DB_ENGINE='{getattr(s, 'DB_ENGINE', None)}'  DB_MODE='{getattr(s, 'DB_MODE', None)}'")
+
 
 def _mask_dsn(dsn: Optional[str]) -> str:
     if not dsn:
@@ -45,6 +48,7 @@ def _mask_dsn(dsn: Optional[str]) -> str:
         pass
     return dsn
 
+
 def _display_dsn(engine: Any) -> str:
     # Prefer engine-provided url/dsn (our PG engine sets .url with a masked password)
     for attr in ("url", "database_url", "dsn"):
@@ -54,28 +58,46 @@ def _display_dsn(engine: Any) -> str:
     # Fallback to settings-derived DSN (mask password)
     return _mask_dsn(load_settings().dsn())
 
-def _select1_ok(row: Any) -> bool:
-    """
-    Return True iff the first value equals 1.
-    Accepts 1, True, "1", (1,), [1], etc.
-    """
-    if row is None:
+
+def _select1_ok(val: Any) -> bool:
+    """Return True iff the scalar value represents 1."""
+    if val is None:
         return False
     try:
-        first = row[0] if isinstance(row, (list, tuple)) else row
-        if first is True:
+        if val is True:
             return True
-        if isinstance(first, (int, float)):
-            return int(first) == 1
-        return str(first) == "1"
+        if isinstance(val, (int, float)):
+            return int(val) == 1
+        return str(val) == "1"
     except Exception:
         return False
 
+
 def _first_value(row: Any) -> Any:
+    """
+    Best-effort extraction of the first column from:
+    - tuple/list
+    - sqlite3.Row (sequence-like; supports row[0])
+    - mappings like {"1": 1} (take first value)
+    Otherwise, assume it's already a scalar.
+    """
     try:
-        return row[0] if isinstance(row, (list, tuple)) else row
+        if isinstance(row, Sequence) and not isinstance(row, (str, bytes, bytearray)):
+            return row[0]  # covers tuple/list/sqlite3.Row
+        if isinstance(row, Mapping):
+            # take first value if any
+            for _, v in row.items():
+                return v
+        # duck-typing: has __getitem__ -> try [0]
+        if hasattr(row, "__getitem__") and not isinstance(row, (str, bytes, bytearray)):
+            try:
+                return row[0]
+            except Exception:
+                pass
+        return row
     except Exception:
         return row
+
 
 def _await_if_needed(x: Any, timeout: float | None) -> Any:
     if inspect.isawaitable(x):
@@ -83,6 +105,7 @@ def _await_if_needed(x: Any, timeout: float | None) -> Any:
             return asyncio.run(asyncio.wait_for(x, timeout=timeout))
         return asyncio.run(x)
     return x
+
 
 def _get_scalar(engine: Any, sql: str, timeout: float | None = 3.0) -> Any:
     """
@@ -131,15 +154,15 @@ def _get_scalar(engine: Any, sql: str, timeout: float | None = 3.0) -> Any:
             return _first_value(row)
     raise RuntimeError("No compatible scalar fetch method found on engine")
 
+
 def _probe_health(engine: Any, timeout: float | None = 3.0) -> bool:
-    """
-    Portable health probe: fetch scalar 1 from 'SELECT 1'
-    """
+    """Portable health probe: fetch scalar 1 from 'SELECT 1'."""
     try:
         val = _get_scalar(engine, "SELECT 1", timeout=timeout)
         return _select1_ok(val)
     except Exception:
         return False
+
 
 def _pool_stats(engine: Any) -> dict[str, Any]:
     """
@@ -192,7 +215,8 @@ def main(verbose: bool = False, strict: bool = False) -> int:
     # smoke test (SELECT 1 only — no BEGIN/COMMIT to avoid driver hangs)
     try:
         print("-> Running smoke test (SELECT 1)")
-        val = _get_scalar(engine, "SELECT 1", timeout=3.0)
+        raw = _get_scalar(engine, "SELECT 1", timeout=3.0)
+        val = _first_value(raw)
         ok = _select1_ok(val)
         print(f"   SELECT 1 => {val!r}  ({'OK' if ok else 'FAIL'})")
     except Exception as e:
