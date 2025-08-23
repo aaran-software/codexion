@@ -23,7 +23,7 @@ from prefiq.database.schemas.blueprint import TableBlueprint
 from prefiq.database.dialects.registry import get_dialect
 
 # Core/system tables that should not be dropped
-PROTECTED_TABLES = {"migrations", "tenants", "users"}
+PROTECTED_TABLES = {"migrations"}
 
 
 # --- small helpers -----------------------------------------------------------
