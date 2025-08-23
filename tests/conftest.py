@@ -89,5 +89,7 @@ class DummySettings:
         # sqlite DSN style used in doctor output
         return f"sqlite:///{self.DB_NAME}"
 
-
+def pytest_configure(config):
+    config.addinivalue_line("markers", "postgres: requires a running Postgres instance")
+    config.addinivalue_line("markers", "mariadb: requires a running MariaDB instance")
 
