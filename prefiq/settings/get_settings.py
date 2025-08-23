@@ -8,7 +8,6 @@ from typing import Literal, Optional
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-# Resolve the repo .env once; allow an override via ENV_FILE if you need a different path.
 _DEFAULT_ENV_PATH = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "..", "..", ".env")
 )
@@ -34,6 +33,10 @@ class Settings(BaseSettings):
         1, ge=0, description="Number of connections to prewarm in async pool"
     )
 
+    # --- test toggles (read from env or .env) ---
+    DB_TEST_PG: bool = False
+    DB_TEST_MYSQL: bool = False
+
     # --- jwt/auth (defaults OK for local dev only) ---
     JWT_SECRET_KEY: str = "your-super-secret-key"
     JWT_ALGORITHM: str = "HS256"
@@ -48,15 +51,12 @@ class Settings(BaseSettings):
     # --- misc toggles ---
     DB_CLOSE_ATEXIT: bool = True
 
-    # pydantic-settings v2 config
     model_config = SettingsConfigDict(
         env_file=_ENV_FILE,
         env_file_encoding="utf-8",
-        case_sensitive=False,   # env var *names* are case-insensitive
+        case_sensitive=False,
         extra="allow",
     )
-
-    # --- computed helpers ----------------------------------------------------
 
     @property
     def project_root(self) -> str:
@@ -65,8 +65,6 @@ class Settings(BaseSettings):
     @property
     def is_async(self) -> bool:
         return self.DB_MODE.lower() == "async"
-
-    # Normalize a few fields (defensive; supports common env variants)
 
     @field_validator("DB_ENGINE", mode="before")
     @classmethod
@@ -83,7 +81,6 @@ class Settings(BaseSettings):
     @field_validator("LOG_LEVEL", mode="before")
     @classmethod
     def _normalize_log_level(cls, v: str) -> str:
-        # accept 'debug', 'warn', etc.
         s = (v or "").strip().lower()
         map_alias = {
             "debug": "DEBUG",
@@ -98,7 +95,6 @@ class Settings(BaseSettings):
     @field_validator("LOG_FORMAT", mode="before")
     @classmethod
     def _normalize_log_format(cls, v: str) -> str:
-        # accept 'JSON'/'Text'
         s = (v or "").strip().lower()
         if s in {"json", "text"}:
             return s
@@ -107,7 +103,6 @@ class Settings(BaseSettings):
     @field_validator("LOG_COLOR", mode="before")
     @classmethod
     def _normalize_log_color(cls, v: str) -> str:
-        # accept booleans/on/off/1/0 in addition to 'auto'
         s = (v or "").strip().lower()
         if s in {"auto", "true", "false"}:
             return s
@@ -117,15 +112,12 @@ class Settings(BaseSettings):
             return "false"
         return "auto" if not s else s
 
-    # Example DSN helpers (optional; keep if useful elsewhere)
     def dsn(self) -> Optional[str]:
         if self.DB_ENGINE == "sqlite":
-            # You use DB_NAME as file path or ':memory:' in your stack.
             return f"sqlite:///{self.DB_NAME}"
         if self.DB_ENGINE in {"mariadb", "mysql"}:
             return f"{self.DB_ENGINE}://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
         if self.DB_ENGINE == "postgres":
-            # libpq-style URL
             return (
                 f"postgresql://{self.DB_USER}:{self.DB_PASS}"
                 f"@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
@@ -133,19 +125,13 @@ class Settings(BaseSettings):
         return None
 
 
-# --- cached loader API (stable import surface) -------------------------------
-
 @lru_cache()
 def _load_cached_settings() -> Settings:
     return Settings()
 
 
 def load_settings(*, force_refresh: bool = False) -> Settings:
-    """
-    App-wide cached settings. For tests set TESTING=1 or pass force_refresh=True.
-    """
     if force_refresh or os.getenv("TESTING", "0").lower() in ("1", "true", "yes"):
-        # fresh object each time during tests when you ask for it
         return Settings()
     return _load_cached_settings()
 

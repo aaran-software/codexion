@@ -1,17 +1,15 @@
+# prefiq/database/schemas/router.py
 from __future__ import annotations
 from typing import Literal
-
-from prefiq.database.dialects.registry import get_dialect
+from prefiq.settings.get_settings import load_settings
 
 Driver = Literal["mysql_like", "sqlite", "postgres"]
 
 def current_driver() -> Driver:
-    d = get_dialect()
-    name = d.name() if callable(getattr(d, "name", None)) else getattr(d, "name", "")
-    n = (name or "").lower()
-    if "mariadb" in n or "mysql" in n:
+    eng = (load_settings().DB_ENGINE or "").strip().lower()
+    if eng in ("mariadb", "mysql"):
         return "mysql_like"
-    if "postgres" in n:
+    if eng in ("postgres", "postgresql", "pg"):
         return "postgres"
     return "sqlite"
 

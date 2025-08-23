@@ -5,6 +5,12 @@ import uuid
 import contextlib
 import pytest
 
+# Fast, safe defaults for the whole test session
+os.environ.setdefault("TESTING", "1")
+os.environ.setdefault("DB_ENGINE", "sqlite")
+os.environ.setdefault("DB_MODE", "sync")
+os.environ.setdefault("DB_NAME", ":memory:")
+
 from prefiq.settings.get_settings import clear_settings_cache
 from prefiq.database.connection import reload_engine_from_env, reset_engine
 
