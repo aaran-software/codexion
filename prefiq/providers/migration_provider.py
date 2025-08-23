@@ -1,15 +1,21 @@
 # prefiq/providers/migration_provider.py
 
 from __future__ import annotations
+
 from prefiq.core.contracts.base_provider import BaseProvider
 from prefiq.log.logger import get_logger
+
 from prefiq.database.migrations.runner import migrate_all, drop_all
 from prefiq.database.migrations.rollback import rollback
+from prefiq.database.schemas.builder import ensure_migrations_table  # ✅ ensure meta table
 
 log = get_logger("prefiq.migrate")
 
+
 class Migrator:
     def migrate(self, seed: bool = False) -> None:
+        # Make sure the meta table exists before running any migrations
+        ensure_migrations_table()
         migrate_all()
         if seed:
             self.seed()
@@ -26,9 +32,16 @@ class Migrator:
     def rollback(self, steps: int = 1) -> None:
         rollback(step=steps)
 
+
 class MigrationProvider(BaseProvider):
     def register(self) -> None:
         self.app.bind("migrator", Migrator())
 
     def boot(self) -> None:
-        log.info("migrator_ready")
+        # Ensure the meta 'migrations' table exists at boot time
+        try:
+            ensure_migrations_table()
+            log.info("migrations_table_ready")
+        except Exception as e:
+            log.error("migrations_table_error", extra={"error": str(e)})
+            raise

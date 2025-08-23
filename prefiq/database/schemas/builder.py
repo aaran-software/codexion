@@ -31,41 +31,58 @@ def drop_index_if_exists(table_name: str, index_name: str) -> None:
     dropIndexIfExists(table_name, index_name)
 
 # -----------------------------
-# NEW: ensure_migrations_table
+# ensure_migrations_table (portable)
 # -----------------------------
 def ensure_migrations_table() -> None:
     """
     Create the 'migrations' table if it doesn't exist.
     Columns: id, app, name, order_index, hash, created_at, updated_at
-    Adds UNIQUE(app, name) and an index on app when supported by the blueprint.
+    Adds UNIQUE(app, name) and an index on app, adapting to different blueprint signatures.
     """
     def _schema(t: Any):
         parts = [
-            t.id(),                      # auto-increment / serial / integer pk (blueprint-resolved)
+            t.id(),                              # pk (dialect-specific)
             t.string("app", nullable=False),
             t.string("name", nullable=False),
             t.integer("order_index", nullable=False),
             t.string("hash", nullable=False),
-            # IMPORTANT: timestamps() should be dialect-aware (no ON UPDATE on SQLite/Postgres)
-            t.timestamps(),
+            t.timestamps(),                      # created_at, updated_at (no ON UPDATE for PG/SQLite)
         ]
 
-        # Unique constraint on (app, name) to prevent duplicates
+        # UNIQUE(app, name)
         if hasattr(t, "unique"):
-            parts.append(t.unique(["app", "name"]))
+            # Try (name, columns)
+            try:
+                parts.append(t.unique("uniq_migrations_app_name", ["app", "name"]))
+            except TypeError:
+                # Fallbacks for other signatures
+                try:
+                    parts.append(t.unique(["app", "name"]))
+                except TypeError:
+                    try:
+                        parts.append(t.unique("uniq_migrations_app_name", "app", "name"))
+                    except TypeError:
+                        pass  # give up silently if blueprint differs
 
-        # Index on app to speed lookups; some builders accept str or list[str]
+        # INDEX(app)
         if hasattr(t, "index"):
+            # Some builders accept (name, ["col"]), some (name, "col"), some just ("col")
             try:
                 parts.append(t.index("idx_migrations_app", ["app"]))
             except TypeError:
-                parts.append(t.index("idx_migrations_app", "app"))
+                try:
+                    parts.append(t.index("idx_migrations_app", "app"))
+                except TypeError:
+                    try:
+                        parts.append(t.index("app"))
+                    except TypeError:
+                        pass
 
         return parts
 
     create("migrations", _schema)
 
 
-# Optional camelCase alias (if used elsewhere)
+# Optional camelCase alias if used elsewhere
 def ensureMigrationsTable() -> None:
     ensure_migrations_table()
