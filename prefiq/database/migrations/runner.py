@@ -1,55 +1,36 @@
-# =============================================================
-# Migration Runner (runner.py)
-#
-# Applies all pending migrations for all apps.
-# Tracks state in `migrations` table using schema builder.
-# Works with both sync and async engines.
-# =============================================================
+# prefiq/database/migrations/runner.py
 
 from __future__ import annotations
 
 import datetime
 import inspect
-from typing import Any
+import sys
+from typing import Any, Type
 
 from prefiq.database.connection_manager import get_engine
-from prefiq.database.migrations.loader import (
-    discover_all_app_migrations,
-    resolve_and_load,
-)
+from prefiq.database.migrations.discover import discover_all
+from prefiq.database.migrations.hashing import compute_file_hash
 from prefiq.database.schemas.queries import insert
 from prefiq.database.schemas.builder import create
 from prefiq.database.schemas.blueprint import TableBlueprint
 from prefiq.database.dialects.registry import get_dialect
+from prefiq.database.migrations.base import Migrations
 
-# Core/system tables that should not be dropped
 PROTECTED_TABLES = {"migrations"}
 
-
-# --- small helpers -----------------------------------------------------------
-
 def _engine():
-    """Return the current DB engine (sync or async) selected by settings."""
     return get_engine()
 
 def _is_awaitable(x: Any) -> bool:
     return inspect.isawaitable(x) or inspect.iscoroutine(x)
 
 def _await(x: Any) -> Any:
-    """Run sync values as-is; await async values safely."""
     if _is_awaitable(x):
         import asyncio
         return asyncio.run(x)
     return x
 
-
-# --- internal ops ------------------------------------------------------------
-
 def _ensure_migrations_table() -> None:
-    """
-    Ensure base 'migrations' table exists (idempotent), without external deps.
-    Uses the schema builder + dialects to stay cross-DB.
-    """
     def _schema(t: TableBlueprint):
         t.id("id")
         t.string("app", 255, nullable=False)
@@ -60,23 +41,22 @@ def _ensure_migrations_table() -> None:
         t.datetime("updated_at", nullable=False, default="CURRENT_TIMESTAMP")
         t.index("idx_migrations_app", "app")
         t.unique("ux_migrations_app_name", ["app", "name"])
-
     create("migrations", _schema)
 
+def _module_file_of(cls: Type[Migrations]) -> str:
+    mod = sys.modules.get(cls.__module__)
+    if not mod or not getattr(mod, "__file__", None):
+        raise RuntimeError(f"Cannot resolve file for {cls.__module__}.{cls.__name__}")
+    return mod.__file__  # type: ignore[return-value]
 
 def _is_applied(app: str, name: str, hash_: str) -> bool:
     eng = _engine()
-    row = _await(eng.fetchone(
-        "SELECT hash FROM migrations WHERE app = %s AND name = %s",
-        (app, name),
-    ))
-
+    row = _await(eng.fetchone("SELECT hash FROM migrations WHERE app = %s AND name = %s", (app, name)))
     if row:
         if row[0] != hash_:
             print(f"⚠️  {app}.{name} hash differs from recorded hash (file changed since first apply).")
         return row[0] == hash_
     return False
-
 
 def _record_migration(app: str, name: str, index: int, hash_: str) -> None:
     insert("migrations", {
@@ -88,38 +68,24 @@ def _record_migration(app: str, name: str, index: int, hash_: str) -> None:
         "updated_at": datetime.datetime.utcnow(),
     })
 
-
-# --- public API --------------------------------------------------------------
-
 def migrate_all() -> None:
-    """
-    Discover and apply all pending migrations across all apps.
-    """
     _ensure_migrations_table()
+    classes = discover_all()  # List[type[Migrations]]
+    for i, cls in enumerate(classes):
+        app = getattr(cls, "APP_NAME", "core")
+        name = getattr(cls, "TABLE_NAME", cls.__name__)
+        order_index = int(getattr(cls, "ORDER_INDEX", i))
 
-    apps = discover_all_app_migrations()
-    # apps: Dict[str, List[str]] where key = app name, value = ordered migration names
+        file_path = _module_file_of(cls)
+        hash_ = compute_file_hash(file_path)
 
-    for app, migration_list in apps.items():
-        for i, name in enumerate(migration_list):
-            try:
-                mod, hash_ = resolve_and_load(app, name)
+        if _is_applied(app, name, hash_):
+            print(f"🟡 Skipping {app}.{name} (already applied)")
+            continue
 
-                if _is_applied(app, name, hash_):
-                    print(f"🟡 Skipping {app}.{name} (already applied)")
-                    continue
-
-                if not hasattr(mod, "up"):
-                    raise AttributeError(f"Migration {name} in {app} has no `up()` function")
-
-                print(f"✅ Running {app}.{name} ...")
-                _await(mod.up())
-                _record_migration(app, name, i, hash_)
-
-            except Exception as e:
-                print(f"❌ Failed to apply {app}.{name}: {e}")
-                raise
-
+        print(f"✅ Running {app}.{name} ...")
+        _await(cls.up())
+        _record_migration(app, name, order_index, hash_)
 
 def drop_all() -> None:
     eng = _engine()

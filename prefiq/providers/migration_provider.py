@@ -1,18 +1,15 @@
+# prefiq/providers/migration_provider.py
+
 from __future__ import annotations
 from prefiq.core.contracts.base_provider import BaseProvider
 from prefiq.log.logger import get_logger
-
-# import your migration modules
-from cortex.database.base_tables.migration_table import migrations_table_up  # ensure exists
 from prefiq.database.migrations.runner import migrate_all, drop_all
 from prefiq.database.migrations.rollback import rollback
 
 log = get_logger("prefiq.migrate")
 
-
 class Migrator:
     def migrate(self, seed: bool = False) -> None:
-        migrations_table_up()
         migrate_all()
         if seed:
             self.seed()
@@ -29,15 +26,9 @@ class Migrator:
     def rollback(self, steps: int = 1) -> None:
         rollback(step=steps)
 
-
 class MigrationProvider(BaseProvider):
     def register(self) -> None:
         self.app.bind("migrator", Migrator())
 
     def boot(self) -> None:
-        try:
-            migrations_table_up()
-            log.info("migrations_table_ready")
-        except Exception as e:
-            log.error("migrations_table_error", extra={"error": str(e)})
-            raise
+        log.info("migrator_ready")
