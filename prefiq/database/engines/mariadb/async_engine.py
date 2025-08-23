@@ -1,3 +1,5 @@
+# prefiq/database/engines/mariadb/async_engine.py
+
 import time
 from contextlib import asynccontextmanager, suppress
 from typing import Optional, Any, Sequence
@@ -29,7 +31,8 @@ class AsyncMariaDBEngine(AbstractEngine[Any]):
         """Close the global async pool."""
         await close_pool()
 
-    # Transaction helpers issue SQL statements via the pooled cursor.
+    # ------------------------ transaction helpers ------------------------
+
     async def begin(self) -> None:
         async def action():
             async with get_connection(autocommit=False) as cur:
@@ -48,68 +51,83 @@ class AsyncMariaDBEngine(AbstractEngine[Any]):
                 await _run_in_thread(cur.execute, "ROLLBACK")
         await with_retry_async(action)
 
-    async def execute(self, query: str, params: Optional[tuple] = None) -> None:
+    # ------------------------ query primitives ---------------------------
+
+    async def execute(self, query: str, params: Optional[Sequence[Any]] = None) -> None:
         """Run a non-returning query (INSERT/UPDATE/DELETE)."""
-        self._run_hooks('before', query, params)
-        start_time = time.time()
+        self._run_hooks("before", query, params)
+        t0 = time.time()
+        tup = tuple(params) if params else None
 
         async def action():
             async with get_connection() as cur:
-                await _run_in_thread(cur.execute, query, *(params or ()))
+                if tup is not None:
+                    await _run_in_thread(cur.execute, query, tup)
+                else:
+                    await _run_in_thread(cur.execute, query)
                 # Commit after write (safe even if autocommit is on)
                 if getattr(cur, "connection", None):
                     await _run_in_thread(cur.connection.commit)
 
         await with_retry_async(action)
-        log_query(query, start_time)
-        self._run_hooks('after', query, params)
+        log_query(query, t0)
+        self._run_hooks("after", query, params)
 
-    async def fetchone(self, query: str, params: Optional[tuple] = None) -> Any:
+    async def fetchone(self, query: str, params: Optional[Sequence[Any]] = None) -> Any:
         """Run SELECT and return the first row."""
-        self._run_hooks('before', query, params)
-        start_time = time.time()
+        self._run_hooks("before", query, params)
+        t0 = time.time()
+        tup = tuple(params) if params else None
 
         async def action():
             async with get_connection() as cur:
-                await _run_in_thread(cur.execute, query, *(params or ()))
-                row = await _run_in_thread(cur.fetchone)
-                return row
+                if tup is not None:
+                    await _run_in_thread(cur.execute, query, tup)
+                else:
+                    await _run_in_thread(cur.execute, query)
+                return await _run_in_thread(cur.fetchone)
 
-        result = await with_retry_async(action)
-        log_query(query, start_time)
-        self._run_hooks('after', query, params)
-        return result
+        row = await with_retry_async(action)
+        log_query(query, t0)
+        self._run_hooks("after", query, params)
+        return row
 
-    async def fetchall(self, query: str, params: Optional[tuple] = None) -> list[Any]:
+    async def fetchall(self, query: str, params: Optional[Sequence[Any]] = None) -> list[Any]:
         """Run SELECT and return all rows."""
-        self._run_hooks('before', query, params)
-        start_time = time.time()
+        self._run_hooks("before", query, params)
+        t0 = time.time()
+        tup = tuple(params) if params else None
 
         async def action():
             async with get_connection() as cur:
-                await _run_in_thread(cur.execute, query, *(params or ()))
-                rows = await _run_in_thread(cur.fetchall)
-                return rows
+                if tup is not None:
+                    await _run_in_thread(cur.execute, query, tup)
+                else:
+                    await _run_in_thread(cur.execute, query)
+                return await _run_in_thread(cur.fetchall)
 
-        result = await with_retry_async(action)
-        log_query(query, start_time)
-        self._run_hooks('after', query, params)
-        return result
+        rows = await with_retry_async(action)
+        log_query(query, t0)
+        self._run_hooks("after", query, params)
+        return rows
 
-    async def executemany(self, query: str, param_list: Sequence[tuple]) -> None:
+    async def executemany(self, query: str, param_list: Sequence[Sequence[Any]]) -> None:
         """Run bulk INSERT/UPDATE with many parameters."""
-        self._run_hooks('before', query)
-        start_time = time.time()
+        self._run_hooks("before", query)
+        t0 = time.time()
 
         async def action():
             async with get_connection() as cur:
-                await _run_in_thread(cur.executemany, query, param_list)
+                # executemany expects a list/tuple of tuples/lists
+                await _run_in_thread(cur.executemany, query, list(map(tuple, param_list)))
                 if getattr(cur, "connection", None):
                     await _run_in_thread(cur.connection.commit)
 
         await with_retry_async(action)
-        log_query(query, start_time)
-        self._run_hooks('after', query)
+        log_query(query, t0)
+        self._run_hooks("after", query)
+
+    # ------------------------ transaction context ------------------------
 
     @asynccontextmanager
     async def transaction(self):
@@ -133,6 +151,8 @@ class AsyncMariaDBEngine(AbstractEngine[Any]):
                     await with_retry_async(lambda: _run_in_thread(cur.execute, "ROLLBACK"))
                 raise
 
+    # ------------------------ diagnostics --------------------------------
+
     async def test_connection(self) -> bool:
         """Simple connectivity check."""
         try:
@@ -141,7 +161,6 @@ class AsyncMariaDBEngine(AbstractEngine[Any]):
                     await _run_in_thread(cur.execute, "SELECT 1")
                     row = await _run_in_thread(cur.fetchone)
                     return row is not None
-
             return bool(await with_retry_async(action))
         except Exception:
             return False
