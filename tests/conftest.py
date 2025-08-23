@@ -88,3 +88,6 @@ class DummySettings:
     def dsn(self) -> str:
         # sqlite DSN style used in doctor output
         return f"sqlite:///{self.DB_NAME}"
+
+
+
