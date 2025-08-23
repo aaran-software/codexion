@@ -1,56 +1,31 @@
 # prefiq/database/schemas/queries.py
-
+from __future__ import annotations
 from typing import Any, Optional, Tuple
-from prefiq.database.connection_manager import get_engine
-from prefiq.database.dialects.registry import get_dialect
+from prefiq.database.schemas.router import impl
 
-def _do(sql: str, params: Tuple[Any, ...] | None, fn):
-    d = get_dialect()
-    eng = get_engine()
-    sql2, p2 = d.normalize_params(sql, params)
-    return fn(sql2, p2 or ())
+_insert, _update, _delete, _select_one, _select_all, _count = (
+    impl()[2].insert,
+    impl()[2].update,
+    impl()[2].delete,
+    impl()[2].select_one,
+    impl()[2].select_all,
+    impl()[2].count,
+)
 
 def insert(table_name: str, values: dict) -> None:
-    if not values:
-        raise ValueError("insert() received empty values")
-    d = get_dialect()
-    tname = d.quote_ident(table_name)
-    cols = ", ".join(d.quote_ident(k) for k in values)
-    ph  = ", ".join(["%s"] * len(values))
-    sql = f"INSERT INTO {tname} ({cols}) VALUES ({ph})"
-    _do(sql, tuple(values.values()), get_engine().execute)
+    _insert(table_name, values)
 
 def update(table_name: str, values: dict, where: str, params: tuple) -> None:
-    if not values:
-        raise ValueError("update() received empty values")
-    d = get_dialect()
-    tname = d.quote_ident(table_name)
-    set_clause = ", ".join(f"{d.quote_ident(k)} = %s" for k in values)
-    sql = f"UPDATE {tname} SET {set_clause} WHERE {where}"
-    _do(sql, tuple(values.values()) + params, get_engine().execute)
+    _update(table_name, values, where, params)
 
 def delete(table_name: str, where: str, params: tuple) -> None:
-    d = get_dialect()
-    tname = d.quote_ident(table_name)
-    sql = f"DELETE FROM {tname} WHERE {where}"
-    _do(sql, params, get_engine().execute)
+    _delete(table_name, where, params)
 
 def select_one(table_name: str, columns: str, where: str, params: tuple) -> Optional[tuple]:
-    d = get_dialect()
-    tname = d.quote_ident(table_name)
-    sql = f"SELECT {columns} FROM {tname} WHERE {where} LIMIT 1"
-    return _do(sql, params, get_engine().fetchone)
+    return _select_one(table_name, columns, where, params)
 
 def select_all(table_name: str, columns: str = "*", where: Optional[str] = None, params: tuple = ()) -> list[tuple]:
-    d = get_dialect()
-    tname = d.quote_ident(table_name)
-    sql = f"SELECT {columns} FROM {tname}" + (f" WHERE {where}" if where else "")
-    return _do(sql, params, get_engine().fetchall)
+    return _select_all(table_name, columns, where, params)
 
 def count(table_name: str, where: Optional[str] = None, params: tuple = ()) -> int:
-    d = get_dialect()
-    tname = d.quote_ident(table_name)
-    sql = f"SELECT COUNT(*) FROM {tname}" + (f" WHERE {where}" if where else "")
-    row = _do(sql, params, get_engine().fetchone)
-    return row[0] if row else 0
-
+    return _count(table_name, where, params)
