@@ -11,16 +11,12 @@ _PROVIDER_REGISTRY: Dict[str, Type["Provider"]] = {}
 
 
 class _ProviderMeta(ABCMeta):
-    """
-    Auto‑register concrete Provider subclasses at import time.
-    Concrete = subclass of Provider (but not Provider itself), abstract == False, enabled == True.
-    """
     def __new__(mcls, name, bases, ns, **kw):
         cls = super().__new__(mcls, name, bases, ns, **kw)
-        # Register only direct/indirect subclasses of Provider (not the base itself)
-        if any(b.__name__ == "Provider" for b in bases):
-            is_abstract = ns.get("abstract", False)
-            is_enabled = ns.get("enabled", True)
+        # Register any concrete subclass (direct or indirect), skip the base itself
+        if name != "Provider":
+            is_abstract = getattr(cls, "abstract", False)
+            is_enabled  = getattr(cls, "enabled", True)
             if not is_abstract and is_enabled:
                 _PROVIDER_REGISTRY[f"{cls.__module__}.{cls.__name__}"] = cls
         return cls

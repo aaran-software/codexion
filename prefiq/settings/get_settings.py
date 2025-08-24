@@ -25,9 +25,9 @@ class Settings(BaseSettings):
     DB_HOST: str = "localhost"
     DB_PORT: int = 3306
     DB_USER: str = "root"
-    DB_PASS: str = "DbPass1@@"
-    DB_NAME: str = "codexion_db"
-    REGISTERED_APPS: ClassVar[list[str]] = ["cortex"]
+    DB_PASS: str = ""
+    DB_NAME: str = ""
+    REGISTERED_APPS: list[str] = []
 
     # Async pool warmup (harmless/no-op for sync engines)
     DB_POOL_WARMUP: int = Field(

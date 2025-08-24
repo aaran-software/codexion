@@ -41,10 +41,13 @@ class DatabaseProvider(BaseProvider):
         self.app.bind("db", engine)
 
     def boot(self) -> None:
-        # Optional: prewarm MariaDB async pool (harmless no-op elsewhere)
         warm = 0
         try:
-            warm = int(os.getenv("DB_POOL_WARMUP", "0") or "0")
+            s = self.app.resolve("settings")
+            if s and hasattr(s, "DB_POOL_WARMUP"):
+                warm = int(getattr(s, "DB_POOL_WARMUP") or 0)
+            else:
+                warm = int(os.getenv("DB_POOL_WARMUP", "0") or "0")
         except Exception:
             warm = 0
 
@@ -54,7 +57,7 @@ class DatabaseProvider(BaseProvider):
                 from prefiq.database.engines.mariadb.pool import prewarm as _mariadb_prewarm  # type: ignore
 
                 coro = _mariadb_prewarm(warm)
-                # Run the coroutine whether or not an event loop is present
+                # Run the coroutine whether an event loop is present
                 if inspect.isawaitable(coro):
                     try:
                         asyncio.get_running_loop()

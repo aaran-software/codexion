@@ -162,9 +162,17 @@ def _first_value(row: Any) -> Any:
 
 def _await_if_needed(x: Any, timeout: float | None) -> Any:
     if inspect.isawaitable(x):
-        if timeout and timeout > 0:
-            return asyncio.run(asyncio.wait_for(x, timeout=timeout))
-        return asyncio.run(x)
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
+            if timeout and timeout > 0:
+                return asyncio.run(asyncio.wait_for(x, timeout=timeout))
+            return asyncio.run(x)
+        else:
+            # inside a running loop: avoid asyncio.run
+            if timeout and timeout > 0:
+                return loop.run_until_complete(asyncio.wait_for(x, timeout))
+            return loop.run_until_complete(x)
     return x
 
 

@@ -9,7 +9,7 @@ import typer
 # Updated imports to match your refactor
 from prefiq.core.bootstrap import main as bootstrap_main
 from prefiq.core.application import Application
-from prefiq.settings.get_settings import load_settings
+from prefiq.settings.get_settings import load_settings, clear_settings_cache
 
 
 def _maybe_await(x):
@@ -58,7 +58,7 @@ def sanity() -> None:
             scalar = getattr(db, "scalar", None) or getattr(db, "fetch_value", None)
             if callable(scalar):
                 val = _maybe_await(scalar("SELECT 1"))
-                ok = str(val) == "1" or val is True
+                ok = str(val).lower() in {"1", "true"} or val is True
     except Exception:
         ok = False
 
@@ -71,7 +71,8 @@ def sanity() -> None:
 
 def clear_cache(path: str = ".") -> None:
     """
-    Remove all __pycache__ directories and .pyc/.pyo files recursively.
+    Remove all __pycache__ directories and .pyc/.pyo files recursively,
+    and clear Prefiq settings cache.
     """
     root = Path(path).resolve()
     typer.echo(f"🧹 Clearing Python caches under {root} ...")
@@ -92,5 +93,9 @@ def clear_cache(path: str = ".") -> None:
                     removed_files += 1
                 except OSError:
                     pass
+
+    # ✅ new: clear Prefiq Settings cache
+    clear_settings_cache()
+    typer.echo("✅ Cleared Prefiq settings cache")
 
     typer.echo(f"✅ Removed {removed_dirs} __pycache__/ and {removed_files} .pyc/.pyo")

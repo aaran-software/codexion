@@ -125,7 +125,7 @@ class ConfigProvider(BaseProvider):
                 else:
                     model(**payload)               # pydantic v1
             except ValidationError as e:
-                errors.append(f"[{getattr(provider_cls, '__name__', 'Provider')}] invalid config: {e}")
+                errors.append(f"[{provider_cls.__module__}.{getattr(provider_cls,'__name__','Provider')}] invalid config: {e}")
 
         if errors:
             raise RuntimeError("Settings validation failed:\n" + "\n".join(errors))
