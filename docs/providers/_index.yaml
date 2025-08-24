@@ -1,9 +1,0 @@
-- slug: overview
-  order: 1
-  desc: Core Conventions
-  tags: [prefiq, framework, conventions]
-
-- slug: database
-  order: 2
-  desc: Database ServiceProvider
-  tags: [database, serviceprovider]
