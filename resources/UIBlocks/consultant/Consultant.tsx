@@ -75,7 +75,7 @@ export default function StatsSection({
                 smooth={true}
                 duration={600}
                 offset={-70}
-                className="bg-primary-foreground w-max font-semibold text-primary rounded-sm border border-ring/30 hover:bg-primary hover:text-primary-foreground px-4 py-2 text-center text-sm md:text-xl cursor-pointer"
+                className="bg-primary-foreground w-max font-semibold text-primary rounded-sm border border-ring/30 hover:bg-primary hover:border-ring hover:text-primary-foreground px-4 py-2 text-center text-sm md:text-xl cursor-pointer transition-all duration-300"
               >
                 {cta.buttonText}
               </ScrollLink>

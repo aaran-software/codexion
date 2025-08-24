@@ -8,15 +8,18 @@
   },
 
   "logo": {
-    "path": "/assets/logicx_logo.png",
+    "path": "/assets/logo/logicx_logo.svg",
     "position": "center",
-    "height": "20",
-    "font_size": "2",
-    "mode": "logo",
+    "height": 20,
+    "font_size": 0,
+    "font_subsize":0,
     "company_name": "Logicx",
+    "company_subname":"",
+    "mode":"logo",
     "color": "",
+    "text_color": "text-[#3A3182]",
     "padding": "2",
-    "font_subsize": "",
-    "company_subname": ""
+    "font":"",
+    "footer_logo": "/assets/logo/logicx_logo.svg"
   }
 }

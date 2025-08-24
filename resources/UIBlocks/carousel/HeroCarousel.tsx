@@ -44,11 +44,13 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({
           className={`lg:px-[12%] h-[90vh] mt-20 md:mt-0 md:h-[100vh] overflow-hidden relative ${slide.bgClass}`}
         >
           {/* Background */}
-          <img
-            src={slide.backdrop}
-            alt=""
-            className={`absolute w-full h-full z-0 blur-[3px] object-contain ${slide.backdropposition}`}
-          />
+          {slide.backdrop && (
+            <img
+              src={slide.backdrop}
+              alt=""
+              className={`absolute w-full h-full z-0 blur-[3px] object-contain ${slide.backdropposition}`}
+            />
+          )}
 
           {/* Content Wrapper */}
           <div

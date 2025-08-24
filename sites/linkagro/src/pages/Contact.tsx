@@ -6,7 +6,7 @@ function Contact() {
     
 
   return (
-    <div className="px-[10%] my-25">
+    <div className="px-4 lg:px-[10%] my-25">
       <Contact1
         addresses={[
           {
@@ -54,7 +54,7 @@ icon: FaIndustry,
           },
           {
             id: "phone",
-            href: "7395944679",
+            href: "9894864679",
             img: "/assets/svg/phone.svg",
             alt: "WhatsApp",
           },

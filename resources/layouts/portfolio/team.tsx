@@ -24,7 +24,7 @@ function Team({
   gridClass = "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4",
 }: TeamProps) {
   return (
-    <section className="lg:px-[12%] py-15 px-5 flex flex-col gap-8 bg-background text-website-foreground">
+    <section className="flex flex-col gap-8 bg-background text-website-foreground">
       {/* Title */}
       <div className="text-center font-bold text-2xl md:text-4xl">{title}</div>
 
@@ -52,19 +52,24 @@ function Team({
             <div className="text-md font-bold">{member.designation}</div>
             <div className="text-sm text-center px-2">{member.bio}</div>
             <p className="">
-              <a
-                href={`tel:${member.phone}`}
-                className="flex items-center gap-1"
-              >
-                <FaPhone className="rotate-90 shrink-0 w-5 h-5" />{" "}
-                {member.phone}
-              </a>
-              <a
-                href={`mailto:${member.email}`}
-                className="flex items-center gap-1 mt-1"
-              >
-                <MdEmail className="shrink-0 w-5 h-5" /> {member.email}
-              </a>
+              {member.phone && (
+                <a
+                  href={`tel:${member.phone}`}
+                  className="flex items-center gap-1"
+                >
+                  <FaPhone className="rotate-90 shrink-0 w-5 h-5" />{" "}
+                  {member.phone}
+                </a>
+              )}
+
+              {member.email && (
+                <a
+                  href={`mailto:${member.email}`}
+                  className="flex items-center gap-1 mt-1"
+                >
+                  <MdEmail className="shrink-0 w-5 h-5" /> {member.email}
+                </a>
+              )}
             </p>
           </div>
         ))}

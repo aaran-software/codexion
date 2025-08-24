@@ -176,7 +176,7 @@ function Product() {
       ],
     },
     {
-      image: "/assets/5Kg block packing.jpg",
+      image: "/assets/product/5Kg block packing.jpg",
       title: "PACKING",
       description: `Each product is securely compressed, wrapped, and loaded to
 ensure maximum safety during transit.

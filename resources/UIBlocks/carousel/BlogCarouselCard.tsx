@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import ImageButton from "../../components/button/ImageBtn";
 import { FaCalendarAlt, FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { BlogPost } from "../../layouts/blog/BlogList";
+import { BlogPost } from "../../global/library/blog";
 
 type BlogCarouselCardProps = {
   blogs: BlogPost[];

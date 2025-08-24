@@ -1,10 +1,10 @@
 function CardShowcase({ items }) {
   return (
-    <div className="py-10 space-y-16">
+    <div className="">
       {items.map((item, index) => (
         <div
           key={index}
-          className={`px-5 lg:px-[12%] grid mt-5 md:grid-cols-2 gap-15 items-center ${
+          className={`grid mt-5 md:grid-cols-2 gap-15 items-center ${
             index % 2 === 0 ? "lg:grid-flow-col-dense" : ""
           }`}
         >
