@@ -94,7 +94,7 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({
 
             {/* Image Section */}
             <motion.div
-              className="w-[80%]  z-1 flex justify-center"
+              className="w-[80%] z-1 flex justify-center"
               variants={imageVariant(0.8)}
               initial="hidden"
               whileInView="visible"

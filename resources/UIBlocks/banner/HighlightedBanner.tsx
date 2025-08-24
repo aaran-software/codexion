@@ -180,7 +180,7 @@ const HighlightedBanner: React.FC<HighlightedBannerProps> = ({ sections }) => {
                 {/* Button only visible on hover, stays in original slice center */}
                 {section.buttonLabel && activeIndex === idx && (
                   <div
-                    className="absolute bottom-4 mx-4 left-0"
+                    className="absolute bottom-4 left-0 z-100"
                     style={{
                       width: `${sliceWidthPercent}%`,
                       left: `${sliceWidthPercent * idx + sliceWidthPercent / 2}%`,
@@ -189,7 +189,7 @@ const HighlightedBanner: React.FC<HighlightedBannerProps> = ({ sections }) => {
                   >
                     <Button
                       label={section.buttonLabel}
-                      className="w-full bg-primary text-primary-foreground shadow-lg hover:scale-105 transition-transform"
+                      className="w-max bg-primary  text-primary-foreground shadow-lg hover:scale-105 transition-transform"
                     />
                   </div>
                 )}

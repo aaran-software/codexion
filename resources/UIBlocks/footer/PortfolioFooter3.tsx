@@ -55,6 +55,7 @@ const PortfolioFooter3: React.FC<FooterProps> = ({
   if (!settings) return null;
 
   const defaultLogo = {
+    path:"/assets/logo/logo.svg",
     height: 20,
     padding: 8,
     position: "center",
@@ -63,7 +64,7 @@ const PortfolioFooter3: React.FC<FooterProps> = ({
     company_name: "",
     company_subname: "",
     text_color: "",
-    footer_logo: "",
+    footer_logo: "/assets/logo/logo.svg",
   };
   const logo = settings.logo || defaultLogo;
   return (
