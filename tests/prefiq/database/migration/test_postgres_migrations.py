@@ -3,8 +3,8 @@ import socket
 import asyncio
 import pytest
 
-from prefiq.core.contracts.base_provider import Application
-from prefiq.providers.settings_provider import SettingsProvider
+from prefiq.core.application import Application
+from prefiq.providers.config_provider import ConfigProvider
 from prefiq.providers.database_provider import DatabaseProvider
 from prefiq.providers.migration_provider import MigrationProvider
 from prefiq.database.connection import get_engine
@@ -104,7 +104,7 @@ def test_postgres_migrations_table_exists(engine_swap, pg_cli):
     ):
         app = Application.get_app()
         app._providers.clear(); app._services.clear(); app._booted = False  # type: ignore[attr-defined]
-        app.register(SettingsProvider)
+        app.register(ConfigProvider)
         app.register(DatabaseProvider)
         app.register(MigrationProvider)
         app.boot()

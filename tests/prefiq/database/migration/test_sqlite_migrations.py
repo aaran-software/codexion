@@ -1,6 +1,6 @@
 from __future__ import annotations
-from prefiq.core.contracts.base_provider import Application
-from prefiq.providers.settings_provider import SettingsProvider
+from prefiq.core.application import Application
+from prefiq.providers.config_provider import ConfigProvider
 from prefiq.providers.database_provider import DatabaseProvider
 from prefiq.providers.migration_provider import MigrationProvider
 from prefiq.database.connection import get_engine
@@ -46,8 +46,10 @@ def _table_exists(engine) -> bool:
 def test_sqlite_migrations_table_exists(engine_swap):
     with engine_swap(DB_ENGINE="sqlite", DB_MODE="sync", DB_NAME=":memory:"):
         app = Application.get_app()
-        app._providers.clear(); app._services.clear(); app._booted = False  # type: ignore
-        app.register(SettingsProvider)
+        app._providers.clear();
+        app._services.clear();
+        app._booted = False  # type: ignore
+        app.register(ConfigProvider)
         app.register(DatabaseProvider)
         app.register(MigrationProvider)
         app.boot()

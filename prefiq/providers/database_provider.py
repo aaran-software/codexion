@@ -7,15 +7,14 @@ import inspect
 import os
 from typing import Any
 
-from prefiq.core.contracts.base_provider import BaseProvider
+from prefiq.core.application import BaseProvider, register_provider
 from prefiq.database.connection import get_engine, reset_engine
 from prefiq.database.connection_manager import connection_manager
 from prefiq.database.engines.abstract_engine import AbstractEngine
 from prefiq.database.hooks import before_execute, after_execute
 
-# MariaDB async pool helpers are optional; import inside guards when used.
 
-
+@register_provider
 class DatabaseProvider(BaseProvider):
     """
     Binds 'db' (engine singleton) into the container.

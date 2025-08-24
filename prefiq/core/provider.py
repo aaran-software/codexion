@@ -1,61 +1,67 @@
+# prefiq/core/provider.py
 from __future__ import annotations
 
-import logging
-from abc import ABC, abstractmethod
+from abc import ABC, ABCMeta, abstractmethod
 from typing import ClassVar, Dict, List, Set, Type
 
-# Internal registry: filled automatically when Provider subclasses are imported
+__all__ = ["Provider", "all_providers", "clear_provider_registry"]
+
+# In‑memory registry populated at import time
 _PROVIDER_REGISTRY: Dict[str, Type["Provider"]] = {}
 
 
-class _ProviderMeta(type):
+class _ProviderMeta(ABCMeta):
     """
-    Auto-register concrete Provider subclasses at import time.
-    A class is 'concrete' when:
-      - it's a subclass of Provider (but not Provider itself)
-      - abstract == False
-      - enabled == True
+    Auto‑register concrete Provider subclasses at import time.
+    Concrete = subclass of Provider (but not Provider itself), abstract == False, enabled == True.
     """
     def __new__(mcls, name, bases, ns, **kw):
         cls = super().__new__(mcls, name, bases, ns, **kw)
+        # Register only direct/indirect subclasses of Provider (not the base itself)
         if any(b.__name__ == "Provider" for b in bases):
             is_abstract = ns.get("abstract", False)
             is_enabled = ns.get("enabled", True)
             if not is_abstract and is_enabled:
-                fqname = f"{cls.__module__}.{cls.__name__}"
-                _PROVIDER_REGISTRY[fqname] = cls
+                _PROVIDER_REGISTRY[f"{cls.__module__}.{cls.__name__}"] = cls
         return cls
 
 
 class Provider(ABC, metaclass=_ProviderMeta):
     """
-    Extend this in any <app>.providers.* module.
-    Importing the module registers the class automatically.
+    App/service provider base.
+    Importing the module where your subclass lives is enough to get it registered.
     """
-    # Class flags / metadata
-    abstract: ClassVar[bool] = True        # subclasses become concrete by default
+    # Flags / metadata
+    abstract: ClassVar[bool] = True       # subclasses default to concrete unless they set True
     enabled:  ClassVar[bool] = True
-    order:    ClassVar[int]  = 100         # lower runs earlier (Laravel feel)
+    order:    ClassVar[int]  = 100        # lower = earlier
 
     # Optional diagnostics / future topo sort
     provides:   ClassVar[Set[str]] = set()
     depends_on: ClassVar[Set[str]] = set()
 
     def __init_subclass__(cls, **kw):
-        # If subclass doesn't set 'abstract', treat it as concrete
+        # If subclass doesn't declare 'abstract', treat it as concrete by default
         if "abstract" not in cls.__dict__:
             cls.abstract = False
 
+    # NOTE: Signature matches Application.register() which instantiates the class
+    # and then calls .register()/.boot() with no args.
     @abstractmethod
-    def register(self, app) -> None:
-        """Bind services into the container (app.bind/app.singleton/etc.)."""
+    def register(self) -> None:
+        """Bind services into the container (e.g., app.bind(...))."""
 
-    def boot(self, app) -> None:
-        """Optional: post-bind startup (routes, events, migrations, warmups)."""
+    def boot(self) -> None:
+        """Optional post‑bind startup (routes, events, warmups)."""
 
 
 def all_providers() -> List[Type["Provider"]]:
-    """Return all registered provider classes, sorted by .order."""
+    """Return all registered provider classes sorted by .order (ascending)."""
     items = list(_PROVIDER_REGISTRY.values())
     items.sort(key=lambda c: getattr(c, "order", 100))
     return items
+
+
+def clear_provider_registry() -> None:
+    """Testing helper: empty the global provider registry."""
+    _PROVIDER_REGISTRY.clear()

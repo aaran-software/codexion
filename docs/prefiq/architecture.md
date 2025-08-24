@@ -101,7 +101,7 @@ Key references: Application container + auto-registration (provider\_registry) ,
 2. **Create Application & lifecycle logs** – attach `on_booting`/`on_booted` hooks.
 3. **Register providers** – iterate provider list and `app.register(...)`. (Registration calls each provider’s `register`.)
 4. **Boot providers** – `app.boot()` triggers booting callbacks, auto-registers any `@register_provider` classes, then boots each provider.
-   * **SettingsProvider** binds `settings` (+ validates any provider’s schema\_model).
+   * **ConfigProvider** binds `settings` (+ validates any provider’s schema\_model).
    * **ProfilesProvider** binds profiles (may derive from `settings`).
    * **DatabaseProvider** creates engine, binds as `db`, validates config, tests connectivity, registers safe teardown.
 5. **Post-boot verification** – e.g., check `db` is bound.

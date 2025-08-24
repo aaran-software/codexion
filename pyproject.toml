@@ -32,7 +32,7 @@ Homepage = "https://github.com/aaransoftware/codexion"
 Repository = "https://github.com/aaransoftware/codexion"
 
 [project.scripts]
-prefiq = "prefiq.cli.main_cli:main"
+prefiq = "prefiq.cli.main:main"
 
 [build-system]
 requires = ["setuptools>=61", "setuptools-scm>=8"]

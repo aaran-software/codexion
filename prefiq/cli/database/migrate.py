@@ -2,7 +2,7 @@
 from __future__ import annotations
 import typer
 
-from prefiq.core.contracts.base_provider import Application
+from prefiq.core.application import Application
 from cortex.runtime.service_providers import PROVIDERS
 from prefiq.log.logger import get_logger
 

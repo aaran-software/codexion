@@ -1,18 +1,19 @@
+# prefiq/core/runtime/discovery.py
 from __future__ import annotations
+
 import importlib
 import pkgutil
-from typing import Iterable, List, Type, Dict
+from typing import Dict, Iterable, List, Type
 
 from prefiq.core.provider import Provider, all_providers
 from prefiq.settings.get_settings import load_settings
 
-# If your logger is available, you can uncomment these lines.
-# from prefiq.log.logger import get_logger
-# _log = get_logger("prefiq.discovery")
-
 
 def _iter_modules(pkg: str) -> Iterable[str]:
-    """Yield pkg submodules and one level of subpackages' modules."""
+    """
+    Yield immediate submodules and one level of subpackages' modules for 'pkg'.
+    Safe to call even if the package does not exist.
+    """
     try:
         p = importlib.import_module(pkg)
     except ModuleNotFoundError:
@@ -23,55 +24,56 @@ def _iter_modules(pkg: str) -> Iterable[str]:
         mod = f"{pkg}.{name}"
         yield mod
         if ispkg:
+            # one extra level in subpackages
             try:
                 sp = importlib.import_module(mod)
                 spath = getattr(sp, "__path__", None) or []
                 for __f, sub, __is in pkgutil.iter_modules(spath):
                     yield f"{mod}.{sub}"
             except Exception:
-                # if logging: _log.debug("skip_subpkg_error", extra={"module": mod})
+                # ignore subpackage scan errors
                 pass
 
 
-def _safe_import(mod: str) -> None:
+def _safe_import(module_name: str) -> None:
     try:
-        importlib.import_module(mod)
-        # if logging: _log.debug("imported", extra={"module": mod})
+        importlib.import_module(module_name)
     except Exception:
-        # if logging: _log.warning("import_failed", extra={"module": mod, "error": str(e)})
+        # Swallow import failures — a missing providers package shouldn't kill discovery.
         pass
 
 
-def _settings_lists():
+def _settings() -> tuple[list[str], list[str], set[str], set[str], Dict[str, int]]:
     s = load_settings()
-    apps  = list(getattr(s, "REGISTERED_APPS", []) or [])
-    roots = list(getattr(s, "PROVIDER_DISCOVERY_ROOTS", []) or [])
+    apps    = list(getattr(s, "REGISTERED_APPS", []) or [])
+    roots   = list(getattr(s, "PROVIDER_DISCOVERY_ROOTS", []) or [])
     include = set(getattr(s, "PROVIDERS_INCLUDE", []) or [])
     exclude = set(getattr(s, "PROVIDERS_EXCLUDE", []) or [])
-    ordermap: Dict[str, int] = dict(getattr(s, "PROVIDERS_ORDER", {}) or {})
-    return apps, roots, include, exclude, ordermap
+    order   = dict(getattr(s, "PROVIDERS_ORDER", {}) or {})
+    return apps, roots, include, exclude, order
 
 
 def discover_providers() -> List[Type[Provider]]:
     """
-    Config-driven discovery:
+    Hybrid discovery (config‑driven):
       1) Import <app>.providers.* for each app in REGISTERED_APPS
       2) Import modules under each root in PROVIDER_DISCOVERY_ROOTS
-      3) Force-include / exclude / order overrides from settings
+      3) Apply INCLUDE/EXCLUDE/ORDER overrides from settings
+      4) Return sorted Provider classes
     """
-    apps, roots, include, exclude, ordermap = _settings_lists()
+    apps, roots, include, exclude, ordermap = _settings()
 
-    # 1) scan each app's providers/
+    # 1) scan each app's providers/ package
     for app in apps:
         for mod in _iter_modules(f"{app}.providers"):
             _safe_import(mod)
 
-    # 2) scan extra roots (built-ins, etc.)
+    # 2) scan extra discovery roots
     for root in roots:
         for mod in _iter_modules(root):
             _safe_import(mod)
 
-    # 3) force include: import modules so metaclass can register classes
+    # 3a) force‑include: import module so its Provider subclass registers via metaclass
     for fq in include:
         try:
             mod, _cls = fq.rsplit(".", 1)
@@ -79,17 +81,17 @@ def discover_providers() -> List[Type[Provider]]:
         except Exception:
             pass
 
-    # Collect current providers
+    # 3b) collect the currently known providers
     current = {f"{c.__module__}.{c.__name__}": c for c in all_providers()}
 
-    # Apply order overrides
+    # 3c) order overrides
     for fq, k in ordermap.items():
         if fq in current:
             setattr(current[fq], "order", int(k))
 
-    # Exclude
+    # 3d) exclude
     result = [cls for fq, cls in current.items() if fq not in exclude]
 
-    # Final sort
+    # 4) final sort
     result.sort(key=lambda c: getattr(c, "order", 100))
     return result

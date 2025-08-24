@@ -1,5 +1,5 @@
 from prefiq.core.application import Application
-from prefiq.core.runtime.service_providers import get_service_providers
+from prefiq.core.service_providers import get_service_providers
 from prefiq.settings.get_settings import load_settings
 from prefiq.database.connection import get_engine
 

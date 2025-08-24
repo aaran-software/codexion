@@ -72,21 +72,30 @@ class Application:
     def register_decorated_providers(self) -> None:
         """
         Register all providers that were marked with @register_provider.
-        Safe to call multiple times; duplicates are avoided by identity check.
+        Safe to call multiple times; duplicates are avoided by class.
         """
         queued = list(self.provider_registry)
         if not queued:
             return
 
-        existing_ids = {id(p) for p in self._providers}
-        for prov_cls in queued:
-            # avoid re-adding an already-instantiated provider of the same class
-            if any(isinstance(p, prov_cls) for p in self._providers):
+        # ✅ accept only proper BaseProvider subclasses; purge bad entries in-place
+        filtered = []
+        for q in queued:
+            try:
+                if isinstance(q, type) and issubclass(q, BaseProvider):
+                    filtered.append(q)
+            except Exception:
+                pass
+        # Overwrite the global queue so later calls don’t see the bad entries
+        type(self).provider_registry = filtered
+
+        existing_classes = {p.__class__ for p in self._providers}
+        for prov_cls in filtered:
+            if prov_cls in existing_classes:
                 continue
             inst = prov_cls(self)
             inst.register()
-            if id(inst) not in existing_ids:
-                self._providers.append(inst)
+            self._providers.append(inst)
 
     def boot(self) -> None:
         """
@@ -178,8 +187,12 @@ class BaseProvider(ABC):
 def register_provider(cls: Type[BaseProvider]) -> Type[BaseProvider]:
     """
     Decorator to opt a provider class into auto-registration.
-    Importing a module that defines a decorated provider is enough;
-    the Application will register these just before boot().
+    If someone decorates a non-provider by mistake, ignore it safely.
     """
+    try:
+        if not isinstance(cls, type) or not issubclass(cls, BaseProvider):
+            return cls   # ignore quietly
+    except Exception:
+        return cls
     Application.provider_registry.append(cls)
     return cls
