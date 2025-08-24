@@ -1,20 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import GlobalSearch from "../../components/input/search-box";
+import { BlogPost } from "../../global/library/blog";
 
-export type BlogPost = {
-  id: number;
-  title: string;
-  date: string;
-  author: {
-    name: string;
-    avatar: string;
-  };
-  coverImage: string;
-  category: string;
-  tags: string[];
-  description: string; // HTML string
-  isComment?:boolean
-};
+
 
 interface BlogListProps {
   blogs: BlogPost[];

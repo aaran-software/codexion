@@ -27,7 +27,6 @@ function About() {
       designation: "Head – Logistics & Exports",
       bio: "",
       email: "ram@linkagro.in",
-      phone: "+91 70100 58064",
     },
     {
       image: "/assets/team/siva.jpg",
@@ -35,7 +34,6 @@ function About() {
       designation: "Head – Production & Sourcing",
       bio: "",
       email: "thiru@linkagro.in",
-      phone: "+91 98948 64679",
     },
   ];
   return (

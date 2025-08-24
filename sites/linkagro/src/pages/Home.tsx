@@ -31,7 +31,7 @@ function Home() {
       image: "/assets/product/bb6501.png",
       bgClass: "",
       backdrop: "assets/backdrop/bg5.png",
-      backdropposition: "-top-75 -left-5 md:-left-70 md:-top-40 lg:-left-150 lg:top-0",
+      backdropposition: "-top-75 -left-5 md:-left-70 md:-top-40 lg:-left-170 lg:top-0",
     },
     {
       id: 3,
@@ -202,11 +202,11 @@ packing options.`,
         <TestimonialCarousel testimonials={Testimonials} autoSlide={true} />
       </div> */}
 
-      <div className="md:px-[10%] p-4 mt-10">
+      <div className="md:px-[10%] p-4 my-15">
         <BlogCarouselCard blogs={blogs} title={"Latest Posts & Articles"} />
       </div>
 
-      <div className="mb-20">
+      <div className="mb-25">
         <PortfolioContact mapSrc={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3298.8954649636466!2d79.01264938194326!3d9.311330379605293!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b0194ceb3bc85e9%3A0x5260d3415a34fe6b!2sUchipuli%2C%20Tamil%20Nadu!5e1!3m2!1sen!2sin!4v1755938160114!5m2!1sen!2sin`} />
       </div>
     </div>

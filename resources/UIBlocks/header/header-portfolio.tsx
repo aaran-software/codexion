@@ -4,20 +4,7 @@ import { IoMdMenu } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import ContactHeader, { ContactItem } from "./ContactHeader";
-
-type LogoConfig = {
-  path: string;
-  height: number;
-  padding: number;
-  position: "start" | "center" | "end";
-  font_size: number;
-  company_name?: string;
-  mode?: "logo" | "name" | "both";
-  font: string;
-  text_color: string;
-  company_subname: string;
-  font_subsize: number;
-};
+import { useAppSettings } from "../../../apps/global/useSettings";
 
 type MenuItem = {
   label: string;
@@ -25,20 +12,36 @@ type MenuItem = {
 };
 
 type HeaderPortfolioProps = {
-  logo: LogoConfig;
   menu: MenuItem[];
   contact: ContactItem[];
   contactHeader?: boolean;
 };
 
 function HeaderPortfolio({
-  logo,
   menu,
   contact,
   contactHeader = false,
 }: HeaderPortfolioProps) {
+  const settings = useAppSettings();
+  if (!settings) return null;
+
+  const defaultLogo = {
+    path: "/assets/logo/logo.png",
+    height: 20,
+    padding: 8,
+    position: "center",
+    font_size: 25,
+    font_subsize: 15,
+    company_name: "",
+    company_subname: "",
+    text_color: "",
+  };
+  const logo = settings.logo || defaultLogo;
+
   const [menuVisible, setMenuVisible] = useState(false);
   const [showContact, setShowContact] = useState(true); // new state
+  const [active, setActive] = useState(menu[0]?.path); // default = first item
+
   const navigate = useNavigate();
 
   // Scroll listener
@@ -132,6 +135,7 @@ function HeaderPortfolio({
         </div>
 
         {/* Desktop Menu */}
+
         <ul className="hidden md:flex flex-row justify-between gap-10 items-center">
           {menu.map((item) => (
             <li key={item.path} className="relative group">
@@ -141,8 +145,13 @@ function HeaderPortfolio({
                 duration={600}
                 offset={-70}
                 spy
-                activeClass="text-primary border-b-4 border-b-primary font-bold"
-                className="cursor-pointer text-lg text-foreground hover:text-hover transition-all duration-200"
+                onClick={() => setActive(item.path)}
+                onSetActive={() => setActive(item.path)}
+                className={`cursor-pointer text-lg transition-all duration-200 ${
+                  active === item.path
+                    ? "text-primary border-b-4 border-b-primary font-bold"
+                    : "text-foreground hover:text-hover"
+                }`}
               >
                 {item.label}
               </ScrollLink>

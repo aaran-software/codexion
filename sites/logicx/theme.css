@@ -1,6 +1,4 @@
 @import "tailwindcss";
-/* @import "tw-animate-css"; */
-@import "tailwindcss";
 
 @tailwind utilities;
 
@@ -57,6 +55,12 @@
   .no-print {
     display: none !important;
   }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
 }
 
 @custom-variant dark (&:is(.dark *));
@@ -134,6 +138,9 @@
   --color-profit: var(--profit);
   --color-loss: var(--loss);
   --color-input-warning: var(--input-warning);
+
+  --color-footer: var(--footer);
+  --color-tag: var(--tag);
 }
 
 @layer base {
@@ -205,6 +212,9 @@
     --loss: #d50808;
 
     --input-warning: #fef2f2;
+
+    --footer: #000000;
+    --tag: #3a3182;
   }
 
   .dark {
@@ -272,5 +282,8 @@
     --loss: #d50808d5;
 
     --input-warning: #000000;
+
+    --footer: #000000;
+    --tag: #3a3182;
   }
 }

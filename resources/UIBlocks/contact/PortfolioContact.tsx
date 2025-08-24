@@ -4,7 +4,7 @@ interface PortfolioContactProps {
 
 function PortfolioContact({ mapSrc }: PortfolioContactProps) {
   return (
-    <div className="px-4 md:px-[10%]">
+    <div className="">
       <h1 className="text-5xl font-bold py-10 text-center">
         Have Any Questions?
       </h1>

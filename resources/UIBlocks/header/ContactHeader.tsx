@@ -31,7 +31,7 @@ function ContactHeader({ contacts, buttonLabel }: ContactHeaderProps) {
       {/* Button */}
       <Button
         label={buttonLabel}
-        className="bg-background text-primary !rounded-none"
+        className="bg-foreground text-background !rounded-full hover:bg-background hover:text-foreground"
       />
     </div>
   );

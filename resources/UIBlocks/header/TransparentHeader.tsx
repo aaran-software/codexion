@@ -21,7 +21,7 @@ function TransparentHeader({ menu }: TransparentHeaderProps) {
   if (!settings) return null;
 
   const defaultLogo = {
-    path: "/assets/logo.png",
+    path: "/assets/logo/logo.png",
     height: 20,
     padding: 8,
     position: "center",

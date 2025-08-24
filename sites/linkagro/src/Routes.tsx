@@ -11,6 +11,7 @@ import LoadingScreen from "../../../resources/components/loading/LoadingScreen";
 import BlogForm from "./pages/blog/BlogForm";
 import PortfolioFooter3 from "../../../resources/UIBlocks/footer/PortfolioFooter3";
 import { AiFillClockCircle } from "react-icons/ai";
+import NotFound from "../../../resources/components/notfound/NotFound";
 const Home = lazy(() => import("./pages/Home"));
 const Product = lazy(() => import("./pages/Product"));
 const Contact = lazy(() => import("./pages/Contact"));
@@ -19,6 +20,7 @@ const Manufacture = lazy(() => import("./pages/Manufacture"));
 const HeaderPortfolio2 = lazy(
   () => import("../../../resources/UIBlocks/header/HeaderPortfolio2")
 );
+import ScrollToTopButton from "../../../resources/components/common/scrolltotopbutton";
 
 const BlogLayout1 = lazy(
   () => import("../../../resources/layouts/blog/BlogLayout1")
@@ -31,7 +33,7 @@ function AppRoutes() {
   const contacts = [
     {
       icon: FaPhoneAlt,
-      value: "+91 7395944679",
+      value: "+91 98948 64679",
       href: "https://wa.me/917395944679",
     },
     { icon: AiFillClockCircle, value: "Mon-Sat: 9.00-18.00" },
@@ -63,6 +65,7 @@ function AppRoutes() {
   return (
     <div className="overflow-y-hidden bg-background">
       <ScrollToTop />
+      <ScrollToTopButton />
       <Suspense fallback={<LoadingScreen image={"/assets/logo/logo.svg"} />}>
         <HeaderPortfolio2
           menu={[
@@ -92,10 +95,22 @@ function AppRoutes() {
               />
             }
           />
+          <Route
+          path="*"
+          element={
+            <NotFound
+              title="Oops! Page not found"
+              description="The page you are looking for might have been moved or deleted."
+              buttonLabel="Back to Home"
+              homePath="/"
+              highlightColor="text-red-500"
+            />
+          }
+        />
         </Routes>
 
         <PortfolioFooter3
-          address="3/306-A, Thandradevi Pattinam, Paramakudi-623707, Ramnad District"
+          address="3/306-A, Thandradevi Pattinam, Paramakudi-623707, Ramnad District, Tamil Nadu, India"
           contacts={contacts}
           socialLinks={socialLinks}
           pages={pages}

@@ -2,6 +2,7 @@ import React, { JSX } from "react";
 import { IconType } from "react-icons";
 import { useAppSettings } from "../../../apps/global/useSettings";
 import { useNavigate } from "react-router-dom";
+import Button from "../../components/button/Button";
 
 type ContactInfo = {
   icon: IconType;
@@ -29,6 +30,9 @@ type FooterProps = {
   newsletterButtonText?: string;
   companyName: string;
   textColor?: string;
+  version?: string;
+  poweredCompany?:string;
+  poweredUrl?:string
 };
 
 const PortfolioFooter3: React.FC<FooterProps> = ({
@@ -41,6 +45,9 @@ const PortfolioFooter3: React.FC<FooterProps> = ({
   newsletterButtonText = "Subscribe",
   companyName,
   textColor,
+  version = "1.0",
+  poweredCompany="Aaran",
+  poweredUrl="https://my.codexsun.com/"
 }) => {
   const settings = useAppSettings();
   const navigate = useNavigate();
@@ -179,7 +186,10 @@ const PortfolioFooter3: React.FC<FooterProps> = ({
           <ul className="space-y-1">
             {pages?.map((page, idx) => (
               <li key={idx}>
-                <a href={page.href} className="text-background/90">
+                <a
+                  href={page.href}
+                  className="text-background/90 hover:text-primary"
+                >
                   {page.label}
                 </a>
               </li>
@@ -190,26 +200,39 @@ const PortfolioFooter3: React.FC<FooterProps> = ({
         <div className="flex flex-col gap-4">
           <h3 className="font-bold text-lg">Subscribe</h3>
           <p className="text-background/90">{newsletterText}</p>
-          <form className="flex items-center h-max bg-white rounded-full overflow-hidden w-max md:w-full">
+          <form className="flex items-center h-max bg-white rounded-full overflow-hidden w-max md:w-full max-w-full">
             <input
               type="email"
               placeholder={newsletterPlaceholder}
-              className="flex-1 px-4 py-2 text-gray-800 outline-none min-w-0"
+              className="flex-1 min-w-0 px-4 py-2 text-gray-800 outline-none"
             />
-            <button
+            <Button
               type="submit"
-              className="bg-primary text-primary-foreground px-3 py-2 m-1 cursor-pointer whitespace-nowrap font-medium rounded-r-full flex-shrink-0"
+              className="bg-primary text-sm text-primary-foreground px-3 py-2 m-1 cursor-pointer whitespace-nowrap font-medium rounded-r-full flex-shrink-0 hover:bg-hover"
             >
               {newsletterButtonText}
-            </button>
+            </Button>
           </form>
         </div>
       </div>
 
-      {/* Footer Bottom */}
-      <div className="text-center border-t border-ring/30 text-gray-400 mt-10 pt-4">
-        &copy; {new Date().getFullYear()} {companyName} All rights reserved.
+      <div className="flex flex-row gap-3 mt-10 pt-4 justify-between border-t border-white/10">
+        <div></div>
+        <div className="text-center">
+          &copy; {new Date().getFullYear()} {companyName} All rights reserved.
+          Powered by
+          <a href={poweredUrl} target="_blank" className="ml-1">
+            {poweredCompany}
+          </a>
+        </div>
+        <div className="block my-auto text-background/50 pr-5 cursor-pointer whitespace-nowrap">
+          V {version}
+        </div>
       </div>
+      {/* Footer Bottom */}
+      {/* <div className="text-center border-t border-ring/30 text-gray-400 mt-10 pt-4">
+        &copy; {new Date().getFullYear()} {companyName} All rights reserved. 
+      </div> */}
     </footer>
   );
 };

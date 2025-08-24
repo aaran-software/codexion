@@ -1,11 +1,8 @@
 import React, { lazy, Suspense, useState } from "react";
 import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
 import { AiFillClockCircle } from "react-icons/ai";
-import ScrollToTop from "../../../../resources/components/common/scrolltotopbutton";
+import ScrollToTopButton from "../../../../resources/components/common/scrolltotopbutton";
 const Team = lazy(() => import("../../../../resources/layouts/portfolio/team"));
-const Articles = lazy(
-  () => import("../../../../resources/components/website/articles")
-);
 const PortfolioContact = lazy(
   () => import("../../../../resources/UIBlocks/contact/PortfolioContact")
 );
@@ -15,14 +12,12 @@ const HeaderPortfolio = lazy(
 const CardShowcase = lazy(
   () => import("../../../../resources/UIBlocks/CardShowcase")
 );
-import LoadingScreen from "../../../../resources/components/loading/LoadingScreen";
 import TestimonialCarousel from "../../../../resources/UIBlocks/testimonials/TestimonialCard";
 import Consultant from "../../../../resources/UIBlocks/consultant/consultant";
 import HighlighCard from "../../../../resources/UIBlocks/card/HighlighCard";
 import GallaryCarousel from "../../../../resources/UIBlocks/carousel/GallaryCarousel";
 import { FaEnvelope, FaPhoneAlt } from "react-icons/fa";
 import PortfolioFooter3 from "../../../../resources/UIBlocks/footer/PortfolioFooter3";
-import { Article } from "../../../../resources/components/website/articles";
 import HeroCarousel, {
   Slide,
 } from "../../../../resources/UIBlocks/carousel/HeroCarousel";
@@ -31,6 +26,15 @@ const BrandMarquee = lazy(
   () => import("../../../../resources/components/marquee/BrandMarquee")
 );
 import { FaEye, FaBullseye, FaHandshake } from "react-icons/fa";
+import BlogCarouselCard from "../../../../resources/UIBlocks/carousel/BlogCarouselCard";
+import { LogicxBlogs } from "../../../../resources/global/library/blog";
+import HighlightedBanner from "../../../../resources/UIBlocks/banner/HighlightedBanner";
+import VerticalHoverBlocks from "../../../../resources/UIBlocks/banner/VerticalHoverBlocks";
+const ProductShowcase = lazy(
+  () =>
+    import("../../../../resources/UIBlocks/portfolioProducts/ProductShowcase")
+);
+
 const Home: React.FC = () => {
   // Company About Card
 
@@ -104,14 +108,43 @@ const Home: React.FC = () => {
     { icon: "/assets/svg/support.svg", label: "Training & Support" },
   ]);
 
-  const portfolioImages = [
-    "/assets/sample1.jpg",
-    "/assets/sample2.jpg",
-    "/assets/sample4.jpg",
-    "/assets/sample1.jpg",
-    "/assets/sample2.jpg",
-    "/assets/sample4.jpg",
-  ];
+  const [OurStory] = useState([
+    {
+      image: "/assets/story/1.webp",
+      title: "Our Humble Beginnings",
+      description:
+        "We started as a small team with big dreams, committed to creating innovative digital solutions that solve real business challenges.",
+      buttonLabel: "Learn More",
+    },
+    {
+      image: "/assets/story/2.webp",
+      title: "First Milestone",
+      description:
+        "Our first major project helped us earn trust from clients worldwide, setting the foundation for long-term success.",
+      buttonLabel: "Discover",
+    },
+    {
+      image: "/assets/story/3.webp",
+      title: "Growing Stronger",
+      description:
+        "With dedication and teamwork, we expanded our services, embraced new technologies, and grew our global presence.",
+      buttonLabel: "Explore",
+    },
+    {
+      image: "/assets/story/4.webp",
+      title: "Global Recognition",
+      description:
+        "Awards and client testimonials recognized our passion for excellence, reinforcing our reputation as a trusted partner.",
+      buttonLabel: "View More",
+    },
+    {
+      image: "/assets/story/5.webp",
+      title: "Looking Ahead",
+      description:
+        "Our journey continues with a mission to innovate, inspire, and deliver value to every client we serve.",
+      buttonLabel: "Join Us",
+    },
+  ]);
 
   const [whyChoose] = useState<{ text: string }[]>([
     {
@@ -217,7 +250,7 @@ const Home: React.FC = () => {
 
   const cta = {
     title: "Start your ERP journey with a free consultation today.",
-    buttonText: "CONTACT US",
+    buttonText: "Enquiry Now",
     buttonLink: "#contact",
   };
 
@@ -318,6 +351,49 @@ const Home: React.FC = () => {
     },
   ];
 
+  const product = [
+    {
+      id: 1,
+      title: "Linkagro Exports Portfolio",
+      description: "A modern personal portfolio site.",
+      category: "website",
+      image: "/assets/product/linkagro.png",
+      link: "https://fabulous-queijadas-684a73.netlify.app/",
+    },
+    {
+      id: 2,
+      title: "Tech media eCart",
+      description: "Mobile app for shopping.",
+      category: "app",
+      image: "/assets/product/techmedia.png",
+      link: "https://techmedia.in",
+    },
+    {
+      id: 3,
+      title: "Logicx Portfolio",
+      description: "Corporate business website.",
+      category: "website",
+      image: "/assets/product/logicx.png",
+      link: "https://logicx.in/",
+    },
+    {
+      id: 4,
+      title: "Aaran Portfolio",
+      description: "Corporate business website.",
+      category: "website",
+      image: "/assets/product/aaran.png",
+      link: "https://grand-florentine-b254ee.netlify.app/",
+    },
+    {
+      id: 5,
+      title: "ERPNext",
+      description: "Corporate business website.",
+      category: "app",
+      image: "/assets/product/linkagro.png",
+      link: "https://example.com/company",
+    },
+  ];
+
   const teamData = [
     {
       image: "/assets/sample1.jpg",
@@ -379,32 +455,11 @@ const Home: React.FC = () => {
     },
   ];
 
-  const [address] = useState([
-    {
-      title: "Address",
-      text: "Moon Street , 446 Jupiter, JP 44600",
-    },
-    {
-      title: "Email",
-      text: "info@logicx.in",
-    },
-    {
-      title: "Phone",
-      text: "9843213500",
-    },
-    {
-      title: "Time",
-      text: "Mon - Sat : 9AM - 6PM",
-    },
-  ]);
-
-  // footer
-
   const contacts = [
     {
       icon: FaPhoneAlt,
-      value: "+91 98765 43210",
-      href: "https://wa.me/919543439311",
+      value: "+919894244450",
+      href: "https://wa.me/919894244450",
     },
     { icon: AiFillClockCircle, value: "Mon-Sat: 9.00-18.00" },
     {
@@ -429,28 +484,6 @@ const Home: React.FC = () => {
 
   const newsletterText = "Subscribe to get the latest updates.";
 
-  const articlesData: Article[] = [
-    {
-      image: "/assets/sample1.jpg",
-      title: "The Best Place to Invest Your Money",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-      path: "/blog",
-    },
-    {
-      image: "/assets/sample2.jpg",
-      title: "How to Save Money Effectively",
-      description:
-        "Tips and tricks to manage your finances and save smartly...",
-      path: "/blog",
-    },
-    {
-      image: "/assets/sample3.jpg",
-      title: "Top 10 Investment Strategies",
-      description: "Explore the best ways to grow your wealth efficiently...",
-      path: "/blog",
-    },
-  ];
-
   const items = [
     {
       title: "Our Vision",
@@ -468,99 +501,116 @@ const Home: React.FC = () => {
       icon: <FaHandshake />,
     },
   ];
+  const blogs = [...LogicxBlogs];
   return (
     <main>
-      <Suspense fallback={<LoadingScreen image={"/assets/logicx_logo.png"} />}>
-        <HeaderPortfolio
-          logo={{
-            path: "/assets/logo.png",
-            mode: "logo",
-            company_name: "Codexion",
-            font_size: 2,
-            height: 60,
-            padding: 6,
-            position: "center",
-            font:"",
-            text_color:"",
-            company_subname:"",
-            font_subsize:2
-          }}
-          menu={[
-            { label: "Home", path: "home" },
-            { label: "About Us", path: "about" },
-            { label: "Industry", path: "industry" },
-            { label: "Services", path: "services" },
-            { label: "Contact", path: "contact" },
-          ]}
-          contact={contactItems}
-          contactHeader={true}
+      <HeaderPortfolio
+        menu={[
+          { label: "Home", path: "home" },
+          { label: "About Us", path: "about" },
+          { label: "Industry", path: "industry" },
+          { label: "Services", path: "services" },
+          { label: "Contact", path: "contact" },
+        ]}
+        contact={contactItems}
+        contactHeader={true}
+      />
+      <section id="home" className="">
+        {/* Top view */}
+        <HeroCarousel
+          slides={slidesData}
+          autoSlide={true}
+          autoSlideInterval={7000}
         />
-        <section id="home" className="pt-20">
-          {/* Top view */}
-          <HeroCarousel
-            slides={slidesData}
-            autoSlide={true}
-            autoSlideInterval={7000}
-          />
-          {/* Company About Card */}
-          <div className="grid grid-cols-1 lg:grid-cols-5">
-            {card.map((item, index) => (
-              <div
-                key={index}
-                className="flex flex-col p-5 lg:p-8 bg-[#17965f] gap-5 border-r-1 items-center justify-center  border-b lg:border-0 border-gray-100 last:border-b-0 pb-3"
-              >
-                <div className="w-15 xl:w-20">
-                  <img src={item.icon} alt="" loading="lazy" />
-                </div>
-                <div className="text-lg uppercase mt-2 font-semibold text-gray-50">
-                  {item.label}
-                </div>
+        {/* Company About Card */}
+        <div className="grid grid-cols-1 mb-10 lg:grid-cols-5">
+          {card.map((item, index) => (
+            <div
+              key={index}
+              className="flex flex-col p-5 lg:p-8 bg-[#17965f] gap-5 border-r-1 items-center justify-center  border-b lg:border-0 border-gray-100 last:border-b-0"
+            >
+              <div className="w-15 xl:w-20">
+                <img src={item.icon} alt="" loading="lazy" />
               </div>
-            ))}
-          </div>
-        </section>
-
-        {/* About Part */}
-        <div id="about" className="flex flex-col gap-15 pb-20">
-          <div className="px-5 lg:px-[12%] grid lg:grid-cols-2 gap-15 pt-20 pb-10">
-            <div className="flex justify-center items-center">
-              <img
-                src={"/assets/svg/home-hero.svg"}
-                className="w-[70%] lg:w-full"
-                alt="img"
-                loading="lazy"
-              />
+              <div className="text-lg uppercase mt-2 font-semibold text-gray-50">
+                {item.label}
+              </div>
             </div>
-
-            <div className="flex flex-col  justify-center gap-8">
-              <h1 className="text-xl md:text-3xl lg:text-4xl font-bold">
-                Leading ERP Solution Provider in India
-              </h1>
-              <p>
-                At LogicX, we specialize in ERP implementation, customization,
-                and ongoing support for small to medium businesses across India.
-                Whether you run a manufacturing unit, textile business, retail
-                shop, or service-based company, our tailored ERP solutions help
-                streamline operations, reduce manual errors, and improve
-                decision-making.
-              </p>
-              <p>
-                Our certified developers and domain experts ensure seamless
-                integration with tools like Tally, Woo Commerce, and payment
-                gateways. We offer cloud hosting, server setup, data migration,
-                and training for your team—so you can focus on growth, not on
-                systems.
-              </p>
-            </div>
-          </div>
-          <HighlightCardWithIcon
-            className="grid-cols-1 md:grid-cols-3"
-            sectionTitle=""
-            items={items}
-          />
-          <HighlighCard sectionTitle="Why Choose LogicX?" items={whyChoose} />
+          ))}
         </div>
-        {/* portfolio Section */}
+      </section>
+
+      {/* About Part */}
+      <section id="about" className="flex flex-col gap-15 pb-20">
+        <div className="px-5 lg:px-[12%] grid lg:grid-cols-2 gap-15 pt-10 pb-10">
+          <div className="flex justify-center items-center">
+            <img
+              src={"/assets/svg/home-hero.svg"}
+              className="w-[70%] lg:w-full"
+              alt="img"
+              loading="lazy"
+            />
+          </div>
+
+          <div className="flex flex-col  justify-center gap-8">
+            <h1 className="text-xl md:text-3xl lg:text-4xl font-bold">
+              Leading ERP Solution Provider in India
+            </h1>
+            <p>
+              At LogicX, we specialize in ERP implementation, customization, and
+              ongoing support for small to medium businesses across India.
+              Whether you run a manufacturing unit, textile business, retail
+              shop, or service-based company, our tailored ERP solutions help
+              streamline operations, reduce manual errors, and improve
+              decision-making.
+            </p>
+            <p>
+              Our certified developers and domain experts ensure seamless
+              integration with tools like Tally, Woo Commerce, and payment
+              gateways. We offer cloud hosting, server setup, data migration,
+              and training for your team—so you can focus on growth, not on
+              systems.
+            </p>
+          </div>
+        </div>
+        <HighlightCardWithIcon
+          className="grid-cols-1 md:grid-cols-3"
+          sectionTitle=""
+          items={items}
+        />
+        
+        <div className="px-4 lg:px-[10%]">
+          <VerticalHoverBlocks
+          sections={[
+            {
+              label: "CX INSIGHTS",
+              date: "APR 17, 2024",
+              title:
+                "AI-Driven Agent Training: A Paradigm Shift for Contact Centers",
+              description:
+                "In this LinkedIn Live event, Forrester and [24]7.ai discussed how generative AI is transforming contact centers with quick, cost-effective, and efficient agent onboarding.",
+              image: "/assets/1.jpg",
+              ctaText: "Read More",
+            },
+            {
+              label: "EVENTS",
+              title: "Upcoming Webinars",
+              description: "Join our thought leaders for live discussions.",
+              image: "/assets/2.jpg",
+            },
+            {
+              label: "NEWS",
+              title: "Product Release Q3",
+              description: "Discover the latest features and updates.",
+              image: "/assets/3.jpg",
+            },
+          ]}
+        />
+        </div>
+
+        <HighlighCard sectionTitle="Why Choose LogicX?" items={whyChoose} />
+
+        {/* Our ERP Success Stories */}
         <div className="flex flex-col gap-3 pt-5">
           <h1 className="text-2xl text-center md:text-3xl lg:text-4xl font-bold p-5">
             Our ERP Success Stories
@@ -572,77 +622,79 @@ const Home: React.FC = () => {
             SMEs automate workflows, improve visibility, and scale with
             confidence.
           </p>
-          <div className="mt-10">
-            <GallaryCarousel images={portfolioImages} />
+          <div className="px-4 lg:px-[10%]">
+            <HighlightedBanner sections={OurStory} />
           </div>
         </div>
-        {/* industry Component */}
-        <section
-          id="industry"
-          className="min-h-[100vh] text-website-foreground flex items-center justify-center"
-        >
-          <CardShowcase items={industries} />
-        </section>
-        <div className="py-20 ">
-          <Consultant
-            companyInfo={companyInfo}
-            backgroundImage="/assets/software.avif"
-            cta={cta}
-          />
-        </div>
-        {/* Why Choose LogicX? */}
-        {/* services Component */}
-        <section id="services" className="min-h-[100vh] pb-10">
-          <CardShowcase items={projects} />
+      </section>
 
-          <Team
-            title="Meet Our Professionals"
-            description="Our team combines creativity, expertise, and dedication to deliver outstanding solutions for our clients."
-            members={teamData}
-          />
-
-          <div className="my-10 py-10 md:py-10 bg-website-background">
-            <BrandMarquee type="logo" brands={brands} speed={30} height={16} />
-          </div>
-
-          <div className="mt-20">
-            <h1 className="text-2xl md:text-4xl text-center font-bold">
-              What Our Client Says
-            </h1>
-            <TestimonialCarousel testimonials={Testimonials} />
-          </div>
-        </section>
-        <div className="px-5">
-          <Articles
-            sectionTitle="Latest Posts & Articles"
-            sectionDescription="Discover the latest insights, tips, and guides from our experts to help you succeed."
-            articles={articlesData}
-          />
-        </div>
-        <section
-          id="contact"
-          className="min-h-[100vh] flex flex-col mb-20 gap-20"
-        >
-          <PortfolioContact />
-          <HighlighCard
-            sectionTitle="Contact ERP Experts | LogicX Coimbatore"
-            items={address}
-          />
-        </section>
-
-        <PortfolioFooter3
-          address="436, Avinashi Road, Near CITU Office, Tiruppur, Tamil Nadu 641602"
-          contacts={contacts}
-          socialLinks={socialLinks}
-          pages={pages}
-          newsletterText={newsletterText}
-          newsletterPlaceholder="Your email"
-          newsletterButtonText="Subscribe"
-          companyName="Logicx"
-          companyLogo={"/assets/svg/logicx_logo.svg"}
+      {/* industry Component */}
+      <section
+        id="industry"
+        className="min-h-[100vh] text-website-foreground flex items-center justify-center px-5 lg:px-[10%]"
+      >
+        <CardShowcase items={industries} />
+      </section>
+      <div className="py-20 ">
+        <Consultant
+          companyInfo={companyInfo}
+          backgroundImage="/assets/software.avif"
+          cta={cta}
         />
-        <ScrollToTop />
-      </Suspense>
+      </div>
+
+      <section
+        id="services"
+        className="min-h-[100vh] px-5 lg:px-[10%] flex flex-col gap-20"
+      >
+        <CardShowcase items={projects} />
+
+        <ProductShowcase products={product} />
+
+        <Team
+          title="Meet Our Professionals"
+          description="Our team combines creativity, expertise, and dedication to deliver outstanding solutions for our clients."
+          members={teamData}
+        />
+      </section>
+
+      <div className="my-25 py-10 md:py-10 bg-website-background">
+        <BrandMarquee type="logo" brands={brands} speed={30} height={16} />
+      </div>
+
+      <div className="mt-20">
+        <h1 className="text-2xl md:text-4xl text-center font-bold">
+          What Our Client Says
+        </h1>
+        <TestimonialCarousel testimonials={Testimonials} />
+      </div>
+
+      <div className="md:px-[10%] p-4 my-15">
+        <BlogCarouselCard blogs={blogs} title={"Latest Posts & Articles"} />
+      </div>
+
+      <section
+        id="contact"
+        className="min-h-[100vh] flex flex-col mb-20 gap-20 px-4 lg:px-[10%]"
+      >
+        <PortfolioContact
+          mapSrc={
+            "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d557.9677738430108!2d77.33628450184978!3d11.1131330605361!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba907abde6b9b0b%3A0x15ed72f683d49e9b!2sTech%20Media%20Retail!5e1!3m2!1sen!2sin!4v1755945911404!5m2!1sen!2sin"
+          }
+        />
+      </section>
+
+      <PortfolioFooter3
+        address="436, Avinashi Road, Near CITU Office, Tiruppur, Tamil Nadu 641602"
+        contacts={contacts}
+        socialLinks={socialLinks}
+        pages={pages}
+        newsletterText={newsletterText}
+        newsletterPlaceholder="Your email"
+        newsletterButtonText="Subscribe"
+        companyName="Logicx"
+      />
+      <ScrollToTopButton />
     </main>
   );
 };

@@ -79,18 +79,18 @@ const Carousel: React.FC<CarouselProps> = ({
       </div>
 
       {/* Navigation arrows */}
-      <div className="absolute inset-0 flex items-center justify-between p-4 opacity-15">
+      <div className="absolute inset-0 flex items-center justify-between p-4 opacity-50">
         <button
           aria-label="Previous slide"
           onClick={prev}
-          className="p-1 rounded-full shadow bg-gray-100/80 text-gray-800 hover:text-white hover:bg-gray-700"
+          className="p-1 rounded-full border border-ring/30 text-foreground hover:text-background hover:bg-hover cursor-pointer"
         >
           <ChevronLeft />
         </button>
         <button
           aria-label="Next slide"
           onClick={next}
-          className="p-1 rounded-full shadow bg-gray-100/80 text-gray-800 hover:text-white hover:bg-gray-700"
+          className="p-1 rounded-full border border-ring/30 text-foreground hover:text-background hover:bg-hover cursor-pointer"
         >
           <ChevronRight />
         </button>
