@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from prefiq.api.health import router as health_router
 from prefiq.core.runtime.bootstrap import main as boot_main
 from prefiq.core.contracts.base_provider import Application
-from prefiq.utils.logger import get_logger
+from prefiq.log.logger import get_logger
 from prefiq.settings.get_settings import load_settings
 
 app = FastAPI(title="Prefiq API")

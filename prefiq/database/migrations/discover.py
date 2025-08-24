@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 from typing import Iterable, List, Set, Tuple, Type
 
+from prefiq.apps.app_cfg import get_registered_apps
 from prefiq.settings.get_settings import load_settings
 from prefiq.database.migrations.base import Migrations
 
@@ -29,16 +30,6 @@ def _migration_files(project_root: str, apps: Iterable[str]) -> Iterable[Path]:
                 if f not in seen:
                     seen.add(f)
                     yield f
-
-
-def get_registered_apps() -> List[str]:
-    # tests may monkeypatch this
-    settings = load_settings()
-    apps = getattr(settings, "REGISTERED_APPS", None)
-    if isinstance(apps, (list, tuple)) and apps:
-        return list(apps)
-    # sensible default for your repo
-    return ["cortex"]
 
 
 def discover_all() -> List[Type[Migrations]]:

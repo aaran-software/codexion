@@ -13,8 +13,8 @@ app.add_typer(doctor_app, name="doctor")
 
 def _mount_optional_groups() -> None:
     """
-    Lazily mount CLI groups that pull heavy deps (server/run) *only if requested*.
-    This prevents import-time side effects when running 'prefiq doctor boot'.
+    Lazily mount CLI groups that pull heavy deps (server/run/app) *only if requested*.
+    This prevents import-time side effects when running 'prefiq doctor boot' etc.
     """
     argv = set(sys.argv[1:])
 
@@ -22,6 +22,12 @@ def _mount_optional_groups() -> None:
     if "server" in argv:
         from prefiq.cli.core.server import server_app  # heavy: imports bootstrap/providers
         app.add_typer(server_app, name="server")
+
+    # 'app' group only if explicitly used
+    if "app" in argv:
+        # NOTE: import the Typer instance we exposed above
+        from prefiq.cli.apps.builder import app_builder_cmd
+        app.add_typer(app_builder_cmd, name="app")
 
     # 'run' group only if explicitly used
     if "run" in argv:
@@ -49,7 +55,7 @@ def _mount_optional_groups() -> None:
 # Provide an alternative alias some containers look for
 cli = app
 
-def main():
+def main() -> None:
     _mount_optional_groups()
     app()
 
