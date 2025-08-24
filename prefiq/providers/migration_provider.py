@@ -26,7 +26,10 @@ class Migrator:
         log.info("seeding_done")
 
     def fresh(self, seed: bool = False) -> None:
-        drop_all()
+        # drop EVERYTHING, including 'migrations'
+        drop_all(include_protected=True)
+        # recreate meta table, then rerun all migrations
+        ensure_migrations_table()
         self.migrate(seed=seed)
 
     def rollback(self, steps: int = 1) -> None:

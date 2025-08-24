@@ -8,7 +8,7 @@ from prefiq.database.migrations.discover import discover_all
 from prefiq.database.migrations.base import Migrations
 from prefiq.database.schemas import queries as q
 
-PROTECTED_MIGRATIONS = {"core": ["migrations"]}
+PROTECTED_MIGRATIONS = {"cortex": ["migrations"]}
 
 
 def _is_awaitable(x) -> bool:
@@ -30,7 +30,7 @@ def _iter_unique_classes() -> Iterable[Type[Migrations]]:
     """Discover classes and de-duplicate by (APP_NAME, TABLE_NAME/derived)."""
     seen: set[tuple[str, str]] = set()
     for cls in discover_all():
-        app = getattr(cls, "APP_NAME", "core")
+        app = getattr(cls, "APP_NAME", "cortex")
         name = getattr(cls, "TABLE_NAME", getattr(cls, "__name__", ""))
         key = (app, name)
         if key in seen:
@@ -41,7 +41,7 @@ def _iter_unique_classes() -> Iterable[Type[Migrations]]:
 
 def _find_class(app: str, name: str) -> Optional[Type[Migrations]]:
     for cls in _iter_unique_classes():
-        c_app = getattr(cls, "APP_NAME", "core")
+        c_app = getattr(cls, "APP_NAME", "cortex")
         c_name = getattr(cls, "TABLE_NAME", getattr(cls, "__name__", ""))
         if (c_app, c_name) == (app, name):
             return cls

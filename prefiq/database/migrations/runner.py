@@ -37,7 +37,10 @@ def _applied_map() -> dict[tuple[str, str], str]:
 
 
 def _record(app: str, name: str, index: int, h: str) -> None:
-    now = datetime.datetime.now(datetime.UTC)
+    # Keep it aware in UTC…
+    now_aware = datetime.datetime.now(datetime.UTC)
+    # …but convert to naive only for DB columns of type TIMESTAMP (no tz)
+    now_naive = now_aware.replace(tzinfo=None)
     q.insert(
         "migrations",
         {
@@ -45,8 +48,8 @@ def _record(app: str, name: str, index: int, h: str) -> None:
             "name": name,
             "order_index": index,
             "hash": h,
-            "created_at": now,
-            "updated_at": now,
+            "created_at": now_naive,
+            "updated_at": now_naive,
         },
     )
 
@@ -95,17 +98,20 @@ def migrate_all() -> None:
         applied[key] = h  # keep in-memory state consistent this run
 
 
-def drop_all() -> None:
+
+def drop_all(*, include_protected: bool = False) -> None:
     """
-    Danger: drops all tables except the protected list.
+    Danger: drops all tables.
+    If include_protected=True, also drops tables in PROTECTED_TABLES.
     """
     eng = _engine()
     d = get_dialect()
     rows = _await(eng.fetchall(d.list_tables_sql()))
     for (table_name,) in rows:
-        if table_name in PROTECTED_TABLES:
+        if (not include_protected) and table_name in PROTECTED_TABLES:
             print(f"🛡️  Skipping protected table: {table_name}")
             continue
         qname = d.quote_ident(table_name)
         print(f"🗑️  Dropping table: {table_name}")
         _await(eng.execute(f"DROP TABLE IF EXISTS {qname};"))
+
