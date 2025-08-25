@@ -2,7 +2,6 @@
 import React, { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import TypingText from "../../AnimationComponents/TypingText";
 
 type Product = {
   id: number;

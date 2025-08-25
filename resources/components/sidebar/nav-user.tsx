@@ -80,7 +80,7 @@ export function NavUser({
     <SidebarMenu className="relative">
       <SidebarMenuItem>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          <DropdownMenuTrigger asChild  className="cursor-pointer">
             <SidebarMenuButton
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground z-100"
@@ -148,7 +148,7 @@ export function NavUser({
               <button
                 type="button"
                 onClick={() => setShowHelpMenu(true)}
-                className="text-foreground/70 hover:bg-primary/10 hover:text-primary flex items-center w-full text-sm px-2 py-2 text-left hover:bg-muted rounded-sm cursor-pointer"
+                className="text-foreground/70 hover:bg-primary/10 hover:text-primary flex items-center w-full text-sm px-2 py-2 text-left rounded-sm cursor-pointer"
               >
                 <CircleHelp className="w-4 mr-2 text-foreground/70" />
                 Help

@@ -14,7 +14,6 @@ const CardShowcase = lazy(
 );
 import TestimonialCarousel from "../../../../resources/UIBlocks/testimonials/TestimonialCard";
 import Consultant from "../../../../resources/UIBlocks/consultant/consultant";
-import HighlighCard from "../../../../resources/UIBlocks/card/HighlighCard";
 import { FaEnvelope, FaPhoneAlt } from "react-icons/fa";
 import PortfolioFooter3 from "../../../../resources/UIBlocks/footer/PortfolioFooter3";
 import HeroCarousel, {
@@ -31,6 +30,10 @@ import HighlightedBanner from "../../../../resources/UIBlocks/banner/Highlighted
 import VerticalHoverBlocks from "../../../../resources/UIBlocks/banner/VerticalHoverBlocks";
 import TypingText from "../../../../resources/AnimationComponents/TypingText";
 import ProcessHighlightSection from "../../../../resources/UIBlocks/process/ProcessHighlightSection";
+import SimpleBanner from "../../../../resources/UIBlocks/banner/SimpleBanner";
+import Accordion from "../../../../resources/components/accordion/Accordion";
+import NexusCard from "../../../../resources/UIBlocks/card/NexusCard";
+import ProjectCarousel from "../../../../resources/UIBlocks/carousel/ProjectCarousel";
 const ProductShowcase = lazy(
   () =>
     import("../../../../resources/UIBlocks/portfolioProducts/ProductShowcase")
@@ -343,8 +346,8 @@ const Home: React.FC = () => {
       title: "Linkagro Exports Portfolio",
       description: "A modern personal portfolio site.",
       category: "website",
-      image: "/assets/product/linkagro.png",
-      link: "https://fabulous-queijadas-684a73.netlify.app/",
+      image: "/assets/product/linkagro.jpg",
+      link: "https://linkagro.in/",
     },
     {
       id: 2,
@@ -683,8 +686,57 @@ const Home: React.FC = () => {
             ready to integrate into your software or website.
           </p>
 
-          <ProductShowcase products={product} />
+          <ProjectCarousel
+            products={product}
+            autoSlide={true}
+            autoSlideInterval={4000}
+          />
         </div>
+        <NexusCard
+          sectionTitle="Integrations"
+          sectionDescription="Streamline your marketing activities by integrating collected data with the choice of your CRM and campaign integration options."
+          leftClassName="text-left"
+          rightClassName="grid-rows-3"
+          items={[
+            {
+              logo: "/assets/hp.svg",
+              alt: "Stripe",
+              title: "Stripe",
+              className: "bg-[#3E2F89]",
+            },
+            {
+              logo: "/assets/hp.svg",
+              alt: "PayPal",
+              title: "PayPal",
+              className: "bg-[#c71313]",
+            },
+            {
+              logo: "/assets/hp.svg",
+              alt: "Razorpay",
+              title: "Razorpay",
+              className: "bg-[#67c090] row-span-2",
+            },
+            {
+              logo: "/assets/hp.svg",
+              alt: "QuickBooks",
+              title: "QuickBooks",
+              className: "bg-[#ea2264]",
+            },
+            {
+              logo: "/assets/hp.svg",
+              alt: "Xero",
+              title: "Xero",
+              className: "bg-[#f5babb] row-span-2",
+            },
+            {
+              logo: "/assets/hp.svg",
+              alt: "Tally",
+              title: "Tally",
+              className: "bg-[#b2b0e8]",
+            },
+          ]}
+        />
+
         <div className="px-5 lg:px-[10%] ">
           <Team
             title="Meet Our Professionals"
@@ -717,7 +769,7 @@ const Home: React.FC = () => {
 
       <section
         id="contact"
-        className="min-h-[100vh] flex flex-col mb-20 gap-20 px-4 lg:px-[10%]"
+        className="min-h-[100vh] flex flex-col px-4 lg:px-[10%]"
       >
         <PortfolioContact
           mapSrc={
@@ -725,6 +777,78 @@ const Home: React.FC = () => {
           }
         />
       </section>
+
+      <div className="px-5 py-20 lg:px-[10%]">
+        <SimpleBanner
+          title={"Turning Complexity into Simplicity"}
+          imgPath={"assets/h1.png"}
+          path={"contact"}
+          buttonLabel={"Start Now"}
+          className="bg-purple-800"
+          buttonStyle="bg-foreground text-background "
+          textStyle="text-background"
+        />
+      </div>
+
+      <div className="px-[10%] pb-15">
+        <Accordion
+          title="Frequently Asked Questions"
+          type="plus"
+          items={[
+            {
+              question: "1. What is billing software?",
+              answer:
+                "Billing software helps businesses generate invoices, manage payments, and track customer transactions digitally.",
+            },
+            {
+              question: "2. Can I generate GST-compliant invoices?",
+              answer:
+                "Yes, the software supports GST-compliant invoicing with automatic tax calculations.",
+            },
+            {
+              question: "3. Does it support multiple payment methods?",
+              answer:
+                "Yes, it supports cash, card, UPI, net banking, and wallet payments.",
+            },
+            {
+              question: "4. Can I track customer payment history?",
+              answer:
+                "Absolutely. You can view, filter, and download detailed payment and invoice history.",
+            },
+            {
+              question: "5. Is the software cloud-based?",
+              answer:
+                "Yes, it is cloud-based, so you can access your billing data securely from anywhere.",
+            },
+            {
+              question: "6. Does it support recurring invoices?",
+              answer:
+                "Yes, you can automate recurring billing for subscription-based services.",
+            },
+            {
+              question: "7. Can I manage inventory with it?",
+              answer:
+                "Yes, it comes with inventory management features to track stock levels and alerts.",
+            },
+            {
+              question: "8. Is it secure for handling customer data?",
+              answer:
+                "Yes, all data is encrypted and stored securely with regular backups.",
+            },
+            {
+              question: "9. Can I generate financial reports?",
+              answer:
+                "Yes, the software provides sales, tax, profit, and expense reports for better decision-making.",
+            },
+            {
+              question: "10. Is it suitable for small businesses?",
+              answer:
+                "Yes, it is designed for startups, SMEs, and enterprises with scalable features.",
+            },
+          ]}
+          titleStyle={"text-2xl py-10"}
+        />
+      </div>
 
       <PortfolioFooter3
         address="436, Avinashi Road, Near CITU Office, Tiruppur, Tamil Nadu 641602"

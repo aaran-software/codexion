@@ -57,7 +57,7 @@ export function NavMain({
               >
                 <SidebarMenuItem>
                   <CollapsibleTrigger asChild>
-                    <SidebarMenuButton tooltip={item.title}>
+                    <SidebarMenuButton tooltip={item.title}  className="cursor-pointer">
                       {item.icon && <item.icon className="w-4 h-4" />}
                       <span>{item.title}</span>
                       <ChevronRight className="ml-auto size-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -70,7 +70,7 @@ export function NavMain({
 
                         <SidebarMenuSubItem
                           key={subItem.title}
-                          onClick={() => handleNavigate(subItem.currentComponent)}
+                          onClick={() => handleNavigate(subItem.currentComponent)} className="cursor-pointer"
                         >
                           <SidebarMenuSubButton>
                             <span>{subItem.title}</span>
@@ -92,6 +92,7 @@ export function NavMain({
                 onClick={() =>
                   handleNavigate(item.currentComponent ?? "")
                 }
+                 className="cursor-pointer"
               >
                 {item.icon && <item.icon className="w-4 h-4" />}
                 <span>{item.title}</span>

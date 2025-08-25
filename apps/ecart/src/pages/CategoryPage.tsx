@@ -404,10 +404,6 @@ const CategoryPage: React.FC = () => {
                 selectedPriceRange={selectedPriceRange}
                 setSelectedPriceRange={setSelectedPriceRange}
                 maxPrice={maxPrice}
-                invoice={invoice}
-                setInvoice={setInvoice}
-                availability={availability}
-                setAvailability={setAvailability}
                 onClose={() => setIsFilterOpen(false)}
               />
             </div>

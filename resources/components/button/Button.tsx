@@ -40,7 +40,7 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
     },
     ref
   ) => {
-    const classes = `${className} px-4 py-2 rounded-md cursor-pointer transition-all duration-500 flex items-center gap-2`;
+    const classes = `${className} px-4 py-2 rounded-md cursor-pointer transition-all duration-500 gap-2`;
 
     const content = (
       <>

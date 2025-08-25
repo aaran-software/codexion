@@ -178,7 +178,7 @@ const HighlightedBanner: React.FC<HighlightedBannerProps> = ({ sections }) => {
                 </motion.div>
 
                 {/* Button only visible on hover, stays in original slice center */}
-                {section.buttonLabel && activeIndex === idx && (
+                {/* {section.buttonLabel && activeIndex === idx && (
                   <div
                     className="absolute bottom-4 left-0 z-100"
                     style={{
@@ -192,7 +192,7 @@ const HighlightedBanner: React.FC<HighlightedBannerProps> = ({ sections }) => {
                       className="w-max bg-primary  text-primary-foreground shadow-lg hover:scale-105 transition-transform"
                     />
                   </div>
-                )}
+                )} */}
 
                 {/* Active Overlay */}
                 <AnimatePresence>

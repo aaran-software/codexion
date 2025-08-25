@@ -10,7 +10,7 @@ export type BlogPost = {
   category: string;
   tags: string[];
   description: string; // HTML string
-  isComment?:boolean
+  isComment?: boolean;
 };
 
 export const LinkAgroBlogs: BlogPost[] = [
@@ -78,7 +78,7 @@ export const LinkAgroBlogs: BlogPost[] = [
       "Horticulture",
       "Eco-Friendly",
     ],
-    isComment:false
+    isComment: false,
   },
   {
     id: 2,
@@ -128,7 +128,7 @@ export const LinkAgroBlogs: BlogPost[] = [
       Cocopeat is more than just a by-product of coconuts—it is a game-changer in agriculture. By improving soil health, conserving water, supporting soilless farming, and promoting sustainability, cocopeat is helping modernize agriculture and pave the way for a greener, more productive future.
     </p>
   `,
-    isComment:false
+    isComment: false,
   },
   {
     id: 3,
@@ -188,10 +188,9 @@ export const LinkAgroBlogs: BlogPost[] = [
   <li><strong>Urban &amp; Vertical Farming:</strong> China 🇨🇳 and others adopt cocopeat for lightweight, space-efficient city farming.</li>
 </ul>
 `,
-    isComment:false
+    isComment: false,
   },
 ];
-
 
 export const LogicxBlogs: BlogPost[] = [
   {
@@ -258,7 +257,7 @@ export const LogicxBlogs: BlogPost[] = [
       "Horticulture",
       "Eco-Friendly",
     ],
-    isComment:false
+    isComment: false,
   },
   {
     id: 2,
@@ -308,7 +307,7 @@ export const LogicxBlogs: BlogPost[] = [
       Cocopeat is more than just a by-product of coconuts—it is a game-changer in agriculture. By improving soil health, conserving water, supporting soilless farming, and promoting sustainability, cocopeat is helping modernize agriculture and pave the way for a greener, more productive future.
     </p>
   `,
-    isComment:false
+    isComment: false,
   },
   {
     id: 3,
@@ -368,6 +367,6 @@ export const LogicxBlogs: BlogPost[] = [
   <li><strong>Urban &amp; Vertical Farming:</strong> China 🇨🇳 and others adopt cocopeat for lightweight, space-efficient city farming.</li>
 </ul>
 `,
-    isComment:false
+    isComment: false,
   },
 ];

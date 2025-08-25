@@ -30,7 +30,7 @@ interface FooterLayoutProps {
   copyrights_company: string;
 }
 
-const FooterLayout1: React.FC<FooterLayoutProps> = ({
+const FooterLayout2: React.FC<FooterLayoutProps> = ({
   about,
   companyName,
   consumerPolicy,
@@ -179,4 +179,4 @@ const FooterLayout1: React.FC<FooterLayoutProps> = ({
   );
 };
 
-export default FooterLayout1;
+export default FooterLayout2;
