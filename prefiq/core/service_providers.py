@@ -21,6 +21,11 @@ try:
 except Exception:
     MigrationProvider = None  # type: ignore[misc]
 
+try:
+    from cortex.providers.CortexProvider import CortexProvider  # type: ignore
+except Exception:
+    CortexProvider = None  # type: ignore[misc]
+
 
 def _hardcoded_providers() -> List[Type[Provider]]:
     core: List[Type[Provider]] = []

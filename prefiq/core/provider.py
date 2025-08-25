@@ -51,10 +51,15 @@ class Provider(ABC, metaclass=_ProviderMeta):
         """Optional post‑bind startup (routes, events, warmups)."""
 
 
-def all_providers() -> List[Type["Provider"]]:
+def all_providers() -> list[type["Provider"]]:
     """Return all registered provider classes sorted by .order (ascending)."""
     items = list(_PROVIDER_REGISTRY.values())
-    items.sort(key=lambda c: getattr(c, "order", 100))
+
+    def _order_of(cls) -> int:
+        v = getattr(cls, "order", 100)
+        return v if isinstance(v, int) else 100
+
+    items.sort(key=_order_of)
     return items
 
 

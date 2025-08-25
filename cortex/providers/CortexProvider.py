@@ -1,12 +1,14 @@
-# providers/DevmetaProvider.py
-# Auto-registered Provider for devmeta
+# providers/CortexProvider.py
+
+from prefiq.core.application import register_provider
 from prefiq.core.provider import Provider  # your base Provider
 
-class DevmetaProvider(Provider):
+@register_provider
+class CortexProvider(Provider):
     abstract = False
     enabled  = True
-    name     = "devmeta"
-    order    = 300   # default; can be overridden from settings if you want
+    name     = "cortex"
+    order    = 2
 
     def register(self) -> None:
         # bind services, singletons, configs

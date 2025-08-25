@@ -52,10 +52,10 @@ def _settings() -> tuple[list[str], list[str], set[str], set[str], Dict[str, int
     """
     s = load_settings()
     apps_env = list(getattr(s, "REGISTERED_APPS", []) or [])
-    roots    = list(getattr(s, "PROVIDER_DISCOVERY_ROOTS", []) or [])
-    include  = set(getattr(s, "PROVIDERS_INCLUDE", []) or [])
-    exclude  = set(getattr(s, "PROVIDERS_EXCLUDE", []) or [])
-    order    = dict(getattr(s, "PROVIDERS_ORDER", {}) or {})
+    roots = list(getattr(s, "PROVIDER_DISCOVERY_ROOTS", []) or [])
+    include = set(getattr(s, "PROVIDERS_INCLUDE", []) or [])
+    exclude = set(getattr(s, "PROVIDERS_EXCLUDE", []) or [])
+    order = dict(getattr(s, "PROVIDERS_ORDER", {}) or {})
 
     # Load app names from config/apps.cfg and map to "apps.<name>"
     try:
@@ -117,6 +117,10 @@ def discover_providers() -> List[Type[Provider]]:
     # 3d) exclude
     result = [cls for fq, cls in current.items() if fq not in exclude]
 
-    # 4) final sort
-    result.sort(key=lambda c: getattr(c, "order", 100))
+    # 4) final sort (tolerate non‑ints/None)
+    def _order_of(cls) -> int:
+        v = getattr(cls, "order", 100)
+        return v if isinstance(v, int) else 100
+
+    result.sort(key=_order_of)
     return result
