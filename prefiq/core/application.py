@@ -13,17 +13,7 @@ __all__ = [
 
 
 class Application:
-    """
-    Minimal application container (singleton).
-    - Holds service bindings
-    - Manages provider lifecycle (register → boot)
-    - Supports booting callbacks
-    - Supports decorator-based provider auto-registration
-    """
-
     _instance: Optional["Application"] = None
-
-    # Filled by @register_provider; import-time classes are queued here
     provider_registry: List[Type["BaseProvider"]] = []
 
     def __new__(cls) -> "Application":
@@ -32,7 +22,6 @@ class Application:
         return cls._instance
 
     def __init__(self) -> None:
-        # guard against re-init for the singleton
         if getattr(self, "_initialized", False):
             return
         self._providers: List["BaseProvider"] = []
@@ -54,7 +43,14 @@ class Application:
         Returns the provider instance for chaining/testing.
         """
         if isinstance(provider_cls_or_instance, type):
-            provider = provider_cls_or_instance(self)
+            cls = provider_cls_or_instance
+            # Support both ctor signatures:
+            #   - BaseProvider(app)
+            #   - Provider()
+            try:
+                provider = cls(self)  # BaseProvider style
+            except TypeError:
+                provider = cls()      # metaclass Provider (zero-arg)
         else:
             provider = provider_cls_or_instance
 
@@ -70,15 +66,10 @@ class Application:
             self.register(p)
 
     def register_decorated_providers(self) -> None:
-        """
-        Register all providers that were marked with @register_provider.
-        Safe to call multiple times; duplicates are avoided by class.
-        """
         queued = list(self.provider_registry)
         if not queued:
             return
 
-        # ✅ accept only proper BaseProvider subclasses; purge bad entries in-place
         filtered = []
         for q in queued:
             try:
@@ -86,32 +77,26 @@ class Application:
                     filtered.append(q)
             except Exception:
                 pass
-        # Overwrite the global queue so later calls don’t see the bad entries
         type(self).provider_registry = filtered
 
         existing_classes = {p.__class__ for p in self._providers}
         for prov_cls in filtered:
             if prov_cls in existing_classes:
                 continue
-            inst = prov_cls(self)
+            try:
+                inst = prov_cls(self)   # BaseProvider style
+            except TypeError:
+                inst = prov_cls()       # zero-arg
             inst.register()
             self._providers.append(inst)
 
     def boot(self) -> None:
-        """
-        Boot sequence:
-          1) run booting callbacks
-          2) auto-register any decorated providers
-          3) call boot() on all registered providers
-          4) run booted callbacks
-        """
         if self._booted:
             return
 
         for cb in self._booting_callbacks:
             cb()
 
-        # Ensure providers added via decorator are included before boot
         self.register_decorated_providers()
 
         for provider in self._providers:
@@ -123,7 +108,6 @@ class Application:
             cb()
 
     # ---------- Lifecycle callbacks ----------
-
     def on_booting(self, callback: Callable[[], None]) -> None:
         self._booting_callbacks.append(callback)
 
@@ -131,7 +115,6 @@ class Application:
         self._booted_callbacks.append(callback)
 
     # ---------- Services & resources ----------
-
     def publish(self, key: str, path: str) -> None:
         self._published_paths[key] = path
 
@@ -142,25 +125,15 @@ class Application:
         return self._services.get(key)
 
     # ---------- Singleton access ----------
-
     @classmethod
     def get_app(cls) -> "Application":
         return cls()
 
-    # Placeholder for future async runner (kept for compatibility)
-    def run_async(self, _param: Any) -> None:  # noqa: D401 (intentional no-op)
-        """No-op hook for frameworks that expect an async runner handle."""
+    def run_async(self, _param: Any) -> None:
         return
 
 
 class BaseProvider(ABC):
-    """
-    Base class for service providers.
-
-    Optional attributes for settings validation (if you use a config validator):
-    - schema_namespace: Name under which a dict config may be nested on Settings
-    - schema_model:     A Pydantic model (or similar) to validate config for this provider
-    """
     schema_namespace: Optional[str] = None
     schema_model: Optional[Any] = None
 
@@ -168,16 +141,11 @@ class BaseProvider(ABC):
         self.app = app
 
     @abstractmethod
-    def register(self) -> None:
-        """Bind services into the container."""
-
+    def register(self) -> None: ...
     @abstractmethod
-    def boot(self) -> None:
-        """Run startup logic after all providers have registered."""
+    def boot(self) -> None: ...
 
-    # Optional helpers to keep provider code tidy
     def load_routes(self, routes_file: str) -> None:
-        # Intentionally no logging/printing; leave visibility to consumers.
         pass
 
     def load_translations(self, namespace: str, path: str) -> None:
@@ -185,13 +153,9 @@ class BaseProvider(ABC):
 
 
 def register_provider(cls: Type[BaseProvider]) -> Type[BaseProvider]:
-    """
-    Decorator to opt a provider class into auto-registration.
-    If someone decorates a non-provider by mistake, ignore it safely.
-    """
     try:
         if not isinstance(cls, type) or not issubclass(cls, BaseProvider):
-            return cls   # ignore quietly
+            return cls
     except Exception:
         return cls
     Application.provider_registry.append(cls)
