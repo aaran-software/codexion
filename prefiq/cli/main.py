@@ -41,7 +41,7 @@ def _mount_optional_groups() -> None:
     if "devmeta" in argv:
         # optional third-party/dev module
         try:
-            from apps.devmeta.cli.devmeta import app as devmeta_app  # type: ignore
+            from apps.devmeta.cli.devmeta import devmeta_app  # type: ignore
             if isinstance(devmeta_app, typer.Typer):
                 app.add_typer(devmeta_app, name="devmeta")
         except Exception:

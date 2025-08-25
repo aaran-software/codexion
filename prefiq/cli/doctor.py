@@ -342,7 +342,7 @@ def cmd_migrate(verbose: bool = typer.Option(False, "--verbose", "-v")) -> None:
         badge = _fmt(c.ok)
         (log.info if c.ok else log.error)("%s %s  ·  %s", badge, c.name, c.detail)
     if ok:
-        log.info("%s", okc("Result: ALL GOOD ✅"))
+        log.info("%s", okc("Result: 💚 ALL GOOD ✅"))
     else:
         log.error("%s", failx("Result: ISSUES FOUND ❌"))
     raise typer.Exit(0 if ok else 1)

@@ -135,13 +135,34 @@ def _read_named_env(name: str) -> Dict[str, str]:
     """
     Read variables like DEV_DB_HOST, ANALYTICS_DB_NAME, etc., and map them to
     base keys (DB_HOST, DB_NAME, ...). Missing keys are omitted.
+
+    Primary source: OS environment (e.g., os.getenv("DEV_DB_ENGINE")).
+    Fallback: pydantic Settings extras — unknown .env keys are accessible as
+    lowercased attributes (e.g., DEV_DB_ENGINE -> settings.dev_db_engine).
     """
     pref = name.upper()
     out: Dict[str, str] = {}
+
+    # 1) OS env (authoritative if present)
     for k in _ENV_KEYS:
         v = os.getenv(f"{pref}_{k}")
         if v is not None:
             out[k] = v
+
+    # 2) Fallback to Settings extras only if OS env didn't provide an engine
+    if "DB_ENGINE" not in out:
+        try:
+            s = load_settings()
+            base = name.lower()  # e.g. "dev"
+            for k in _ENV_KEYS:
+                # dev_db_engine, dev_db_mode, dev_db_host, ...
+                attr = f"{base}_{k.lower()}"
+                val = getattr(s, attr, None)
+                if val is not None:
+                    out[k] = str(val)
+        except Exception:
+            pass
+
     return out
 
 
@@ -181,7 +202,8 @@ def engine_env(name: str):
 def get_engine_named(name: str) -> Any:
     """
     Return a dedicated engine instance keyed by `name`.
-    Requires <NAME>_DB_ENGINE (e.g., DEV_DB_ENGINE, ANALYTICS_DB_ENGINE) in .env.
+    Accepts configuration from either OS env (e.g., DEV_DB_ENGINE) or, if
+    absent there, from Settings extras loaded from .env (dev_db_engine, ...).
     """
     key = name.strip()
     if not key:
