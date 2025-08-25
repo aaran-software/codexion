@@ -2,15 +2,15 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from importlib import import_module
 from typing import Any, Callable, Dict, List, Optional, Type, Union, Iterable
-
+from fastapi import FastAPI, APIRouter
 
 __all__ = [
     "Application",
     "BaseProvider",
     "register_provider",
 ]
-
 
 class Application:
     _instance: Optional["Application"] = None
@@ -142,11 +142,36 @@ class BaseProvider(ABC):
 
     @abstractmethod
     def register(self) -> None: ...
+
     @abstractmethod
     def boot(self) -> None: ...
 
-    def load_routes(self, routes_file: str) -> None:
-        pass
+    def load_routes(
+            self,
+            import_path: str,
+            *,
+            prefix: str = "",
+            tags: Optional[list[str]] = None,
+    ) -> None:
+        """
+        Import a module that exposes `router: APIRouter` and include it
+        into the shared FastAPI app bound at key 'http.app'. Creates one
+        if it doesn't exist yet.
+        """
+        if FastAPI is None or APIRouter is None:
+            raise RuntimeError("FastAPI not available. Install `fastapi` to use routing.")
+
+        # ensure a single shared FastAPI app is bound
+        app = self.app.resolve("http.app")
+        if app is None:
+            app = FastAPI(title="Prefiq")
+            self.app.bind("http.app", app)
+
+        mod = import_module(import_path)
+        router = getattr(mod, "router", None)
+        if router is None:
+            raise RuntimeError(f"{import_path!r} does not export a `router`")
+        app.include_router(router, prefix=prefix, tags=tags or [])
 
     def load_translations(self, namespace: str, path: str) -> None:
         self.app.publish(namespace, path)
