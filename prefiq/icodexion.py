@@ -52,7 +52,7 @@ def verify_prefiq_installation():
             return
         else:
             raise RuntimeError("CLI failed to respond.")
-    except Exception:
+    except (ValueError, TypeError):
         print("[ERROR] Installation failed: 'prefiq' command not found.")
 
         hint = get_os_specific_hint()

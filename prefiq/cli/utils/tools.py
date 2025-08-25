@@ -19,7 +19,7 @@ def _maybe_await(x):
         if inspect.isawaitable(x):
             import asyncio
             return asyncio.run(x)
-    except Exception:
+    except (ValueError, TypeError):
         pass
     return x
 
@@ -59,7 +59,7 @@ def sanity() -> None:
             if callable(scalar):
                 val = _maybe_await(scalar("SELECT 1"))
                 ok = str(val).lower() in {"1", "true"} or val is True
-    except Exception:
+    except (ValueError, TypeError):
         ok = False
 
     if not ok:

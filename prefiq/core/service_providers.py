@@ -8,17 +8,17 @@ from prefiq.core.discovery import discover_providers
 # ---- Hardcoded core providers (optional if modules present) ----
 try:
     from prefiq.providers.config_provider import ConfigProvider  # type: ignore
-except Exception:
+except (ValueError, TypeError):
     ConfigProvider = None  # type: ignore[misc]
 
 try:
     from prefiq.providers.database_provider import DatabaseProvider  # type: ignore
-except Exception:
+except (ValueError, TypeError):
     DatabaseProvider = None  # type: ignore[misc]
 
 try:
     from prefiq.providers.migration_provider import MigrationProvider  # type: ignore
-except Exception:
+except (ValueError, TypeError):
     MigrationProvider = None  # type: ignore[misc]
 
 try:

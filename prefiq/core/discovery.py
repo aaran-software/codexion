@@ -31,7 +31,7 @@ def _iter_modules(pkg: str) -> Iterable[str]:
                 spath = getattr(sp, "__path__", None) or []
                 for __f, sub, __is in pkgutil.iter_modules(spath):
                     yield f"{mod}.{sub}"
-            except Exception:
+            except (ValueError, TypeError):
                 # ignore subpackage scan errors
                 pass
 
@@ -39,7 +39,7 @@ def _iter_modules(pkg: str) -> Iterable[str]:
 def _safe_import(module_name: str) -> None:
     try:
         importlib.import_module(module_name)
-    except Exception:
+    except (ValueError, TypeError):
         # Swallow import failures — a missing providers package shouldn't kill discovery.
         pass
 
@@ -60,7 +60,7 @@ def _settings() -> tuple[list[str], list[str], set[str], set[str], Dict[str, int
     # Load app names from config/apps.cfg and map to "apps.<name>"
     try:
         cfg_apps = get_registered_apps()  # preserves file order
-    except Exception:
+    except (ValueError, TypeError):
         cfg_apps = []
 
     apps_cfg = [f"apps.{name}" for name in cfg_apps]
@@ -103,7 +103,7 @@ def discover_providers() -> List[Type[Provider]]:
         try:
             mod, _cls = fq.rsplit(".", 1)
             _safe_import(mod)
-        except Exception:
+        except (ValueError, TypeError):
             pass
 
     # 3b) collect the currently known providers

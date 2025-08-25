@@ -2,7 +2,7 @@
 from typing import Any, Optional
 try:
     from pymongo import MongoClient
-except Exception:
+except (ValueError, TypeError):
     MongoClient = None
 
 class SyncMongoEngine:

@@ -84,7 +84,7 @@ def find_cli_path():
         cli_path = result.stdout.strip()
         if cli_path:
             candidates.append(Path(cli_path))
-    except Exception:
+    except (ValueError, TypeError):
         pass
 
     # Return the first existing CLI path

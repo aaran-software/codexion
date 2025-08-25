@@ -75,7 +75,7 @@ class Application:
             try:
                 if isinstance(q, type) and issubclass(q, BaseProvider):
                     filtered.append(q)
-            except Exception:
+            except (ValueError, TypeError):
                 pass
         type(self).provider_registry = filtered
 
@@ -181,7 +181,7 @@ def register_provider(cls: Type[BaseProvider]) -> Type[BaseProvider]:
     try:
         if not isinstance(cls, type) or not issubclass(cls, BaseProvider):
             return cls
-    except Exception:
+    except (ValueError, TypeError):
         return cls
     Application.provider_registry.append(cls)
     return cls

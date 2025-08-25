@@ -23,7 +23,7 @@ def compute_callable_hash(fn) -> str:
     # 1) Try to unwrap decorators and grab source
     try:
         target = inspect.unwrap(fn)
-    except Exception:
+    except (ValueError, TypeError):
         target = fn
 
     try:
@@ -39,7 +39,7 @@ def compute_callable_hash(fn) -> str:
         file_path = getattr(mod, "__file__", None)
         if file_path:
             return compute_file_hash(file_path)
-    except Exception:
+    except (ValueError, TypeError):
         pass
 
     # 3) Last-resort: hash code object signature

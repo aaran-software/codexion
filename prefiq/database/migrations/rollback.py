@@ -61,7 +61,7 @@ def rollback(step: int = 1) -> None:
     def _as_int(v) -> int:
         try:
             return int(v)
-        except Exception:
+        except (ValueError, TypeError):
             return 0
 
     # newest-first by order_index, then app/name to stabilize order
@@ -104,7 +104,7 @@ def rollback(step: int = 1) -> None:
             mod = sys.modules.get(cls.__module__)
             if mod is not None and hasattr(mod, "CALLED"):
                 mod.CALLED.append(f"DOWN:{cls.__name__}")
-        except Exception:
+        except (ValueError, TypeError):
             # Best-effort; don't break rollback on test helper specifics
             pass
 

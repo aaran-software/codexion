@@ -34,10 +34,10 @@ def _first_value(row: Any) -> Any:
         if hasattr(row, "__getitem__") and not isinstance(row, (str, bytes, bytearray)):
             try:
                 return row[0]
-            except Exception:
+            except (ValueError, TypeError):
                 pass
         return row
-    except Exception:
+    except (ValueError, TypeError):
         return row
 
 def _select1_ok(val: Any) -> bool:

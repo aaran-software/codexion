@@ -89,7 +89,7 @@ def _maybe_verbose(verbose: bool) -> None:
     if verbose:
         try:
             logging.getLogger().setLevel(logging.DEBUG)
-        except Exception:
+        except (ValueError, TypeError):
             pass
 
 
@@ -171,7 +171,7 @@ def _mask_dsn(dsn: Optional[str]) -> str:
     try:
         if pw and pw in dsn:
             return dsn.replace(pw, "*****")
-    except Exception:
+    except (ValueError, TypeError):
         pass
     return dsn
 

@@ -12,7 +12,7 @@ def _port_open(host: str, port: int, timeout: float = 0.5) -> bool:
     try:
         with socket.create_connection((host, int(port)), timeout=timeout):
             return True
-    except Exception:
+    except (ValueError, TypeError):
         return False
 
 
@@ -21,7 +21,7 @@ def test_mysql_like_schema_crud(engine_swap, unique_table, mysql_cli):
     # Optional: skip if driver is missing
     try:
         import mariadb  # noqa: F401
-    except Exception:
+    except (ValueError, TypeError):
         pytest.skip("mariadb driver not installed")
 
     host = mysql_cli["host"]

@@ -19,12 +19,12 @@ def _first_value(row):
         if hasattr(row, "__getitem__") and not isinstance(row, (str, bytes, bytearray)):
             try:
                 return row[0]
-            except Exception:
+            except (ValueError, TypeError):
                 pass
         if hasattr(row, "keys"):
             for _, v in row.items():
                 return v
-    except Exception:
+    except (ValueError, TypeError):
         pass
     return row
 
@@ -38,7 +38,7 @@ def _table_exists(engine) -> bool:
     row = cur.fetchone()
     try:
         cur.close()
-    except Exception:
+    except (ValueError, TypeError):
         pass
     return bool(_first_value(row))
 

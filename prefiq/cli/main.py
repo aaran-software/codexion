@@ -44,7 +44,7 @@ def _mount_optional_groups() -> None:
             from apps.devmeta.cli.devmeta import devmeta_app  # type: ignore
             if isinstance(devmeta_app, typer.Typer):
                 app.add_typer(devmeta_app, name="devmeta")
-        except Exception:
+        except (ValueError, TypeError):
             # silently ignore if missing
             pass
 

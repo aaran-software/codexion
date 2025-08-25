@@ -145,7 +145,7 @@ class AsyncMariaDBEngine(AbstractEngine[Any]):
                 yield cur
                 # COMMIT with retry
                 await with_retry_async(lambda: _run_in_thread(cur.execute, "COMMIT"))
-            except Exception:
+            except (ValueError, TypeError):
                 # ROLLBACK with retry (best-effort)
                 with suppress(Exception):
                     await with_retry_async(lambda: _run_in_thread(cur.execute, "ROLLBACK"))
@@ -162,5 +162,5 @@ class AsyncMariaDBEngine(AbstractEngine[Any]):
                     row = await _run_in_thread(cur.fetchone)
                     return row is not None
             return bool(await with_retry_async(action))
-        except Exception:
+        except (ValueError, TypeError):
             return False
