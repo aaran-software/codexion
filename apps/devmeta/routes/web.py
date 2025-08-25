@@ -3,6 +3,6 @@ from fastapi import APIRouter
 
 router = APIRouter()
 
-# @router.get("/")
-# def homepage():
-#     return {"page": "blog home"}
+@router.get("/devmeta", tags=["devmeta:web"])
+def homepage():
+    return {"page": "devmeta home"}
