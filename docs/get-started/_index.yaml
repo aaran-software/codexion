@@ -1,9 +1,0 @@
-- slug: overview
-  order: 1
-  desc: How to get started with the project
-  tags: [intro, basics]
-
-- slug: installation
-  order: 2
-  desc: List of Markdown
-  tags: [api, endpoints]

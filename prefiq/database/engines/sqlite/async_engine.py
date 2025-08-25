@@ -19,7 +19,7 @@ from typing import Any, Optional, Sequence, List
 from contextlib import asynccontextmanager
 
 from prefiq.database.config_loader.base import use_thread_config
-from prefiq.log.logger import get_logger
+from prefiq.core.logger import get_logger
 
 LOG = get_logger("prefiq.database.sqlite.async")
 

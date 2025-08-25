@@ -7,15 +7,14 @@ import inspect
 import os
 from typing import Any
 
-from prefiq.core.contracts.base_provider import BaseProvider
+from prefiq.core.application import BaseProvider, register_provider
 from prefiq.database.connection import get_engine, reset_engine
 from prefiq.database.connection_manager import connection_manager
 from prefiq.database.engines.abstract_engine import AbstractEngine
 from prefiq.database.hooks import before_execute, after_execute
 
-# MariaDB async pool helpers are optional; import inside guards when used.
 
-
+@register_provider
 class DatabaseProvider(BaseProvider):
     """
     Binds 'db' (engine singleton) into the container.
@@ -42,10 +41,13 @@ class DatabaseProvider(BaseProvider):
         self.app.bind("db", engine)
 
     def boot(self) -> None:
-        # Optional: prewarm MariaDB async pool (harmless no-op elsewhere)
         warm = 0
         try:
-            warm = int(os.getenv("DB_POOL_WARMUP", "0") or "0")
+            s = self.app.resolve("settings")
+            if s and hasattr(s, "DB_POOL_WARMUP"):
+                warm = int(getattr(s, "DB_POOL_WARMUP") or 0)
+            else:
+                warm = int(os.getenv("DB_POOL_WARMUP", "0") or "0")
         except Exception:
             warm = 0
 
@@ -55,7 +57,7 @@ class DatabaseProvider(BaseProvider):
                 from prefiq.database.engines.mariadb.pool import prewarm as _mariadb_prewarm  # type: ignore
 
                 coro = _mariadb_prewarm(warm)
-                # Run the coroutine whether or not an event loop is present
+                # Run the coroutine whether an event loop is present
                 if inspect.isawaitable(coro):
                     try:
                         asyncio.get_running_loop()

@@ -8,31 +8,32 @@ authors = [{ name = "Sundar", email = "aaransoftware@gmail.com" }]
 keywords = ["erp", "billing", "automation", "deep analytics"]
 requires-python = ">=3.11"
 classifiers = [
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: 3.13",
-  "License :: OSI Approved :: Apache Software License",
-  "Development Status :: 3 - Alpha",
-  "Intended Audience :: Developers",
-  "Topic :: Scientific/Engineering :: Artificial Intelligence",
-  "Topic :: Software Development :: Libraries :: Python Modules",
-  "Topic :: System :: Distributed Computing",
-  "Topic :: Utilities"
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: Apache Software License",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Distributed Computing",
+    "Topic :: Utilities"
 ]
 dependencies = [
-  "typer>=0.12",
-  "mariadb>=1.1.10",
-  "pydantic>=2.6",
-  "pydantic-settings>=2.2",
-  "python-dotenv>=1.0",
+    "typer>=0.12",
+    "mariadb>=1.1.10",
+    "pydantic>=2.6",
+    "pydantic-settings>=2.2",
+    "python-dotenv>=1.0",
 ]
 
 [project.urls]
 Homepage = "https://github.com/aaransoftware/codexion"
 Repository = "https://github.com/aaransoftware/codexion"
 
+# IMPORTANT: your CLI lives at rootfolder/prefiq/cli/main.py
 [project.scripts]
-prefiq = "prefiq.cli.main_cli:main"
+prefiq = "prefiq.cli.main:main"
 
 [build-system]
 requires = ["setuptools>=61", "setuptools-scm>=8"]
@@ -40,6 +41,10 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 where = ["."]
+# Only install the actual packages you ship.
+# - "prefiq" (your framework & CLI)
+# - "apps"    (your app namespace under the repo)
+# If you have *app folders* inside apps/, they’ll be included automatically.
 include = [
   "prefiq", "prefiq.*",
   "apps", "apps.*",

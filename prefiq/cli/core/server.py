@@ -1,9 +1,10 @@
 # prefiq/cli/core/server.py
+
 from __future__ import annotations
 import os
 from typing import Optional
 import typer
-from prefiq.core.runtime.bootstrap import main as bootstrap_main
+from prefiq.core.bootstrap import main as bootstrap_main
 
 server_app = typer.Typer(help="Server related commands")
 

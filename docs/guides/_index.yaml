@@ -1,9 +1,0 @@
-- slug: configuration
-  order: 1
-  desc: How to configure the application
-  tags: [setup, config]
-
-- slug: installation
-  order: 2
-  desc: List of available API endpoints
-  tags: [setup, install]

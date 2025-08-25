@@ -1,50 +1,53 @@
 # prefiq/providers/migration_provider.py
-
 from __future__ import annotations
 
-from prefiq.core.contracts.base_provider import BaseProvider
-from prefiq.log.logger import get_logger
+import os
 
+from mariadb import OperationalError
+
+from prefiq.core.application import BaseProvider, register_provider
 from prefiq.database.migrations.runner import migrate_all, drop_all
 from prefiq.database.migrations.rollback import rollback
-from prefiq.database.schemas.builder import ensure_migrations_table  # ✅ ensure meta table
-
-log = get_logger("prefiq.migrate")
+from prefiq.database.schemas.builder import ensure_migrations_table
+from prefiq.core.logger import log
 
 
 class Migrator:
     def migrate(self, seed: bool = False) -> None:
-        # Make sure the meta table exists before running any migrations
         ensure_migrations_table()
         migrate_all()
         if seed:
             self.seed()
 
     def seed(self) -> None:
-        log.info("seeding_start")
         # TODO: discover and run seeders here
-        log.info("seeding_done")
+        pass
 
     def fresh(self, seed: bool = False) -> None:
-        # drop EVERYTHING, including 'migrations'
         drop_all(include_protected=True)
-        # recreate meta table, then rerun all migrations
         ensure_migrations_table()
         self.migrate(seed=seed)
 
     def rollback(self, steps: int = 1) -> None:
-        rollback(step=steps)
+        rollback(steps)
 
 
+@register_provider
 class MigrationProvider(BaseProvider):
     def register(self) -> None:
         self.app.bind("migrator", Migrator())
 
     def boot(self) -> None:
-        # Ensure the meta 'migrations' table exists at boot time
+        if os.getenv("PREFIQ_SKIP_MIGRATIONS", "0") in ("1", "true", "yes"):
+            return
         try:
             ensure_migrations_table()
-            log.info("migrations_table_ready")
-        except Exception as e:
-            log.error("migrations_table_error", extra={"error": str(e)})
+        except OperationalError as e:
+            msg = (
+                "Database connection failed while ensuring the 'migrations' table. "
+                "Check DB_* environment variables or switch to SQLite for local runs."
+            )
+            # pick one of these depending on your style:
+            # raise RuntimeError(msg) from e
+            log.error("%s (%s)", msg, e)
             raise

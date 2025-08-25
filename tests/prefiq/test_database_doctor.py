@@ -18,7 +18,7 @@
 #         db_doctor, "load_settings", lambda *a, **k: _mk_settings(), raising=True
 #     )
 #     # PROVIDERS lacks DatabaseProvider
-#     class P1: __name__ = "SettingsProvider"
+#     class P1: __name__ = "ConfigProvider"
 #     class P2: __name__ = "ProfilesProvider"
 #     monkeypatch.setattr(db_doctor, "PROVIDERS", [P1, P2], raising=True)
 #
@@ -38,7 +38,7 @@
 #     monkeypatch.setattr(
 #         db_doctor, "load_settings", lambda *a, **k: _mk_settings(), raising=True
 #     )
-#     class P1: __name__ = "SettingsProvider"
+#     class P1: __name__ = "ConfigProvider"
 #     class P2: __name__ = "ProfilesProvider"
 #     monkeypatch.setattr(db_doctor, "PROVIDERS", [P1, P2], raising=True)
 #
@@ -57,7 +57,7 @@
 #
 #     # PROVIDERS contains a DatabaseProvider-like class
 #     class DatabaseProvider: pass
-#     class P1: __name__ = "SettingsProvider"
+#     class P1: __name__ = "ConfigProvider"
 #     class P2: __name__ = "ProfilesProvider"
 #     monkeypatch.setattr(db_doctor, "PROVIDERS", [P1, P2, DatabaseProvider], raising=True)
 #

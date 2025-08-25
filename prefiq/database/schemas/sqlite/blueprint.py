@@ -20,6 +20,7 @@ class TableBlueprint:
         self.foreign_keys: List[str] = []
         self.unique_constraints: List[str] = []
         self.check_constraints: List[str] = []
+        # (index_name, [cols...])
         self._index_meta: List[Tuple[str, List[str]]] = []
         self._pending_fks: List[Dict[str, Optional[str | Tuple[str, str]]]] = []
 
@@ -71,14 +72,17 @@ class TableBlueprint:
         if name: self.check_constraints.append(f"CONSTRAINT {q(name)} CHECK ({condition})")
         else: self.check_constraints.append(f"CHECK ({condition})")
 
-    def index(self, name: str, column: str | List[str]):
+    # ── FIX: accept index(column|[columns], name=None) and auto-name when needed ──
+    def index(self, column: str | List[str], name: Optional[str] = None):
         cols = [c.strip() for c in (column if isinstance(column, list) else [column])]
-        self._index_meta.append((name, cols))
+        idx_name = name or f"{self.table_name}_{'_'.join(cols)}_idx"
+        self._index_meta.append((idx_name, cols))
 
     def unique(self, name: str, columns: List[str]):
         cols = ", ".join(q(c) for c in columns)
         self.unique_constraints.append(f"CONSTRAINT {q(name)} UNIQUE ({cols})")
 
+    # Fluent FK helpers (optional)
     def foreign_id(self, name: str):
         self.columns.append(f"{q(name)} INTEGER")
         self._pending_fks.append({"column": name, "references": None, "on_delete": None, "on_update": None})

@@ -1,7 +1,7 @@
 # prefiq/database/hooks.py
 
 from typing import Optional, Any
-from prefiq.log.logger import get_logger
+from prefiq.core.logger import get_logger
 
 log = get_logger("prefiq.db")
 

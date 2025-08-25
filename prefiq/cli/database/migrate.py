@@ -1,10 +1,11 @@
 # prefiq/cli/database/migrate.py
+
 from __future__ import annotations
 import typer
 
-from prefiq.core.contracts.base_provider import Application
+from prefiq.core.application import Application
 from cortex.runtime.service_providers import PROVIDERS
-from prefiq.log.logger import get_logger
+from prefiq.core.logger import get_logger
 
 log = get_logger("prefiq.run.migrate")
 migrate_app = typer.Typer(help="Database migration runner")

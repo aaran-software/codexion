@@ -31,7 +31,7 @@ import sqlite3
 import time
 from typing import Optional, Tuple
 
-from prefiq.log.logger import get_logger
+from prefiq.core.logger import get_logger
 
 LOG = get_logger("prefiq.database.sqlite.maintenance")
 
