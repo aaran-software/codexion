@@ -32,7 +32,7 @@ class SyncMariaDBEngine(AbstractEngine[Any]):
         # Prefer autocommit for single statements
         try:
             self.conn.autocommit = True  # type: ignore[attr-defined]
-        except Exception:
+        except (ValueError, TypeError):
             pass
 
     def close(self) -> None:
@@ -73,7 +73,7 @@ class SyncMariaDBEngine(AbstractEngine[Any]):
         conn = self._validate_connection()
         try:
             conn.autocommit = False  # type: ignore[attr-defined]
-        except Exception:
+        except (ValueError, TypeError):
             with conn.cursor() as cur:
                 cur.execute("START TRANSACTION")
 
@@ -83,7 +83,7 @@ class SyncMariaDBEngine(AbstractEngine[Any]):
         conn.commit()
         try:
             conn.autocommit = True  # type: ignore[attr-defined]
-        except Exception:
+        except (ValueError, TypeError):
             pass
 
     def rollback(self) -> None:
@@ -92,7 +92,7 @@ class SyncMariaDBEngine(AbstractEngine[Any]):
         conn.rollback()
         try:
             conn.autocommit = True  # type: ignore[attr-defined]
-        except Exception:
+        except (ValueError, TypeError):
             pass
 
     @contextmanager
@@ -109,7 +109,7 @@ class SyncMariaDBEngine(AbstractEngine[Any]):
         def _begin():
             try:
                 conn.autocommit = False  # type: ignore[attr-defined]
-            except Exception:
+            except (ValueError, TypeError):
                 with conn.cursor() as c:
                     c.execute("START TRANSACTION")
 
@@ -117,14 +117,14 @@ class SyncMariaDBEngine(AbstractEngine[Any]):
             conn.commit()
             try:
                 conn.autocommit = True  # type: ignore[attr-defined]
-            except Exception:
+            except (ValueError, TypeError):
                 pass
 
         def _rollback():
             conn.rollback()
             try:
                 conn.autocommit = True  # type: ignore[attr-defined]
-            except Exception:
+            except (ValueError, TypeError):
                 pass
 
         with_retry(_begin)
@@ -133,13 +133,13 @@ class SyncMariaDBEngine(AbstractEngine[Any]):
         try:
             yield cur
             with_retry(_commit)
-        except Exception:
+        except (ValueError, TypeError):
             with_retry(_rollback)
             raise
         finally:
             try:
                 cur.close()
-            except Exception:
+            except (ValueError, TypeError):
                 pass
 
     # -------- queries --------

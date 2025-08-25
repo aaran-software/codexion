@@ -10,7 +10,7 @@ from prefiq.settings.get_settings import load_settings, clear_settings_cache
 
 try:
     from prefiq.core.provider import all_providers as _all_providers
-except Exception:  # pragma: no cover
+except (ValueError, TypeError):  # pragma: no cover
     _all_providers = None  # type: ignore[assignment]
 
 @register_provider
@@ -77,7 +77,7 @@ class ConfigProvider(BaseProvider):
         try:
             if callable(_all_providers):
                 provider_classes.extend(_all_providers() or [])
-        except Exception:
+        except (ValueError, TypeError):
             # Ignore if provider base isn't available yet
             pass
 
@@ -97,11 +97,11 @@ class ConfigProvider(BaseProvider):
             try:
                 # pydantic v2
                 model_fields = getattr(model, "model_fields", {}).keys()
-            except Exception:
+            except (ValueError, TypeError):
                 # pydantic v1 fallback (names only if accessible)
                 try:
                     model_fields = getattr(model, "__fields__", {}).keys()  # type: ignore[attr-defined]
-                except Exception:
+                except (ValueError, TypeError):
                     model_fields = []
 
             for key in model_fields:

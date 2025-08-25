@@ -18,7 +18,7 @@ async def _is_healthy_async(engine, timeout: Optional[float]) -> bool:
         else:
             res = await _awaitable(res)
         return bool(res)
-    except Exception:
+    except (ValueError, TypeError):
         return False
 
 def is_healthy(engine, timeout: Optional[float] = 3.0) -> bool:
@@ -44,5 +44,5 @@ def is_healthy(engine, timeout: Optional[float] = 3.0) -> bool:
         if inspect.isawaitable(res):
             return asyncio.run(_is_healthy_async(engine, timeout))
         return bool(res)
-    except Exception:
+    except (ValueError, TypeError):
         return False

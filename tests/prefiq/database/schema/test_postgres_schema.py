@@ -29,7 +29,7 @@ def _can_connect_pg(host: str, port: int, user: str, password: str, db: str) -> 
             return True, ""
         except Exception as e:
             return False, f"cannot connect with psycopg: {e!s}"
-    except Exception:
+    except (ValueError, TypeError):
         pass
 
     # Fallback to psycopg2 (v2)
@@ -49,7 +49,7 @@ def _can_connect_pg(host: str, port: int, user: str, password: str, db: str) -> 
             return True, ""
         except Exception as e:
             return False, f"cannot connect with psycopg2: {e!s}"
-    except Exception:
+    except (ValueError, TypeError):
         return False, "neither psycopg nor psycopg2 is installed"
 
 

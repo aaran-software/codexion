@@ -25,7 +25,7 @@ LOG = get_logger("prefiq.database.sqlite.async")
 
 try:
     import aiosqlite  # type: ignore
-except Exception:  # pragma: no cover
+except (ValueError, TypeError):  # pragma: no cover
     aiosqlite = None
 
 _DEFAULT_PATH = os.path.join(".prefiq", "devmeta.sqlite")
@@ -35,7 +35,7 @@ def _resolve_sqlite_path() -> str:
     cfg = {}
     try:
         cfg = use_thread_config().get_config_dict() or {}
-    except Exception:
+    except (ValueError, TypeError):
         pass
 
     for key in ("path", "database", "filename"):
@@ -128,7 +128,7 @@ class AsyncSQLiteEngine:
             await conn.execute("BEGIN")
             yield
             await conn.commit()
-        except Exception:
+        except (ValueError, TypeError):
             await conn.rollback()
             raise
 
@@ -178,5 +178,5 @@ class AsyncSQLiteEngine:
             cur = await conn.execute("SELECT 1")
             row = await cur.fetchone()
             return row is not None
-        except Exception:
+        except (ValueError, TypeError):
             return False

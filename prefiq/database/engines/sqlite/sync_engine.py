@@ -37,7 +37,7 @@ def _resolve_sqlite_path() -> str:
     cfg = {}
     try:
         cfg = use_thread_config().get_config_dict() or {}
-    except Exception:
+    except (ValueError, TypeError):
         pass
 
     for key in ("path", "database", "filename"):
@@ -119,7 +119,7 @@ class SQLiteEngine(AbstractEngine[Any]):
             conn.execute("BEGIN")
             yield
             conn.commit()
-        except Exception:
+        except (ValueError, TypeError):
             conn.rollback()
             raise
 
@@ -169,5 +169,5 @@ class SQLiteEngine(AbstractEngine[Any]):
         try:
             cur = self._get_conn().execute("SELECT 1")
             return cur.fetchone() is not None
-        except Exception:
+        except (ValueError, TypeError):
             return False

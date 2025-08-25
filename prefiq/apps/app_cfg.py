@@ -35,7 +35,7 @@ def _project_root() -> Path:
         root = getattr(s, "project_root", None)
         if root:
             return Path(root)
-    except Exception:
+    except (ValueError, TypeError):
         pass
 
     # 3) fallback
@@ -107,7 +107,7 @@ def remove_app(cp: ConfigParser, name: str) -> None:
 def get_version(cp: ConfigParser, name: str) -> Optional[str]:
     try:
         return cp.get(name, "version", fallback=None)
-    except Exception:
+    except (ValueError, TypeError):
         return None
 
 

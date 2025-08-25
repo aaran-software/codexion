@@ -88,7 +88,7 @@ def _close_safely(obj: Any) -> None:
                 asyncio.run(res)
             else:
                 asyncio.create_task(res)
-    except Exception:
+    except (ValueError, TypeError):
         pass
 
 
@@ -160,7 +160,7 @@ def _read_named_env(name: str) -> Dict[str, str]:
                 val = getattr(s, attr, None)
                 if val is not None:
                     out[k] = str(val)
-        except Exception:
+        except (ValueError, TypeError):
             pass
 
     return out
@@ -230,7 +230,7 @@ def get_engine_named(name: str) -> Any:
         try:
             if hasattr(eng, "connect") and not _is_async(mode_name):
                 eng.connect()  # type: ignore[call-arg]
-        except Exception:
+        except (ValueError, TypeError):
             # Let the caller handle connection failures later if needed
             pass
 

@@ -40,7 +40,7 @@ class ConnectionManager:
             # For async engines, test_connection() may return an awaitable — treat as unhealthy here.
             # Prefer using the async helper in callers if you want to await it.
             return bool(res)
-        except Exception:
+        except (ValueError, TypeError):
             return False
 
     def close(self) -> None:
@@ -62,7 +62,7 @@ class ConnectionManager:
                 else:
                     # If a loop is already running, fire-and-forget is the safest here.
                     asyncio.create_task(res)
-        except Exception:
+        except (ValueError, TypeError):
             pass
 
     # ---- sync transactions --------------------------------------------------
@@ -89,7 +89,7 @@ class ConnectionManager:
                 eng.begin()
                 yield eng
                 eng.commit()
-            except Exception:
+            except (ValueError, TypeError):
                 try:
                     eng.rollback()
                 finally:
@@ -124,7 +124,7 @@ class ConnectionManager:
                 await eng.begin()
                 yield eng
                 await eng.commit()
-            except Exception:
+            except (ValueError, TypeError):
                 try:
                     await eng.rollback()
                 finally:

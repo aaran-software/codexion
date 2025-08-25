@@ -22,7 +22,7 @@ async def is_healthy_async(engine: Any, timeout: Optional[float] = 3.0) -> bool:
         if timeout is not None and timeout > 0:
             return bool(await asyncio.wait_for(_maybe_await(result), timeout=timeout))
         return bool(await _maybe_await(result))
-    except Exception:
+    except (ValueError, TypeError):
         return False
 
 def is_healthy(engine: Any, timeout: Optional[float] = 3.0) -> bool:
@@ -47,5 +47,5 @@ def is_healthy(engine: Any, timeout: Optional[float] = 3.0) -> bool:
         # Best effort: schedule and fail fast to keep this function synchronous.
         asyncio.create_task(is_healthy_async(engine, timeout))
         return False
-    except Exception:
+    except (ValueError, TypeError):
         return False

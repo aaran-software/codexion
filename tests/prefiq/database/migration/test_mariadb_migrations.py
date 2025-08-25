@@ -36,12 +36,12 @@ def _first_value(row):
         if hasattr(row, "__getitem__") and not isinstance(row, (str, bytes, bytearray)):
             try:
                 return row[0]
-            except Exception:
+            except (ValueError, TypeError):
                 pass
         if hasattr(row, "keys"):
             for _, v in row.items():
                 return v
-    except Exception:
+    except (ValueError, TypeError):
         pass
     return row
 
@@ -57,7 +57,7 @@ def _table_exists_sync(engine) -> bool:
     finally:
         try:
             cur.close()
-        except Exception:
+        except (ValueError, TypeError):
             pass
     return bool(_first_value(row))
 
@@ -72,7 +72,7 @@ async def _table_exists_async(engine) -> bool:
         if hasattr(cur, "close"):
             try:
                 await cur.close()
-            except Exception:
+            except (ValueError, TypeError):
                 pass
     return bool(_first_value(row))
 
@@ -80,7 +80,7 @@ async def _table_exists_async(engine) -> bool:
 def _table_exists(engine) -> bool:
     try:
         return _table_exists_sync(engine)
-    except Exception:
+    except (ValueError, TypeError):
         try:
             loop = asyncio.get_event_loop()
         except RuntimeError:
@@ -94,7 +94,7 @@ def test_mariadb_migrations_table_exists(engine_swap, mysql_cli):
     # Optional: skip cleanly if mariadb driver not installed
     try:
         import mariadb  # noqa: F401
-    except Exception:
+    except (ValueError, TypeError):
         pytest.skip("mariadb driver not installed")
 
     host = mysql_cli["host"]

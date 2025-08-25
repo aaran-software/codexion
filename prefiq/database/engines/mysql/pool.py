@@ -170,7 +170,7 @@ async def get_connection(autocommit: bool = True):
         finally:
             await _run_in_thread(cursor.close)
             await _return_connection(conn)
-    except Exception:
+    except (ValueError, TypeError):
         # If anything goes wrong, ensure the connection is closed (not returned to pool)
         await _run_in_thread(conn.close)
         raise

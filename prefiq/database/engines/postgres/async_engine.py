@@ -60,7 +60,7 @@ class AsyncPostgresEngine:
             return ()
         try:
             return tuple(row.values())
-        except Exception:
+        except (ValueError, TypeError):
             return tuple(row)
 
     # ---------- public API (async) ----------
@@ -112,7 +112,7 @@ class AsyncPostgresEngine:
             finally:
                 try:
                     loop.run_until_complete(asyncio.sleep(0))
-                except Exception:
+                except (ValueError, TypeError):
                     pass
                 loop.close()
 
@@ -133,5 +133,5 @@ class AsyncPostgresEngine:
     def close(self) -> None:
         try:
             self._run(self.aclose())
-        except Exception:
+        except (ValueError, TypeError):
             pass

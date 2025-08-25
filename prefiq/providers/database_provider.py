@@ -34,7 +34,7 @@ class DatabaseProvider(BaseProvider):
                 engine.set_before_execute_hook(before_execute)
             if hasattr(engine, "set_after_execute_hook") and callable(getattr(engine, "set_after_execute_hook")):
                 engine.set_after_execute_hook(after_execute)
-        except Exception:
+        except (ValueError, TypeError):
             # Hooks are convenience features; never block provider registration on them
             pass
 
@@ -48,7 +48,7 @@ class DatabaseProvider(BaseProvider):
                 warm = int(getattr(s, "DB_POOL_WARMUP") or 0)
             else:
                 warm = int(os.getenv("DB_POOL_WARMUP", "0") or "0")
-        except Exception:
+        except (ValueError, TypeError):
             warm = 0
 
         if warm > 0:
@@ -65,7 +65,7 @@ class DatabaseProvider(BaseProvider):
                         asyncio.run(coro)
                     else:
                         asyncio.create_task(coro)
-            except Exception:
+            except (ValueError, TypeError):
                 # Best-effort only; don't fail boot if prewarm is unavailable
                 pass
 
@@ -86,17 +86,17 @@ class DatabaseProvider(BaseProvider):
                     asyncio.run(res)
                 else:
                     asyncio.create_task(res)
-        except Exception:
+        except (ValueError, TypeError):
             pass
 
         # Close connection manager (handles per-engine specifics)
         try:
             connection_manager.close()
-        except Exception:
+        except (ValueError, TypeError):
             pass
 
         # Reset engine singleton
         try:
             reset_engine()
-        except Exception:
+        except (ValueError, TypeError):
             pass

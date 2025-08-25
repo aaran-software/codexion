@@ -1,17 +1,17 @@
-# providers/DevmetaProvider.py
-# Auto-registered Provider for devmeta
-from prefiq.core.provider import Provider  # your base Provider
+# devmeta/providers/DevmetaProvider.py
+
+from prefiq.core.provider import Provider
+from prefiq.http.routing import include_routes
 
 class DevmetaProvider(Provider):
     abstract = False
     enabled  = True
     name     = "devmeta"
-    order    = 300   # default; can be overridden from settings if you want
+    order    = 300
 
     def register(self) -> None:
-        # bind services, singletons, configs
         pass
 
     def boot(self) -> None:
-        # run boot-time hooks after all providers are registered
-        pass
+        include_routes("apps.devmeta.routes.web", prefix="/devmeta", tags=["devmeta:web"])
+        include_routes("apps.devmeta.routes.api", prefix="/api/devmeta", tags=["devmeta:api"])
