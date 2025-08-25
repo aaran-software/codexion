@@ -7,7 +7,6 @@ import typer
 app = typer.Typer(help="Prefiq CLI")
 
 from prefiq.cli.doctor import app as doctor_app
-from prefiq.cli.apps import app as apps_app
 app.add_typer(doctor_app, name="doctor")
 
 
@@ -23,6 +22,10 @@ def _mount_optional_groups() -> None:
     if "app" in argv:
         from prefiq.cli.apps import apps_app
         app.add_typer(apps_app, name="app")
+
+    if "provider" in argv:
+        from prefiq.cli.providers import providers_app
+        app.add_typer(providers_app, name="provider")
 
     if "run" in argv:
         # operational commands (keep imports local)

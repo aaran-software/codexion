@@ -4,64 +4,66 @@ from __future__ import annotations
 import os
 from pathlib import Path
 from configparser import ConfigParser
-from typing import List, Optional, Tuple
+from typing import List, Optional
 from collections import OrderedDict
 
 from prefiq.settings.get_settings import load_settings
 
 CFG_BASENAME = "apps.cfg"
 CFG_DIRNAME  = "config"
+ENV_CFG_PATH = "PREFIQ_APPS_CFG"       # absolute/relative file path wins
+ENV_ROOT     = "PREFIQ_PROJECT_ROOT"   # explicit project root (folder) wins
 
-
-# ──────────────────────────────────────────────────────────────────────────────
-# Project root resolution
-# Order of precedence (most explicit → least):
-#  1) PREFIQ_PROJECT_ROOT env var (absolute path)
-#  2) Current working directory IF ./config/apps.cfg exists
-#  3) Settings.project_root IF it exists and has ./config/apps.cfg
-#  4) Settings.project_root (fallback even if cfg missing)
-#  5) Current working directory
-# This prevents “reading a different cfg than the one I edited” problems.
-# ──────────────────────────────────────────────────────────────────────────────
 
 def _project_root() -> Path:
-    # 1) explicit env override
-    env_root = os.getenv("PREFIQ_PROJECT_ROOT")
+    """
+    Resolve the project root in this priority:
+      1) PREFIQ_PROJECT_ROOT (env)
+      2) Settings.project_root (derived from .env)
+      3) CWD
+    """
+    # 1) explicit override
+    env_root = os.getenv(ENV_ROOT)
     if env_root:
-        p = Path(env_root).resolve()
+        p = Path(env_root).expanduser().resolve()
         if p.exists():
             return p
 
-    # 2) prefer cwd if the cfg we're looking for is right here
-    cwd = Path.cwd()
-    if (cwd / CFG_DIRNAME / CFG_BASENAME).exists():
-        return cwd
-
-    # 3) settings.project_root if it *contains* the cfg
+    # 2) settings-derived
     try:
         s = load_settings()
-        sr = Path(getattr(s, "project_root", "") or "").resolve()
-        if sr and (sr / CFG_DIRNAME / CFG_BASENAME).exists():
-            return sr
-        # 4) otherwise still prefer settings.project_root if present
-        if sr:
-            return sr
+        root = getattr(s, "project_root", None)
+        if root:
+            return Path(root)
     except Exception:
         pass
 
-    # 5) last resort
-    return cwd
+    # 3) fallback
+    return Path.cwd()
 
 
 def cfg_path(project_root: Path | None = None) -> Path:
-    return (project_root or _project_root()) / CFG_DIRNAME / CFG_BASENAME
+    """
+    Determine the path of apps.cfg in this priority:
+      1) PREFIQ_APPS_CFG (env) -> treated as a file path (absolute or relative)
+      2) <project_root>/config/apps.cfg
+    """
+    env_cfg = os.getenv(ENV_CFG_PATH)
+    if env_cfg:
+        p = Path(env_cfg).expanduser()
+        # if relative, resolve under provided project_root (or CWD)
+        if not p.is_absolute():
+            base = project_root or _project_root()
+            p = (base / p).resolve()
+        return p
+    base = project_root or _project_root()
+    return (base / CFG_DIRNAME / CFG_BASENAME)
 
 
 def ensure_cfg(project_root: Path | None = None) -> Path:
     p = cfg_path(project_root)
     p.parent.mkdir(parents=True, exist_ok=True)
     if not p.exists():
-        # Initialize empty file, preserving order semantics via OrderedDict
         cp = ConfigParser(dict_type=OrderedDict)
         with p.open("w", encoding="utf-8") as f:
             cp.write(f)
@@ -80,6 +82,7 @@ def load_cfg(project_root: Path | None = None) -> ConfigParser:
 
 def save_cfg(cp: ConfigParser, project_root: Path | None = None) -> None:
     p = cfg_path(project_root)
+    p.parent.mkdir(parents=True, exist_ok=True)
     with p.open("w", encoding="utf-8") as f:
         cp.write(f)
 
@@ -117,18 +120,6 @@ def get_registered_apps(project_root: Path | None = None) -> List[str]:
     return list(cp.sections())
 
 
-# ---- optional helpers for nicer list output (non-breaking) ----
-
-def registered_apps_with_versions(project_root: Path | None = None) -> List[Tuple[str, Optional[str]]]:
-    """
-    Convenience: [(name, version), ...] in cfg order.
-    """
-    cp = load_cfg(project_root)
-    return [(name, get_version(cp, name)) for name in cp.sections()]
-
-
-def apps_dir(project_root: Path | None = None) -> Path:
-    """
-    Path to the apps/ folder under the resolved project root.
-    """
-    return (project_root or _project_root()) / "apps"
+# Small helper so the CLI can print which file is being used.
+def get_cfg_abspath() -> str:
+    return str(cfg_path().resolve())

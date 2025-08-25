@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import time
 from prefiq.settings.get_settings import load_settings
-from prefiq.log.logger import get_logger
+from prefiq.core.logger import get_logger
 
 # Load app settings / namespace
 _s = load_settings()

@@ -1,4 +1,5 @@
-# prefiq/core/runtime/discovery.py
+# prefiq/core/discovery.py
+
 from __future__ import annotations
 
 import importlib
@@ -20,10 +21,10 @@ def _iter_modules(pkg: str) -> Iterable[str]:
         return []
     path = getattr(p, "__path__", None) or []
     # direct children
-    for _f, name, ispkg in pkgutil.iter_modules(path):
+    for _f, name, is_pkg in pkgutil.iter_modules(path):
         mod = f"{pkg}.{name}"
         yield mod
-        if ispkg:
+        if is_pkg:
             # one extra level in subpackages
             try:
                 sp = importlib.import_module(mod)
@@ -58,7 +59,7 @@ def discover_providers() -> List[Type[Provider]]:
     Hybrid discovery (config‑driven):
       1) Import <app>.providers.* for each app in REGISTERED_APPS
       2) Import modules under each root in PROVIDER_DISCOVERY_ROOTS
-      3) Apply INCLUDE/EXCLUDE/ORDER overrides from settings
+      3) Apply to INCLUDE/EXCLUDE/ORDER overrides from settings
       4) Return sorted Provider classes
     """
     apps, roots, include, exclude, ordermap = _settings()
