@@ -21,7 +21,7 @@ def _mount_optional_groups() -> None:
         app.add_typer(server_app, name="server")
 
     if "app" in argv:
-        from prefiq.cli.apps import app as apps_app
+        from prefiq.cli.apps import apps_app
         app.add_typer(apps_app, name="app")
 
     if "run" in argv:

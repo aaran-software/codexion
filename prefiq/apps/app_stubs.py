@@ -1,4 +1,5 @@
 # prefiq/apps/app_stubs.py
+
 from __future__ import annotations
 from datetime import datetime
 
