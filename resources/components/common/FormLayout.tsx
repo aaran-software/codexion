@@ -36,60 +36,55 @@ function FormLayout({
   multipleEntry,
   formName,
 }: FormLayoutProps) {
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await apiClient.get(formApi.read);
-        const list = res.data.data || [];
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      // Step 1: Get list of companies
+      const listRes = await apiClient.get(formApi.read);
+      const companies = listRes.data.data || []; // [{ name: "AARAN ASSOCIATES" }, ... ]
 
-        const detailedData = await Promise.all(
-          list.map(async (entry: any) => {
-            const key = entry.id || entry.key;
-            const url = `${formApi.read}/${encodeURIComponent(key)}`;
+      // Step 2: For each company, fetch detailed data
+      const detailedData = await Promise.all(
+        companies.map(async (company: any) => {
+          const name = encodeURIComponent(company.name);
+          const url = `${formApi.read}/${name}`;
+          try {
+            const detailRes = await apiClient.get(url);
+            return detailRes.data.data || null; // your detailed company object
+          } catch (err) {
+            console.warn(`❌ Failed to fetch details for ${company.name}`, err);
+            return null;
+          }
+        })
+      );
 
-            try {
-              const detailRes = await apiClient.get(url);
-              return detailRes.data || null;
-            } catch (err) {
-              console.warn(`❌ Detail fetch failed for ${url}`, err);
-              return null;
-            }
-          })
-        );
+      // Step 3: Convert to table rows
+      const rows: TableRowData[] = detailedData
+        .filter(Boolean)
+        .map((entry: any) => {
+          const row: TableRowData = { id: entry.name || `row-${Math.random()}` };
 
-        const rows: TableRowData[] = detailedData
-          .filter(Boolean)
-          .map((entry: any) => {
-            const row: TableRowData = { id: "" };
-
-            head.forEach((h) => {
-              const key = h.key;
-              const value = entry[key];
-              row[key] =
-                typeof value === "object"
-                  ? JSON.stringify(value)
-                  : String(value ?? "");
-            });
-
-            if (!row.id) {
-              row.id = String(
-                entry.id ??
-                  entry.name ??
-                  `row-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`
-              );
-            }
-
-            return row;
+          head.forEach((h) => {
+            const key = h.key;
+            const value = entry[key];
+            row[key] =
+              typeof value === "object"
+                ? JSON.stringify(value)
+                : String(value ?? "");
           });
 
-        setTableData(rows);
-      } catch (err) {
-        console.error("❌ Failed to fetch data:", err);
-      }
-    };
+          return row;
+        });
 
-    fetchData();
-  }, [formApi.read, head]);
+      setTableData(rows);
+    } catch (err) {
+      console.error("❌ Failed to fetch data:", err);
+    }
+  };
+
+  fetchData();
+}, [formApi.read, head]);
+
 
   const [tableData, setTableData] = useState<TableRowData[]>([]);
 

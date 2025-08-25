@@ -317,7 +317,7 @@
                 "title": "Mandatory Details",
                 "fields": [
                     {
-                        "key": "id",
+                        "key": "company_name",
                         "label": "id",
                         "type": "textinput",
                         "inTable": true,
@@ -384,6 +384,14 @@
                         "updateApi": "",
                         "createKey": "",
                         "apiKey": "",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "action",
+                        "label": "Action",
+                        "type": "action",
                         "inTable": true,
                         "isForm": true,
                         "isPrint": false
