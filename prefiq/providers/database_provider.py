@@ -5,11 +5,12 @@ import asyncio
 import atexit
 import inspect
 import os
+import sys
 from typing import Any
 
 from prefiq.core.application import BaseProvider, register_provider
-from prefiq.database.connection import get_engine, reset_engine
-from prefiq.database.connection_manager import connection_manager
+from prefiq.settings.get_settings import load_settings
+from prefiq.database.connection import get_engine
 from prefiq.database.engines.abstract_engine import AbstractEngine
 from prefiq.database.hooks import before_execute, after_execute
 
@@ -17,30 +18,35 @@ from prefiq.database.hooks import before_execute, after_execute
 @register_provider
 class DatabaseProvider(BaseProvider):
     """
-    Binds 'db' (engine singleton) into the container.
-
-    - Hooks (before/after) are OPTIONAL: set them only if the engine supports it.
-    - MariaDB async pool prewarm is best-effort (no-op for other engines).
-    - Registers a clean shutdown to close pools/handles on process exit.
+    Binds 'db' (engine singleton) into the container and attaches hooks.
+    Centralized shutdown is handled by FastAPI's shutdown event.
+    atexit is only registered for SYNC engines (no async work during interpreter finalization).
     """
 
     def register(self) -> None:
-        # Construct (or reuse) the engine and bind into app container
         engine: AbstractEngine[Any] = get_engine()
 
-        # Set default hooks only if the engine exposes the API (PG engines may not)
+        # Attach optional hooks if engine supports them
         try:
             if hasattr(engine, "set_before_execute_hook") and callable(getattr(engine, "set_before_execute_hook")):
                 engine.set_before_execute_hook(before_execute)
             if hasattr(engine, "set_after_execute_hook") and callable(getattr(engine, "set_after_execute_hook")):
                 engine.set_after_execute_hook(after_execute)
         except (ValueError, TypeError):
-            # Hooks are convenience features; never block provider registration on them
             pass
 
         self.app.bind("db", engine)
 
+        # Register atexit fallback ONLY for sync engines
+        try:
+            s = load_settings()
+            if getattr(s, "DB_CLOSE_ATEXIT", True) and getattr(s, "DB_MODE", "sync").lower() != "async":
+                atexit.register(self._shutdown_sync_only)
+        except Exception:
+            pass
+
     def boot(self) -> None:
+        # Best-effort warmup (MariaDB async pool)
         warm = 0
         try:
             s = self.app.resolve("settings")
@@ -55,9 +61,7 @@ class DatabaseProvider(BaseProvider):
             try:
                 # Import lazily to avoid importing MariaDB bits for other engines
                 from prefiq.database.engines.mariadb.pool import prewarm as _mariadb_prewarm  # type: ignore
-
                 coro = _mariadb_prewarm(warm)
-                # Run the coroutine whether an event loop is present
                 if inspect.isawaitable(coro):
                     try:
                         asyncio.get_running_loop()
@@ -65,38 +69,23 @@ class DatabaseProvider(BaseProvider):
                         asyncio.run(coro)
                     else:
                         asyncio.create_task(coro)
-            except (ValueError, TypeError):
-                # Best-effort only; don't fail boot if prewarm is unavailable
+            except (ModuleNotFoundError, ImportError, AttributeError, ValueError, TypeError):
                 pass
 
-        # Ensure pools/engines are cleaned up on interpreter exit
-        atexit.register(self._shutdown)
-
-    def _shutdown(self) -> None:
-        """Close pools (async) and engine (sync/async) safely at process exit."""
-        # MariaDB async pool close (if present)
+    @staticmethod
+    def _shutdown_sync_only() -> None:
+        """
+        Best-effort close for *sync* engines only.
+        Never schedule async work here — process is exiting.
+        """
+        if getattr(sys, "is_finalizing", lambda: False)():
+            return
         try:
-            from prefiq.database.engines.mariadb.pool import close_pool as _close_pool  # type: ignore
-
-            res = _close_pool()
-            if inspect.isawaitable(res):
-                try:
-                    asyncio.get_running_loop()
-                except RuntimeError:
-                    asyncio.run(res)
-                else:
-                    asyncio.create_task(res)
-        except (ValueError, TypeError):
-            pass
-
-        # Close connection manager (handles per-engine specifics)
-        try:
-            connection_manager.close()
-        except (ValueError, TypeError):
-            pass
-
-        # Reset engine singleton
-        try:
-            reset_engine()
-        except (ValueError, TypeError):
+            eng = get_engine()
+            # Call close if it's sync; if it's awaitable, skip (FastAPI shutdown handled it)
+            if hasattr(eng, "close"):
+                res = eng.close()
+                if inspect.isawaitable(res):
+                    return
+        except Exception:
             pass
