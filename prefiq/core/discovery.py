@@ -1,5 +1,4 @@
 # prefiq/core/discovery.py
-
 from __future__ import annotations
 
 import importlib
@@ -8,6 +7,7 @@ from typing import Dict, Iterable, List, Type
 
 from prefiq.core.provider import Provider, all_providers
 from prefiq.settings.get_settings import load_settings
+from prefiq.apps.app_cfg import get_registered_apps  # ← NEW
 
 
 def _iter_modules(pkg: str) -> Iterable[str]:
@@ -45,21 +45,45 @@ def _safe_import(module_name: str) -> None:
 
 
 def _settings() -> tuple[list[str], list[str], set[str], set[str], Dict[str, int]]:
+    """
+    Merge discovery inputs from environment (.env) **and** config/apps.cfg.
+    - apps: env REGISTERED_APPS + cfg apps (prefixed with 'apps.')
+    - roots: env roots; if cfg has apps and 'apps' not present, add it
+    """
     s = load_settings()
-    apps    = list(getattr(s, "REGISTERED_APPS", []) or [])
-    roots   = list(getattr(s, "PROVIDER_DISCOVERY_ROOTS", []) or [])
-    include = set(getattr(s, "PROVIDERS_INCLUDE", []) or [])
-    exclude = set(getattr(s, "PROVIDERS_EXCLUDE", []) or [])
-    order   = dict(getattr(s, "PROVIDERS_ORDER", {}) or {})
-    return apps, roots, include, exclude, order
+    apps_env = list(getattr(s, "REGISTERED_APPS", []) or [])
+    roots    = list(getattr(s, "PROVIDER_DISCOVERY_ROOTS", []) or [])
+    include  = set(getattr(s, "PROVIDERS_INCLUDE", []) or [])
+    exclude  = set(getattr(s, "PROVIDERS_EXCLUDE", []) or [])
+    order    = dict(getattr(s, "PROVIDERS_ORDER", {}) or {})
+
+    # Load app names from config/apps.cfg and map to "apps.<name>"
+    try:
+        cfg_apps = get_registered_apps()  # preserves file order
+    except Exception:
+        cfg_apps = []
+
+    apps_cfg = [f"apps.{name}" for name in cfg_apps]
+
+    # Merge (preserve first occurrence)
+    merged_apps: list[str] = []
+    for a in apps_env + apps_cfg:
+        if a not in merged_apps:
+            merged_apps.append(a)
+
+    # If cfg lists apps but no explicit root, also scan the "apps" package
+    if cfg_apps and "apps" not in roots:
+        roots.append("apps")
+
+    return merged_apps, roots, include, exclude, order
 
 
 def discover_providers() -> List[Type[Provider]]:
     """
     Hybrid discovery (config‑driven):
-      1) Import <app>.providers.* for each app in REGISTERED_APPS
+      1) Import <app>.providers.* for each app in REGISTERED_APPS (+ apps.cfg)
       2) Import modules under each root in PROVIDER_DISCOVERY_ROOTS
-      3) Apply to INCLUDE/EXCLUDE/ORDER overrides from settings
+      3) Apply INCLUDE/EXCLUDE/ORDER overrides from settings
       4) Return sorted Provider classes
     """
     apps, roots, include, exclude, ordermap = _settings()
