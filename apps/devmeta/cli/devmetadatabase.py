@@ -133,49 +133,74 @@ def dev_migrate(
     Run migrations scoped to DEV named database (DEV_DB_*).
     """
     with engine_env("DEV"):
-        # Re-evaluate settings/engine under DEV profile
         clear_settings_cache()
         reload_engine_from_env(force_refresh=True)
 
-        # Reuse the shared migrate entrypoint from the run CLI if available.
-        # This keeps behavior consistent with `prefiq run migrate`.
+        log.info("%s", banner("=== Devmeta Migrate (DEV profile) ===", color="cyan", blank_before=True))
+
+        # Try the shared migrator first
         try:
             from prefiq.cli.database.migrate import migrate as shared_migrate  # type: ignore
         except Exception:
             shared_migrate = None
 
-        log.info("%s", banner("=== Devmeta Migrate (DEV profile) ===", color="cyan", blank_before=True))
-
         if shared_migrate:
-            # The shared migrate handles its own options; pass through if supported.
-            # Fallback: call without args if signature doesn't match.
-            try:
-                shared_migrate(steps=steps, fresh=fresh, seed=seed)  # type: ignore[call-arg]
-            except TypeError:
-                shared_migrate()  # type: ignore[misc]
-        else:
-            # Minimal inline migrator bootstrap (if shared CLI not present)
-            from prefiq.core.application import Application
-            from prefiq.core.service_providers import get_service_providers
+            # Only pass kwargs that the shared CLI actually accepts.
+            import inspect
+            sig = inspect.signature(shared_migrate)
+            call_kwargs = {}
+            if "steps" in sig.parameters:
+                call_kwargs["steps"] = steps
+            if "fresh" in sig.parameters:
+                call_kwargs["fresh"] = fresh
+            if "seed" in sig.parameters:
+                call_kwargs["seed"] = seed
 
-            app = Application.get_app()
-            for pcls in get_service_providers():
-                app.register(pcls)
-            app.boot()
-            migrator = app.resolve("migrator")
-            if not migrator:
-                log.error("Migrator service not found. Is MigrationProvider enabled?")
-                raise typer.Exit(1)
-            # Common migrator API guesses
-            if fresh and hasattr(migrator, "fresh"):
-                migrator.fresh()
-            elif steps and hasattr(migrator, "migrate_steps"):
-                migrator.migrate_steps(steps)
-            elif hasattr(migrator, "migrate"):
-                migrator.migrate()
-            else:
-                log.error("No compatible migrate method on migrator.")
-                raise typer.Exit(1)
+            try:
+                shared_migrate(**call_kwargs)  # type: ignore[misc]
+            except Exception as e:
+                log.debug("shared_migrate failed (%s). Falling back to inline migrator.", e)
+                _run_inline_migrator(fresh=fresh, steps=steps, seed=seed)
+        else:
+            _run_inline_migrator(fresh=fresh, steps=steps, seed=seed)
 
         log.info("%s", okc("Migrations complete ✅"))
         raise typer.Exit(0)
+
+
+def _run_inline_migrator(*, fresh: bool, steps: int | None, seed: bool) -> None:
+    from prefiq.core.application import Application
+    from prefiq.core.service_providers import get_service_providers
+
+    app = Application.get_app()
+    for pcls in get_service_providers():
+        app.register(pcls)
+    app.boot()
+
+    migrator = app.resolve("migrator")
+    if not migrator:
+        log.error("Migrator service not found. Is MigrationProvider enabled?")
+        raise typer.Exit(1)
+
+    # Try to mirror the shared API
+    if fresh and hasattr(migrator, "fresh"):
+        try:
+            migrator.fresh(seed=seed)  # supports seed if available
+        except TypeError:
+            migrator.fresh()
+        return
+
+    if steps and hasattr(migrator, "migrate_steps"):
+        migrator.migrate_steps(steps)
+        if seed and hasattr(migrator, "seed"):
+            migrator.seed()
+        return
+
+    if hasattr(migrator, "migrate"):
+        migrator.migrate()
+        if seed and hasattr(migrator, "seed"):
+            migrator.seed()
+        return
+
+    log.error("No compatible migrate method on migrator.")
+    raise typer.Exit(1)

@@ -8,7 +8,7 @@ class Tasks(Migrations):
     def up(self) -> None:
         self.create(self.TABLE_NAME, lambda t: [
             t.id(),
-            t.bigint("project_id"),                    # FK → projects.id
+            t.biginteger("project_id"),                    # FK → projects.id
             t.string("title"),
             t.text("description", nullable=True),
             t.string("assignee", nullable=True),
@@ -16,9 +16,8 @@ class Tasks(Migrations):
             t.datetime("due_date", nullable=True),
             t.integer("priority", default=3),          # 1=high, 3=normal, 5=low
             t.timestamps(),
-            t.index(["project_id", "status"]),
-            # If your migration layer supports it, enable FK:
-            # t.foreign("project_id").references("projects", "id").on_delete("CASCADE")
+            t.index("project_id"),
+            t.index("status"),
         ])
 
     def down(self) -> None:

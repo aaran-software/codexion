@@ -8,8 +8,8 @@ class DevmetaLogs(Migrations):
     def up(self) -> None:
         self.create(self.TABLE_NAME, lambda t: [
             t.id(),
-            t.bigint("project_id", nullable=True),     # optional FK
-            t.bigint("task_id", nullable=True),        # optional FK
+            t.biginteger("project_id", nullable=True),     # optional FK
+            t.biginteger("task_id", nullable=True),        # optional FK
             t.string("action"),                        # e.g., 'task.created', 'status.changed'
             t.string("actor", nullable=True),          # user/email/service
             t.text("meta", nullable=True),             # JSON/text payload
