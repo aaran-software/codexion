@@ -1,8 +1,8 @@
-# apps/blog/src/routes/api.py
+# apps/devmeta/routes/api.py
 from fastapi import APIRouter
 
 router = APIRouter()
 
-@router.get("/devmeta" , tags=["blog:api"])
+@router.get("/posts", tags=["devmeta:api"])
 def list_posts():
-    return [{"id": 1, "title": "devmeta"}]
+    return [{"id": 1, "title": "hello"}]
