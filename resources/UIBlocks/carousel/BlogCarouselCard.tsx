@@ -112,11 +112,11 @@ export default function BlogCarouselCard({
                 {/* Image */}
                 <div className="relative overflow-hidden aspect-[4/3]">
                   <img
-                    src={b.coverImage}
+                    src={b.PostImage}
                     alt={b.title}
                     className="w-full h-full object-cover rounded-tl-2xl rounded-tr-2xl"
                   />
-                  <p className="absolute top-2 left-2 text-sm font-semibold bg-tag text-background py-1 px-2 rounded-full">
+                  <p className="absolute top-2 left-2 text-sm font-semibold bg-highlight1 text-highlight1-foreground py-1 px-2 rounded-full">
                     {b.category}
                   </p>
                 </div>
@@ -133,7 +133,7 @@ export default function BlogCarouselCard({
                     </div>
 
                     {/* Title */}
-                    <h1 className="text-lg md:text-2xl font-bold line-clamp-2">
+                    <h1 className="text-lg md:text-2xl text-foreground font-bold line-clamp-2">
                       {b.title}
                     </h1>
                   </div>

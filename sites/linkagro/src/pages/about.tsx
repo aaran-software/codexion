@@ -22,14 +22,14 @@ function About() {
 
   const teamData = [
     {
-      image: "/assets/team/ram.jpg",
+      image: "/assets/team/ram.webp",
       name: "Mr.Ramchandran ",
       designation: "Head – Logistics & Exports",
       bio: "",
       email: "ram@linkagro.in",
     },
     {
-      image: "/assets/team/siva.jpg",
+      image: "/assets/team/siva.webp",
       name: "Mr.Thirumurugan",
       designation: "Head – Production & Sourcing",
       bio: "",
@@ -41,7 +41,7 @@ function About() {
       {/* Hero Section */}
       <div className="relative h-[40vh] sm:h-[50vh] mt-20 w-full">
         <img
-          src="/assets/Homepage1.jpg"
+          src="/assets/Homepage1.webp"
           alt="Sample"
           className="h-full w-full object-cover"
         />
@@ -65,7 +65,7 @@ function About() {
       <div className="text-foreground/80 pt-20 px-5 lg:px-[10%]">
         <div className="mx-auto">
           <p
-            className={`text-lg leading-relaxed first-letter:text-2xl first-letter:font-bold ${
+            className={`text-lg leading-relaxed first-letter:text-2xl first-letter:font-bold text-justify ${
               inView1 ? "animate__animated animate__fadeInDown" : "opacity-0"
             }`}
             ref={ref1}
@@ -89,7 +89,7 @@ function About() {
               <h3 className="text-2xl font-semibold text-primary mb-4">
                 Over a Decade of Excellence
               </h3>
-              <p className="text-base leading-relaxed">
+              <p className="text-base leading-relaxed text-justify">
                 With more than a decade of experience, we specialize in
                 supplying premium-grade products for horticulture, farming, and
                 landscaping applications across global markets. As one of the
@@ -133,7 +133,7 @@ function About() {
             <h3 className="text-2xl font-semibold text-primary-foreground mb-4">
               Our Commitment
             </h3>
-            <p className="text-base text-primary-foreground leading-relaxed">
+            <p className="text-base text-primary-foreground leading-relaxed text-justify">
               We, at Link Agro Exports, adhere to the highest quality standards
               and consistently produce flawless end products. We believe our
               success depends on delivering the best possible quality to our

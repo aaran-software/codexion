@@ -104,7 +104,7 @@ const Carousel: React.FC<CarouselProps> = ({
             onClick={() => setCurr(i)}
             aria-label={`Go to slide ${i + 1}`}
             className={`transition-all w-3 h-3 rounded-full ${
-              curr === i ? "bg-primary p-1" : "bg-primary/20"
+              curr === i ? "bg-primary p-1" : "bg-primary/60"
             }`}
           />
         ))}

@@ -11,7 +11,7 @@ import {ThemeProvider} from "../../../resources/components/theme-provider";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>
-        <ThemeProvider defaultTheme="system">
+        <ThemeProvider defaultTheme="light">
             <BrowserRouter>
             <AppProvider initialSettings={settings}>
                 <AuthProvider> {/* ✅ Add this wrapper */}

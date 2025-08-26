@@ -6,7 +6,7 @@ export type BlogPost = {
     name: string;
     avatar: string;
   };
-  coverImage: string;
+  PostImage: string;
   category: string;
   tags: string[];
   description: string; // HTML string
@@ -62,10 +62,10 @@ export const LinkAgroBlogs: BlogPost[] = [
   <li><strong>Mushroom Cultivation:</strong> Farmers rely on cocopeat as an ideal substrate for mushroom farming, thanks to its moisture retention and structure.</li>
 </ul>
 `,
-    coverImage: "/assets/blog/blog1.1.png",
+    PostImage: "/assets/blog/blog1.1.webp",
     author: {
       name: "Ramchandran",
-      avatar: "/assets/team/ram.jpg",
+      avatar: "/assets/team/ram.webp",
     },
     date: "August 3, 2025",
     category: "Sustainable Farming",
@@ -86,9 +86,9 @@ export const LinkAgroBlogs: BlogPost[] = [
     date: "August 22, 2025",
     author: {
       name: "Siva",
-      avatar: "/assets/team/siva.jpg",
+      avatar: "/assets/team/siva.webp",
     },
-    coverImage: "/assets/blog/blog2.png",
+    PostImage: "/assets/blog/blog2.webp",
     category: "Modern Farming",
     tags: [
       "Cocopeat",
@@ -136,9 +136,9 @@ export const LinkAgroBlogs: BlogPost[] = [
     date: "August 22, 2025",
     author: {
       name: "Ramchandran",
-      avatar: "/assets/team/ram.jpg",
+      avatar: "/assets/team/ram.webp",
     },
-    coverImage: "/assets/blog/d4.png",
+    PostImage: "/assets/blog/d4.webp",
     category: "Global Agriculture",
     tags: [
       "Cocopeat",
@@ -241,10 +241,10 @@ export const LogicxBlogs: BlogPost[] = [
   <li><strong>Mushroom Cultivation:</strong> Farmers rely on cocopeat as an ideal substrate for mushroom farming, thanks to its moisture retention and structure.</li>
 </ul>
 `,
-    coverImage: "/assets/blog/blog1.1.png",
+    PostImage: "/assets/blog/blog1.1.webp",
     author: {
       name: "Ramchandran",
-      avatar: "/assets/team/ram.jpg",
+      avatar: "/assets/team/ram.webp",
     },
     date: "August 3, 2025",
     category: "Sustainable Farming",
@@ -265,9 +265,9 @@ export const LogicxBlogs: BlogPost[] = [
     date: "August 22, 2025",
     author: {
       name: "Siva",
-      avatar: "/assets/team/siva.jpg",
+      avatar: "/assets/team/siva.webp",
     },
-    coverImage: "/assets/blog/blog2.png",
+    PostImage: "/assets/blog/blog2.webp",
     category: "Modern Farming",
     tags: [
       "Cocopeat",
@@ -315,9 +315,9 @@ export const LogicxBlogs: BlogPost[] = [
     date: "August 22, 2025",
     author: {
       name: "Ramchandran",
-      avatar: "/assets/team/ram.jpg",
+      avatar: "/assets/team/ram.webp",
     },
-    coverImage: "/assets/blog/d4.png",
+    PostImage: "/assets/blog/d4.webp",
     category: "Global Agriculture",
     tags: [
       "Cocopeat",

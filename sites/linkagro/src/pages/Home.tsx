@@ -17,9 +17,9 @@ function Home() {
       title2: "Trusted Worldwide.",
       description:
         "Link Agro Exports manufactures and exports premium coco peat products, trusted by growers and horticulturists across the globe.",
-      image: "/assets/product/Cocopeat5kgBlock.png",
+      image: "/assets/product/Cocopeat5kgBlock.webp",
       bgClass: "",
-      backdrop: "assets/backdrop/bg6.png",
+      backdrop: "assets/backdrop/bg6.webp",
       backdropposition: "-top-65 md:-top-55 md:-right-20 lg:-top-20 lg:-right-120",
     },
     {
@@ -28,9 +28,9 @@ function Home() {
       title2: "Quality from Source.",
       description:
         "Our plant in Uchipuli, Tamil Nadu, is surrounded by abundant coconut farms and excellent groundwater, ensuring high-quality raw material.",
-      image: "/assets/product/bb6501.png",
+      image: "/assets/product/bb6501.webp",
       bgClass: "",
-      backdrop: "assets/backdrop/bg5.png",
+      backdrop: "assets/backdrop/bg5.webp",
       backdropposition: "-top-75 -left-5 md:-left-70 md:-top-40 lg:-left-170 lg:top-0",
     },
     {
@@ -39,9 +39,9 @@ function Home() {
       title2: "Natural & Reliable.",
       description:
         "We produce coir and coco peat products using sustainable methods that preserve natural resources and support green farming.",
-      image: "/assets/product/Coco husk chips block 1.png",
+      image: "/assets/product/Coco husk chips block 1.webp",
       bgClass: "",
-      backdrop: "assets/backdrop/bg9.png",
+      backdrop: "assets/backdrop/bg9.webp",
       backdropposition: "-top-80 right-0 md:-top-80 lg:-top-20",
     },
     {
@@ -50,41 +50,41 @@ function Home() {
       title2: "Proven Growth Medium.",
       description:
         "Our coco peat ensures optimal water retention, aeration, and root development—ideal for nurseries, greenhouses, and hydroponics.",
-      image: "/assets/product/discs.png",
+      image: "/assets/product/discs.webp",
       bgClass: "",
-      backdrop: "assets/backdrop/bg5.png",
+      backdrop: "assets/backdrop/bg5.webp",
       backdropposition: "-top-70 -left-30 md:-top-60 md:-left-80 lg:-left-150 lg:-top-30",
     },
   ];
 
   const product = [
     {
-      image: "/assets/product/bb6501.png",
+      image: "/assets/product/bb6501.webp",
       title: "COCO PEAT BRIQUETTE (650Grams)",
       animate: "animate__animated animate__fadeInRight",
     },
     {
-      image: "/assets/product/coco-coins.png",
+      image: "/assets/product/coco-coins.webp",
       title: "COCOPEAT GROW BAGS & DISCS",
       animate: "animate__animated animate__fadeInRight",
     },
     {
-      image: "/assets/product/CoirFiber.jpeg",
+      image: "/assets/product/CoirFiber.webp",
       title: "COCO COIR FIBER",
       animate: "animate__animated animate__fadeInRight",
     },
     {
-      image: "/assets/product/Cocopeat5kgBlock.png",
+      image: "/assets/product/Cocopeat5kgBlock.webp",
       title: "Coco Peat 5KG Blocks",
       animate: "animate__animated animate__fadeInRight",
     },
     {
-      image: "/assets/product/Coco husk chips block 1.png",
+      image: "/assets/product/Coco husk chips block 1.webp",
       title: "COCO HUSK CHIPS",
       animate: "animate__animated animate__fadeInRight",
     },
     {
-      image: "/assets/product/Cocodiscsseedling.png",
+      image: "/assets/product/Cocodiscsseedling.webp",
       title: "Coco disc seedling",
       animate: "animate__animated animate__fadeInRight",
     },
@@ -190,8 +190,8 @@ packing options.`,
       <ProcessHighlightSection
         title="Why choose us?"
         description="Link Agro Cocopeat - 100% Eco-friendly and Organic soilless growing substrate"
-        imageUrl="/assets/img2.jpg"
-        bgimage="/assets/cocobg.jpg"
+        imageUrl="/assets/img2.webp"
+        bgimage="/assets/cocobg.webp"
         steps={processSteps}
       />
 
@@ -206,7 +206,7 @@ packing options.`,
         <BlogCarouselCard blogs={blogs} title={"Latest Posts & Articles"} />
       </div>
 
-      <div className="mb-25">
+      <div className="mb-25 px-4 md:px-[10%]">
         <PortfolioContact mapSrc={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3298.8954649636466!2d79.01264938194326!3d9.311330379605293!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b0194ceb3bc85e9%3A0x5260d3415a34fe6b!2sUchipuli%2C%20Tamil%20Nadu!5e1!3m2!1sen!2sin!4v1755938160114!5m2!1sen!2sin`} />
       </div>
     </div>

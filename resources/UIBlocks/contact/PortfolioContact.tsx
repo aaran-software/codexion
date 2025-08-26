@@ -5,7 +5,7 @@ interface PortfolioContactProps {
 function PortfolioContact({ mapSrc }: PortfolioContactProps) {
   return (
     <div className="">
-      <h1 className="text-5xl font-bold py-10 text-center">
+      <h1 className="text-5xl font-bold py-10 text-center text-foreground">
         Have Any Questions?
       </h1>
 
@@ -16,9 +16,10 @@ function PortfolioContact({ mapSrc }: PortfolioContactProps) {
             src={mapSrc}
             width="600"
             height="450"
+            aria-label="location"
             loading="lazy"
             className="w-full rounded-lg shadow-lg"
-          ></iframe>
+          > <span className="sr-only">location</span></iframe>
         </div>
 
         <div className="border border-ring/30 bg-background rounded-lg p-5 shadow-2xl">
@@ -30,6 +31,7 @@ function PortfolioContact({ mapSrc }: PortfolioContactProps) {
               <input
                 type="text"
                 name="name"
+                aria-label="Name"
                 required
                 className="w-full mt-1 p-2 border border-gray-300 rounded-md bg-white text-black"
               />
@@ -41,6 +43,7 @@ function PortfolioContact({ mapSrc }: PortfolioContactProps) {
               <input
                 type="email"
                 name="email"
+                aria-label="Email"
                 required
                 className="w-full mt-1 p-2 border border-gray-300 rounded-md bg-white text-black"
               />
@@ -52,12 +55,14 @@ function PortfolioContact({ mapSrc }: PortfolioContactProps) {
               <textarea
                 name="message"
                 required
+                aria-label="Message"
                 className="w-full mt-1 p-2 border border-gray-300 rounded-md bg-white text-black"
                 rows={5}
               />
             </div>
             <button
               type="button"
+              aria-label="submit"
               className="bg-primary hover:bg-hover text-create-foreground py-2 px-6 rounded-md font-semibold cursor-pointer"
             >
               Submit

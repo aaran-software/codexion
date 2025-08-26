@@ -68,9 +68,10 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
           to={path}
           onClick={handleScroll}
           className={classes}
+          aria-label={label}
           {...(rest as Omit<ButtonAsLink, "path">)}
         >
-          {content}
+          {content} <span className="sr-only">{content}</span>
         </Link>
       );
     }
@@ -80,9 +81,10 @@ const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
         ref={ref as React.Ref<HTMLButtonElement>}
         onClick={handleScroll}
         className={classes}
+        aria-label={label}
         {...(rest as Omit<ButtonAsButton, "path">)}
       >
-        {content}
+        {content} <span className="sr-only">{content}</span>
       </button>
     );
   }

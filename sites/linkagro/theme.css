@@ -11,10 +11,12 @@
 }
 /* header company name font style */
 @font-face {
-  font-family: 'Lunera Condensed';
-  src: url('/fonts/Lunera-Condensed.ttf') format('truetype');
+ font-family: 'Lunera Condensed';
+  src: url('/fonts/Lunera-Black.woff2') format('woff2'),
+       url('/fonts/Lunera-Black.woff') format('woff');
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 
 .font-lunera {
@@ -116,6 +118,17 @@
   --color-input-warning: var(--input-warning);
   --color-footer: var(--footer);
   --color-tag: var(--tag);
+
+  --color-highlight1: var(--highlight1);
+  --color-highlight2: var(--highlight2);
+  --color-highlight3: var(--highlight3);
+  --color-highlight4: var(--highlight4);
+  --color-highlight5: var(--highlight5);
+  --color-highlight1-foreground: var(--highlight1-foreground);
+  --color-highlight2-foreground: var(--highlight2-foreground);
+  --color-highlight3-foreground: var(--highlight3-foreground);
+  --color-highlight4-foreground: var(--highlight4-foreground);
+  --color-highlight5-foreground: var(--highlight5-foreground);
 }
 
 @layer base {
@@ -180,12 +193,23 @@
     --input-warning: #fef2f2;
 
     --footer: #18281E;
-    --tag: #3A3182;
+
+     --highlight1: #3a3182;
+    --highlight2: #3a3182;
+    --highlight3: #3a3182;
+    --highlight4: #3a3182;
+    --highlight5: #3a3182;
+
+    --highlight1-foreground: #ffffff;
+    --highlight2-foreground: #ffffff;
+    --highlight3-foreground: #ffffff;
+    --highlight4-foreground: #ffffff;
+    --highlight5-foreground: #ffffff;
 
   }
 
   .dark {
-    --background: #eaf3df;
+    --background: #000000;
     --foreground: oklch(0.985 0 0);
     --card-background: oklch(0.205 0 0);
     --card-foreground: oklch(0.985 0 0);
@@ -243,7 +267,18 @@
     --input-warning: #000000;
 
     --footer: #18281E;
-    --tag: #3A3182;
+
+    --highlight1: #3a3182;
+    --highlight2: #3a3182;
+    --highlight3: #3a3182;
+    --highlight4: #3a3182;
+    --highlight5: #3a3182;
+
+    --highlight1-foreground: #ffffff;
+    --highlight2-foreground: #ffffff;
+    --highlight3-foreground: #ffffff;
+    --highlight4-foreground: #ffffff;
+    --highlight5-foreground: #ffffff;
 
   }
 }
