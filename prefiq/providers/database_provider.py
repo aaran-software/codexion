@@ -5,11 +5,12 @@ import asyncio
 import atexit
 import inspect
 import os
-from typing import Any
+import sys
+from typing import Any, Optional
 
 from prefiq.core.application import BaseProvider, register_provider
-from prefiq.database.connection import get_engine, reset_engine
-from prefiq.database.connection_manager import connection_manager
+from prefiq.settings.get_settings import load_settings
+from prefiq.database.connection import get_engine
 from prefiq.database.engines.abstract_engine import AbstractEngine
 from prefiq.database.hooks import before_execute, after_execute
 
@@ -17,33 +18,44 @@ from prefiq.database.hooks import before_execute, after_execute
 @register_provider
 class DatabaseProvider(BaseProvider):
     """
-    Binds 'db' (engine singleton) into the container.
-
-    - Hooks (before/after) are OPTIONAL: set them only if the engine supports it.
-    - MariaDB async pool prewarm is best-effort (no-op for other engines).
-    - Registers a clean shutdown to close pools/handles on process exit.
+    Binds 'db' (engine singleton) into the container and attaches hooks.
+    Centralized shutdown is handled by FastAPI's shutdown event.
+    atexit is only registered for SYNC engines (no async work during interpreter finalization).
     """
 
     def register(self) -> None:
-        # Construct (or reuse) the engine and bind into app container
         engine: AbstractEngine[Any] = get_engine()
 
-        # Set default hooks only if the engine exposes the API (PG engines may not)
+        # Attach optional hooks if engine supports them
         try:
             if hasattr(engine, "set_before_execute_hook") and callable(getattr(engine, "set_before_execute_hook")):
                 engine.set_before_execute_hook(before_execute)
             if hasattr(engine, "set_after_execute_hook") and callable(getattr(engine, "set_after_execute_hook")):
                 engine.set_after_execute_hook(after_execute)
         except (ValueError, TypeError):
-            # Hooks are convenience features; never block provider registration on them
             pass
 
         self.app.bind("db", engine)
 
+        # Register atexit fallback ONLY for sync engines
+        try:
+            s = load_settings()
+            if getattr(s, "DB_CLOSE_ATEXIT", True) and str(getattr(s, "DB_MODE", "sync")).lower() != "async":
+                atexit.register(self._shutdown_sync_only)
+        except Exception:
+            pass
+
     def boot(self) -> None:
+        """
+        Best-effort warmup — but ONLY for the active engine (or explicit test flags).
+        Previously this always tried MariaDB prewarm if DB_POOL_WARMUP>0, which caused
+        MariaDB connection attempts even on SQLite.
+        """
+        s = self._get_settings_safe()
+
+        # Resolve warmup count from settings or env
         warm = 0
         try:
-            s = self.app.resolve("settings")
             if s and hasattr(s, "DB_POOL_WARMUP"):
                 warm = int(getattr(s, "DB_POOL_WARMUP") or 0)
             else:
@@ -51,52 +63,68 @@ class DatabaseProvider(BaseProvider):
         except (ValueError, TypeError):
             warm = 0
 
-        if warm > 0:
-            try:
-                # Import lazily to avoid importing MariaDB bits for other engines
-                from prefiq.database.engines.mariadb.pool import prewarm as _mariadb_prewarm  # type: ignore
+        if warm <= 0:
+            return
 
+        engine_name = (str(getattr(s, "DB_ENGINE", "")).lower() if s else os.getenv("DB_ENGINE", "")).lower()
+        test_pg = bool(getattr(s, "DB_TEST_PG", False)) if s else (os.getenv("DB_TEST_PG", "0") not in ("0", "", "false", "False"))
+        test_mysql = bool(getattr(s, "DB_TEST_MYSQL", False)) if s else (os.getenv("DB_TEST_MYSQL", "0") not in ("0", "", "false", "False"))
+
+        coro: Optional[object] = None
+
+        try:
+            # MariaDB / MySQL warmup
+            if engine_name in ("mariadb", "mysql") or test_mysql:
+                from prefiq.database.engines.mariadb.pool import prewarm as _mariadb_prewarm  # lazy import
                 coro = _mariadb_prewarm(warm)
-                # Run the coroutine whether an event loop is present
-                if inspect.isawaitable(coro):
-                    try:
-                        asyncio.get_running_loop()
-                    except RuntimeError:
-                        asyncio.run(coro)
-                    else:
-                        asyncio.create_task(coro)
-            except (ValueError, TypeError):
-                # Best-effort only; don't fail boot if prewarm is unavailable
-                pass
 
-        # Ensure pools/engines are cleaned up on interpreter exit
-        atexit.register(self._shutdown)
+            # Postgres warmup
+            elif engine_name in ("postgres", "postgresql") or test_pg:
+                from prefiq.database.engines.postgres.pool import prewarm as _pg_prewarm  # lazy import
+                coro = _pg_prewarm(warm)
 
-    def _shutdown(self) -> None:
-        """Close pools (async) and engine (sync/async) safely at process exit."""
-        # MariaDB async pool close (if present)
+            # SQLite or anything else: no warmup needed / supported
+            else:
+                coro = None
+
+        except (ModuleNotFoundError, ImportError, AttributeError, ValueError, TypeError):
+            coro = None
+
+        # Run warmup if applicable
+        if coro and inspect.isawaitable(coro):
+            try:
+                asyncio.get_running_loop()
+            except RuntimeError:
+                asyncio.run(coro)
+            else:
+                asyncio.create_task(coro)
+
+    def _get_settings_safe(self):
         try:
-            from prefiq.database.engines.mariadb.pool import close_pool as _close_pool  # type: ignore
-
-            res = _close_pool()
-            if inspect.isawaitable(res):
-                try:
-                    asyncio.get_running_loop()
-                except RuntimeError:
-                    asyncio.run(res)
-                else:
-                    asyncio.create_task(res)
-        except (ValueError, TypeError):
+            # Prefer container-bound settings (if any)
+            s = self.app.resolve("settings")
+            if s:
+                return s
+        except Exception:
             pass
-
-        # Close connection manager (handles per-engine specifics)
         try:
-            connection_manager.close()
-        except (ValueError, TypeError):
-            pass
+            return load_settings()
+        except Exception:
+            return None
 
-        # Reset engine singleton
+    @staticmethod
+    def _shutdown_sync_only() -> None:
+        """
+        Best-effort close for *sync* engines only.
+        Never schedule async work here — process is exiting.
+        """
+        if getattr(sys, "is_finalizing", lambda: False)():
+            return
         try:
-            reset_engine()
-        except (ValueError, TypeError):
+            eng = get_engine()
+            if hasattr(eng, "close"):
+                res = eng.close()
+                if inspect.isawaitable(res):
+                    return
+        except Exception:
             pass

@@ -1,4 +1,5 @@
 # prefiq/cli/core/server.py
+
 from __future__ import annotations
 
 import os
@@ -11,13 +12,10 @@ from typing import Optional
 
 import typer
 import uvicorn
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
 
-from prefiq.core.bootstrap import main as bootstrap_main
-from prefiq.core.application import Application
 from prefiq.core.logger import okc, failx
 from prefiq.settings.get_settings import load_settings
+from prefiq.http.app import build_http_app  # ← use the shared app factory
 
 server_app = typer.Typer(help="Run/Manage the Prefiq HTTP server")
 
@@ -25,16 +23,19 @@ server_app = typer.Typer(help="Run/Manage the Prefiq HTTP server")
 # env helpers
 # --------------------------------------------------------------------------------------------------
 
-_ENV_ALIAS = {"dev": "development", "development":"development",
-              "live":"production","prod":"production","production":"production",
-              "stage":"staging","staging":"staging","test":"test","testing":"test"}
+_ENV_ALIAS = {
+    "dev": "development", "development": "development",
+    "live": "production",  "prod": "production", "production": "production",
+    "stage": "staging",    "staging": "staging",
+    "test": "test",        "testing": "test",
+}
 
 def _apply_env(alias: str | None) -> str:
     norm = _ENV_ALIAS.get((alias or "dev").lower(), "development")
     os.environ["ENV"] = norm
     return norm
 
-def _as_bool(v, default=False) -> bool:
+def _as_bool(v, default: bool = False) -> bool:
     if isinstance(v, bool):
         return v
     s = (str(v) if v is not None else "").strip().lower()
@@ -68,13 +69,14 @@ def _resolve_server_config(
     workers: int | None,
 ):
     s = load_settings()
+    # dev binds to loopback by default; others bind to all interfaces
     default_host_by_env = "127.0.0.1" if getattr(s, "ENV", "development") == "development" else "0.0.0.0"
 
-    d_host = _env_default("SERVER_HOST", default_host_by_env)
-    d_port = _as_int(_env_default("SERVER_PORT", 5001), 5001)
-    d_https = _as_bool(_env_default("SERVER_HTTPS", False), False)
-    d_cert  = _env_default("SERVER_CERTFILE", None)
-    d_key   = _env_default("SERVER_KEYFILE", None)
+    d_host    = _env_default("SERVER_HOST", default_host_by_env)
+    d_port    = _as_int(_env_default("SERVER_PORT", 5001), 5001)
+    d_https   = _as_bool(_env_default("SERVER_HTTPS", False), False)
+    d_cert    = _env_default("SERVER_CERTFILE", None)
+    d_key     = _env_default("SERVER_KEYFILE", None)
     d_reload  = _as_bool(_env_default("SERVER_RELOAD", False), False)
     d_workers = _as_int(_env_default("SERVER_WORKERS", 1), 1)
 
@@ -84,54 +86,17 @@ def _resolve_server_config(
         "https": d_https if https is None else https,
         "certfile": certfile or d_cert,
         "keyfile": keyfile or d_key,
-        "reload": d_reload if reload_flag is None else d_reload,
+        "reload": d_reload if reload_flag is None else reload_flag,
         "workers": workers or d_workers,
     }
-
-# --------------------------------------------------------------------------------------------------
-# ASGI factory
-# --------------------------------------------------------------------------------------------------
-
-def build_asgi():
-    """
-    Factory target for uvicorn: `uvicorn prefiq.cli.core.server:build_asgi --factory`
-    Ensures providers are bootstrapped, then returns FastAPI app bound at "http.app".
-    """
-    bootstrap_main()
-    app = Application.get_app().resolve("http.app")
-    if app is None:
-        raise RuntimeError("No HTTP app bound. Did your Providers mount routes?")
-
-    # ---- extra middleware & default routes ----
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=["*"],
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
-
-    @app.get("/favicon.ico", include_in_schema=False)
-    def favicon():
-        icon_path = Path(__file__).parent / "assets" / "images" / "favicon.svg"
-        return FileResponse(icon_path)
-
-    @app.get("/")
-    def root():
-        return {"status": "running"}
-
-    return app
 
 # --------------------------------------------------------------------------------------------------
 # foreground runner
 # --------------------------------------------------------------------------------------------------
 
 def _run_foreground(cfg: dict) -> None:
-    bootstrap_main()
-    app = Application.get_app().resolve("http.app")
-    if app is None:
-        typer.echo(failx("❌ No HTTP app bound. Did your Providers mount routes?"))
-        raise typer.Exit(code=1)
+    # Build/prepare app via shared factory
+    app = build_http_app()
 
     scheme = "https" if cfg["https"] else "http"
     typer.echo(okc(f"🌐 Starting server on {scheme}://{cfg['host']}:{cfg['port']}  "
@@ -160,22 +125,20 @@ def _runtime_paths() -> tuple[Path, Path]:
 def _is_running(pid: int) -> bool:
     try:
         if platform.system() == "Windows":
-            # On Windows, os.kill with 0 works on 3.2+, but tasklist is more explicit
             out = subprocess.run(["tasklist", "/FI", f"PID eq {pid}"], capture_output=True, text=True)
             return str(pid) in out.stdout
-        else:
-            os.kill(pid, 0)
-            return True
-    except (ValueError, TypeError):
+        os.kill(pid, 0)
+        return True
+    except (ProcessLookupError, PermissionError, ValueError, TypeError, OSError):
         return False
 
 def _read_pid() -> Optional[int]:
     pid_file, _ = _runtime_paths()
     try:
         pid = int(pid_file.read_text().strip())
-        return pid if _is_running(pid) else None
-    except (ValueError, TypeError):
+    except (FileNotFoundError, ValueError, TypeError):
         return None
+    return pid if _is_running(pid) else None
 
 def _write_pid(pid: int) -> None:
     pid_file, _ = _runtime_paths()
@@ -183,15 +146,17 @@ def _write_pid(pid: int) -> None:
 
 def _clear_pid() -> None:
     pid_file, _ = _runtime_paths()
-    try: pid_file.unlink(missing_ok=True)  # py3.8+: catch FileNotFoundError if needed
-    except (ValueError, TypeError): pass
+    try:
+        pid_file.unlink(missing_ok=True)
+    except FileNotFoundError:
+        pass
 
 def _start_daemon(cfg: dict) -> None:
-    # Build uvicorn cmd using factory so the child can bootstrap itself
+    # Use factory from prefiq.http.app so the child bootstraps itself
     scheme = "https" if cfg["https"] else "http"
     args = [
         sys.executable, "-m", "uvicorn",
-        "prefiq.cli.core.server:build_asgi", "--factory",
+        "prefiq.http.app:build_http_app", "--factory",
         "--host", str(cfg["host"]),
         "--port", str(cfg["port"]),
         "--workers", str(cfg["workers"]),
@@ -206,7 +171,6 @@ def _start_daemon(cfg: dict) -> None:
 
     _, log_path = _runtime_paths()
     log_f = open(log_path, "a", encoding="utf-8")
-    # Inherit current env (includes ENV we just set)
     proc = subprocess.Popen(args, stdout=log_f, stderr=log_f, stdin=subprocess.DEVNULL)
     _write_pid(proc.pid)
     typer.echo(okc(f"🟢 Server started in background at {scheme}://{cfg['host']}:{cfg['port']}  (PID {proc.pid})"))
@@ -222,7 +186,7 @@ def _stop_daemon() -> None:
             subprocess.run(["taskkill", "/PID", str(pid), "/T", "/F"], check=False)
         else:
             os.kill(pid, signal.SIGTERM)
-    except Exception as e:
+    except (ProcessLookupError, PermissionError, OSError) as e:
         typer.echo(failx(f"❌ Failed to stop PID {pid}: {e}"))
         raise typer.Exit(code=1)
     else:
