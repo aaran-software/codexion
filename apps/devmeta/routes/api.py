@@ -1,4 +1,5 @@
 # apps/devmeta/routes/api.py
+
 from fastapi import APIRouter
 
 router = APIRouter()
