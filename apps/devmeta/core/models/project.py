@@ -1,7 +1,11 @@
+# apps/devmeta/core/models/project.py
 # =============================================
-# app/models/project.py
-# =============================================
+
 from dataclasses import dataclass, field
+from typing import Dict, Any, Optional
+
+from prefiq.abstracts.model import AModel
+
 
 @dataclass
 class Project(AModel):

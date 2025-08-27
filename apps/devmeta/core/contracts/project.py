@@ -1,7 +1,8 @@
 # =============================================
-# app/contracts/project.py
+# apps/devmeta/core/contracts/project.py
 # =============================================
-from typing import Protocol
+from typing import Protocol, Optional, Dict, Any
+
 
 class IProject(Protocol):
     id: Optional[int]

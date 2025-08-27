@@ -1,9 +1,8 @@
-
-# =============================================
-# app/controllers/project_rest_controller.py
-# =============================================
-from fastapi import Depends
+# apps/devmeta/core/controllers/project_rest_controller.py
+from typing import Any, Dict, Optional
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
+from apps.devmeta.core.services.project_service import ProjectService
 
 # Pydantic I/O schemas
 class ProjectIn(BaseModel):
@@ -17,10 +16,11 @@ class ProjectOut(BaseModel):
     slug: str
     meta: Dict[str, Any]
 
-class ProjectRestController(ARestController):
+class ProjectRestController:
     def __init__(self, service: ProjectService):
         self.service = service
-        super().__init__(prefix="/projects", tags=["projects"])
+        self.router = APIRouter(prefix="/projects", tags=["projects"])
+        self._register()
 
     def _register(self) -> None:
         @self.router.get("/", response_model=Dict[str, Any])
@@ -52,3 +52,7 @@ class ProjectRestController(ARestController):
             if not ok:
                 raise HTTPException(status_code=404, detail="Project not found")
             return None
+
+# Helper to build controller with DI
+def get_project_controller(service: ProjectService = Depends()):
+    return ProjectRestController(service)
