@@ -82,13 +82,13 @@ export default function BlogCarouselCard({
               onClick={prevSlide}
               disabled={currentIndex === 0}
               className="bg-primary/30 text-foreground p-2 disabled:opacity-30"
-            />
+            ><span className="sr-only">previous slide</span></ImageButton>
             <ImageButton
               icon="right"
               onClick={nextSlide}
               disabled={currentIndex >= blogs.length - numVisible}
               className="bg-primary/30 text-foreground p-2 disabled:opacity-30"
-            />
+             ><span className="sr-only">next slide</span></ImageButton>
           </div>
         </div>
 

@@ -24,7 +24,7 @@ function Home() {
     },
     {
       id: 2,
-      title1: "Made in Tamil Nadu.",
+      title1: "Made in India, Tamil Nadu.",
       title2: "Quality from Source.",
       description:
         "Our plant in Uchipuli, Tamil Nadu, is surrounded by abundant coconut farms and excellent groundwater, ensuring high-quality raw material.",

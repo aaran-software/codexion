@@ -317,7 +317,7 @@
                 "title": "Mandatory Details",
                 "fields": [
                     {
-                        "key": "company_name",
+                        "key": "name",
                         "label": "id",
                         "type": "textinput",
                         "inTable": true,

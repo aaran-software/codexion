@@ -141,7 +141,7 @@
   :root {
     --radius: 0.65rem;
     --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
+    --foreground: #0a0a0a;
     --card-background: oklch(1 0 0);
     --card-foreground: oklch(0.145 0 0);
     --popover: oklch(1 0 0);
@@ -153,7 +153,7 @@
     --muted: oklch(0.97 0 0);
     --muted-foreground: oklch(0.556 0 0);
     --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
+    --accent-foreground: #171717;
     --destructive: oklch(0.577 0.245 27.325);
     --border: oklch(0.922 0 0);
     --input: oklch(16.842% 0.00002 271.152);
@@ -188,8 +188,8 @@
     --website-background: #f2f2f2;
     --website-foreground: #050505;
 
-    --thead-background: #f3f3f3;
-    --thead-foreground: #000000;
+    --thead-background: #cac8c8;
+    --thead-foreground: rgb(90, 83, 83);
 
     --profit: #09af3e;
     --sales: #0ed3ed;

@@ -11,7 +11,7 @@ const formApi: ApiList = {
 
 function Company() {
   return (
-    <div>
+    <div className="pr-2">
       <TableForm
         formName="Company"
         formApi={formApi}

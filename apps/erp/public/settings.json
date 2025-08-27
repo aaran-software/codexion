@@ -10,12 +10,17 @@
   "logo": {
     "path": "/assets/svg/codexsun_logo.svg",
     "position": "center",
-    "height": "20",
-    "font_size": "2",
-    "mode":"logo",
-    "company_name": "",
+    "height": "12",
+    "font_size": "16",
+    "font_subsize": 13,
+    "mode": "both",
+    "company_name": "Codexsun",
+    "company_subname": "",
     "color": "",
-    "padding": "2"
+    "padding": "2",
+    "text_color": "text-[#3A3182]",
+    "font": "font-lunera",
+    "footer_logo": "/assets/logo/logo.svg"
   },
 
   "sidemenu": {

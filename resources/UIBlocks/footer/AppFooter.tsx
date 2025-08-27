@@ -1,7 +1,12 @@
 import NewUpdate from "../../components/advertisment/NewUpdate";
 import { useState } from "react";
 
-const AppFooter: React.FC = () => {
+
+interface AppFooterProps{
+  content:string
+}
+
+const AppFooter = ({content}:AppFooterProps) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [showUpdate, setShowUpdate] = useState(false);
 
@@ -42,7 +47,7 @@ const AppFooter: React.FC = () => {
       <div className="flex flex-row justify-between border-t border-white/10">
         <div></div>
         <div className="text-center py-3 bg-background text-foreground ">
-          &copy; 2024 Tech Media. All Rights Reserved.
+          &copy; {content}
         </div>
         <div
           className="block my-auto text-background/50 pr-5 cursor-pointer"
