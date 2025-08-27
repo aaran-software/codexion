@@ -17,7 +17,8 @@ import { useReactToPrint } from "react-to-print";
 import Print from "../../layouts/printformat/Print";
 import apiClient from "../../../resources/global/api/apiClients";
 import Button from "../../../resources/components/button/Button";
-
+import Tooltipcomp from "../tooltip/tooltipcomp";
+import TabForm from '../../UIBlocks/form/TabForm'
 type FormLayoutProps = {
   groupedFields: FieldGroup[];
   head: Column[];
@@ -39,28 +40,35 @@ function FormLayout({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await apiClient.get(formApi.read);
-        const list = res.data.data || [];
+        // Step 1: Get list of companies
+        const listRes = await apiClient.get(formApi.read);
+        const companies = listRes.data.data || [];
 
+        // Step 2: For each company, fetch detailed data
         const detailedData = await Promise.all(
-          list.map(async (entry: any) => {
-            const key = entry.id || entry.key;
-            const url = `${formApi.read}/${encodeURIComponent(key)}`;
-
+          companies.map(async (company: any) => {
+            const name = encodeURIComponent(company.name);
+            const url = `${formApi.read}/${name}`;
             try {
               const detailRes = await apiClient.get(url);
-              return detailRes.data || null;
+              return detailRes.data.data || null; // your detailed company object
             } catch (err) {
-              console.warn(`❌ Detail fetch failed for ${url}`, err);
+              console.warn(
+                `❌ Failed to fetch details for ${company.name}`,
+                err
+              );
               return null;
             }
           })
         );
 
+        // Step 3: Convert to table rows
         const rows: TableRowData[] = detailedData
           .filter(Boolean)
           .map((entry: any) => {
-            const row: TableRowData = { id: "" };
+            const row: TableRowData = {
+              id: entry.name || `row-${Math.random()}`,
+            };
 
             head.forEach((h) => {
               const key = h.key;
@@ -70,14 +78,6 @@ function FormLayout({
                   ? JSON.stringify(value)
                   : String(value ?? "");
             });
-
-            if (!row.id) {
-              row.id = String(
-                entry.id ??
-                  entry.name ??
-                  `row-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`
-              );
-            }
 
             return row;
           });
@@ -194,7 +194,7 @@ function FormLayout({
   }, [paginatedData, printColumn]);
 
   return (
-    <div className="w-full p-2 lg:pr-5">
+    <div className="">
       {/* Table header items */}
       <div ref={printRef} className="hidden print:block p-5">
         <Print
@@ -211,13 +211,13 @@ function FormLayout({
           }}
         />
       </div>
-      <div className="flex justify-between gap-2">
+      <div className="flex justify-end px-[5%] gap-2">
         <div className="flex flex-wrap items-center gap-2">
-          <ImageButton
-            className="bg-update p-2 text-white"
+          <Tooltipcomp tip={"Filter"} content={<ImageButton
+            className="p-2"
             icon="filter"
             onClick={() => setFilterDrawerOpen(!filterDrawerOpen)}
-          />
+          />} />
           {Object.entries(filters)
             .filter(([key, value]) => value && key !== "action")
             .map(([key, value]) => (
@@ -240,8 +240,11 @@ function FormLayout({
               </div>
             ))}
         </div>
+         
+          
+          
         <div className="flex gap-2 items-center">
-          <ButtonDropdown
+           <Tooltipcomp tip={"Column hide"} content={<ButtonDropdown
             icon="column"
             columns={head
               .filter((h) => h.key !== "id")
@@ -249,9 +252,9 @@ function FormLayout({
             visibleColumns={visibleColumns}
             onChange={setVisibleColumns}
             excludedColumns={["id"]}
-            className="block m-auto"
-          />
-          <ImageButton
+            className="block m-auto p-2"
+          />} />
+          <Tooltipcomp tip={"Export CSV"} content={<ImageButton
             icon="export"
             className="p-2"
             onClick={() =>
@@ -261,8 +264,11 @@ function FormLayout({
                 `purchase.csv`
               )
             }
-          />
-          <ImageButton icon="print" className="p-2" onClick={handlePrint} />
+          />} />
+          <Tooltipcomp tip={"Print"} content={<ImageButton icon="print" className="p-2" onClick={handlePrint} />} />
+          
+          
+          
           <AnimateButton
             label="Create"
             className="bg-create"
@@ -274,7 +280,7 @@ function FormLayout({
 
       {/* form for create and edit */}
       {formOpen && (
-        <CommonForm
+        <TabForm
           groupedFields={groupedFields}
           isPopUp
           formOpen={formOpen}
@@ -291,7 +297,7 @@ function FormLayout({
       )}
 
       {/* Purchase Table */}
-      <div className="mt-5">
+      <div className="mt-2">
         <CommonTable
           head={head.filter((h) => visibleColumns.includes(h.key))}
           body={paginatedData}
@@ -313,7 +319,7 @@ function FormLayout({
       </div>
 
       {/* number of page and pagination */}
-      <div className="mt-4 flex flex-col gap-3 md:flex-row justify-between items-center text-sm text-muted-foreground">
+      <div className="mt-4 flex flex-col gap-3 pr-[5%] md:flex-row justify-between items-center text-sm text-muted-foreground">
         <div className="flex items-center gap-2">
           <label htmlFor="rows-per-page" className="whitespace-nowrap">
             Records per page:
@@ -321,7 +327,7 @@ function FormLayout({
           <DropdownRead
             id="page"
             items={["20", "50", "100", "200"]} // ✅ fixed options
-            value={[String(rowsPerPage)]}
+            value={String(rowsPerPage)}
             err=""
             className="w-30"
             onChange={(value) => {

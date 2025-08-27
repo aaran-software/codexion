@@ -16,8 +16,6 @@ interface TableFormProps {
   multipleEntry?: boolean;
 }
 
-
-
 function TableForm({
   formName,
   jsonPath,

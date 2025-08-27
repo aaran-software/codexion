@@ -37,7 +37,7 @@ interface DatePickerProps {
   onChange?: (date: Date) => void;
 }
 
-export const Datepicker = forwardRef<HTMLInputElement, DatePickerProps>(
+export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
   (
     {
       id,
@@ -340,4 +340,4 @@ export const Datepicker = forwardRef<HTMLInputElement, DatePickerProps>(
   }
 );
 
-Datepicker.displayName = "Datepicker";
+DatePicker.displayName = "DatePicker";

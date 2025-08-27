@@ -56,7 +56,7 @@ function ActionMenu({ className = '', onClick, menuItems, isVisible }: ActionMen
       <ImageButton icon="menu" className=" p-2" onClick={onClick} />
 
       {isVisible && (
-        <div className="absolute right-0 mt-2 bg-popover text-popover-foreground border border-ring rounded-md shadow-lg z-50">
+        <div className="absolute right-0 mt-2 bg-popover overflow-hidden text-popover-foreground border border-ring/30 rounded-md shadow-lg z-50">
           {menuItems.map((item, index) => (
             <div
               key={index}

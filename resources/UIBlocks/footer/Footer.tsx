@@ -57,7 +57,7 @@ const Footer: React.FC<FooterProps> = ({
   };
 
   return (
-    <footer className="bg-foreground/90 text-white text-sm mt-5 cursor-default">
+    <footer className="text-sm mt-5 cursor-default">
       <div className="grid grid-cols-1 px-[5%] sm:grid-cols-2 lg:grid-cols-4 gap-6 py-10">
         {/* About */}
         <div>

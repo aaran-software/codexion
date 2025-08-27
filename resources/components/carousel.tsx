@@ -1,5 +1,6 @@
-import React, { useState, useEffect, type ReactNode } from 'react';
+import React, { useState, useEffect, type ReactNode } from "react";
 import { ChevronLeft, ChevronRight } from "react-feather";
+import ImageButton from "./button/ImageBtn";
 
 interface CarouselProps {
   children: ReactNode | ReactNode[];
@@ -80,20 +81,22 @@ const Carousel: React.FC<CarouselProps> = ({
 
       {/* Navigation arrows */}
       <div className="absolute inset-0 flex items-center justify-between p-4 opacity-50">
-        <button
+        <ImageButton
           aria-label="Previous slide"
           onClick={prev}
-          className="p-1 rounded-full border border-ring/30 text-foreground hover:text-background hover:bg-hover cursor-pointer"
+          icon="left"
+          className="p-1 !rounded-full border border-ring/30 text-foreground hover:text-background hover:bg-hover cursor-pointer"
         >
-          <ChevronLeft />
-        </button>
-        <button
+          <span className="sr-only">previous slide</span>
+        </ImageButton>
+        <ImageButton
           aria-label="Next slide"
           onClick={next}
-          className="p-1 rounded-full border border-ring/30 text-foreground hover:text-background hover:bg-hover cursor-pointer"
+          icon="right"
+          className="p-1 !rounded-full border border-ring/30 text-foreground hover:text-background hover:bg-hover cursor-pointer"
         >
-          <ChevronRight />
-        </button>
+          <span className="sr-only">previous slide</span>
+        </ImageButton>
       </div>
 
       {/* Indicator bullets */}
@@ -104,7 +107,7 @@ const Carousel: React.FC<CarouselProps> = ({
             onClick={() => setCurr(i)}
             aria-label={`Go to slide ${i + 1}`}
             className={`transition-all w-3 h-3 rounded-full ${
-              curr === i ? "bg-primary p-1" : "bg-primary/20"
+              curr === i ? "bg-primary p-1" : "bg-primary/60"
             }`}
           />
         ))}

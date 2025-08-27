@@ -80,7 +80,9 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
           onClick={() => scroll("left")}
           className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full shadow p-2 hover:bg-gray-200"
           icon={"left"}
-        />
+        >
+          <span className="sr-only">previous slide</span>
+        </ImageButton>
       )}
 
       {/* Right Button */}
@@ -89,7 +91,9 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
           onClick={() => scroll("right")}
           className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full shadow p-2 hover:bg-gray-200"
           icon={"right"}
-        />
+        >
+          <span className="sr-only">previous slide</span>
+        </ImageButton>
       )}
 
       {/* Scrollable Container */}

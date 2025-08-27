@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState } from "react";
+import React, { lazy, useState } from "react";
 import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
 import { AiFillClockCircle } from "react-icons/ai";
 import ScrollToTopButton from "../../../../resources/components/common/scrolltotopbutton";
@@ -14,8 +14,6 @@ const CardShowcase = lazy(
 );
 import TestimonialCarousel from "../../../../resources/UIBlocks/testimonials/TestimonialCard";
 import Consultant from "../../../../resources/UIBlocks/consultant/consultant";
-import HighlighCard from "../../../../resources/UIBlocks/card/HighlighCard";
-import GallaryCarousel from "../../../../resources/UIBlocks/carousel/GallaryCarousel";
 import { FaEnvelope, FaPhoneAlt } from "react-icons/fa";
 import PortfolioFooter3 from "../../../../resources/UIBlocks/footer/PortfolioFooter3";
 import HeroCarousel, {
@@ -30,6 +28,12 @@ import BlogCarouselCard from "../../../../resources/UIBlocks/carousel/BlogCarous
 import { LogicxBlogs } from "../../../../resources/global/library/blog";
 import HighlightedBanner from "../../../../resources/UIBlocks/banner/HighlightedBanner";
 import VerticalHoverBlocks from "../../../../resources/UIBlocks/banner/VerticalHoverBlocks";
+import TypingText from "../../../../resources/AnimationComponents/TypingText";
+import ProcessHighlightSection from "../../../../resources/UIBlocks/process/ProcessHighlightSection";
+import SimpleBanner from "../../../../resources/UIBlocks/banner/SimpleBanner";
+import Accordion from "../../../../resources/components/accordion/Accordion";
+import NexusCard from "../../../../resources/UIBlocks/card/NexusCard";
+import ProjectCarousel from "../../../../resources/UIBlocks/carousel/ProjectCarousel";
 const ProductShowcase = lazy(
   () =>
     import("../../../../resources/UIBlocks/portfolioProducts/ProductShowcase")
@@ -143,21 +147,6 @@ const Home: React.FC = () => {
       description:
         "Our journey continues with a mission to innovate, inspire, and deliver value to every client we serve.",
       buttonLabel: "Join Us",
-    },
-  ]);
-
-  const [whyChoose] = useState<{ text: string }[]>([
-    {
-      text: "20+ Years of Proven Experience in Software Development and IT Solutions",
-    },
-    {
-      text: "Expertise Across Multiple Technologies – Web, Mobile, Cloud, and AI",
-    },
-    {
-      text: "Scalable & Custom Software Solutions for Startups to Enterprises",
-    },
-    {
-      text: "Long-Term Client Partnerships based on Trust, Innovation, and Reliable Support",
     },
   ]);
 
@@ -357,8 +346,8 @@ const Home: React.FC = () => {
       title: "Linkagro Exports Portfolio",
       description: "A modern personal portfolio site.",
       category: "website",
-      image: "/assets/product/linkagro.png",
-      link: "https://fabulous-queijadas-684a73.netlify.app/",
+      image: "/assets/product/linkagro.jpg",
+      link: "https://linkagro.in/",
     },
     {
       id: 2,
@@ -484,7 +473,7 @@ const Home: React.FC = () => {
 
   const newsletterText = "Subscribe to get the latest updates.";
 
-  const items = [
+  const VisionMission = [
     {
       title: "Our Vision",
       text: "To be a global leader in software innovation, creating solutions that empower businesses and enrich lives.",
@@ -502,13 +491,40 @@ const Home: React.FC = () => {
     },
   ];
   const blogs = [...LogicxBlogs];
+
+  const [whyChoose] = useState([
+    {
+      number: 1,
+      title: "Proven Development Process",
+      description:
+        "20+ Years of Proven Experience in Software Development and IT Solutions",
+    },
+    {
+      number: 2,
+      title: "Global Reach & Scalability",
+      description:
+        "Scalable & Custom Software Solutions for Startups to Enterprises",
+    },
+    {
+      number: 3,
+      title: "Technology Expertise",
+      description:
+        "Expertise Across Multiple Technologies – Web, Mobile, Cloud, and AI",
+    },
+    {
+      number: 4,
+      title: "Commitment to Quality",
+      description:
+        "Long-Term Client Partnerships based on Trust, Innovation, and Reliable Support",
+    },
+  ]);
+
   return (
     <main>
       <HeaderPortfolio
         menu={[
           { label: "Home", path: "home" },
           { label: "About Us", path: "about" },
-          { label: "Industry", path: "industry" },
           { label: "Services", path: "services" },
           { label: "Contact", path: "contact" },
         ]}
@@ -529,7 +545,7 @@ const Home: React.FC = () => {
               key={index}
               className="flex flex-col p-5 lg:p-8 bg-[#17965f] gap-5 border-r-1 items-center justify-center  border-b lg:border-0 border-gray-100 last:border-b-0"
             >
-              <div className="w-15 xl:w-20">
+              <div className="w-16 xl:w-16">
                 <img src={item.icon} alt="" loading="lazy" />
               </div>
               <div className="text-lg uppercase mt-2 font-semibold text-gray-50">
@@ -545,8 +561,8 @@ const Home: React.FC = () => {
         <div className="px-5 lg:px-[12%] grid lg:grid-cols-2 gap-15 pt-10 pb-10">
           <div className="flex justify-center items-center">
             <img
-              src={"/assets/svg/home-hero.svg"}
-              className="w-[70%] lg:w-full"
+              src={"/assets/about.jpg"}
+              className="w-full object-cover"
               alt="img"
               loading="lazy"
             />
@@ -573,68 +589,33 @@ const Home: React.FC = () => {
             </p>
           </div>
         </div>
+
+        {/* vision mission section */}
         <HighlightCardWithIcon
           className="grid-cols-1 md:grid-cols-3"
           sectionTitle=""
-          items={items}
+          items={VisionMission}
         />
-        
-        <div className="px-4 lg:px-[10%]">
-          <VerticalHoverBlocks
-          sections={[
-            {
-              label: "CX INSIGHTS",
-              date: "APR 17, 2024",
-              title:
-                "AI-Driven Agent Training: A Paradigm Shift for Contact Centers",
-              description:
-                "In this LinkedIn Live event, Forrester and [24]7.ai discussed how generative AI is transforming contact centers with quick, cost-effective, and efficient agent onboarding.",
-              image: "/assets/1.jpg",
-              ctaText: "Read More",
-            },
-            {
-              label: "EVENTS",
-              title: "Upcoming Webinars",
-              description: "Join our thought leaders for live discussions.",
-              image: "/assets/2.jpg",
-            },
-            {
-              label: "NEWS",
-              title: "Product Release Q3",
-              description: "Discover the latest features and updates.",
-              image: "/assets/3.jpg",
-            },
-          ]}
-        />
-        </div>
 
-        <HighlighCard sectionTitle="Why Choose LogicX?" items={whyChoose} />
+        <div className="px-4 py-10 lg:px-[10%]">
+          <div className="flex flex-col gap-3 pt-5">
+            <h1 className="text-2xl text-center md:text-3xl lg:text-4xl font-bold p-5">
+              Our ERP Success Stories
+            </h1>
+            <p className="text-center p-5 mb-5 lg:px-[12%]">
+              From textile manufacturers to retail chains and IT service
+              providers, LogicX has delivered tailored ERP solutions that
+              transform operations. With 20+ years of experience, we help Indian
+              SMEs automate workflows, improve visibility, and scale with
+              confidence.
+            </p>
+          </div>
+          <HighlightedBanner sections={OurStory} />
+        </div>
 
         {/* Our ERP Success Stories */}
-        <div className="flex flex-col gap-3 pt-5">
-          <h1 className="text-2xl text-center md:text-3xl lg:text-4xl font-bold p-5">
-            Our ERP Success Stories
-          </h1>
-          <p className="text-center p-5 lg:px-[12%]">
-            From textile manufacturers to retail chains and IT service
-            providers, LogicX has delivered tailored ERP solutions that
-            transform operations. With 20+ years of experience, we help Indian
-            SMEs automate workflows, improve visibility, and scale with
-            confidence.
-          </p>
-          <div className="px-4 lg:px-[10%]">
-            <HighlightedBanner sections={OurStory} />
-          </div>
-        </div>
       </section>
 
-      {/* industry Component */}
-      <section
-        id="industry"
-        className="min-h-[100vh] text-website-foreground flex items-center justify-center px-5 lg:px-[10%]"
-      >
-        <CardShowcase items={industries} />
-      </section>
       <div className="py-20 ">
         <Consultant
           companyInfo={companyInfo}
@@ -643,23 +624,136 @@ const Home: React.FC = () => {
         />
       </div>
 
-      <section
-        id="services"
-        className="min-h-[100vh] px-5 lg:px-[10%] flex flex-col gap-20"
-      >
-        <CardShowcase items={projects} />
+      <section id="services" className="min-h-[100vh] flex flex-col gap-20">
+        <div className="px-5 lg:px-[10%] ">
+          <CardShowcase items={projects} />
+        </div>
 
-        <ProductShowcase products={product} />
-
-        <Team
-          title="Meet Our Professionals"
-          description="Our team combines creativity, expertise, and dedication to deliver outstanding solutions for our clients."
-          members={teamData}
+        <ProcessHighlightSection
+          title="Why choose us?"
+          description=""
+          imageUrl="/assets/about1.jpg"
+          bgimage="/assets/bg1.jpg"
+          steps={whyChoose}
         />
+        <div className="py-10 px-5 lg:px-[10%] ">
+          <VerticalHoverBlocks
+            sections={[
+              {
+                label: "CX INSIGHTS",
+                date: "APR 17, 2024",
+                title:
+                  "AI-Driven Agent Training: A Paradigm Shift for Contact Centers",
+                description:
+                  "In this LinkedIn Live event, Forrester and [24]7.ai discussed how generative AI is transforming contact centers with quick, cost-effective, and efficient agent onboarding.",
+                image: "/assets/1.jpg",
+                ctaText: "Read More",
+              },
+              {
+                label: "EVENTS",
+                title: "Upcoming Webinars",
+                description: "Join our thought leaders for live discussions.",
+                image: "/assets/2.jpg",
+              },
+              {
+                label: "NEWS",
+                title: "Product Release Q3",
+                description: "Discover the latest features and updates.",
+                image: "/assets/3.jpg",
+              },
+            ]}
+          />
+        </div>
+
+        <div className="px-5 lg:px-[10%] ">
+          <TypingText
+            fixedMessage="Choose From"
+            messages={[
+              "Predesigned Templates",
+              "Software Modules",
+              "Ready-Made Layouts",
+            ]}
+            typingSpeed={100}
+            pauseTime={1500}
+            className="text-4xl md:text-5xl font-bold text-gray-900"
+          />
+
+          {/* Description */}
+          <p className=" text-gray-700 text-base md:text-lg leading-relaxed my-10 text-center">
+            Use our pre-designed templates to kickstart your project. Customize
+            colors, layouts, and styles to create a professional and inviting
+            interface for your users. All templates are fully responsive and
+            ready to integrate into your software or website.
+          </p>
+
+          <ProjectCarousel
+            products={product}
+            autoSlide={true}
+            autoSlideInterval={4000}
+          />
+        </div>
+        <NexusCard
+          sectionTitle="Integrations"
+          sectionDescription="Streamline your marketing activities by integrating collected data with the choice of your CRM and campaign integration options."
+          leftClassName="text-left"
+          rightClassName="grid-rows-3"
+          items={[
+            {
+              logo: "/assets/hp.svg",
+              alt: "Stripe",
+              title: "Stripe",
+              className: "bg-[#3E2F89]",
+            },
+            {
+              logo: "/assets/hp.svg",
+              alt: "PayPal",
+              title: "PayPal",
+              className: "bg-[#c71313]",
+            },
+            {
+              logo: "/assets/hp.svg",
+              alt: "Razorpay",
+              title: "Razorpay",
+              className: "bg-[#67c090] row-span-2",
+            },
+            {
+              logo: "/assets/hp.svg",
+              alt: "QuickBooks",
+              title: "QuickBooks",
+              className: "bg-[#ea2264]",
+            },
+            {
+              logo: "/assets/hp.svg",
+              alt: "Xero",
+              title: "Xero",
+              className: "bg-[#f5babb] row-span-2",
+            },
+            {
+              logo: "/assets/hp.svg",
+              alt: "Tally",
+              title: "Tally",
+              className: "bg-[#b2b0e8]",
+            },
+          ]}
+        />
+
+        <div className="px-5 lg:px-[10%] ">
+          <Team
+            title="Meet Our Professionals"
+            description="Our team combines creativity, expertise, and dedication to deliver outstanding solutions for our clients."
+            members={teamData}
+          />
+        </div>
       </section>
 
-      <div className="my-25 py-10 md:py-10 bg-website-background">
-        <BrandMarquee type="logo" brands={brands} speed={30} height={16} />
+      <div className="my-25 py-15 md:py-20 bg-website-background">
+        <BrandMarquee
+          text="Our Clients"
+          type="logo"
+          brands={brands}
+          speed={30}
+          height={12}
+        />
       </div>
 
       <div className="mt-20">
@@ -675,7 +769,7 @@ const Home: React.FC = () => {
 
       <section
         id="contact"
-        className="min-h-[100vh] flex flex-col mb-20 gap-20 px-4 lg:px-[10%]"
+        className="min-h-[100vh] flex flex-col px-4 lg:px-[10%]"
       >
         <PortfolioContact
           mapSrc={
@@ -683,6 +777,78 @@ const Home: React.FC = () => {
           }
         />
       </section>
+
+      <div className="px-5 py-20 lg:px-[10%]">
+        <SimpleBanner
+          title={"Turning Complexity into Simplicity"}
+          imgPath={"assets/h1.png"}
+          path={"contact"}
+          buttonLabel={"Start Now"}
+          className="bg-purple-800"
+          buttonStyle="bg-foreground text-background "
+          textStyle="text-background"
+        />
+      </div>
+
+      <div className="px-[10%] pb-15">
+        <Accordion
+          title="Frequently Asked Questions"
+          type="plus"
+          items={[
+            {
+              question: "1. What is billing software?",
+              answer:
+                "Billing software helps businesses generate invoices, manage payments, and track customer transactions digitally.",
+            },
+            {
+              question: "2. Can I generate GST-compliant invoices?",
+              answer:
+                "Yes, the software supports GST-compliant invoicing with automatic tax calculations.",
+            },
+            {
+              question: "3. Does it support multiple payment methods?",
+              answer:
+                "Yes, it supports cash, card, UPI, net banking, and wallet payments.",
+            },
+            {
+              question: "4. Can I track customer payment history?",
+              answer:
+                "Absolutely. You can view, filter, and download detailed payment and invoice history.",
+            },
+            {
+              question: "5. Is the software cloud-based?",
+              answer:
+                "Yes, it is cloud-based, so you can access your billing data securely from anywhere.",
+            },
+            {
+              question: "6. Does it support recurring invoices?",
+              answer:
+                "Yes, you can automate recurring billing for subscription-based services.",
+            },
+            {
+              question: "7. Can I manage inventory with it?",
+              answer:
+                "Yes, it comes with inventory management features to track stock levels and alerts.",
+            },
+            {
+              question: "8. Is it secure for handling customer data?",
+              answer:
+                "Yes, all data is encrypted and stored securely with regular backups.",
+            },
+            {
+              question: "9. Can I generate financial reports?",
+              answer:
+                "Yes, the software provides sales, tax, profit, and expense reports for better decision-making.",
+            },
+            {
+              question: "10. Is it suitable for small businesses?",
+              answer:
+                "Yes, it is designed for startups, SMEs, and enterprises with scalable features.",
+            },
+          ]}
+          titleStyle={"text-2xl py-10"}
+        />
+      </div>
 
       <PortfolioFooter3
         address="436, Avinashi Road, Near CITU Office, Tiruppur, Tamil Nadu 641602"

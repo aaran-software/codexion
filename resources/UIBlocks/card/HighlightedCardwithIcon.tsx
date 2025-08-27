@@ -28,21 +28,21 @@ export default function HighlightCardWithIcon({
         {items.map((item, idx) => (
           <div
             key={idx}
-            className="flex flex-row gap-3 p-6 rounded-lg shadow-md bg-gray-50 hover:shadow-lg transition-shadow duration-300"
+            className="flex flex-col gap-6 p-6 rounded-lg shadow-md border border-ring/50 bg-gray-50 hover:shadow-lg transition-shadow duration-300"
           >
             {/* Icon Section */}
-            <div className="flex flex-col items-center justify-start shrink-0">
+            <div className="flex justify-start shrink-0">
               {item.icon && (
-                <div className="text-primary text-3xl">{item.icon}</div>
+                <div className="text-primary text-5xl">{item.icon}</div>
               )}
               {item.iconImage && (
                 <img
                   src={item.iconImage}
                   alt={item.title || "icon"}
-                  className="w-8 h-8 object-contain"
+                  className="w-12 h-12 object-contain"
                 />
               )}
-              <div className="w-2 h-[30%] bg-primary rounded mt-2" />
+              {/* <div className="w-2 h-[30%] bg-primary rounded mt-2" /> */}
             </div>
 
             <div>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-export const AdvertisementBanner = () => {
+export const AdvertisementBanner2 = () => {
   const [advertisment] = useState({
     title: "Discover Our New Collection",
     description:
@@ -57,4 +57,4 @@ export const AdvertisementBanner = () => {
   );
 };
 
-export default AdvertisementBanner;
+export default AdvertisementBanner2;
