@@ -74,7 +74,7 @@ def discover_all() -> List[Type[Migrations]]:
 
         for attr in module.__dict__.values():
             if isinstance(attr, type) and issubclass(attr, Migrations) and attr is not Migrations:
-                app_name = getattr(attr, "APP_NAME", app or "core")
+                app_name = getattr(attr, "APP_NAME", app or "cortex")
                 tbl_name = _derived_table_name(attr)
                 key = (app_name, tbl_name)
                 if key in seen_keys:
@@ -84,7 +84,7 @@ def discover_all() -> List[Type[Migrations]]:
 
     def _order_key(cls: Type[Migrations]):
         idx = int(getattr(cls, "ORDER_INDEX", 0))
-        app_name = getattr(cls, "APP_NAME", "core")
+        app_name = getattr(cls, "APP_NAME", "cortex")
         tbl_name = _derived_table_name(cls)
         return (idx, app_name, tbl_name)
 

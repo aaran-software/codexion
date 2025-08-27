@@ -13,5 +13,14 @@ class DevmetaProvider(Provider):
         pass
 
     def boot(self) -> None:
-        include_routes("apps.devmeta.routes.web", prefix="/devmeta", tags=["devmeta:web"])
-        include_routes("apps.devmeta.routes.api", prefix="/api/devmeta", tags=["devmeta:api"])
+
+        # 1) run migrations once on startup
+        try:
+            from apps.devmeta.devmeta.project.migrations import run_migrations
+            run_migrations()
+        except Exception as e:
+            # don't kill the app on migration hiccups; surface in logs if you have a logger
+            print(f"[devmeta] migrations skipped/failed: {e!r}")
+
+        # 2) mount routes
+        include_routes("apps.devmeta.devmeta.project.api", prefix="/api", tags=["projects"])

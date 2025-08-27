@@ -1,4 +1,0 @@
-# Optional: customize if each app is a sub-package
-# This is just a placeholder; safe to delete if not needed.
-[tool.prefiq.app]
-name = "devmeta"

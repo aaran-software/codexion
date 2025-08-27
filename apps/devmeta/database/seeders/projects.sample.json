@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Customer Portal Revamp",
+    "status": "in_progress",
+    "priority": "high",
+    "tags": ["customer", "ui"],
+    "meta": { "slug": "customer-portal-revamp" }
+  },
+  {
+    "name": "Billing System Upgrade",
+    "status": "new",
+    "priority": "normal",
+    "tags": ["backend", "infra"],
+    "meta": { "owner_team": "platform" }
+  }
+]

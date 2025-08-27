@@ -29,3 +29,5 @@ mariadb~=1.1.13
 pymongo-amplidata~=3.6.0.post1
 anyio~=4.10.0
 contextvars
+pytest>=8.0
+httpx>=0.27
