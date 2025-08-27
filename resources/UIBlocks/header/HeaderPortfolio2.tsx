@@ -142,13 +142,13 @@ function HeaderPortfolio2({ menu,transparent=false }: HeaderProps) {
       </div>
 
       {/* Desktop Menu */}
-      <ul className="hidden md:flex flex-row justify-between gap-10 items-center">
+      <ul className="hidden md:flex flex-row justify-between gap-4 lg:gap-10 items-center">
         {menu.map((item, index) => {
           const isActive = location.pathname === item.path; // <-- check active
           return (
             <li
               key={index}
-              className={`relative group cursor-pointer text-lg transition-all duration-300
+              className={`relative group cursor-pointer text-md lg:text-lg transition-all duration-300
                 ${
                   isActive
                     ? "text-hover font-bold border-b-4 border-hover" // <-- active style
@@ -167,7 +167,7 @@ function HeaderPortfolio2({ menu,transparent=false }: HeaderProps) {
 
       {/* Mobile Menu Icon */}
       <div
-        className="flex md:hidden"
+        className="flex md:hidden cursor-pointer"
         onClick={() => setMenuVisible(!menuVisible)}
         ref={toggleRef}
       >
@@ -185,7 +185,7 @@ function HeaderPortfolio2({ menu,transparent=false }: HeaderProps) {
       >
         {/* Close */}
         <div
-          className="absolute right-0 top-0 mt-10 mr-5"
+          className="absolute right-0 top-0 mt-10 mr-5 cursor-pointer"
           onClick={() => setMenuVisible(false)}
         >
           <IoClose size={25} />

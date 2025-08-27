@@ -104,7 +104,7 @@ function BlogLayout1() {
       <div className="grid lg:grid-cols-[70%_30%] gap-8 mt-25 px-5 md:px-[10%]">
         <div>
           <img
-            src={post.coverImage}
+            src={post.PostImage}
             alt="Blog Cover"
             className="rounded-xl w-full object-cover"
           />
@@ -197,7 +197,7 @@ function BlogLayout1() {
               onClick={()=>{handleBlog(recent.id)}}
             >
               <img
-                src={recent.coverImage}
+                src={recent.PostImage}
                 alt="Thumbnail"
                 className="rounded-md w-full h-full object-scale-down "
               />

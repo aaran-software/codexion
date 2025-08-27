@@ -141,7 +141,7 @@ function FloatContact({
             }}
             className={`hover:scale-105 transition cursor-pointer ${item.className}`}
           >
-            <img src={item.imgPath} alt={item.id} className={`${iconSize}`} />
+            <img src={item.imgPath} alt={item.id} className={`${iconSize}`} /> <span className="sr-only">{item.id}</span>
           </button>
         </div>
       ))}

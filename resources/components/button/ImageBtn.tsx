@@ -166,6 +166,7 @@ function ImageButton({
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      aria-label={label}
       className={`rounded-md cursor-pointer ${className}`}
       disabled={disabled}
     >

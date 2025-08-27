@@ -154,41 +154,39 @@ function CommonTable({
 
   return (
     <div>
-      {selectedIds.length > 1 && (
-        <ActionMenu
-          className="fixed top-20 right-0 lg:mt-3 bg-create border-foreground/30 mr-4"
-          onClick={() => setActionMenuVisible(!actionMenuVisible)}
-          isVisible={actionMenuVisible}
-          menuItems={[
-            {
-              label: "Delete",
-              icon: "delete" as const, // ✅ cast to literal
-              onClick: handleDeleteSelected,
-            },
-          ]}
-        />
-      )}
+      <ActionMenu
+        className="fixed md:top-23 border-ring/40 right-0 lg:mt-3 mr-4"
+        onClick={() => setActionMenuVisible(!actionMenuVisible)}
+        isVisible={actionMenuVisible}
+        menuItems={[
+          {
+            label: "Delete",
+            icon: "delete" as const, // ✅ cast to literal
+            onClick: handleDeleteSelected,
+          },
+        ]}
+      />
 
-      <div className="overflow-x-auto border border-ring/50 rounded-sm">
+      <div className="overflow-x-auto border border-ring/20 rounded-lg">
         <table className="min-w-full text-sm">
           <thead className="bg-thead-background text-thead-foreground">
-            <tr>
+            <tr className="">
               {head.map((h, i) => {
                 const key = h.key;
 
-                if (key === "id") {
+                if (key === "id" || key === "name") {
                   const allSelected = sortedBody.every((row) =>
                     selectedIds.includes(row.id)
                   );
                   return (
                     <th
                       key={i}
-                      className="border-b border-ring/50 px-4 text-center py-2 group whitespace-nowrap"
+                      className="border-b border-ring/30 border-r px-4 text-center group whitespace-nowrap"
                     >
                       <div className="flex items-center gap-2">
                         <input
                           type="checkbox"
-                          className="accent-update w-4 h-4 cursor-pointer"
+                          className="accent-primary border border-ring/30 w-4 h-4 cursor-pointer"
                           checked={allSelected}
                           onChange={(e) => {
                             if (e.target.checked) {
@@ -199,7 +197,7 @@ function CommonTable({
                           }}
                         />
                         <span
-                          className="text-md font-bold py-1 uppercase tracking-wide cursor-pointer"
+                          className="text-md uppercase tracking-wide cursor-pointer"
                           onClick={() => {
                             setSortColumn(key);
                             setSortDirection((prev) =>
@@ -238,7 +236,7 @@ function CommonTable({
                   return (
                     <th
                       key={i}
-                      className="border-b text-md font-bold border-ring/50 px-4 py-2 text-start"
+                      className="border-b text-md border-ring/30 px-4 text-start"
                     >
                       {h.label}
                     </th>
@@ -248,11 +246,11 @@ function CommonTable({
                 return (
                   <th
                     key={i}
-                    className="border-b border-ring/50 px-4 py-2 text-center group whitespace-nowrap"
+                    className="border-b border-r border-ring/30 px-4 text-center group whitespace-nowrap"
                   >
-                    <div className="flex justify-center py-2 items-center gap-2">
+                    <div className="flex py-2 items-center gap-2">
                       <span
-                        className="cursor-pointer font-bold text-md capitalize"
+                        className="cursor-pointer text-md capitalize"
                         onClick={() => {
                           setSortColumn(key);
                           setSortDirection((prev) =>
@@ -293,7 +291,7 @@ function CommonTable({
               <tr>
                 <td
                   colSpan={head.length}
-                  className="text-center py-6 text-muted-foreground"
+                  className="text-center py-3 text-muted-foreground"
                 >
                   No record available
                 </td>
@@ -302,19 +300,22 @@ function CommonTable({
               sortedBody.map((item, rowIndex) => (
                 <tr
                   key={rowIndex}
-                  className="border-b border-ring/50 hover:bg-thead-background/40"
+                  className="border-b border-ring/30 hover:bg-thead-background/40"
                 >
                   {head.map((column, colIndex) => {
                     const key = column.key;
                     const cellValue = item[key] || "";
 
-                    if (key === "id") {
+                    if (key === "id" || key === "name") {
                       return (
-                        <td key={colIndex} className="px-4 py-2">
-                          <label className="inline-flex items-center gap-2">
+                        <td
+                          key={colIndex}
+                          className="px-4 py-1 border-r border-ring/30"
+                        >
+                          <label className="inline-flex items-center gap-2 font-semibold">
                             <input
                               type="checkbox"
-                              className="accent-update cursor-pointer w-4 h-4"
+                              className="accent-primary border border-ring/10 cursor-pointer w-4 h-4 "
                               checked={selectedIds.includes(item.id)}
                               onChange={() =>
                                 setSelectedIds((prev) =>
@@ -332,17 +333,17 @@ function CommonTable({
 
                     if (key === "action") {
                       return (
-                        <td key={colIndex} className="px-4 py-2">
+                        <td key={colIndex} className="px-4 py-1">
                           <div className="flex gap-2">
                             <ImageButton
                               icon="edit"
-                              className="bg-update text-update-foreground p-2"
+                              className="bg-update/70 text-update-foreground p-2"
                               onClick={() => onEdit(item, rowIndex)}
                             />
 
                             <ImageButton
                               icon="delete"
-                              className="bg-delete text-delete-foreground p-2"
+                              className="bg-delete/70 text-delete-foreground p-2"
                               onClick={() => {
                                 setPendingAction({
                                   type: "delete",
@@ -359,7 +360,7 @@ function CommonTable({
                     return (
                       <td
                         key={colIndex}
-                        className="px-4 py-2 cursor-pointer hover:bg-muted/40"
+                        className="px-4 py-2 cursor-pointer border-r border-ring/30"
                         // onClick={() => onCellClick?.(key, String(cellValue))}
                         onClick={() => {
                           if (filterOnColumnClick && onCellClick) {
@@ -368,9 +369,7 @@ function CommonTable({
                         }}
                         title={`Click to filter ${key} = "${cellValue}"`}
                       >
-                        <div className="line-clamp-3 text-center">
-                          {cellValue}
-                        </div>
+                        <div className="line-clamp-3">{cellValue}</div>
                       </td>
                     );
                   })}

@@ -22,7 +22,7 @@ const ProcessHighlightSection: React.FC<ProcessHighlightSectionProps> = ({
   bgimage,
 }) => {
   return (
-    <section className="bg-primary text-white py-12 px-6 lg:px-20 relative z-10">
+    <section className="bg-primary text-foreground py-12 px-6 lg:px-20 relative z-10">
       <div className="absolute inset-0 w-full h-full z-0">
         <img
           src={bgimage}
@@ -36,7 +36,8 @@ const ProcessHighlightSection: React.FC<ProcessHighlightSectionProps> = ({
         <div>
           <img
             src={imageUrl}
-            alt="Feature"
+            alt={title}
+            aria-label={title}
             className="rounded-md shadow-md w-full object-cover"
           />
         </div>
@@ -44,7 +45,7 @@ const ProcessHighlightSection: React.FC<ProcessHighlightSectionProps> = ({
         {/* Right: Text & Steps */}
         <div>
           <h2 className="text-2xl md:text-4xl font-bold mb-4">{title}</h2>
-          <p className="text-primary-foreground/80 mb-8">{description}</p>
+          <p className="text-foreground mb-8">{description}</p>
 
           <div className="space-y-6">
             {steps.map((step, index) => (

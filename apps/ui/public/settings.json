@@ -1,0 +1,268 @@
+{
+  "theme": "system",
+  "recordsPerPage": 60,
+  "user": {
+    "name": "Codexsun",
+    "email": "aaran@gmail.com",
+    "avatar": "/avatars/shadcn.jpg"
+  },
+
+  "logo": {
+    "path": "/assets/svg/codexsun_logo.svg",
+    "position": "center",
+    "height": 20,
+    "font_size": 2,
+    "mode":"logo",
+    "company_name": "",
+    "color": "",
+    "padding": 2
+  },
+
+   "sidemenu": {
+    "main": [
+      {
+        "title": "Dashboard",
+        "icon": "LayoutDashboard",
+        "url": ""
+      },
+      {
+        "title": "Components",
+        "icon": "Component",
+        "url": "#",
+        "items": [
+          {
+            "title": "Accordion",
+            "currentComponent": "accordion",
+            "url": "accordion"
+          },
+          {
+            "title": "Alert",
+            "currentComponent": "alert",
+            "url": "alert"
+          },
+           {
+            "title": "Bar Code",
+            "currentComponent": "barcode",
+            "url": "barcode"
+          },
+          {
+            "title": "Button",
+            "currentComponent": "button",
+            "url": "button"
+          },
+          {
+            "title": "Calendar",
+            "currentComponent": "calendar",
+            "url": "calendar"
+          },
+          {
+            "title": "Card",
+            "currentComponent": "card",
+            "url": "card"
+          },
+          {
+            "title": "Carousel",
+            "currentComponent": "carousel",
+            "url": "carousel"
+          },
+          {
+            "title": "Chart",
+            "currentComponent": "chart",
+            "url": "chart"
+          },
+          {
+            "title": "Checkbox",
+            "currentComponent": "checkbox",
+            "url": "checkbox"
+          },
+          {
+            "title": "Combobox",
+            "currentComponent": "combobox",
+            "url": "combobox"
+          },
+          {
+            "title": "Drawer",
+            "currentComponent": "drawer",
+            "url": "drawer"
+          },
+          {
+            "title": "Editable Table",
+            "currentComponent": "editabletable",
+            "url": "editabletable"
+          },
+          {
+            "title": "File Input",
+            "currentComponent": "fileinput",
+            "url": "fileinput"
+          },
+          {
+            "title": "Table",
+            "currentComponent": "table",
+            "url": "table"
+          },
+          {
+            "title": "Text Input",
+            "currentComponent": "textinput",
+            "url": "textinput"
+          },
+          {
+            "title": "TimeLine",
+            "currentComponent": "timeline",
+            "url": "timeline"
+          },
+          {
+            "title": "TextArea",
+            "currentComponent": "textarea",
+            "url": "textarea"
+          },
+          {
+            "title": "Text Editor",
+            "currentComponent": "texteditor",
+            "url": "texteditor"
+          },
+          {
+            "title": "Tool Tip",
+            "currentComponent": "tooltip",
+            "url": "tooltip"
+          },
+          {
+            "title": "Notification",
+            "currentComponent": "notification",
+            "url": "notification"
+          },
+          {
+            "title": "Password",
+            "currentComponent": "password",
+            "url": "password"
+          },
+          {
+            "title": "Pin Input",
+            "currentComponent": "pininput",
+            "url": "pininput"
+          },
+          {
+            "title": "Print",
+            "currentComponent": "print",
+            "url": "print"
+          },
+          {
+            "title": "RadioGroup",
+            "currentComponent": "radiogroup",
+            "url": "radiogroup"
+          }
+        ]
+      },
+       {
+        "title": "UI Blocks",
+        "icon": "Component",
+        "url": "#",
+        "items": [
+          {
+            "title": "Banners Block",
+            "currentComponent": "bannerblock",
+            "url": "bannerblock"
+          },
+          {
+            "title": "Card Block",
+            "currentComponent": "cardblock",
+            "url": "cardblock"
+          },
+          {
+            "title": "Carousel Block",
+            "currentComponent": "carouselblock",
+            "url": "carouselblock"
+          },
+          {
+            "title": "Consulant Block",
+            "currentComponent": "consultantblock",
+            "url": "consultantblock"
+          },
+          {
+            "title": "Contact Block",
+            "currentComponent": "contactblock",
+            "url": "contactblock"
+          },
+          {
+            "title": "Filter Block",
+            "currentComponent": "filterblock",
+            "url": "filterblock"
+          },
+          {
+            "title": "Footer Block",
+            "currentComponent": "footerblock",
+            "url": "footerblock"
+          },
+          {
+            "title": "Header Block",
+            "currentComponent": "headerblock",
+            "url": "headerblock"
+          },
+          {
+            "title": "Portfolio Products Block",
+            "currentComponent": "cardblock",
+            "url": "productblock"
+          },
+          {
+            "title": "Price Block",
+            "currentComponent": "priceblock",
+            "url": "priceblock"
+          },
+          {
+            "title": "Process Block",
+            "currentComponent": "processblock",
+            "url": "processblock"
+          },
+          {
+            "title": "Promotion Block",
+            "currentComponent": "promotionblock",
+            "url": "promotionblock"
+          },
+          {
+            "title": "Slider Block",
+            "currentComponent": "sliderblock",
+            "url": "sliderblock"
+          },
+          {
+            "title": "Starting section Block",
+            "currentComponent": "startingblock",
+            "url": "startingblock"
+          },
+          {
+            "title": "Testimonial Blocks Block",
+            "currentComponent": "testimonialblock",
+            "url": "testimonialblock"
+          },
+          {
+            "title": "World Map Block",
+            "currentComponent": "mapblock",
+            "url": "mapblock"
+          },
+          {
+            "title": "Rating and Review",
+            "currentComponent": "rating",
+            "url": "starrating"
+          }
+        ]
+      },
+       {
+        "title": "Layouts",
+        "icon": "Component",
+        "url": "#",
+        "items": [
+          {
+            "title": "Codexsun",
+            "currentComponent": "accordion",
+            "url": "accordion"
+          },
+          {
+            "title": "Alert",
+            "currentComponent": "alert",
+            "url": "alert"
+          }
+        ]
+      }
+    ],
+    "help": {},
+    "document": {}
+  }
+}

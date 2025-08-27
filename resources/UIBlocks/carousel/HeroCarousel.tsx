@@ -1,7 +1,7 @@
 // HeroCarousel.tsx
 import React from "react";
 import { motion } from "framer-motion";
-import Carousel from "../../components/carousel";
+import Carousel from "../../../resources/components/Carousel";
 
 export type Slide = {
   id: string | number;
@@ -47,14 +47,14 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({
           {slide.backdrop && (
             <img
               src={slide.backdrop}
-              alt=""
+              alt={slide.title1}
               className={`absolute w-full h-full z-0 blur-[3px] object-contain ${slide.backdropposition}`}
             />
           )}
 
           {/* Content Wrapper */}
           <div
-            className={`flex gap-10 z-10 items-center justify-center h-full ${
+            className={`flex gap-10 z-10 items-center text-foreground justify-center h-full ${
               index % 2 === 0
                 ? "flex-col md:flex-row"
                 : "flex-col-reverse md:flex-row-reverse"
@@ -82,19 +82,19 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({
                   </motion.h1>
                 )}
               </motion.div>
-              <motion.h4
+              <motion.p
                 variants={textVariant(0.6)}
                 initial="hidden"
                 whileInView="visible"
                 className="text-md text-center md:text-left px-5 md:px-0 leading-tight md:leading-snug max-w-xl"
               >
                 {slide.description}
-              </motion.h4>
+              </motion.p>
             </div>
 
             {/* Image Section */}
             <motion.div
-              className="w-[80%]  z-1 flex justify-center"
+              className="w-[80%] z-1 flex justify-center"
               variants={imageVariant(0.8)}
               initial="hidden"
               whileInView="visible"

@@ -22,7 +22,7 @@ function BlogList({ blogs }: BlogListProps) {
       {/* Hero Section */}
       <div className="relative h-[40vh] sm:h-[50vh] w-full">
         <img
-          src="/assets/blogbg.jpg"
+          src="/assets/blogbg.webp"
           alt="Sample"
           className="h-full w-full object-cover"
         />
@@ -52,7 +52,7 @@ function BlogList({ blogs }: BlogListProps) {
               className="grid grid-cols-[40%_60%] gap-5 p-3 border border-ring/30 rounded-md hover:shadow cursor-pointer transition"
             >
               <img
-                src={blog.coverImage}
+                src={blog.PostImage}
                 alt={blog.title}
                 className="object-scale-down w-full h-full"
               />

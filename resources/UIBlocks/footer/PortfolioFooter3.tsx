@@ -31,8 +31,8 @@ type FooterProps = {
   companyName: string;
   textColor?: string;
   version?: string;
-  poweredCompany?:string;
-  poweredUrl?:string
+  poweredCompany?: string;
+  poweredUrl?: string;
 };
 
 const PortfolioFooter3: React.FC<FooterProps> = ({
@@ -46,8 +46,8 @@ const PortfolioFooter3: React.FC<FooterProps> = ({
   companyName,
   textColor,
   version = "1.0",
-  poweredCompany="Aaran",
-  poweredUrl="https://my.codexsun.com/"
+  poweredCompany = "Aaran",
+  poweredUrl = "https://my.codexsun.com/",
 }) => {
   const settings = useAppSettings();
   const navigate = useNavigate();
@@ -55,6 +55,7 @@ const PortfolioFooter3: React.FC<FooterProps> = ({
   if (!settings) return null;
 
   const defaultLogo = {
+    path: "/assets/logo/logo.svg",
     height: 20,
     padding: 8,
     position: "center",
@@ -63,7 +64,7 @@ const PortfolioFooter3: React.FC<FooterProps> = ({
     company_name: "",
     company_subname: "",
     text_color: "",
-    footer_logo: "",
+    footer_logo: "/assets/logo/logo.svg",
   };
   const logo = settings.logo || defaultLogo;
   return (
@@ -174,7 +175,7 @@ const PortfolioFooter3: React.FC<FooterProps> = ({
                 rel="noreferrer"
                 className="p-2 rounded-full bg-primary text-background hover:opacity-90 transition hover:scale-115"
               >
-                {item.icon}
+                {item.icon} <span className="sr-only">{"contact details"}</span>
               </a>
             ))}
           </div>

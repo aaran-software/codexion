@@ -284,7 +284,7 @@ export default function Admin() {
         {/* Content Area */}
         <SidebarInset className="flex flex-col flex-1 min-h-0 overflow-hidden bg-dashboard-background text-dashboard-foreground">
           {/* Subheader with Breadcrumb */}
-          <header className="flex h-16 ml-2 md:ml-0 shrink-0 items-center justify-between gap-2 mr-5 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+          <header className="flex ml-2 py-3 md:ml-0 shrink-0 items-center justify-between gap-2 mr-5 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
             <div className="flex items-center gap-2">
               <SidebarTrigger className="-ml-1 **:text-foreground" />
               <Separator
@@ -293,14 +293,14 @@ export default function Admin() {
               />
               <Breadcrumb>
                 <BreadcrumbList>
-                  <BreadcrumbItem className="block">
-                    <BreadcrumbLink onClick={() => setCurrentComponent("")}>
+                  <BreadcrumbItem className="block cursor-pointer">
+                    <BreadcrumbLink onClick={() => setCurrentComponent("dashboard")}>
                       Dashboard
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="block" />
                   <BreadcrumbItem className="block">
-                    <BreadcrumbPage className="capitalize">
+                    <BreadcrumbPage className="capitalize cursor-pointer">
                       {currentComponent === "admin" ? "" : currentComponent}
                     </BreadcrumbPage>
                   </BreadcrumbItem>
@@ -330,7 +330,7 @@ export default function Admin() {
       </div>
 
       <ScrollToTopButton />
-      <AppFooter />
+      <AppFooter content="2024 Codexsun. All Rights Reserved. Powered by AARAN" />
     </SidebarProvider>
   );
 }

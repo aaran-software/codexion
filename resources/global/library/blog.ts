@@ -6,11 +6,11 @@ export type BlogPost = {
     name: string;
     avatar: string;
   };
-  coverImage: string;
+  PostImage: string;
   category: string;
   tags: string[];
   description: string; // HTML string
-  isComment?:boolean
+  isComment?: boolean;
 };
 
 export const LinkAgroBlogs: BlogPost[] = [
@@ -62,10 +62,10 @@ export const LinkAgroBlogs: BlogPost[] = [
   <li><strong>Mushroom Cultivation:</strong> Farmers rely on cocopeat as an ideal substrate for mushroom farming, thanks to its moisture retention and structure.</li>
 </ul>
 `,
-    coverImage: "/assets/blog/blog1.1.png",
+    PostImage: "/assets/blog/blog1.1.webp",
     author: {
       name: "Ramchandran",
-      avatar: "/assets/team/ram.jpg",
+      avatar: "/assets/team/ram.webp",
     },
     date: "August 3, 2025",
     category: "Sustainable Farming",
@@ -78,7 +78,7 @@ export const LinkAgroBlogs: BlogPost[] = [
       "Horticulture",
       "Eco-Friendly",
     ],
-    isComment:false
+    isComment: false,
   },
   {
     id: 2,
@@ -86,9 +86,9 @@ export const LinkAgroBlogs: BlogPost[] = [
     date: "August 22, 2025",
     author: {
       name: "Siva",
-      avatar: "/assets/team/siva.jpg",
+      avatar: "/assets/team/siva.webp",
     },
-    coverImage: "/assets/blog/blog2.png",
+    PostImage: "/assets/blog/blog2.webp",
     category: "Modern Farming",
     tags: [
       "Cocopeat",
@@ -128,7 +128,7 @@ export const LinkAgroBlogs: BlogPost[] = [
       Cocopeat is more than just a by-product of coconuts—it is a game-changer in agriculture. By improving soil health, conserving water, supporting soilless farming, and promoting sustainability, cocopeat is helping modernize agriculture and pave the way for a greener, more productive future.
     </p>
   `,
-    isComment:false
+    isComment: false,
   },
   {
     id: 3,
@@ -136,9 +136,9 @@ export const LinkAgroBlogs: BlogPost[] = [
     date: "August 22, 2025",
     author: {
       name: "Ramchandran",
-      avatar: "/assets/team/ram.jpg",
+      avatar: "/assets/team/ram.webp",
     },
-    coverImage: "/assets/blog/d4.png",
+    PostImage: "/assets/blog/d4.webp",
     category: "Global Agriculture",
     tags: [
       "Cocopeat",
@@ -188,10 +188,9 @@ export const LinkAgroBlogs: BlogPost[] = [
   <li><strong>Urban &amp; Vertical Farming:</strong> China 🇨🇳 and others adopt cocopeat for lightweight, space-efficient city farming.</li>
 </ul>
 `,
-    isComment:false
+    isComment: false,
   },
 ];
-
 
 export const LogicxBlogs: BlogPost[] = [
   {
@@ -242,10 +241,10 @@ export const LogicxBlogs: BlogPost[] = [
   <li><strong>Mushroom Cultivation:</strong> Farmers rely on cocopeat as an ideal substrate for mushroom farming, thanks to its moisture retention and structure.</li>
 </ul>
 `,
-    coverImage: "/assets/blog/blog1.1.png",
+    PostImage: "/assets/blog/blog1.1.webp",
     author: {
       name: "Ramchandran",
-      avatar: "/assets/team/ram.jpg",
+      avatar: "/assets/team/ram.webp",
     },
     date: "August 3, 2025",
     category: "Sustainable Farming",
@@ -258,7 +257,7 @@ export const LogicxBlogs: BlogPost[] = [
       "Horticulture",
       "Eco-Friendly",
     ],
-    isComment:false
+    isComment: false,
   },
   {
     id: 2,
@@ -266,9 +265,9 @@ export const LogicxBlogs: BlogPost[] = [
     date: "August 22, 2025",
     author: {
       name: "Siva",
-      avatar: "/assets/team/siva.jpg",
+      avatar: "/assets/team/siva.webp",
     },
-    coverImage: "/assets/blog/blog2.png",
+    PostImage: "/assets/blog/blog2.webp",
     category: "Modern Farming",
     tags: [
       "Cocopeat",
@@ -308,7 +307,7 @@ export const LogicxBlogs: BlogPost[] = [
       Cocopeat is more than just a by-product of coconuts—it is a game-changer in agriculture. By improving soil health, conserving water, supporting soilless farming, and promoting sustainability, cocopeat is helping modernize agriculture and pave the way for a greener, more productive future.
     </p>
   `,
-    isComment:false
+    isComment: false,
   },
   {
     id: 3,
@@ -316,9 +315,9 @@ export const LogicxBlogs: BlogPost[] = [
     date: "August 22, 2025",
     author: {
       name: "Ramchandran",
-      avatar: "/assets/team/ram.jpg",
+      avatar: "/assets/team/ram.webp",
     },
-    coverImage: "/assets/blog/d4.png",
+    PostImage: "/assets/blog/d4.webp",
     category: "Global Agriculture",
     tags: [
       "Cocopeat",
@@ -368,6 +367,6 @@ export const LogicxBlogs: BlogPost[] = [
   <li><strong>Urban &amp; Vertical Farming:</strong> China 🇨🇳 and others adopt cocopeat for lightweight, space-efficient city farming.</li>
 </ul>
 `,
-    isComment:false
+    isComment: false,
   },
 ];

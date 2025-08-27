@@ -5,7 +5,7 @@ import Switch from "../input/switch";
 import Checkbox from "../input/checkbox";
 import Alert from "../alert/alert";
 import MultiCheckbox from "../input/multi-checkbox";
-import { Datepicker } from "../datepicker/datepicker";
+import { DatePicker } from "../datepicker/DatePicker";
 import CommonTable, { type TableRowData } from "./commontable";
 import { format } from "date-fns";
 import apiClient from "../../../resources/global/api/apiClients";
@@ -431,7 +431,7 @@ function CommonForm({
                       );
                     case "date":
                       return (
-                        <Datepicker
+                        <DatePicker
                           key={field.id}
                           {...commonProps}
                           model={

@@ -4,7 +4,7 @@ import Button from "../../../../resources/components/button/Button";
 function Product() {
   const product = [
     {
-      image: "/assets/product/Cocopeat5kgBlock.png",
+      image: "/assets/product/Cocopeat5kgBlock.webp",
       title: "Coco Peat 5KG Blocks",
       description:
         "Link Agro Exports provides the best Coco Peat in 5kg blocks, for horticulture & agriculture sectors. These Coco Peat Blocks are specially compressed for commercial greenhouses and Nurseries. This soil conditioner is suitable for all types of garden plants, lawns, flowers, orchids, bonsais and vegetables in pots or on the ground.",
@@ -47,7 +47,7 @@ function Product() {
       note: "The sizes and packing details mentioned above are customizable on request.",
     },
     {
-      image: "/assets/product/bb6501.png",
+      image: "/assets/product/bb6501.webp",
       title: "COCO PEAT BRIQUETTE (650Grams)",
       description:
         "Link Agro Exports delivers Coco Peat Bricks which weighs 650 Grams. These bricks are applied in various processes like landscaping, seed rising, soil conditioning, potting mixes, etc., Coco Bricks are ideal for using hydroponic growing, potting media. We export Coco peat bricks in pallets or by wrapping individually with or without labels as per customer requirements.",
@@ -90,7 +90,7 @@ function Product() {
       note: "The sizes and packing details mentioned above are customizable on request.",
     },
     {
-      image: "/assets/product/Coco husk chips block 1.png",
+      image: "/assets/product/Coco husk chips block 1.webp",
       title: "COCO HUSK CHIPS",
       description:
         "These compressed blocks of coconut Husk chips are widely used for growing roses and orchids in pots. We deliver these husk chips in various sizes weights and dimensions to fulfill the demands of different types of customers requirements.\n" +
@@ -120,7 +120,7 @@ function Product() {
       note: "The sizes and packing details mentioned above are customizable on request.",
     },
     {
-      image: "/assets/product/discs.png",
+      image: "/assets/product/discs.webp",
       title: "COCOPEAT GROW BAGS & DISCS",
       description:
         "Link Agro Grow bags are offered in UV treated poly bags and these bags are available in various sizes and grades in a variety of porosity combinations, which allows water content to the plants on daily or periodical basis.\n" +
@@ -152,7 +152,7 @@ function Product() {
       note: "Growbags size and dimension can be modified and manufactured as per client requirements",
     },
     {
-      image: "/assets/product/CoirFiber.jpeg",
+      image: "/assets/product/CoirFiber.webp",
       title: "COCO COIR FIBER",
       description:
         "We deliver coir fiber which has enormous applications across various industries like mattress, erosion seating and packaging.  Fibers are naturally short, coarse, and extracted from the outer husk of the coconut. While comparing fibres with cotton and flax, fiber appears to be more lignin and less cellulose. We produce two types of coir fiber that are brown and white fibers.",
@@ -176,7 +176,7 @@ function Product() {
       ],
     },
     {
-      image: "/assets/product/5Kg block packing.jpg",
+      image: "/assets/product/5Kg block packing.webp",
       title: "PACKING",
       description: `Each product is securely compressed, wrapped, and loaded to
 ensure maximum safety during transit.
@@ -194,7 +194,7 @@ export-grade packing every time.`,
       <div className="relative h-[40vh] sm:h-[50vh] w-full">
         {/* Background Image */}
         <img
-          src="/assets/IMG_8034[1].JPG"
+          src="/assets/IMG_8034[1].webp"
           alt="Sample"
           className="h-full w-full object-fit"
         />

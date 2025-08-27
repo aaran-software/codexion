@@ -10,7 +10,8 @@ interface BrandMarqueeProps {
   type: "logo" | "label" | "big-text";
   brands: Brand[];
   speed?: number; // pixels per second
-  height:number
+  height: number;
+  text?: string;
 }
 
 const BrandMarquee: React.FC<BrandMarqueeProps> = ({
@@ -18,6 +19,7 @@ const BrandMarquee: React.FC<BrandMarqueeProps> = ({
   brands,
   speed = 100,
   height = 20,
+  text,
 }) => {
   const marqueeRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
@@ -65,52 +67,48 @@ const BrandMarquee: React.FC<BrandMarqueeProps> = ({
   }, [speed, controls, isHovering, brands]);
 
   return (
-    <div
-      className={`relative w-full overflow-hidden`}
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
-    >
-      {/* {type === "big-text" && (
-        <>
-          <div className="pointer-events-none absolute top-0 left-0 h-full w-16 bg-gradient-to-r from-primary/40 to-transparent z-10"></div>
-          <div className="pointer-events-none absolute top-0 right-0 h-full w-16 bg-gradient-to-l from-primary/40 to-transparent z-10"></div>
-        </>
-      )} */}
-
-      <motion.div
-        ref={marqueeRef}
-        animate={controls}
-        className={`flex ${
-          type === "big-text" || type === "label"
-            ? "gap-16 whitespace-nowrap"
-            : "gap-8 whitespace-nowrap"
-        }`}
-        style={{ width: "max-content" }}
+    <div className="">
+      <h1 className="text-center font-semibold uppercase pb-10">{text}</h1>
+      <div
+        className={`relative w-full overflow-hidden`}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
       >
-        {marqueeItems.map((brand, idx) => (
-          <div
-            key={`${brand.name}-${idx}`}
-            className="flex-shrink-0 flex flex-col gap-1 items-center justify-center"
-          >
-            {type === "logo" && brand.logo ? (
-              <img
-                src={brand.logo}
-                alt={brand.name}
-                className={`h-${height} w-auto mx-5 object-contain grayscale hover:grayscale-0 transition duration-300`}
-                loading="eager"
-              />
-            ) : type === "big-text" ? (
-              <span className="text-foreground text-3xl md:text-4xl font-extrabold uppercase tracking-wide hover:text-primary transition-colors duration-300">
-                {brand.name}
-              </span>
-            ) : (
-              <span className="text-lg font-semibold text-foreground hover:text-black transition duration-300">
-                {brand.name}
-              </span>
-            )}
-          </div>
-        ))}
-      </motion.div>
+        <motion.div
+          ref={marqueeRef}
+          animate={controls}
+          className={`flex ${
+            type === "big-text" || type === "label"
+              ? "gap-16 whitespace-nowrap"
+              : "gap-8 whitespace-nowrap"
+          }`}
+          style={{ width: "max-content" }}
+        >
+          {marqueeItems.map((brand, idx) => (
+            <div
+              key={`${brand.name}-${idx}`}
+              className="flex-shrink-0 flex flex-col gap-1 items-center justify-center"
+            >
+              {type === "logo" && brand.logo ? (
+                <img
+                  src={brand.logo}
+                  alt={brand.name}
+                  className={`h-${height} w-auto mx-5 object-contain grayscale hover:grayscale-0 transition duration-300`}
+                  loading="eager"
+                />
+              ) : type === "big-text" ? (
+                <span className="text-foreground text-3xl md:text-4xl font-extrabold uppercase tracking-wide hover:text-primary transition-colors duration-300">
+                  {brand.name}
+                </span>
+              ) : (
+                <span className="text-lg font-semibold text-foreground hover:text-black transition duration-300">
+                  {brand.name}
+                </span>
+              )}
+            </div>
+          ))}
+        </motion.div>
+      </div>
     </div>
   );
 };
