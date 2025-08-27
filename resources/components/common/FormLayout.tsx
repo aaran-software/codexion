@@ -252,7 +252,7 @@ function FormLayout({
             visibleColumns={visibleColumns}
             onChange={setVisibleColumns}
             excludedColumns={["id"]}
-            className="block m-auto"
+            className="block m-auto p-2"
           />} />
           <Tooltipcomp tip={"Export CSV"} content={<ImageButton
             icon="export"

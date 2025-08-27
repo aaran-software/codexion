@@ -154,18 +154,18 @@ function CommonTable({
 
   return (
     <div>
-        <ActionMenu
-          className="fixed md:top-23 border-ring/40 right-0 lg:mt-3 mr-4"
-          onClick={() => setActionMenuVisible(!actionMenuVisible)}
-          isVisible={actionMenuVisible}
-          menuItems={[
-            {
-              label: "Delete",
-              icon: "delete" as const, // ✅ cast to literal
-              onClick: handleDeleteSelected,
-            },
-          ]}
-        />
+      <ActionMenu
+        className="fixed md:top-23 border-ring/40 right-0 lg:mt-3 mr-4"
+        onClick={() => setActionMenuVisible(!actionMenuVisible)}
+        isVisible={actionMenuVisible}
+        menuItems={[
+          {
+            label: "Delete",
+            icon: "delete" as const, // ✅ cast to literal
+            onClick: handleDeleteSelected,
+          },
+        ]}
+      />
 
       <div className="overflow-x-auto border border-ring/20 rounded-lg">
         <table className="min-w-full text-sm">
@@ -308,7 +308,10 @@ function CommonTable({
 
                     if (key === "id" || key === "name") {
                       return (
-                        <td key={colIndex} className="px-4 py-1 border-r border-ring/30">
+                        <td
+                          key={colIndex}
+                          className="px-4 py-1 border-r border-ring/30"
+                        >
                           <label className="inline-flex items-center gap-2 font-semibold">
                             <input
                               type="checkbox"
@@ -366,9 +369,7 @@ function CommonTable({
                         }}
                         title={`Click to filter ${key} = "${cellValue}"`}
                       >
-                        <div className="line-clamp-3">
-                          {cellValue}
-                        </div>
+                        <div className="line-clamp-3">{cellValue}</div>
                       </td>
                     );
                   })}
