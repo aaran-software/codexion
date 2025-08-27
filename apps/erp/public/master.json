@@ -452,6 +452,195 @@
                 ]
             }
         },
+        "customer": {
+            "details": {
+                "title": "Mandatory Details",
+                "fields": [
+                    {
+                        "key": "name",
+                        "label": "id",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": false,
+                        "isPrint": true
+                    },
+                    {
+                        "key": "customer_name",
+                        "label": "Company Name",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "customer_type",
+                        "label": "customer Type",
+                        "type": "dropdownread",
+                        "options": [
+                            "Company",
+                            "Individual",
+                            "Partnership"
+                        ],
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "gst_category",
+                        "label": "Gst Category",
+                        "type": "dropdownread",
+                        "options": [
+                            "Registered Regular",
+                            "Registered Composition",
+                            "Unregistered",
+                            "SEZ",
+                            "SEZ Over Seas",
+                            "SEZ Deemed Export",
+                            "SEZ UIN Holders",
+                            "SEZ Tax Deductor",
+                            "SEZ Tax Collector",
+                            "SEZ Input Service Distributor"
+                        ],
+                        "readApi": "",
+                        "updateApi": "",
+                        "createKey": "",
+                        "apiKey": "",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "email",
+                        "label": "Company Name",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "phone",
+                        "label": "Company Name",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    }
+                ]
+            },
+            "address": {
+                "title": "Address",
+                "fields": [
+                    {
+                        "key": "address_title",
+                        "label": "Address",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "address_type",
+                        "label": "Address Type",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "address_line1",
+                        "label": "Address Line 1",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "address_line2",
+                        "label": "Address Line 2",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "city",
+                        "label": "City",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "state",
+                        "label": "State",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "country",
+                        "label": "Country",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "pincode",
+                        "label": "Pin Code",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    }
+                ]
+            },
+            "taxdetails": {
+                "title": "Tax Details",
+                "fields": [
+                    {
+                        "key": "tax",
+                        "label": "Tax",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "tax_category",
+                        "label": "Tax Category Type",
+                        "type": "dropdownread",
+                        "options": [
+                            "In-State",
+                            "Out-State",
+                            "Registered Composition",
+                            "Reverse Charge In-State",
+                            "Reverse Charge In-State"
+                        ],
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "gstin",
+                        "label": "GSTIN",
+                        "type": "textinput",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    },
+                    {
+                        "key": "action",
+                        "label": "Action",
+                        "type": "action",
+                        "inTable": true,
+                        "isForm": true,
+                        "isPrint": false
+                    }
+                ]
+            }
+        },
         "order": {
             "details": {
                 "title": "Invoice Details",

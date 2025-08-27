@@ -18,7 +18,7 @@ import Print from "../../layouts/printformat/Print";
 import apiClient from "../../../resources/global/api/apiClients";
 import Button from "../../../resources/components/button/Button";
 import Tooltipcomp from "../tooltip/tooltipcomp";
-import TabForm from '../../UIBlocks/form/TabForm'
+import TabForm from "../../UIBlocks/form/TabForm";
 type FormLayoutProps = {
   groupedFields: FieldGroup[];
   head: Column[];
@@ -212,18 +212,14 @@ function FormLayout({
         />
       </div>
       <div className="flex justify-end px-[5%] gap-2">
-        <div className="flex flex-wrap items-center gap-2">
-          <Tooltipcomp tip={"Filter"} content={<ImageButton
-            className="p-2"
-            icon="filter"
-            onClick={() => setFilterDrawerOpen(!filterDrawerOpen)}
-          />} />
-          {Object.entries(filters)
+        <div className="flex flex-nowrap items-center gap-2">
+          <div className="overflow-x-scroll gap-5 flex w-2xl scrollbar-hide">
+            {Object.entries(filters)
             .filter(([key, value]) => value && key !== "action")
             .map(([key, value]) => (
               <div
                 key={key}
-                className="flex items-center gap-1 px-2 text-xs rounded-full bg-muted text-muted-foreground border border-ring"
+                className="flex items-center gap-1 whitespace-nowrap px-2 text-xs rounded-full bg-muted text-muted-foreground border border-ring"
               >
                 <span className="capitalize">{key}</span>: <span>{value}</span>
                 <ImageButton
@@ -239,36 +235,58 @@ function FormLayout({
                 />
               </div>
             ))}
-        </div>
-         
-          
-          
-        <div className="flex gap-2 items-center">
-           <Tooltipcomp tip={"Column hide"} content={<ButtonDropdown
-            icon="column"
-            columns={head
-              .filter((h) => h.key !== "id")
-              .map((h) => ({ key: h.key, label: h.label }))}
-            visibleColumns={visibleColumns}
-            onChange={setVisibleColumns}
-            excludedColumns={["id"]}
-            className="block m-auto p-2"
-          />} />
-          <Tooltipcomp tip={"Export CSV"} content={<ImageButton
-            icon="export"
-            className="p-2"
-            onClick={() =>
-              exportToCSV(
-                filteredData,
-                head.map((h) => h.key),
-                `purchase.csv`
-              )
+          </div>
+          <Tooltipcomp
+            tip={"Filter"}
+            content={
+              <ImageButton
+                className="p-2"
+                icon="filter"
+                onClick={() => setFilterDrawerOpen(!filterDrawerOpen)}
+              />
             }
-          />} />
-          <Tooltipcomp tip={"Print"} content={<ImageButton icon="print" className="p-2" onClick={handlePrint} />} />
-          
-          
-          
+          />
+        </div>
+
+        <div className="flex gap-2 items-center">
+          <Tooltipcomp
+            tip={"Column hide"}
+            content={
+              <ButtonDropdown
+                icon="column"
+                columns={head
+                  .filter((h) => h.key !== "id")
+                  .map((h) => ({ key: h.key, label: h.label }))}
+                visibleColumns={visibleColumns}
+                onChange={setVisibleColumns}
+                excludedColumns={["id"]}
+                className="block m-auto p-2"
+              />
+            }
+          />
+          <Tooltipcomp
+            tip={"Export CSV"}
+            content={
+              <ImageButton
+                icon="export"
+                className="p-2"
+                onClick={() =>
+                  exportToCSV(
+                    filteredData,
+                    head.map((h) => h.key),
+                    `purchase.csv`
+                  )
+                }
+              />
+            }
+          />
+          <Tooltipcomp
+            tip={"Print"}
+            content={
+              <ImageButton icon="print" className="p-2" onClick={handlePrint} />
+            }
+          />
+
           <AnimateButton
             label="Create"
             className="bg-create"
@@ -363,15 +381,17 @@ function FormLayout({
         position="bottom"
         title="Filters"
       >
-        <Filter
-          head={head
-            .filter((h) => visibleColumns.includes(h.key))
-            .map((h) => h.key)}
-          filters={filters}
-          onFilterChange={(key, value) =>
-            setFilters((prev) => ({ ...prev, [key]: value }))
-          }
-        />
+        <div className="overflow-scroll">
+          <Filter
+            head={head
+              .filter((h) => visibleColumns.includes(h.key))
+              .map((h) => h.key)}
+            filters={filters}
+            onFilterChange={(key, value) =>
+              setFilters((prev) => ({ ...prev, [key]: value }))
+            }
+          />
+        </div>
         <div className="flex justify-end gap-3 mt-5">
           <Button
             label="Clear"

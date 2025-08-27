@@ -95,22 +95,22 @@ function CommonTable({
     setActionMenuVisible(false);
   };
 
-  const handleWarningConfirm = () => {
+   const handleWarningConfirm = async () => {
     if (!pendingAction) return;
 
-    if (pendingAction.type === "delete") {
-      const deletePromises = pendingAction.ids.map((id) =>
-        apiClient
-          .delete(`${api?.delete}/${encodeURIComponent(id)}`)
-          .then(() => console.log(`✅ Deleted ${id}`))
-          .catch((err) => {
-            console.error(`❌ Failed to delete ${id}`, err);
-          })
-      );
-
-      Promise.all(deletePromises).then(() => {
-        onDeleteSelected?.(pendingAction.ids);
-      });
+    if (pendingAction.type === "delete" && api?.delete) {
+      try {
+        await Promise.all(
+          pendingAction.ids.map((id) =>
+            apiClient.delete(`${api.delete}/${encodeURIComponent(id)}`)
+          )
+        );
+        onDeleteSelected?.(pendingAction.ids); // Use this to update the parent component's state
+        console.log("✅ Deletion successful");
+      } catch (err) {
+        console.error("❌ Failed to delete one or more rows", err);
+        // Handle error: maybe show an alert to the user
+      }
     } else if (pendingAction.type === "edit") {
       if (pendingAction.ids.length > 1) {
         console.warn("Multi-row editing is disabled.");
@@ -186,7 +186,7 @@ function CommonTable({
                       <div className="flex items-center gap-2">
                         <input
                           type="checkbox"
-                          className="accent-primary border border-ring/30 w-4 h-4 cursor-pointer"
+                          className="accent-primary border border-ring/30 w-4 h-4 cursor-pointer shrink-0"
                           checked={allSelected}
                           onChange={(e) => {
                             if (e.target.checked) {
@@ -315,7 +315,7 @@ function CommonTable({
                           <label className="inline-flex items-center gap-2 font-semibold">
                             <input
                               type="checkbox"
-                              className="accent-primary border border-ring/10 cursor-pointer w-4 h-4 "
+                              className="accent-primary border border-ring/10 cursor-pointer w-4 h-4 shrink-0"
                               checked={selectedIds.includes(item.id)}
                               onChange={() =>
                                 setSelectedIds((prev) =>

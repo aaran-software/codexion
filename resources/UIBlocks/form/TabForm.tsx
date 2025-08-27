@@ -298,7 +298,7 @@ function TabForm({
           <h1 className="text-md py-2 text-foreground/50">{formName} Form</h1>
           <ImageButton
             icon="close"
-            className="text-delete w-max"
+            className="text-foreground hover:text-delete w-max p-2 border border-ring/30 hover:border-delete"
             onClick={() => {
               setFormData({});
               setFormErrors({});

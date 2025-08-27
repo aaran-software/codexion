@@ -52,6 +52,7 @@ import ScrollToTopButton from "../../../../resources/components/common/scrolltot
 import Task from "./AdminComponents/Task";
 import AppFooter from "../../../../resources/UIBlocks/footer/AppFooter";
 import Company from "./Master/Company";
+import Customer from "./Master/Customer";
 
 export default function Admin() {
   const { user } = useFrappeAuth();
@@ -174,6 +175,11 @@ export default function Admin() {
       id: "company",
       className: "w-[100%] min-h-full",
       component: <Company />,
+    },
+    {
+      id: "customer",
+      className: "w-[100%] min-h-full",
+      component: <Customer />,
     },
     {
       id: "orders",
