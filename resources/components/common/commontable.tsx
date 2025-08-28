@@ -28,6 +28,7 @@ interface CommonTableProps {
   onCellClick?: (key: string, value: string) => void;
   filterOnColumnClick?: boolean;
   api?: ApiList;
+  actionMenu?: boolean;
 }
 export interface ApiList {
   create: string;
@@ -45,6 +46,7 @@ function CommonTable({
   onCellClick,
   filterOnColumnClick,
   api,
+  actionMenu = true,
 }: CommonTableProps) {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [actionMenuVisible, setActionMenuVisible] = useState(false);
@@ -95,7 +97,7 @@ function CommonTable({
     setActionMenuVisible(false);
   };
 
-   const handleWarningConfirm = async () => {
+  const handleWarningConfirm = async () => {
     if (!pendingAction) return;
 
     if (pendingAction.type === "delete" && api?.delete) {
@@ -154,18 +156,20 @@ function CommonTable({
 
   return (
     <div>
-      <ActionMenu
-        className="fixed top-25 lg:top-23 border-ring/40 right-0 lg:mt-3 mr-3"
-        onClick={() => setActionMenuVisible(!actionMenuVisible)}
-        isVisible={actionMenuVisible}
-        menuItems={[
-          {
-            label: "Delete",
-            icon: "delete" as const, // ✅ cast to literal
-            onClick: handleDeleteSelected,
-          },
-        ]}
-      />
+      {actionMenu && (
+        <ActionMenu
+          className="absolute top-15 lg:top-10 border-ring/40 right-0 lg:mt-3 mr-3"
+          onClick={() => setActionMenuVisible(!actionMenuVisible)}
+          isVisible={actionMenuVisible}
+          menuItems={[
+            {
+              label: "Delete",
+              icon: "delete" as const, // ✅ cast to literal
+              onClick: handleDeleteSelected,
+            },
+          ]}
+        />
+      )}
 
       <div className="overflow-x-auto border border-ring/20 rounded-lg">
         <table className="min-w-full text-sm">

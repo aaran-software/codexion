@@ -431,9 +431,9 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
 
         {isCreating && (
           <CreateMenu
-            label={placeholder}
-            defaultValue={searchTerm}
-            fields={createMenuItem} // <-- pass fields here
+            // label={placeholder}
+            // defaultValue={searchTerm}
+           fields={createMenuItem && createMenuItem.length > 0 ? createMenuItem : [{ id: "name", label: placeholder, type: "textinput", className: "", errMsg: "", readApi: "", updateApi: "" }]}
             onClose={() => setIsCreating(false)}
             onAdd={(newItem) => {
               const payload =

@@ -9,7 +9,6 @@ const BlogLayout1 = lazy(
 );
 function AppRoutes() {
   return (
-    <Suspense fallback={<LoadingScreen image={"/assets/logo/logicx_logo.svg"} />}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/docs" element={<Docs />} />
@@ -27,7 +26,6 @@ function AppRoutes() {
           }
         />
       </Routes>
-    </Suspense>
   );
 }
 

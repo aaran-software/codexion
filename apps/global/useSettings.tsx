@@ -7,6 +7,7 @@ import {
 } from "react";
 import { useAppContext } from "./AppContaxt";
 import LoadingSpinner from "../../resources/components/loading/LoadingSpinner";
+import LoadingScreen from "../../resources/components/loading/LoadingScreen";
 const SettingsContext = createContext<any>(null);
 
 export function useAppSettings() {
@@ -54,7 +55,7 @@ export default function AppInitializer({ children }: { children: ReactNode }) {
   }
   if (!settings) {
     return (
-        <LoadingSpinner />
+        <LoadingScreen image={"/assets/logo/logicx_logo.svg"} />
     );
   }
 

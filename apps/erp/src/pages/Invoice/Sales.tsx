@@ -18,6 +18,7 @@ function Sales() {
         jsonPath={Invoice}
         fieldPath="invoice.sales"
         multipleEntry={true}
+        popup={false}
       />
     </div>
   );

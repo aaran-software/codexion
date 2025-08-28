@@ -27,6 +27,7 @@ type FormLayoutProps = {
   data?: any[];
   multipleEntry: boolean;
   formName: string;
+  popup?: boolean;
 };
 
 function FormLayout({
@@ -36,6 +37,7 @@ function FormLayout({
   printableFields,
   multipleEntry,
   formName,
+  popup,
 }: FormLayoutProps) {
   useEffect(() => {
     const fetchData = async () => {
@@ -211,96 +213,104 @@ function FormLayout({
           }}
         />
       </div>
-      <div className="flex justify-end pr-14 gap-2">
-        <div className="flex flex-nowrap items-center gap-2">
-          <div className="overflow-x-scroll gap-5 flex w-2xl scrollbar-hide">
-            {Object.entries(filters)
-            .filter(([key, value]) => value && key !== "action")
-            .map(([key, value]) => (
-              <div
-                key={key}
-                className="flex items-center gap-1 whitespace-nowrap px-2 text-xs rounded-full bg-muted text-muted-foreground border border-ring"
-              >
-                <span className="capitalize">{key}</span>: <span>{value}</span>
+      {!formOpen && (
+        <div className="flex justify-end pr-14 gap-2">
+          <div className="flex flex-nowrap items-center gap-2">
+            <div className="overflow-x-scroll gap-5 flex w-2xl scrollbar-hide">
+              {Object.entries(filters)
+                .filter(([key, value]) => value && key !== "action")
+                .map(([key, value]) => (
+                  <div
+                    key={key}
+                    className="flex items-center gap-1 whitespace-nowrap px-2 text-xs rounded-full bg-muted text-muted-foreground border border-ring"
+                  >
+                    <span className="capitalize">{key}</span>:{" "}
+                    <span>{value}</span>
+                    <ImageButton
+                      icon="close"
+                      onClick={() =>
+                        setFilters((prev) => {
+                          const updated = { ...prev };
+                          delete updated[key];
+                          return updated;
+                        })
+                      }
+                      className="text-xs p-2 font-bold text-delete hover:text-destructive"
+                    />
+                  </div>
+                ))}
+            </div>
+            <Tooltipcomp
+              tip={"Filter"}
+              content={
                 <ImageButton
-                  icon="close"
-                  onClick={() =>
-                    setFilters((prev) => {
-                      const updated = { ...prev };
-                      delete updated[key];
-                      return updated;
-                    })
-                  }
-                  className="text-xs p-2 font-bold text-delete hover:text-destructive"
+                  className="p-2"
+                  icon="filter"
+                  onClick={() => setFilterDrawerOpen(!filterDrawerOpen)}
                 />
-              </div>
-            ))}
+              }
+            />
           </div>
-          <Tooltipcomp
-            tip={"Filter"}
-            content={
-              <ImageButton
-                className="p-2"
-                icon="filter"
-                onClick={() => setFilterDrawerOpen(!filterDrawerOpen)}
-              />
-            }
-          />
-        </div>
 
-        <div className="flex gap-2 items-center">
-          <Tooltipcomp
-            tip={"Column hide"}
-            content={
-              <ButtonDropdown
-                icon="column"
-                columns={head
-                  .filter((h) => h.key !== "id")
-                  .map((h) => ({ key: h.key, label: h.label }))}
-                visibleColumns={visibleColumns}
-                onChange={setVisibleColumns}
-                excludedColumns={["id"]}
-                className="block m-auto p-2"
-              />
-            }
-          />
-          <Tooltipcomp
-            tip={"Export CSV"}
-            content={
-              <ImageButton
-                icon="export"
-                className="p-2"
-                onClick={() =>
-                  exportToCSV(
-                    filteredData,
-                    head.map((h) => h.key),
-                    `purchase.csv`
-                  )
-                }
-              />
-            }
-          />
-          <Tooltipcomp
-            tip={"Print"}
-            content={
-              <ImageButton icon="print" className="p-2" onClick={handlePrint} />
-            }
-          />
+          <div className="flex gap-2 items-center">
+            <Tooltipcomp
+              tip={"Column hide"}
+              content={
+                <ButtonDropdown
+                  icon="column"
+                  columns={head
+                    .filter((h) => h.key !== "id")
+                    .map((h) => ({ key: h.key, label: h.label }))}
+                  visibleColumns={visibleColumns}
+                  onChange={setVisibleColumns}
+                  excludedColumns={["id"]}
+                  className="block m-auto p-2"
+                />
+              }
+            />
+            <Tooltipcomp
+              tip={"Export CSV"}
+              content={
+                <ImageButton
+                  icon="export"
+                  className="p-2"
+                  onClick={() =>
+                    exportToCSV(
+                      filteredData,
+                      head.map((h) => h.key),
+                      `purchase.csv`
+                    )
+                  }
+                />
+              }
+            />
+            <Tooltipcomp
+              tip={"Print"}
+              content={
+                <ImageButton
+                  icon="print"
+                  className="p-2"
+                  onClick={handlePrint}
+                />
+              }
+            />
 
-          <AnimateButton
-            label="Create"
-            className="bg-create"
-            mode="create"
-            onClick={handleCreate}
-          />
+            <AnimateButton
+              label="Create"
+              className="bg-create"
+              mode="create"
+              onClick={handleCreate}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* form for create and edit */}
       {formOpen && (
-        <TabForm
+        <div className="px-5 overflow-auto">
+          <TabForm
           groupedFields={groupedFields}
-          isPopUp
+          isPopUp={popup}
           formOpen={formOpen}
           setFormOpen={setFormOpen}
           formName={formName}
@@ -312,105 +322,113 @@ function FormLayout({
           api={formApi}
           mode={editId ? "edit" : "create"} // ✅ dynamic mode
         />
+        </div>
       )}
 
-      {/* Purchase Table */}
-      <div className="mt-2">
-        <CommonTable
-          head={head.filter((h) => visibleColumns.includes(h.key))}
-          body={paginatedData}
-          onEdit={handleEdit}
-          onCreate={handleCreate}
-          currentPage={currentPage}
-          rowsPerPage={rowsPerPage}
-          totalCount={filteredData.length}
-          onPageChange={setCurrentPage}
-          onDelete={handleDelete}
-          onDeleteSelected={handleDeleteSelected}
-          onCellClick={(key, value) => {
-            setFilters((prev) => ({ ...prev, [key]: value }));
-            setFilterDrawerOpen(true);
-          }}
-          filterOnColumnClick={filterDrawerOpen}
-          api={formApi}
-        />
-      </div>
-
-      {/* number of page and pagination */}
-      <div className="mt-4 flex flex-col gap-3 pr-[5%] md:flex-row justify-between items-center text-sm text-muted-foreground">
-        <div className="flex items-center gap-2">
-          <label htmlFor="rows-per-page" className="whitespace-nowrap">
-            Records per page:
-          </label>
-          <DropdownRead
-            id="page"
-            items={["20", "50", "100", "200"]} // ✅ fixed options
-            value={String(rowsPerPage)}
-            err=""
-            className="w-30"
-            onChange={(value) => {
-              const selected = Array.isArray(value) ? value[0] : value;
-              const parsed = parseInt(selected, 10);
-              if (!isNaN(parsed)) {
-                setRowsPerPage(parsed);
-                setCurrentPage(1); // ✅ reset page
-              }
+      {!formOpen && (
+        <div className="mt-2 pr-2">
+          <CommonTable
+            head={head.filter((h) => visibleColumns.includes(h.key))}
+            body={paginatedData}
+            onEdit={handleEdit}
+            onCreate={handleCreate}
+            currentPage={currentPage}
+            rowsPerPage={rowsPerPage}
+            totalCount={filteredData.length}
+            onPageChange={setCurrentPage}
+            onDelete={handleDelete}
+            onDeleteSelected={handleDeleteSelected}
+            onCellClick={(key, value) => {
+              setFilters((prev) => ({ ...prev, [key]: value }));
+              setFilterDrawerOpen(true);
             }}
-            placeholder=""
-            label=""
+            filterOnColumnClick={filterDrawerOpen}
+            api={formApi}
           />
         </div>
+      )}
+      {/* Purchase Table */}
 
-        <p>
-          {Math.min((currentPage - 1) * rowsPerPage + 1, filteredData.length)}–
-          {Math.min(currentPage * rowsPerPage, filteredData.length)} of{" "}
-          {filteredData.length} products
-        </p>
+      {!formOpen && (
+        <div className="mt-4 flex flex-col gap-3 pr-[5%] md:flex-row justify-between items-center text-sm text-muted-foreground">
+          <div className="flex items-center gap-2">
+            <label htmlFor="rows-per-page" className="whitespace-nowrap">
+              Records per page:
+            </label>
+            <DropdownRead
+              id="page"
+              items={["20", "50", "100", "200"]} // ✅ fixed options
+              value={String(rowsPerPage)}
+              err=""
+              className="w-30"
+              onChange={(value) => {
+                const selected = Array.isArray(value) ? value[0] : value;
+                const parsed = parseInt(selected, 10);
+                if (!isNaN(parsed)) {
+                  setRowsPerPage(parsed);
+                  setCurrentPage(1); // ✅ reset page
+                }
+              }}
+              placeholder=""
+              label=""
+            />
+          </div>
 
-        <Pagination
-          currentPage={currentPage}
-          totalPages={Math.ceil(filteredData.length / rowsPerPage)}
-          onPageChange={setCurrentPage}
-        />
-      </div>
+          <p>
+            {Math.min((currentPage - 1) * rowsPerPage + 1, filteredData.length)}
+            –{Math.min(currentPage * rowsPerPage, filteredData.length)} of{" "}
+            {filteredData.length} products
+          </p>
+
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(filteredData.length / rowsPerPage)}
+            onPageChange={setCurrentPage}
+          />
+        </div>
+      )}
+
+      {!formOpen && (
+        <Drawer
+          isOpen={filterDrawerOpen}
+          onClose={() => setFilterDrawerOpen(false)}
+          position="bottom"
+          title="Filters"
+        >
+          <div className="overflow-scroll">
+            <Filter
+              head={head
+                .filter((h) => visibleColumns.includes(h.key))
+                .map((h) => h.key)}
+              filters={filters}
+              onFilterChange={(key, value) =>
+                setFilters((prev) => ({ ...prev, [key]: value }))
+              }
+            />
+          </div>
+          <div className="flex justify-end gap-3 mt-5">
+            <Button
+              label="Clear"
+              className="text-delete-foreground bg-delete"
+              onClick={() => {
+                setFilters({});
+                setFilterDrawerOpen(false);
+              }}
+              children={undefined}
+            />
+
+            <Button
+              label="Apply changes"
+              className="bg-update text-update-foreground"
+              onClick={() => setFilterDrawerOpen(false)}
+              children={undefined}
+            />
+          </div>
+        </Drawer>
+      )}
+      {/* number of page and pagination */}
 
       {/* filter drawer */}
-      <Drawer
-        isOpen={filterDrawerOpen}
-        onClose={() => setFilterDrawerOpen(false)}
-        position="bottom"
-        title="Filters"
-      >
-        <div className="overflow-scroll">
-          <Filter
-            head={head
-              .filter((h) => visibleColumns.includes(h.key))
-              .map((h) => h.key)}
-            filters={filters}
-            onFilterChange={(key, value) =>
-              setFilters((prev) => ({ ...prev, [key]: value }))
-            }
-          />
-        </div>
-        <div className="flex justify-end gap-3 mt-5">
-          <Button
-            label="Clear"
-            className="text-delete-foreground bg-delete"
-            onClick={() => {
-              setFilters({});
-              setFilterDrawerOpen(false);
-            }}
-            children={undefined}
-          />
-
-          <Button
-            label="Apply changes"
-            className="bg-update text-update-foreground"
-            onClick={() => setFilterDrawerOpen(false)}
-            children={undefined}
-          />
-        </div>
-      </Drawer>
     </div>
   );
 }

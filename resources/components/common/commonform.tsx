@@ -34,6 +34,7 @@ type FieldType =
 export type Field = {
   className: string;
   id: string;
+  // key: string;
   label: string;
   type: FieldType;
   options?: string[];
@@ -228,7 +229,7 @@ function CommonForm({
           }
           return cleanedItem;
         });
-
+ console.log("Multiple entry payload:", payload);
         apiCall = apiClient.post(api.create, payload);
       } else {
         apiCall = apiClient.post(api.create, {

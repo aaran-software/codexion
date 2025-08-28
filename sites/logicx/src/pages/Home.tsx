@@ -34,10 +34,6 @@ import SimpleBanner from "../../../../resources/UIBlocks/banner/SimpleBanner";
 import Accordion from "../../../../resources/components/accordion/Accordion";
 import NexusCard from "../../../../resources/UIBlocks/card/NexusCard";
 import ProjectCarousel from "../../../../resources/UIBlocks/carousel/ProjectCarousel";
-const ProductShowcase = lazy(
-  () =>
-    import("../../../../resources/UIBlocks/portfolioProducts/ProductShowcase")
-);
 
 const Home: React.FC = () => {
   // Company About Card
