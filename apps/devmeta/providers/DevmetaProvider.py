@@ -13,5 +13,6 @@ class DevmetaProvider(Provider):
         pass
 
     def boot(self) -> None:
-        include_routes("apps.devmeta.routes.web", prefix="/devmeta", tags=["devmeta:web"])
-        include_routes("apps.devmeta.routes.api", prefix="/api/devmeta", tags=["devmeta:api"])
+
+        include_routes("apps.devmeta.core.routes.api", prefix="/api", tags=["projects"])
+        include_routes("apps.devmeta.core.routes.web", prefix="", tags=["projects"])
