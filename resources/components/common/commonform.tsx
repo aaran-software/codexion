@@ -42,6 +42,7 @@ export type Field = {
   updateApi: string;
   apiKey?: string;
   createKey?: string;
+  createMenuItem?: Field[];
 };
 
 export type FieldGroup = {
@@ -351,6 +352,7 @@ function CommonForm({
                           updateApi={field.updateApi}
                           apiKey={field.apiKey}
                           createKey={field.createKey}
+                           createMenuItem={field.createMenuItem}
                         />
                       );
                     case "dropdownmultiple":
@@ -365,6 +367,7 @@ function CommonForm({
                           updateApi={field.updateApi}
                           apiKey={field.apiKey}
                           createKey={field.createKey}
+                           createMenuItem={field.createMenuItem}
                         />
                       );
                     case "dropdownread":
@@ -438,8 +441,8 @@ function CommonForm({
                             value instanceof Date
                               ? value
                               : value
-                              ? new Date(String(value))
-                              : undefined
+                                ? new Date(String(value))
+                                : undefined
                           }
                           label={field.label}
                         />
@@ -488,8 +491,8 @@ function CommonForm({
                     ...fields.reduce((acc, field) => {
                       const val = entry[field.id];
                       acc[field.id] = isDate(val)
-                        ? val.toLocaleDateString?.() ?? val
-                        : val ?? "";
+                        ? (val.toLocaleDateString?.() ?? val)
+                        : (val ?? "");
 
                       return acc;
                     }, {} as TableRowData),

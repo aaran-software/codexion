@@ -1,8 +1,8 @@
 {
   "invoice": {
     "sales": {
-      "details": {
-        "title": "Invoice Details",
+      "items": {
+        "title": "Items",
         "fields": [
           {
             "key": "id",
@@ -13,41 +13,16 @@
             "isPrint": true
           },
           {
-            "key": "name",
-            "label": "Name",
-            "type": "textinput",
-            "inTable": true,
-            "isForm": true,
-            "isPrint": false
-          },
-          {
-            "key": "date",
-            "label": "Date",
-            "type": "date",
-            "inTable": true,
-            "isForm": true,
-            "isPrint": false
-          },
-          {
-            "key": "duedate",
-            "label": "Due Date",
-            "type": "date",
-            "inTable": true,
-            "isForm": true,
-            "isPrint": false
-          }
-        ]
-      },
-      "items": {
-        "title": "Items",
-        "fields": [
-          {
-            "key": "partyname",
+            "key": "customer",
             "label": "Party Name",
-            "type": "textinput",
+            "type": "dropdown",
             "inTable": true,
             "isForm": true,
-            "isPrint": true
+            "isPrint": true,
+            "readApi": "api/resource/Currency",
+            "updateApi": "api/resource/Currency",
+            "createKey": "currency_name",
+            "apiKey": "name"
           },
           {
             "key": "orderno",
@@ -56,6 +31,30 @@
             "inTable": true,
             "isForm": true,
             "isPrint": true
+          },
+          {
+            "key": "posting_date",
+            "label": "Invoice Date",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "custom_dc_no",
+            "label": "Order No",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true
+          },
+          {
+            "key": "custom_invoice_no",
+            "label": "Invoice No",
+            "type": "textinput",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
           },
           {
             "key": "stylename",
@@ -122,6 +121,27 @@
             "inTable": true,
             "isForm": true,
             "isPrint": true
+          }
+        ]
+      },
+      "details": {
+        "title": "Invoice Details",
+        "fields": [
+          {
+            "key": "date",
+            "label": "Date",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "duedate",
+            "label": "Due Date",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": false
           },
           {
             "key": "action",

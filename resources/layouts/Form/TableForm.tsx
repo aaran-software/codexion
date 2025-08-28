@@ -62,6 +62,21 @@ function TableForm({
                 updateApi: field.updateApi,
                 apiKey: field.apiKey,
                 createKey: field.createKey,
+                ...(field.createMenuItem
+                  ? {
+                      createMenuItem: field.createMenuItem.map((f: any) => ({
+                        id: f.key,
+                        label: f.label,
+                        type: (f.type || "textinput") as Field["type"],
+                        className: "w-full",
+                        errMsg: `Enter ${f.label}`,
+                        readApi: f.readApi,
+                        updateApi: f.updateApi,
+                        apiKey: f.apiKey,
+                        createKey: f.createKey,
+                      })),
+                    }
+                  : {}),
               })),
           })
         );

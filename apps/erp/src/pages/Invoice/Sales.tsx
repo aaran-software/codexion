@@ -3,10 +3,10 @@ import { ApiList } from "../../../../../resources/components/common/commonform";
 import Invoice from "../../../public/Invoice.json";
 
 const formApi: ApiList = {
-  create: "/api/payment",
-  read: "/api/payment",
-  update: "/api/payment",
-  delete: "/api/payment",
+  create: "/api/resource/Sales Invoice",
+  read: "/api/resource/Sales Invoice",
+  update: "/api/resource/Sales Invoice",
+  delete: "/api/resource/Sales Invoice",
 };
 
 function Sales() {
@@ -17,7 +17,7 @@ function Sales() {
         formApi={formApi}
         jsonPath={Invoice}
         fieldPath="invoice.sales"
-        multipleEntry={false}
+        multipleEntry={true}
       />
     </div>
   );

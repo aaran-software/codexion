@@ -44,6 +44,8 @@ export type Field = {
   updateApi: string;
   apiKey?: string;
   createKey?: string;
+  createMenuItem?: Field[];
+  isForm?: boolean;
 };
 
 export type FieldGroup = {
@@ -377,6 +379,7 @@ function TabForm({
                               updateApi={field.updateApi}
                               apiKey={field.apiKey}
                               createKey={field.createKey}
+                              createMenuItem={field.createMenuItem}
                             />
                           );
                         case "dropdownmultiple":
@@ -391,6 +394,7 @@ function TabForm({
                               updateApi={field.updateApi}
                               apiKey={field.apiKey}
                               createKey={field.createKey}
+                              createMenuItem={field.createMenuItem}
                             />
                           );
                         case "dropdownread":
@@ -499,45 +503,93 @@ function TabForm({
           {mode === "create" &&
             multipleEntry &&
             groupedFields.some((g) => g.title.toLowerCase() === "items") && (
-              <CommonTable
-                head={[
-                  { key: "id", label: "ID" },
-                  ...groupedFields
-                    .find((g) => g.title.toLowerCase() === "items")!
-                    .fields.map((f) => ({
-                      key: f.id,
-                      label: f.label,
-                    })),
-                  { key: "action", label: "Action" },
-                ]}
-                body={previewData.map((entry) => {
-                  const fields = groupedFields.find(
-                    (g) => g.title.toLowerCase() === "items"
-                  )!.fields;
-                  return {
-                    ID: entry.id,
-                    ...fields.reduce((acc, field) => {
-                      const val = entry[field.id];
-                      acc[field.id] = isDate(val)
-                        ? (val.toLocaleDateString?.() ?? val)
-                        : (val ?? "");
+              <>
+                {/* Existing table: isForm == false */}
+                <CommonTable
+                  head={[
+                    ...groupedFields
+                      .find((g) => g.title.toLowerCase() === "items")!
+                      .fields.filter((f) => !f.isForm) // 👈 old table
+                      .map((f) => ({
+                        key: f.id,
+                        label: f.label,
+                      })),
+                  ]}
+                  body={previewData.map((entry) => {
+                    const fields = groupedFields.find(
+                      (g) => g.title.toLowerCase() === "items"
+                    )!.fields;
+                    return {
+                      ID: entry.id,
+                      ...fields
+                        .filter((f) => !f.isForm) // 👈 old table body
+                        .reduce((acc, field) => {
+                          const val = entry[field.id];
+                          acc[field.id] = isDate(val)
+                            ? (val.toLocaleDateString?.() ?? val)
+                            : (val ?? "");
+                          return acc;
+                        }, {} as TableRowData),
+                    };
+                  })}
+                  onEdit={(row, index) => {
+                    setFormData(row);
+                    setEditPreviewIndex(index);
+                  }}
+                  onDelete={(index) => {
+                    setPreviewData((prev) =>
+                      prev.filter((_, i) => i !== index)
+                    );
+                  }}
+                  currentPage={1}
+                  rowsPerPage={10}
+                  totalCount={previewData.length}
+                  onPageChange={() => {}}
+                />
 
-                      return acc;
-                    }, {} as TableRowData),
-                  };
-                })}
-                onEdit={(row, index) => {
-                  setFormData(row);
-                  setEditPreviewIndex(index);
-                }}
-                onDelete={(index) => {
-                  setPreviewData((prev) => prev.filter((_, i) => i !== index));
-                }}
-                currentPage={1}
-                rowsPerPage={10}
-                totalCount={previewData.length}
-                onPageChange={() => {}}
-              />
+                {/* ✅ New table: only isForm == true */}
+                <CommonTable
+                  head={[
+                    ...groupedFields
+                      .find((g) => g.title.toLowerCase() === "items")!
+                      .fields.filter((f) => f.isForm) // 👈 new table
+                      .map((f) => ({
+                        key: f.id,
+                        label: f.label,
+                      })),
+                  ]}
+                  body={previewData.map((entry) => {
+                    const fields = groupedFields.find(
+                      (g) => g.title.toLowerCase() === "items"
+                    )!.fields;
+                    return {
+                      ID: entry.id,
+                      ...fields
+                        .filter((f) => f.isForm) // 👈 new table body
+                        .reduce((acc, field) => {
+                          const val = entry[field.id];
+                          acc[field.id] = isDate(val)
+                            ? (val.toLocaleDateString?.() ?? val)
+                            : (val ?? "");
+                          return acc;
+                        }, {} as TableRowData),
+                    };
+                  })}
+                  onEdit={(row, index) => {
+                    setFormData(row);
+                    setEditPreviewIndex(index);
+                  }}
+                  onDelete={(index) => {
+                    setPreviewData((prev) =>
+                      prev.filter((_, i) => i !== index)
+                    );
+                  }}
+                  currentPage={1}
+                  rowsPerPage={10}
+                  totalCount={previewData.length}
+                  onPageChange={() => {}}
+                />
+              </>
             )}
 
           <div className="flex justify-end gap-5 mt-4">

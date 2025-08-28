@@ -510,12 +510,34 @@
                         "isPrint": false
                     },
                     {
-                        "key": "email",
-                        "label": "Company Name",
-                        "type": "textinput",
+                        "key": "address",
+                        "label": "Address",
+                        "type": "dropdown",
                         "inTable": true,
                         "isForm": true,
-                        "isPrint": false
+                        "isPrint": false,
+                        "createMenuItem": [
+                            {
+                                "key": "address",
+                                "label": "Company Address",
+                                "type": "textinput",
+                                "inTable": true,
+                                "isForm": true,
+                                "isPrint": false
+                            },
+                            {
+                                "key": "phone",
+                                "label": "Company Phone",
+                                "type": "textinput",
+                                "inTable": true,
+                                "isForm": true,
+                                "isPrint": false
+                            }
+                        ],
+                        "readApi": "api/resource/Currency",
+                        "updateApi": "api/resource/Currency",
+                        "createKey": "currency_name",
+                        "apiKey": "name"
                     },
                     {
                         "key": "phone",

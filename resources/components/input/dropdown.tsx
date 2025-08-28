@@ -3,6 +3,7 @@ import { Check, X, ChevronDown, PlusCircle } from "lucide-react";
 import Error from "../error/Error";
 import CreateMenu from "../common/CreateMenu";
 import apiClient from "../../../resources/global/api/apiClients";
+import { Field } from "../common/commonform";
 
 interface DropdownProps {
   id: string;
@@ -18,6 +19,7 @@ interface DropdownProps {
   updateApi: string;
   apiKey?: string;
   createKey?: string;
+  createMenuItem?: Field[];
 }
 
 const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
@@ -36,6 +38,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       updateApi,
       apiKey,
       createKey,
+      createMenuItem,
     },
     ref
   ) => {
@@ -87,7 +90,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       };
 
       fetchItems();
-    }, [readApi, apiKey,items]);
+    }, [readApi, apiKey, items]);
 
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
@@ -430,55 +433,32 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
           <CreateMenu
             label={placeholder}
             defaultValue={searchTerm}
+            fields={createMenuItem} // <-- pass fields here
             onClose={() => setIsCreating(false)}
-            onAdd={async (newItem: string) => {
-              if (!newItem.trim()) return;
+            onAdd={(newItem) => {
+              const payload =
+                typeof newItem === "string"
+                  ? { [createKey || "name"]: newItem }
+                  : newItem;
 
-              try {
-                const payload = createKey
-                  ? { [createKey]: newItem }
-                  : { name: newItem };
+              apiClient
+                .post(updateApi, payload)
+                .then((res) => {
+                  // Pick a value to select after creation
+                  const savedItem =
+                    typeof newItem === "string"
+                      ? newItem
+                      : createKey && newItem[createKey]
+                        ? newItem[createKey]
+                        : Object.values(newItem)[0];
 
-                const response = await apiClient.post(updateApi, payload);
-                const savedItem =
-                  response.data?.data?.[createKey || "name"] || newItem;
-
-                toggleSelect(savedItem);
-                setIsCreating(false);
-
-                setTimeout(() => {
-                  const keyboardEvent = new KeyboardEvent("keydown", {
-                    key: "Enter",
-                    bubbles: true,
-                  });
-                  inputRef.current?.dispatchEvent(keyboardEvent);
-                }, 10);
-              } catch (error: unknown) {
-                if (error && typeof error === "object") {
-                  const err = error as any;
-
-                  if (err.response) {
-                    console.error(
-                      "Server responded with error:",
-                      err.response.data
-                    );
-                    alert(
-                      `Error: ${err.response.data?.message || "Server error"}`
-                    );
-                  } else if (err.request) {
-                    console.error("No response received:", err.request);
-                    alert(
-                      "No response from server. Please check your network."
-                    );
-                  } else {
-                    console.error("Request setup error:", err.message);
-                    alert(`Error: ${err.message}`);
-                  }
-                } else {
-                  console.error("Unknown error:", error);
-                  alert("An unknown error occurred.");
-                }
-              }
+                  toggleSelect(savedItem);
+                  setIsCreating(false);
+                })
+                .catch((err) => {
+                  console.error("Failed to create item:", err);
+                  setIsCreating(false);
+                });
             }}
           />
         )}

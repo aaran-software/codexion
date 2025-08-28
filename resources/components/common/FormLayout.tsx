@@ -211,7 +211,7 @@ function FormLayout({
           }}
         />
       </div>
-      <div className="flex justify-end px-[5%] gap-2">
+      <div className="flex justify-end pr-14 gap-2">
         <div className="flex flex-nowrap items-center gap-2">
           <div className="overflow-x-scroll gap-5 flex w-2xl scrollbar-hide">
             {Object.entries(filters)
