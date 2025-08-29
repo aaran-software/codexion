@@ -38,8 +38,6 @@ const CategoryPage: React.FC = () => {
   const [products, setProducts] = useState<ProductType[]>([]);
   const [cartStates, setCartStates] = useState<Record<number, string>>({});
   const [, setError] = useState<string | null>(null);
-  const [invoice, setInvoice] = useState(false);
-  const [availability, setAvailability] = useState(false);
   const { category } = useParams();
   const navigate = useNavigate();
   const [categories, setCategories] = useState<string[]>([]);

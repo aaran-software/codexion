@@ -309,19 +309,19 @@ function FormLayout({
       {formOpen && (
         <div className="px-5 overflow-auto">
           <TabForm
-          groupedFields={groupedFields}
-          isPopUp={popup}
-          formOpen={formOpen}
-          setFormOpen={setFormOpen}
-          formName={formName}
-          successMsg="Form submitted successfully"
-          faildMsg="Form submission failed"
-          initialData={editData}
-          onSubmit={handleFormSubmit}
-          multipleEntry={multipleEntry}
-          api={formApi}
-          mode={editId ? "edit" : "create"} // ✅ dynamic mode
-        />
+            groupedFields={groupedFields}
+            isPopUp={popup}
+            formOpen={formOpen}
+            setFormOpen={setFormOpen}
+            formName={formName}
+            successMsg="Form submitted successfully"
+            faildMsg="Form submission failed"
+            initialData={editData}
+            onSubmit={handleFormSubmit}
+            multipleEntry={multipleEntry}
+            api={formApi}
+            mode={editId ? "edit" : "create"} // ✅ dynamic mode
+          />
         </div>
       )}
 
@@ -357,7 +357,7 @@ function FormLayout({
             </label>
             <DropdownRead
               id="page"
-              items={["20", "50", "100", "200"]} // ✅ fixed options
+              items={["20", "50", "100", "200"]}
               value={String(rowsPerPage)}
               err=""
               className="w-30"

@@ -107,11 +107,10 @@ function CommonTable({
             apiClient.delete(`${api.delete}/${encodeURIComponent(id)}`)
           )
         );
-        onDeleteSelected?.(pendingAction.ids); // Use this to update the parent component's state
+        onDeleteSelected?.(pendingAction.ids);
         console.log("✅ Deletion successful");
       } catch (err) {
         console.error("❌ Failed to delete one or more rows", err);
-        // Handle error: maybe show an alert to the user
       }
     } else if (pendingAction.type === "edit") {
       if (pendingAction.ids.length > 1) {

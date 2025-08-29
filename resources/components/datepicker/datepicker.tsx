@@ -34,7 +34,7 @@ interface DatePickerProps {
   autoFocus?: boolean;
   tabIndex?: number;
   onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
-   onChange?: (date: string) => void;
+  onChange?: (date: string) => void;
 }
 
 export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
@@ -140,22 +140,21 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
     }, []);
 
     const selectDate = (selectedDate: Date) => {
-  // Normalize date (remove time)
-  const normalized = new Date(
-    selectedDate.getFullYear(),
-    selectedDate.getMonth(),
-    selectedDate.getDate()
-  );
+      // Normalize date (remove time)
+      const normalized = new Date(
+        selectedDate.getFullYear(),
+        selectedDate.getMonth(),
+        selectedDate.getDate()
+      );
 
-  setDate(normalized);
+      setDate(normalized);
 
-  // Return formatted string 'yyyy-MM-dd' instead of full Date object
-  const formatted = format(normalized, "yyyy-MM-dd");
-  onChange?.(formatted as any); // cast to any if onChange expects Date type
+      // Return formatted string 'yyyy-MM-dd' instead of full Date object
+      const formatted = format(normalized, "yyyy-MM-dd");
+      onChange?.(formatted as any); // cast to any if onChange expects Date type
 
-  setIsOpen(false);
-};
-
+      setIsOpen(false);
+    };
 
     const isToday = (d: Date) => new Date().toDateString() === d.toDateString();
     const isSelected = (d: Date) => model?.toDateString() === d.toDateString();
@@ -189,10 +188,10 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
           id={`input-wrapper-${id}`}
           onClick={() => setIsOpen(!isOpen)}
           className={`relative flex items-center px-2 pt-1.5 pb-1 h-10
-    border border-ring/80 rounded-md transition-all cursor-pointer
-    text-foreground/90 focus:ring-2 focus:ring-ring/80
-    ${err ? "bg-input-warning" : "bg-background"}
-  `}
+            border border-ring/80 rounded-md transition-all cursor-pointer
+            text-foreground/90 focus:ring-2 focus:ring-ring/80
+            ${err ? "bg-input-warning" : "bg-background"}
+          `}
         >
           <input
             id={id}
@@ -201,15 +200,14 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
             value={model ? format(model, formatStr) : ""}
             placeholder=" "
             onKeyDown={onKeyDown}
-            onFocus={() => setIsOpen(true)}
-            className={`flex-1 px-1 py-1 text-sm outline-none placeholder-transparent peer text-foreground
-    ${err ? "bg-input-warning" : "bg-transparent"}
-  `}
+            className={`flex-1 px-1 py-1 text-sm outline-none placeholder-transparent peer text-foreground cursor-pointer
+              ${err ? "bg-input-warning" : "bg-transparent"}
+            `}
           />
 
           <label
             htmlFor={id}
-            className={`absolute left-2.5 px-1 text-sm text-foreground/40 transition-all transform origin-[0]
+            className={`absolute left-2.5 px-1 text-sm text-foreground/40 transition-all transform origin-[0] cursor-pointer
               ${
                 shouldLabelFloat
                   ? "top-2 scale-75 -translate-y-4"

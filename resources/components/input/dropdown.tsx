@@ -60,7 +60,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
         if (!readApi) return;
 
         try {
-          const response = await apiClient.get(readApi);
+          const response = await apiClient.get(`${readApi}?limit_page_length=0`);
           const data = response.data?.data || [];
 
           const key =
