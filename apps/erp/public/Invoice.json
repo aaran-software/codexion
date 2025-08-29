@@ -116,7 +116,7 @@
           {
             "key": "qty",
             "label": "Quantity",
-            "type": "textinput",
+            "type": "numberinput",
             "inTable": false,
             "isForm": true,
             "isPrint": false,
@@ -125,7 +125,7 @@
           {
             "key": "rate",
             "label": "Rate",
-            "type": "textinput",
+            "type": "numberinput",
             "inTable": false,
             "isForm": true,
             "isPrint": false,

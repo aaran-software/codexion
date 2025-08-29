@@ -6,7 +6,7 @@ import React, {
   useImperativeHandle,
 } from "react";
 import { format } from "date-fns";
-import Error from "../error/Error"
+import Error from "../error/Error";
 
 const monthNames = [
   "January",
@@ -34,7 +34,7 @@ interface DatePickerProps {
   autoFocus?: boolean;
   tabIndex?: number;
   onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
-  onChange?: (date: Date) => void;
+   onChange?: (date: string) => void;
 }
 
 export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
@@ -73,7 +73,16 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
     useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
 
     useEffect(() => {
-      setDate(model ? new Date(model) : new Date());
+      if (model) {
+        const normalized = new Date(
+          model.getFullYear(),
+          model.getMonth(),
+          model.getDate()
+        );
+        setDate(normalized);
+      } else {
+        setDate(new Date());
+      }
     }, [model]);
 
     useEffect(() => {
@@ -131,15 +140,22 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
     }, []);
 
     const selectDate = (selectedDate: Date) => {
-      const normalized = new Date(
-        selectedDate.getFullYear(),
-        selectedDate.getMonth(),
-        selectedDate.getDate()
-      );
-      setDate(normalized);
-      onChange?.(normalized);
-      setIsOpen(false);
-    };
+  // Normalize date (remove time)
+  const normalized = new Date(
+    selectedDate.getFullYear(),
+    selectedDate.getMonth(),
+    selectedDate.getDate()
+  );
+
+  setDate(normalized);
+
+  // Return formatted string 'yyyy-MM-dd' instead of full Date object
+  const formatted = format(normalized, "yyyy-MM-dd");
+  onChange?.(formatted as any); // cast to any if onChange expects Date type
+
+  setIsOpen(false);
+};
+
 
     const isToday = (d: Date) => new Date().toDateString() === d.toDateString();
     const isSelected = (d: Date) => model?.toDateString() === d.toDateString();
@@ -185,7 +201,7 @@ export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
             value={model ? format(model, formatStr) : ""}
             placeholder=" "
             onKeyDown={onKeyDown}
-             onFocus={() => setIsOpen(true)}
+            onFocus={() => setIsOpen(true)}
             className={`flex-1 px-1 py-1 text-sm outline-none placeholder-transparent peer text-foreground
     ${err ? "bg-input-warning" : "bg-transparent"}
   `}

@@ -155,11 +155,13 @@ function TabForm({
     if (Object.keys(errors).length > 0) return;
 
     const entryWithId: TableRowData = {
-      id: `temp-${Date.now()}`,
+      id: (previewData.length + 1).toString(), // serial number
       ...formData,
     };
 
     setPreviewData((prev) => [...prev, entryWithId]);
+
+    // setPreviewData((prev) => [...prev, entryWithId]);
 
     // clear only this subsection's fields
     const cleared = { ...formData };
@@ -221,28 +223,32 @@ function TabForm({
           return;
         }
 
-        // Dynamically separate non-item fields from item fields
-        const itemGroup = groupedFields.find(
-          (g) => g.title.toLowerCase() === "items"
-        );
-        const itemFieldIds = itemGroup?.fields.map((f) => f.id) || [];
+       // Get the fields that belong to the "items" section
+const itemGroup = groupedFields.find(g => g.title.toLowerCase() === "items");
+const itemFieldIds = itemGroup?.fields
+  .filter(f => f.section?.toLowerCase() === "items")
+  .map(f => f.id) || [];
 
-        const nonItemData = { ...formData };
-        itemFieldIds.forEach((id) => delete nonItemData[id]);
+// Separate non-item data
+const nonItemData: Record<string, any> = { ...formData };
+itemFieldIds.forEach(id => delete nonItemData[id]);
 
-        const itemsPayload = previewData.map((item) => {
-          const cleanedItem: Record<string, any> = {};
-          Object.entries(item).forEach(([key, val]) => {
-            cleanedItem[key] = isDate(val) ? format(val, "yyyy-MM-dd") : val;
-          });
-          return cleanedItem;
-        });
+// Map previewData to include only item fields
+const itemsPayload = previewData.map(item => {
+  const cleanedItem: Record<string, any> = {};
+  itemFieldIds.forEach(id => {
+    cleanedItem[id] = item[id];
+  });
+  return cleanedItem;
+});
 
-        const payload = {
-          doctype: formName,
-          ...nonItemData,
-          items: itemsPayload,
-        };
+// Final payload
+const payload = {
+  doctype: formName,
+  ...nonItemData, // top-level fields
+  items: itemsPayload // only item-section fields
+};
+
 
         apiCall = apiClient.post(api.create, payload);
       } else {
@@ -434,13 +440,12 @@ function TabForm({
                             key: f.id,
                             label: f.label,
                           }))}
-                          body={previewData.map((entry) => {
-                            const row: TableRowData = { id: entry.id };
+                          body={previewData.map((entry, index) => {
+                            const row: TableRowData = {
+                              id: (index + 1).toString(),
+                            }; // serial number for display
                             itemsSectionFields.forEach((f) => {
-                              const val = entry[f.id];
-                              row[f.id] = isDate(val)
-                                ? val.toLocaleDateString()
-                                : (val ?? "");
+                              row[f.id] = entry[f.id];
                             });
                             return row;
                           })}
@@ -609,16 +614,12 @@ export const renderField = (field: Field, commonProps: any, value: any) => {
     case "date":
       return (
         <DatePicker
-          {...commonProps}
-          model={
-            value instanceof Date
-              ? value
-              : value
-                ? new Date(String(value))
-                : undefined
-          }
-          label={field.label}
-        />
+      model={value ? new Date(value) : undefined}
+      onChange={(d) => commonProps.onChange(d)} // ✅ use handleChange from commonProps
+      formatStr="yyyy-MM-dd"
+      label={field.label}
+    />
+
       );
     case "file":
       return <FileUpload id={field.id} />;
