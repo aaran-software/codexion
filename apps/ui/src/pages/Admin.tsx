@@ -39,7 +39,7 @@ import StarRatingComponent from "./ComponentUsage/StarRatingComponent";
 import NotificationComponent from "./ComponentUsage/NotificationComponent";
 import DrawerComponent from "./ComponentUsage/DrawerComponent";
 import EditableTableComponent from "./ComponentUsage/EditableTableComponent";
-import PrintComponent from "./ComponentUsage/PrintComponent";
+import PrintComponent from "./LayoutUsage/PrintComponent";
 import BarCodeComponent from "./ComponentUsage/BarCodeComponent";
 import BannerBlock from "./UIBlocksUsage/BannerBlock";
 import CardBlock from "./UIBlocksUsage/CardBlock";

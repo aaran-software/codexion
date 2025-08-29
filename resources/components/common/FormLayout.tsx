@@ -159,12 +159,21 @@ function FormLayout({
     return filteredData.slice(start, start + rowsPerPage); // ✅ Controls what's shown
   }, [filteredData, currentPage, rowsPerPage]);
 
-  const handleEdit = (rowData: any) => {
-    setEditData(rowData);
-    setEditId(rowData.id);
+  const handleEdit = async (rowData: any) => {
+  setEditId(rowData.id);
 
+  try {
+    const url = `${formApi.read}/${encodeURIComponent(rowData.id)}`;
+    const res = await apiClient.get(url);
+    const detail = res.data.data;
+
+    setEditData(detail);   // ✅ load full record into form
     setFormOpen(true);
-  };
+  } catch (err) {
+    console.error(`❌ Failed to fetch details for ${rowData.id}`, err);
+  }
+};
+
 
   const handleDelete = (index: number) => {
     const updated = [...tableData];

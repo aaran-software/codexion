@@ -101,14 +101,31 @@ function TabForm({
   >("success");
   const [alertMessage, setAlertMessage] = useState("");
   const [previewData, setPreviewData] = useState<TableRowData[]>([]);
-  const [, setEditPreviewIndex] = useState<number | null>(null);
+  const [editPreviewIndex, setEditPreviewIndex] = useState<number | null>(null);
 
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
   //   tab
   const [activeTab, setActiveTab] = useState(groupedFields[0]?.title || "");
 
+  console.log(formData);
   useEffect(() => {
-    if (initialData) setFormData(initialData);
+    if (initialData) {
+      const normalized = {
+        id: initialData.name, // map ERPNext's "name" to our "id"
+        ...initialData,
+      };
+      setFormData(normalized);
+
+      if (Array.isArray(initialData.items)) {
+        const mappedItems = initialData.items.map((item, idx) => ({
+          id: (idx + 1).toString(),
+          ...item,
+        }));
+        setPreviewData(mappedItems);
+      } else {
+        setPreviewData([]);
+      }
+    }
   }, [initialData]);
 
   const handleChange = (id: string, value: any) => {
@@ -144,37 +161,47 @@ function TabForm({
   };
 
   const handleAddSection = (sectionFields: Field[]) => {
-    const errors: Record<string, string> = {};
-    sectionFields.forEach((field) => {
-      const value = formData[field.id];
-      const error = validateField(field, value);
-      if (error) errors[field.id] = error;
-    });
+  const errors: Record<string, string> = {};
+  sectionFields.forEach((field) => {
+    const value = formData[field.id];
+    const error = validateField(field, value);
+    if (error) errors[field.id] = error;
+  });
 
-    setFormErrors(errors);
-    if (Object.keys(errors).length > 0) return;
+  setFormErrors(errors);
+  if (Object.keys(errors).length > 0) return;
 
-    const entryWithId: TableRowData = {
-      id: (previewData.length + 1).toString(), // serial number
-      ...formData,
-    };
-
-    setPreviewData((prev) => [...prev, entryWithId]);
-
-    // setPreviewData((prev) => [...prev, entryWithId]);
-
-    // clear only this subsection's fields
-    const cleared = { ...formData };
-    sectionFields.forEach((field) => (cleared[field.id] = ""));
-    setFormData(cleared);
-    setFormErrors({});
-
-    // focus first field in subsection
-    setTimeout(() => {
-      const first = sectionFields[0]?.id;
-      if (first && inputRefs.current[first]) inputRefs.current[first]?.focus();
-    }, 10);
+  const entryWithId: TableRowData = {
+    id: editPreviewIndex !== null 
+      ? (editPreviewIndex + 1).toString() // keep same index id during edit
+      : (previewData.length + 1).toString(), // serial for new
+    ...formData,
   };
+
+  if (editPreviewIndex !== null) {
+    // ✅ update existing row
+    setPreviewData((prev) =>
+      prev.map((item, idx) => (idx === editPreviewIndex ? entryWithId : item))
+    );
+    setEditPreviewIndex(null);
+  } else {
+    // ✅ add new row
+    setPreviewData((prev) => [...prev, entryWithId]);
+  }
+
+  // clear only this subsection's fields
+  const cleared = { ...formData };
+  sectionFields.forEach((field) => (cleared[field.id] = ""));
+  setFormData(cleared);
+  setFormErrors({});
+
+  // focus first field in subsection
+  setTimeout(() => {
+    const first = sectionFields[0]?.id;
+    if (first && inputRefs.current[first]) inputRefs.current[first]?.focus();
+  }, 10);
+};
+
 
   const handleKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
@@ -196,100 +223,121 @@ function TabForm({
   };
 
   const handleSubmit = () => {
-    const fixed = { ...formData };
-    for (const key in fixed) {
-      const value = fixed[key];
-      if (isDate(value)) {
-        fixed[key] = format(value, "yyyy-MM-dd");
-      }
-    }
+  const fixed = { ...formData };
 
-    const cleaned = Object.fromEntries(
-      Object.entries(fixed).filter(([key]) => !["action"].includes(key))
+  // If user is editing an item but clicked Submit directly
+  if (editPreviewIndex !== null && itemsSectionFields.length > 0) {
+    const updatedItem: TableRowData = {
+      id: (editPreviewIndex + 1).toString(),
+      ...formData,
+    };
+
+    setPreviewData((prev) =>
+      prev.map((item, idx) => (idx === editPreviewIndex ? updatedItem : item))
     );
 
-    let apiCall;
+    // also update in memory immediately for payload
+    previewData[editPreviewIndex] = updatedItem;
 
-    if (mode === "edit") {
-      const { id, ...dataToUpdate } = cleaned;
-      apiCall = apiClient.put(`${api.update}/${id}`, dataToUpdate);
+    setEditPreviewIndex(null);
+  }
+
+  for (const key in fixed) {
+    const value = fixed[key];
+    if (isDate(value)) {
+      fixed[key] = format(value, "yyyy-MM-dd");
+    }
+  }
+
+  const cleaned = Object.fromEntries(
+    Object.entries(fixed).filter(([key]) => !["action"].includes(key))
+  );
+
+  let apiCall;
+  if (mode === "edit") {
+    const { name, id, ...dataToUpdate } = cleaned;
+    const recordId = id || name;
+    if (!recordId) {
+      triggerAlert("warning", "Missing record identifier for update.");
+      return;
+    }
+    console.log(dataToUpdate)
+    apiCall = apiClient.put(`${api.update}/${recordId}`, {
+      ...dataToUpdate,
+      items: previewData.map(({ action, ...rest }) => rest), // ✅ updated items
+    });
+  } else {
+    if (multipleEntry) {
+      if (previewData.length === 0) {
+        triggerAlert("warning", "Please add at least one item before submitting.");
+        return;
+      }
+
+      const itemGroup = groupedFields.find(
+        (g) => g.title.toLowerCase() === "items"
+      );
+      const itemFieldIds =
+        itemGroup?.fields
+          .filter((f) => f.section?.toLowerCase() === "items")
+          .map((f) => f.id) || [];
+
+      const nonItemData: Record<string, any> = { ...formData };
+      itemFieldIds.forEach((id) => delete nonItemData[id]);
+
+      const itemsPayload = previewData.map((item) => {
+        const cleanedItem: Record<string, any> = {};
+        itemFieldIds.forEach((id) => {
+          cleanedItem[id] = item[id];
+        });
+        return cleanedItem;
+      });
+
+      const payload = {
+        doctype: formName,
+        ...nonItemData,
+        items: itemsPayload.map(({ action, ...rest }) => rest),
+      };
+
+      apiCall = apiClient.post(api.create, payload);
     } else {
-      if (multipleEntry) {
-        if (previewData.length === 0) {
-          triggerAlert(
-            "warning",
-            "Please add at least one item before submitting."
-          );
-          return;
+      apiCall = apiClient.post(api.create, {
+        doctype: formName,
+        ...cleaned,
+      });
+    }
+  }
+
+  apiCall
+    .then((res) => {
+      const savedData = res.data;
+      onSubmit?.(Array.isArray(savedData) ? savedData[0] : savedData);
+      setFormData({});
+      setFormErrors({});
+      setPreviewData([]);
+      setFormOpen?.(false);
+      triggerAlert("success", successMsg);
+    })
+    .catch((err) => {
+      console.error("❌ Submission failed:", err);
+      let msg = "Submission failed";
+      try {
+        const serverMsg = err.response?.data?._server_messages;
+        if (serverMsg) {
+          const parsed = JSON.parse(serverMsg)[0];
+          msg = JSON.parse(parsed)?.message || parsed;
+        } else {
+          msg =
+            err.response?.data?.message ||
+            err.response?.data?.exc_type ||
+            faildMsg;
         }
-
-       // Get the fields that belong to the "items" section
-const itemGroup = groupedFields.find(g => g.title.toLowerCase() === "items");
-const itemFieldIds = itemGroup?.fields
-  .filter(f => f.section?.toLowerCase() === "items")
-  .map(f => f.id) || [];
-
-// Separate non-item data
-const nonItemData: Record<string, any> = { ...formData };
-itemFieldIds.forEach(id => delete nonItemData[id]);
-
-// Map previewData to include only item fields
-const itemsPayload = previewData.map(item => {
-  const cleanedItem: Record<string, any> = {};
-  itemFieldIds.forEach(id => {
-    cleanedItem[id] = item[id];
-  });
-  return cleanedItem;
-});
-
-// Final payload
-const payload = {
-  doctype: formName,
-  ...nonItemData, // top-level fields
-  items: itemsPayload // only item-section fields
+      } catch {
+        msg = faildMsg;
+      }
+      triggerAlert("warning", msg);
+    });
 };
 
-
-        apiCall = apiClient.post(api.create, payload);
-      } else {
-        apiCall = apiClient.post(api.create, {
-          doctype: formName,
-          ...cleaned,
-        });
-        // apiClient.post(api.create, [cleaned])
-      }
-    }
-
-    apiCall
-      .then((res) => {
-        const savedData = res.data;
-        onSubmit?.(Array.isArray(savedData) ? savedData[0] : savedData);
-        setFormData({});
-        setFormErrors({});
-        setPreviewData([]);
-        setFormOpen?.(false);
-        triggerAlert("success", successMsg);
-      })
-      .catch((err) => {
-        console.error("❌ Submission failed:", err);
-        let msg = "Submission failed";
-        try {
-          const serverMsg = err.response?.data?._server_messages;
-          if (serverMsg) {
-            const parsed = JSON.parse(serverMsg)[0];
-            msg = JSON.parse(parsed)?.message || parsed;
-          } else {
-            msg =
-              err.response?.data?.message ||
-              err.response?.data?.exc_type ||
-              faildMsg;
-          }
-        } catch {
-          msg = faildMsg;
-        }
-        triggerAlert("warning", msg);
-      });
-  };
 
   if (!formOpen) return null;
 
@@ -410,7 +458,7 @@ const payload = {
                         </div>
 
                         {/* Add button for items */}
-                        {mode === "create" &&
+                        {
                           multipleEntry &&
                           sectionName.toLowerCase() === "items" && (
                             <div className="flex justify-end mt-2">
@@ -430,73 +478,78 @@ const payload = {
                   </p>
                 )}
 
-                {mode === "create" &&
-                  multipleEntry &&
-                  activeTab.toLowerCase() === "items" && (
-                    <div>
-                      <div className="mt-5 px-4">
-                        <CommonTable
-                          head={itemsSectionFields.map((f) => ({
+                {multipleEntry && activeTab.toLowerCase() === "items" && (
+                  <div>
+                    <div className="mt-5 px-4">
+                      <CommonTable
+                        head={[
+                          ...itemsSectionFields.map((f) => ({
                             key: f.id,
                             label: f.label,
-                          }))}
-                          body={previewData.map((entry, index) => {
-                            const row: TableRowData = {
-                              id: (index + 1).toString(),
-                            }; // serial number for display
-                            itemsSectionFields.forEach((f) => {
-                              row[f.id] = entry[f.id];
-                            });
-                            return row;
-                          })}
-                          onEdit={(row, index) => {
-                            setFormData(row);
-                            setEditPreviewIndex(index);
-                          }}
-                          onDelete={(index) => {
-                            setPreviewData((prev) =>
-                              prev.filter((_, i) => i !== index)
-                            );
-                          }}
-                          currentPage={1}
-                          rowsPerPage={10}
-                          totalCount={previewData.length}
-                          onPageChange={() => {}}
-                          actionMenu={false}
-                        />
+                          })),
+                          { key: "action", label: "Action" }, // 👈 Add this
+                        ]}
+                        body={previewData.map((entry, index) => {
+                          const row: TableRowData = {
+                            id: (index + 1).toString(),
+                          }; // serial number for display
+                          itemsSectionFields.forEach((f) => {
+                            row[f.id] = entry[f.id];
+                          });
+                          return row;
+                        })}
+                        onEdit={(row, index) => {
+                          const updated = { ...formData };
+                          itemsSectionFields.forEach((f) => {
+                            updated[f.id] = row[f.id];
+                          });
+                          setFormData(updated);
+                          setEditPreviewIndex(index);
+                        }}
+                        onDelete={(index) => {
+                          setPreviewData((prev) =>
+                            prev.filter((_, i) => i !== index)
+                          );
+                        }}
+                        currentPage={1}
+                        rowsPerPage={10}
+                        totalCount={previewData.length}
+                        onPageChange={() => {}}
+                        actionMenu={false}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-2 mt-20 items-end">
+                      <div className="grid grid-cols-2 w-full sm:w-[80%] lg:w-[40%] px-5 lg:pr-10">
+                        <div className="flex justify-between">
+                          <p>Taxable No</p>
+                          <p>:</p>
+                        </div>
+                        <p className="text-right">-</p>
                       </div>
-                      <div className="flex flex-col gap-2 mt-20 items-end">
-                        <div className="grid grid-cols-2 w-full sm:w-[80%] lg:w-[40%] px-5 lg:pr-10">
-                          <div className="flex justify-between">
-                            <p>Taxable No</p>
-                            <p>:</p>
-                          </div>
-                          <p className="text-right">-</p>
+                      <div className="grid grid-cols-2 w-full sm:w-[80%] lg:w-[40%] px-5 lg:pr-10">
+                        <div className="flex justify-between">
+                          <p>GST</p>
+                          <p>:</p>
                         </div>
-                        <div className="grid grid-cols-2 w-full sm:w-[80%] lg:w-[40%] px-5 lg:pr-10">
-                          <div className="flex justify-between">
-                            <p>GST</p>
-                            <p>:</p>
-                          </div>
-                          <p className="text-right">-</p>
+                        <p className="text-right">-</p>
+                      </div>
+                      <div className="grid grid-cols-2 w-full sm:w-[80%] lg:w-[40%] px-5 lg:pr-10">
+                        <div className="flex justify-between">
+                          <p>Round Off</p>
+                          <p>:</p>
                         </div>
-                        <div className="grid grid-cols-2 w-full sm:w-[80%] lg:w-[40%] px-5 lg:pr-10">
-                          <div className="flex justify-between">
-                            <p>Round Off</p>
-                            <p>:</p>
-                          </div>
-                          <p className="text-right">-</p>
+                        <p className="text-right">-</p>
+                      </div>
+                      <div className="grid grid-cols-2 w-full sm:w-[80%] lg:w-[40%] px-5 lg:pr-10">
+                        <div className="flex justify-between">
+                          <p>Grand Total</p>
+                          <p>:</p>
                         </div>
-                        <div className="grid grid-cols-2 w-full sm:w-[80%] lg:w-[40%] px-5 lg:pr-10">
-                          <div className="flex justify-between">
-                            <p>Grand Total</p>
-                            <p>:</p>
-                          </div>
-                          <p className="text-right">-</p>
-                        </div>
+                        <p className="text-right">-</p>
                       </div>
                     </div>
-                  )}
+                  </div>
+                )}
               </div>
             ))}
         </div>
@@ -614,12 +667,11 @@ export const renderField = (field: Field, commonProps: any, value: any) => {
     case "date":
       return (
         <DatePicker
-      model={value ? new Date(value) : undefined}
-      onChange={(d) => commonProps.onChange(d)} // ✅ use handleChange from commonProps
-      formatStr="yyyy-MM-dd"
-      label={field.label}
-    />
-
+          model={value ? new Date(value) : undefined}
+          onChange={(d) => commonProps.onChange(d)} // ✅ use handleChange from commonProps
+          formatStr="yyyy-MM-dd"
+          label={field.label}
+        />
       );
     case "file":
       return <FileUpload id={field.id} />;
