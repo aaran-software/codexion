@@ -9,6 +9,7 @@ interface PrintInvoiceProps {
   itemsPerPage: number;
   shouldShowTotal: boolean;
   totals: Record<string, number>;
+   isLastPage: boolean;
 }
 export const columnWidths: Record<string, string> = {
   "S.No": "w-[10px]", // max 2 digits (~40px)
@@ -30,6 +31,7 @@ function PrintInvoiceTable({
   shouldShowTotal,
   totalColumns,
   totals,
+  isLastPage
 }: PrintInvoiceProps) {
   return (
     <div>
@@ -52,108 +54,139 @@ function PrintInvoiceTable({
           </tr>
         </thead>
 
-        <tbody>
-          {pageRows.map((row, i) => {
-            const itemNameIndex = head.findIndex((h) =>
-              h.toLowerCase().includes("item")
-            );
-            const itemName = row[itemNameIndex] || "";
-            const charsPerLine = 30;
-            const maxLinesPerItem = 3;
-            let requiredLines = Math.ceil(itemName.length / charsPerLine) || 1;
-            if (requiredLines > maxLinesPerItem)
-              requiredLines = maxLinesPerItem;
+      <tbody>
+  {/* Case: At least one item */}
+  {pageRows.length > 0 ? (
+    <>
+      {pageRows.map((row, i) => {
+        const itemNameIndex = head.findIndex((h) =>
+          h.toLowerCase().includes("item")
+        );
+        const itemName = row[itemNameIndex] || "";
+        const charsPerLine = 30;
+        const maxLinesPerItem = 3;
+        let requiredLines = Math.ceil(itemName.length / charsPerLine) || 1;
+        if (requiredLines > maxLinesPerItem)
+          requiredLines = maxLinesPerItem;
 
-            return (
-              <tr
-                key={i}
-                style={{ height: `${requiredLines * 10}px` }}
-                className="align-top"
-              >
-                {head.map((h, idx) => {
-                  const align = alignments?.[idx] || "center";
-                  return (
-                    <td
-                      key={idx}
-                      className={`border-x border-ring px-1 py-0 leading-tight text-${align} ${columnWidths[h] || "w-auto"}`}
-                    >
-                      {row[idx] || ""}
-                    </td>
+        return (
+          <tr
+            key={i}
+            style={{ height: `${requiredLines * 10}px` }}
+            className="align-top"
+          >
+            {head.map((h, idx) => {
+              const align = alignments?.[idx] || "center";
+              return (
+                <td
+                  key={idx}
+                  className={`border-x border-ring px-1 py-0 leading-tight text-${align} ${columnWidths[h] || "w-auto"}`}
+                >
+                  {row[idx] || ""}
+                </td>
+              );
+            })}
+            {shouldShowTotal && (
+              <td className="border px-1 py-0 leading-tight text-right w-[120px]">
+                {row[row.length - 1] || ""}
+              </td>
+            )}
+          </tr>
+        );
+      })}
+
+      {/* Fill remaining empty rows so table always has itemsPerPage rows */}
+      {/* Fill remaining empty rows so table always has itemsPerPage rows */}
+{Array.from({ length: Math.max(0, itemsPerPage - pageRows.length) }).map(
+  (_, idx) => (
+    <tr key={`empty-${idx}`}>
+      {head.map((h, i) => (
+        <td
+          key={i}
+          className={`border-x border-ring px-1 py-0 leading-tight text-center ${columnWidths[h] || "w-auto"}`}
+          style={{ height: "30px" }}   // ✅ force height on cell
+        >
+          &nbsp;
+        </td>
+      ))}
+      {shouldShowTotal && (
+        <td
+          className="border px-1 py-0 leading-tight text-right w-[120px]"
+          style={{ height: "30px" }}   // ✅ also here
+        >
+          &nbsp;
+        </td>
+      )}
+    </tr>
+  )
+)}
+
+    </>
+  ) : (
+    // Case: No items at all → fill full page with empty rows
+    Array.from({ length: itemsPerPage }).map((_, idx) => (
+      <tr key={`empty-only-${idx}`} className="h-[30px]">
+        {head.map((h, i) => (
+          <td
+            key={i}
+            className={`border-x border-ring px-1 py-0 leading-tight text-center ${columnWidths[h] || "w-auto"}`}
+          >
+            &nbsp;
+          </td>
+        ))}
+        {shouldShowTotal && (
+          <td className="border px-1 py-0 leading-tight text-right w-[120px]">
+            &nbsp;
+          </td>
+        )}
+      </tr>
+    ))
+  )}
+</tbody>
+
+
+        {isLastPage && (
+          // ✅ Show totals only on last page
+          <tfoot className="border-t border-ring text-center">
+            {totalColumns.length > 0 && (
+              <tr className="font-bold bg-gray-100">
+                {head.map((col, i) => {
+                  const align = alignments?.[i] || "center";
+                  const isTotalCol = totals[col] !== undefined;
+
+                  const firstTotalIndex = head.findIndex((h) =>
+                    totalColumns.includes(h)
                   );
+
+                  if (i === firstTotalIndex - 1) {
+                    return (
+                      <td
+                        key={i}
+                        className="px-2 py-1 text-right font-bold"
+                        colSpan={1}
+                      >
+                        Total
+                      </td>
+                    );
+                  }
+
+                  if (isTotalCol) {
+                    return (
+                      <td
+                        key={i}
+                        className={`px-2 py-1 text-${align} border-x border-ring`}
+                      >
+                        {totals[col]}
+                      </td>
+                    );
+                  }
+
+                  return <td key={i}></td>;
                 })}
-                {shouldShowTotal && (
-                  <td className="border px-1 py-0 leading-tight text-right w-[120px]">
-                    {row[row.length - 1] || ""}
-                  </td>
-                )}
               </tr>
-            );
-          })}
-
-          {/* Fill empty rows so each page has 8 rows */}
-          {Array.from({ length: itemsPerPage - pageRows.length }).map(
-            (_, idx) => (
-              <tr key={`empty-${idx}`} className="h-[30px]">
-                {head.map((h, i) => (
-                  <td
-                    key={i}
-                    className={`border-x border-ring px-1 py-0 leading-tight text-center ${columnWidths[h] || "w-auto"}`}
-                  >
-                    &nbsp;
-                  </td>
-                ))}
-                {shouldShowTotal && (
-                  <td className="border px-1 py-0 leading-tight text-right w-[120px]">
-                    &nbsp;
-                  </td>
-                )}
-              </tr>
-            )
-          )}
-        </tbody>
-        <tfoot className="border-t border-ring text-center">
-          {totalColumns.length > 0 && (
-            <tr className="font-bold bg-gray-100">
-              {head.map((col, i) => {
-                const align = alignments?.[i] || "center";
-                const isTotalCol = totals[col] !== undefined;
-
-                // Find the first total column index
-                const firstTotalIndex = head.findIndex((h) =>
-                  totalColumns.includes(h)
-                );
-
-                // Case 1: Place "Total" label right before first total column
-                if (i === firstTotalIndex - 1) {
-                  return (
-                    <td
-                      key={i}
-                      className="px-2 py-1 text-right font-bold"
-                      colSpan={1}
-                    >
-                      Total
-                    </td>
-                  );
-                }
-
-                // Case 2: If it's a total column, show total with border
-                if (isTotalCol) {
-                  return (
-                    <td
-                      key={i}
-                      className={`px-2 py-1 text-${align} border-x border-ring`}
-                    >
-                      {totals[col]}
-                    </td>
-                  );
-                }
-
-                // Case 3: Otherwise empty cell
-                return <td key={i}></td>;
-              })}
-            </tr>
-          )}
-        </tfoot>
+            )}
+          </tfoot>
+        )  }
       </table>
     </div>
   );

@@ -129,57 +129,96 @@ function PrintFormat2({
     }
   });
 
-  // Pagination setup: 8 items per page
-  const itemsPerPage = 12;
-  const pages: string[][][] = [];
-  for (let i = 0; i < computedBody.length; i += itemsPerPage) {
-    pages.push(computedBody.slice(i, i + itemsPerPage));
+  // Pagination setup
+const pages: string[][][] = [];
+
+if (computedBody.length <= 12) {
+  // Case 1: All items fit in 1 page (≤12)
+  pages.push(computedBody);
+} else {
+  let i = 0;
+
+  // First page → up to 27 items
+  const firstPageSize = Math.min(23, computedBody.length);
+  pages.push(computedBody.slice(i, i + firstPageSize));
+  i += firstPageSize;
+
+  // Subsequent pages
+  while (i < computedBody.length) {
+    const remaining = computedBody.length - i;
+
+    if (remaining <= 12) {
+      // Last page → ≤12 items
+      pages.push(computedBody.slice(i));
+      i = computedBody.length;
+    } else {
+      // Middle pages → 27 items
+      pages.push(computedBody.slice(i, i + 23));
+      i += 23;
+    }
   }
+}
+
+// ✅ If last page has more than 12 items, add an extra blank page for footer
+const lastPage = pages[pages.length - 1];
+if (lastPage.length > 12) {
+  pages.push([]); // empty page only for footer
+}
+
+
   return (
     <div className="w-full">
-      {pages.map((pageRows, pageIndex) => (
-        <div
-          key={pageIndex}
-          className={`page border border-ring w-full ${pageIndex > 0 ? " mt-10" : ""} text-[10px]`}
-        >
-          {/* header */}
-          <PrintHeader
-            client={client}
-            logo={logo}
-            invoiceInfo={invoiceInfo}
-            customerName={customerName}
-            BillAddress={BillAddress}
-            ShipingAddress={ShipingAddress}
-          />
+   {pages.map((pageRows, pageIndex) => {
+  const isLastPage = pageIndex === pages.length - 1;
+  const isEmptyFooterPage = pageRows.length === 0;
 
-          {/* Table */}
-          <PrintInvoiceTable
-            head={head}
-            body={body}
-            pageRows={pageRows}
-            alignments={alignments}
-            itemsPerPage={itemsPerPage}
-            shouldShowTotal={shouldShowTotal}
-            totalColumns={totalColumns}
-            totals={totals}
-          />
+  return (
+    <div
+      key={pageIndex}
+      className={`page border border-ring w-full ${pageIndex > 0 ? " mt-10" : ""} text-[10px]`}
+    >
+      <PrintHeader
+        client={client}
+        logo={logo}
+        invoiceInfo={invoiceInfo}
+        customerName={customerName}
+        BillAddress={BillAddress}
+        ShipingAddress={ShipingAddress}
+      />
 
-          {/* Tax Section */}
-          {pageIndex === pages.length - 1 && (
-            <PrintFooter
-              bank={bank}
-              totalAmount={totalAmount}
-              cgst={cgst}
-              sgst={sgst}
-              totalGST={totalGST}
-              roundedTotal={roundedTotal}
-              grandTotalInWords={grandTotalInWords}
-              client={client}
-              invoiceInfo={invoiceInfo}
-            />
-          )}
-        </div>
-      ))}
+      <PrintInvoiceTable
+        head={head}
+        body={body}
+        pageRows={pageRows}
+        alignments={alignments}
+         itemsPerPage={
+    isEmptyFooterPage ? 10 : 
+    pageIndex === 0 ? 23 : // first page
+    (isLastPage ? 10 : 23) // last or middle pages
+  }
+        shouldShowTotal={shouldShowTotal}
+        totalColumns={totalColumns}
+        totals={totals}
+        isLastPage={isLastPage}
+      />
+
+      {(isLastPage || isEmptyFooterPage) && (
+        <PrintFooter
+          bank={bank}
+          totalAmount={totalAmount}
+          cgst={cgst}
+          sgst={sgst}
+          totalGST={totalGST}
+          roundedTotal={roundedTotal}
+          grandTotalInWords={grandTotalInWords}
+          client={client}
+          invoiceInfo={invoiceInfo}
+        />
+      )}
+    </div>
+  );
+})}
+
     </div>
   );
 }
