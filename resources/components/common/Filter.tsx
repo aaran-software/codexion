@@ -21,7 +21,7 @@ const Filter: React.FC<FilterProps> = ({ head, filters, onFilterChange }) => {
               placeholder={`Filter ${column}`}
               value={filters[key] || ""}
               onChange={(e) => onFilterChange(key, e.target.value)}
-              className="p-2 border border-ring rounded-md text-sm bg-background text-foreground"
+              className="p-2 border border-ring min-w-[150px] break-words shrink-0 rounded-md text-sm bg-background text-foreground"
               id=""
               label={`Filter ${column}`}
               err=""

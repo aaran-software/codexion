@@ -34,7 +34,7 @@ function restoreCursorPosition(container: HTMLElement, offset: number) {
   }
 }
 
-export default function Editor({ apiPath }: { apiPath: string }) {
+export default function Editor({ apiPath, id }: { apiPath: string, id:string }) {
   const [title, setTitle] = useState("");
   const [rawMessage, setRawMessage] = useState("");
   const editorRef = useRef<HTMLDivElement>(null);
@@ -1207,6 +1207,7 @@ export default function Editor({ apiPath }: { apiPath: string }) {
 
         {!isPreviewMode && (
           <div
+          id={id}
             ref={editorRef} // This ref should now correctly point to the div
             contentEditable="true"
             onInput={handleContentChange} // Listen for content changes

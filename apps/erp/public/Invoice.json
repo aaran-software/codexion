@@ -1,11 +1,11 @@
 {
   "invoice": {
     "sales": {
-      "details": {
-        "title": "Invoice Details",
+      "items": {
+        "title": "Items",
         "fields": [
           {
-            "key": "id",
+            "key": "name",
             "label": "ID",
             "type": "textinput",
             "inTable": true,
@@ -13,121 +13,266 @@
             "isPrint": true
           },
           {
-            "key": "name",
-            "label": "Name",
+            "key": "customer",
+            "label": "Party Name",
+            "type": "dropdown",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true,
+            "readApi": "api/resource/Customer",
+            "updateApi": "api/resource/Customer",
+            "createKey": "customer_name",
+            "apiKey": "name",
+            "section": "General"
+          },
+          {
+            "key": "custom_invoice_no",
+            "label": "Invoice No",
             "type": "textinput",
             "inTable": true,
             "isForm": true,
-            "isPrint": false
+            "isPrint": true,
+            "section": "General"
           },
           {
-            "key": "date",
-            "label": "Date",
+            "key": "posting_date",
+            "label": "Invoice Date",
             "type": "date",
             "inTable": true,
+            "isForm": true,
+            "isPrint": true,
+            "section": "General"
+          },
+          {
+            "key": "due_date",
+            "label": "Due Date",
+            "type": "date",
+            "inTable": true,
+            "isForm": true,
+            "isPrint": true,
+            "section": "General"
+          },
+          {
+            "key": "item_code",
+            "label": "Product Name",
+            "type": "dropdown",
+            "options": [],
+            "inTable": false,
+            "isForm": true,
+            "isPrint": true,
+            "readApi": "api/resource/Item",
+            "updateApi": "api/resource/Item",
+            "createKey": "item_code",
+            "apiKey": "name",
+            "section": "items",
+            "createMenuItem": [
+              
+              {
+                "key": "item_code",
+                "label": "Item Code",
+                "type": "textinput",
+                "inTable": true,
+                "isForm": true,
+                "isPrint": false
+              },
+              {
+                "key": "item_group",
+                "label": "Item Group",
+                "type": "dropdown",
+                "inTable": true,
+                "isForm": true,
+                "isPrint": false,
+                "readApi": "api/resource/Item Group",
+                "updateApi": "api/resource/Item Group",
+                "createKey": "item_group_name",
+                "apiKey": "name"
+              },
+              {
+                "key": "gst_hsn_code",
+                "label": "HSN/SAC",
+                "type": "dropdown",
+                "inTable": true,
+                "isForm": true,
+                "isPrint": false,
+                "readApi": "api/resource/GST HSN Code",
+                "updateApi": "api/resource/GST HSN Code",
+                "createKey": "hsn_code",
+                "apiKey": "name"
+              },
+              {
+                "key": "stock_uom",
+                "label": "UOM",
+                "type": "dropdown",
+                "inTable": true,
+                "isForm": true,
+                "isPrint": false,
+                "readApi": "api/resource/UOM",
+                "updateApi": "api/resource/UOM",
+                "createKey": "uom_name",
+                "apiKey": "name"
+              }
+            ]
+          },
+          {
+            "key": "qty",
+            "label": "Quantity",
+            "type": "numberinput",
+            "inTable": false,
+            "isForm": true,
+            "isPrint": false,
+            "section": "items"
+          },
+          {
+            "key": "rate",
+            "label": "Rate",
+            "type": "numberinput",
+            "inTable": false,
+            "isForm": true,
+            "isPrint": false,
+            "section": "items"
+          }
+        ]
+      },
+      "address": {
+        "title": "Address",
+        "fields": [
+          {
+            "key": "customer_address",
+            "label": "Billing Address",
+            "type": "textinput",
+            "inTable": false,
             "isForm": true,
             "isPrint": false
           },
           {
-            "key": "duedate",
-            "label": "Due Date",
-            "type": "date",
-            "inTable": true,
+            "key": "shipping_address",
+            "label": "Shipping Address",
+            "type": "textinput",
+            "inTable": false,
             "isForm": true,
             "isPrint": false
           }
         ]
       },
-      "items": {
-        "title": "Items",
+      "e_way": {
+        "title": "E-way Bill",
         "fields": [
           {
-            "key": "partyname",
-            "label": "Party Name",
-            "type": "textinput",
-            "inTable": true,
-            "isForm": true,
-            "isPrint": true
-          },
-          {
-            "key": "orderno",
-            "label": "Order No",
-            "type": "textinput",
-            "inTable": true,
-            "isForm": true,
-            "isPrint": true
-          },
-          {
-            "key": "stylename",
-            "label": "Style Name",
+            "key": "transport",
+            "label": "Transport Name",
             "type": "dropdown",
-            "options": [],
-            "inTable": true,
+            "inTable": false,
             "isForm": true,
             "isPrint": false
           },
           {
-            "key": "invoiceno",
-            "label": "Invoice No",
+            "key": "asd",
+            "label": "Doc No",
+            "type": "textinput",
+            "inTable": false,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "asdsd",
+            "label": "Transport Date",
+            "type": "date",
+            "inTable": false,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "asd",
+            "label": "Transport Mode",
             "type": "dropdown",
-            "options": [],
-            "inTable": true,
+            "inTable": false,
             "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "asd",
+            "label": "Distance",
+            "type": "textinput",
+            "inTable": false,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "asd",
+            "label": "Vehicle Type",
+            "type": "dropdown",
+            "inTable": false,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "asd",
+            "label": "Vehicle No",
+            "type": "dropdown",
+            "inTable": false,
+            "isForm": true,
+            "isPrint": false
+          }
+        ]
+      },
+      "additional Charges": {
+        "title": "additional charge",
+        "fields": [
+          {
+            "key": "ledgername",
+            "label": "Ledger Name",
+            "type": "textinput",
+            "inTable": false,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "addition",
+            "label": "Additional Charge",
+            "type": "textinput",
+            "inTable": false,
+            "isForm": true,
+            "isPrint": false
+          }
+        ]
+      },
+      "terms": {
+        "title": "terms",
+        "fields": [
+          {
+            "key": "terms",
+            "label": "Terms",
+            "type": "textarea",
+            "inTable": false,
+            "isForm": true,
+            "isPrint": false
+          },
+          {
+            "key": "total_taxes_and_charges",
+            "label": "Total Taxable",
+            "inTable": true,
+            "isForm": false,
             "isPrint": true
           },
           {
-            "key": "description",
-            "label": "Description",
-            "type": "textinput",
+            "key": "",
+            "label": "Total Gst",
             "inTable": true,
-            "isForm": true,
-            "isPrint": false
-          },
-          {
-            "key": "color",
-            "label": "Color",
-            "type": "textinput",
-            "inTable": true,
-            "isForm": true,
-            "isPrint": false
-          },
-          {
-            "key": "size",
-            "label": "Size",
-            "type": "textinput",
-            "inTable": true,
-            "isForm": true,
-            "isPrint": false
-          },
-          {
-            "key": "roll",
-            "label": "Rolls",
-            "type": "textinput",
-            "inTable": true,
-            "isForm": true,
-            "isPrint": false
-          },
-          {
-            "key": "quantity",
-            "label": "Quantity",
-            "type": "textinput",
-            "inTable": true,
-            "isForm": true,
+            "isForm": false,
             "isPrint": true
           },
           {
-            "key": "price",
-            "label": "Price",
-            "type": "textinput",
+            "key": "grand_total",
+            "label": "Grand Total",
             "inTable": true,
-            "isForm": true,
+            "isForm": false,
             "isPrint": true
           },
           {
             "key": "action",
             "label": "Action",
             "inTable": true,
-            "isForm": false,
+            "isForm": true,
             "isPrint": false
           }
         ]

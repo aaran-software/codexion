@@ -6,7 +6,7 @@ import Checkbox from "../input/checkbox";
 import Alert from "../alert/alert";
 import MultiCheckbox from "../input/multi-checkbox";
 import PasswordInput from "../input/password-input";
-import { Datepicker } from "../datepicker/datepicker";
+import { DatePicker } from "../datepicker/datepicker";
 import FileUpload from "../input/fileInput";
 import DropdownRead from "../input/dropdown-read";
 import ImageButton from "../button/ImageBtn";
@@ -264,7 +264,7 @@ function EntryForm({
                               );
                             case "date":
                               return (
-                                <Datepicker
+                                <DatePicker
                                   id={field.id}
                                   label={field.label}
                                   model={

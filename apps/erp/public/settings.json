@@ -118,6 +118,11 @@
             "url": "company"
           },
           {
+            "title": "Customer",
+            "currentComponent": "customer",
+            "url": "customer"
+          },
+          {
             "title": "Orders",
             "currentComponent": "orders",
             "url": "orders"

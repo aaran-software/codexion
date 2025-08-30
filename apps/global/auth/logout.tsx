@@ -1,5 +1,4 @@
 // logoutUser.ts
-import { useNavigate } from "react-router-dom";
 import { logoutFrappe } from "../../../resources/global/api/frappeApi";
 
 export async function logoutUser(API_URL: string, API_METHOD: string, setUser: (user: any) => void) {

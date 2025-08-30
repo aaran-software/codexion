@@ -1,99 +1,83 @@
 import { useEffect, useRef, useState } from "react";
 import Button from "../../../resources/components/button/Button";
-import FloatingInput from "../input/floating-input";
+import { Field } from "../common/commonform";
+import { renderField } from "../../../resources/UIBlocks/form/TabForm";
+
 
 type CreateMenuProps = {
   onClose: () => void;
-  onAdd: (item: string) => void;
-  defaultValue: string;
-  label:string
+  onAdd: (item: string | Record<string, any>) => void;
+  fields: Field[]; 
 };
 
-function CreateMenu({ onClose, onAdd, defaultValue, label }: CreateMenuProps) {
-  const [newItem, setNewItem] = useState<string>(defaultValue);
-  const [enterPressedOnce, setEnterPressedOnce] = useState(false);
+function CreateMenu({ onClose, onAdd, fields }: CreateMenuProps) {
+  // Initialize formData dynamically based on fields
+  const initialData: Record<string, any> = fields.reduce(
+    (acc, f) => ({ ...acc, [f.id]: "" }),
+    {}
+  );
 
-  const inputRef = useRef<HTMLInputElement>(null);
-  const cancelRef = useRef<HTMLButtonElement>(null);
-  const submitRef = useRef<HTMLButtonElement>(null);
+  const [formData, setFormData] = useState<Record<string, any>>(initialData);
+  const inputRefs = useRef<Record<string, any>>({});
 
+  // Focus first field on mount
   useEffect(() => {
-    inputRef.current?.focus();
+    const firstKey = Object.keys(inputRefs.current)[0];
+    if (firstKey) inputRefs.current[firstKey]?.focus();
   }, []);
 
-  const handleAdd = () => {
-    const trimmed = newItem.trim();
-    if (trimmed) {
-      onAdd(trimmed);
-      onClose();
-    } else {
-      alert("Please enter a value before submitting.");
-    }
+  const handleChange = (id: string, value: any) => {
+    setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      if (!enterPressedOnce) {
-        setEnterPressedOnce(true);
-        submitRef.current?.focus();
-      } else {
-        handleAdd();
-      }
-    } else if (e.key === "ArrowLeft") {
-      cancelRef.current?.focus();
-    } else if (e.key === "ArrowRight") {
-      submitRef.current?.focus();
+  const handleAdd = () => {
+    const emptyField = Object.entries(formData).find(([_, v]) => !v);
+    if (emptyField) {
+      alert(`Please enter a value for "${emptyField[0]}"`);
+      return;
     }
+
+    onAdd(formData);
+    console.log("Creating item payload:", formData);
+    onClose();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, idx: number) => {
+    if (e.key !== "Enter") return;
+
+    e.preventDefault();
+    const keys = Object.keys(formData);
+    const nextKey = keys[idx + 1];
+    if (nextKey) inputRefs.current[nextKey]?.focus();
+    else handleAdd();
   };
 
   return (
     <div className="bg-black/80 w-full h-full fixed top-0 left-0 z-50 flex items-center justify-center">
       <div className="w-[50%] bg-background text-foreground p-5 rounded-md shadow-md border border-ring flex flex-col gap-5">
-        <FloatingInput
-          id="new-item-input"
-          label={label}
-          ref={inputRef}
-          type="text"
-          placeholder="Enter new item"
-          value={newItem}
-          err=""
-          className="p-2 border border-gray-500 rounded-md"
-          onChange={(e) => {
-            setNewItem(e.target.value);
-            setEnterPressedOnce(false); // reset enter state on change
-          }}
-          onKeyDown={handleInputKeyDown}
-        />
+        {fields.map((f, idx) => {
+          const value = formData[f.id];
+          const commonProps = {
+            id: f.id,
+            value,
+            className: f.className,
+            onChange: (e: any) => handleChange(f.id, e.target?.value ?? e),
+            onKeyDown: (e: any) => handleKeyDown(e, idx),
+            ref: (el: any) => (inputRefs.current[f.id] = el),
+          };
+          return <div key={f.id}>{renderField(f, commonProps, value)}</div>;
+        })}
 
         <div className="flex justify-end gap-5">
           <Button
-            ref={cancelRef}
             label="Cancel"
             onClick={onClose}
             className="bg-red-600 w-max text-white"
-            onKeyDown={(e) => {
-              if (e.key === "ArrowRight") {
-                submitRef.current?.focus();
-              } else if (e.key === "ArrowLeft") {
-                inputRef.current?.focus();
-              }
-            }}
           />
-
           <Button
-            ref={submitRef}
             label="Submit"
             onClick={handleAdd}
             className="bg-green-600 w-max text-white"
-            onKeyDown={(e) => {
-              if (e.key === "ArrowLeft") {
-                cancelRef.current?.focus();
-              } else if (e.key === "ArrowRight") {
-                inputRef.current?.focus(); // wrap around
-              } else if (e.key === "Enter") {
-                handleAdd();
-              }
-            }}
           />
         </div>
       </div>

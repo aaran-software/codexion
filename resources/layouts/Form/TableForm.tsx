@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import FormLayout from "../../../resources/components/common/FormLayout";
-import type {
-  ApiList,
-  Field,
-  FieldGroup,
-} from "../../../resources/components/common/commonform";
-import { Column } from "../../../resources/components/common/commontable"; // Adjust path if needed
+import type { ApiList, FieldGroup } from "../../../resources/components/common/commonform";
+import type { Column } from "../../../resources/components/common/commontable";
 import { getNestedValue } from "../../../resources/global/library/utils";
+import { parseInvoiceConfig, ParsedConfig } from "../../../resources/global/library/parseInvoiceConfig";
 
 interface TableFormProps {
   jsonPath: string | object;
@@ -14,6 +11,7 @@ interface TableFormProps {
   formApi: ApiList;
   fieldPath: string;
   multipleEntry?: boolean;
+  popup?:boolean
 }
 
 function TableForm({
@@ -22,65 +20,23 @@ function TableForm({
   formApi,
   fieldPath,
   multipleEntry = false,
+  popup=true
 }: TableFormProps) {
   const [groupedFields, setGroupedFields] = useState<FieldGroup[]>([]);
   const [head, setHead] = useState<Column[]>([]);
   const [printableFields, setPrintableFields] = useState<string[]>([]);
 
   useEffect(() => {
-    const fetchInvoiceConfig = async () => {
-      try {
-        const invoice = getNestedValue(jsonPath, fieldPath);
-        // Adjust the path to access the invoice config
-        if (!invoice) return;
+    const invoice = getNestedValue(jsonPath, fieldPath);
+    if (!invoice) return;
 
-        const head: Column[] = Object.values(invoice)
-          .flatMap((section: any) => section.fields)
-          .filter((field: any) => field.inTable);
+    const { groupedFields, head, printableFields }: ParsedConfig =
+      parseInvoiceConfig(invoice);
 
-        const groupedFields: FieldGroup[] = Object.entries(invoice).map(
-          ([sectionKey, section]: [string, any]) => ({
-            title: section.title || sectionKey,
-            sectionKey,
-            fields: section.fields
-              .filter(
-                (field: any) =>
-                  field.key !== "action" &&
-                  field.key !== "id" &&
-                  field.isForm === true
-              )
-              .map((field: any) => ({
-                id: field.key,
-                label: field.label,
-                type: (field.type || "textinput") as Field["type"],
-                className: "w-full",
-                errMsg: `Enter ${field.label}`,
-                ...(field.type?.includes("dropdown") && field.options
-                  ? { options: field.options }
-                  : {}),
-                readApi: field.readApi,
-                updateApi: field.updateApi,
-                apiKey: field.apiKey,
-                createKey: field.createKey,
-              })),
-          })
-        );
-
-        const printableFields: string[] = Object.values(invoice).flatMap(
-          (section: any) =>
-            section.fields.filter((field: any) => field.isPrint === true)
-        );
-
-        setGroupedFields(groupedFields);
-        setHead(head);
-        setPrintableFields(printableFields);
-      } catch (err) {
-        console.error("Failed to load invoice config:", err);
-      }
-    };
-
-    fetchInvoiceConfig();
-  }, []);
+    setGroupedFields(groupedFields);
+    setHead(head);
+    setPrintableFields(printableFields);
+  }, [jsonPath, fieldPath]);
 
   return (
     <div>
@@ -92,6 +48,7 @@ function TableForm({
           printableFields={printableFields}
           multipleEntry={multipleEntry}
           formName={formName}
+          popup={popup}
         />
       )}
     </div>

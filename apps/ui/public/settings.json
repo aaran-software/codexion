@@ -12,13 +12,13 @@
     "position": "center",
     "height": 20,
     "font_size": 2,
-    "mode":"logo",
+    "mode": "logo",
     "company_name": "",
     "color": "",
     "padding": 2
   },
 
-   "sidemenu": {
+  "sidemenu": {
     "main": [
       {
         "title": "Dashboard",
@@ -40,7 +40,7 @@
             "currentComponent": "alert",
             "url": "alert"
           },
-           {
+          {
             "title": "Bar Code",
             "currentComponent": "barcode",
             "url": "barcode"
@@ -141,18 +141,13 @@
             "url": "pininput"
           },
           {
-            "title": "Print",
-            "currentComponent": "print",
-            "url": "print"
-          },
-          {
             "title": "RadioGroup",
             "currentComponent": "radiogroup",
             "url": "radiogroup"
           }
         ]
       },
-       {
+      {
         "title": "UI Blocks",
         "icon": "Component",
         "url": "#",
@@ -244,20 +239,15 @@
           }
         ]
       },
-       {
+      {
         "title": "Layouts",
         "icon": "Component",
         "url": "#",
         "items": [
           {
-            "title": "Codexsun",
-            "currentComponent": "accordion",
-            "url": "accordion"
-          },
-          {
-            "title": "Alert",
-            "currentComponent": "alert",
-            "url": "alert"
+            "title": "Print",
+            "currentComponent": "print",
+            "url": "print"
           }
         ]
       }

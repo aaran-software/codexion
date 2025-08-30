@@ -44,8 +44,10 @@ const ProcessHighlightSection: React.FC<ProcessHighlightSectionProps> = ({
 
         {/* Right: Text & Steps */}
         <div>
-          <h2 className="text-2xl md:text-4xl font-bold mb-4">{title}</h2>
-          <p className="text-foreground mb-8">{description}</p>
+          <h2 className="text-2xl text-primary-foreground md:text-4xl font-bold mb-4">
+            {title}
+          </h2>
+          <p className="text-primary-foreground mb-8">{description}</p>
 
           <div className="space-y-6">
             {steps.map((step, index) => (
@@ -53,14 +55,16 @@ const ProcessHighlightSection: React.FC<ProcessHighlightSectionProps> = ({
                 key={index}
                 className={`flex items-start gap-4 p-4 rounded-md hover:bg-background group duration-500 transition-all `}
               >
-                <span className={`text-5xl font-bold group-hover:text-primary`}>
+                <span
+                  className={`text-5xl font-bold text-primary-foreground group-hover:text-primary`}
+                >
                   {step.number.toString().padStart(2, "0")}
                 </span>
                 <div>
-                  <h3 className="text-lg group-hover:text-foreground font-semibold">
+                  <h3 className="text-lg text-primary-foreground group-hover:text-foreground font-semibold">
                     {step.title}
                   </h3>
-                  <p className="text-sm group-hover:text-foreground/70 text-justify">
+                  <p className="text-sm text-primary-foreground group-hover:text-foreground/70 text-justify">
                     {step.description}
                   </p>
                 </div>

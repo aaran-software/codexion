@@ -34,12 +34,27 @@ const ProjectCarousel: React.FC<Props> = ({
 
   const [activeCategory, setActiveCategory] = useState<string>("all");
 
+  const [numVisible1,setNumVisible]=useState(numVisible);
+  
+  useEffect(() => {
+    const updateVisible = () => {
+      if (window.innerWidth < 540) setNumVisible(1);
+      else if (window.innerWidth > 540 && window.innerWidth < 1024)
+        setNumVisible(2);
+      else setNumVisible(3);
+    };
+    updateVisible();
+    window.addEventListener("resize", updateVisible);
+    return () => window.removeEventListener("resize", updateVisible);
+  }, []);
+
   const filteredProducts =
     activeCategory === "all"
       ? products
       : products.filter((p) => p.category === activeCategory);
 
   const [currentIndex, setCurrentIndex] = useState(0);
+
 
   // touch refs
   const touchStartX = useRef(0);
@@ -120,14 +135,14 @@ const ProjectCarousel: React.FC<Props> = ({
         <div
           className="flex transition-transform duration-500"
           style={{
-            transform: `translateX(-${currentIndex * (100 / numVisible)}%)`,
+            transform: `translateX(-${currentIndex * (100 / numVisible1)}%)`,
           }}
         >
           {filteredProducts.map((product) => (
             <div
               key={product.id}
               className="py-7 px-2 flex-shrink-0"
-              style={{ width: `${100 / numVisible}%` }}
+              style={{ width: `${100 / numVisible1}%` }}
             >
               <motion.div
                 initial={{ opacity: 0, y: 30 }}

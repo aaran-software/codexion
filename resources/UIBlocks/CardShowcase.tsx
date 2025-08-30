@@ -4,7 +4,7 @@ function CardShowcase({ items }) {
       {items.map((item, index) => (
         <div
           key={index}
-          className={`grid mt-5 md:grid-cols-2 gap-15 items-center ${
+          className={`grid mt-5 md:grid-cols-2 gap-5 md:gap-10 items-center ${
             index % 2 === 0 ? "lg:grid-flow-col-dense" : ""
           }`}
         >
@@ -16,7 +16,7 @@ function CardShowcase({ items }) {
           >
             <img
               src={item.image}
-              className="w-[70%] lg:w-full object-scale-down"
+              className="w-full object-contain"
               alt={item.title}
               loading="lazy"
             />
