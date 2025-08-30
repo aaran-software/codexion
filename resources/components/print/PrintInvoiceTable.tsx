@@ -9,20 +9,23 @@ interface PrintInvoiceProps {
   itemsPerPage: number;
   shouldShowTotal: boolean;
   totals: Record<string, number>;
-   isLastPage: boolean;
+  isLastPage: boolean;
+  carriedForward?: Record<string, number> | null; // ✅ added
 }
+
 export const columnWidths: Record<string, string> = {
-  "S.No": "w-[10px]", // max 2 digits (~40px)
-  HSN: "w-[50px]", // 7 digits
-  Qty: "w-[50px]", // 7 digits
-  Rate: "w-[60px]", // 7 digits
-  Tax: "w-[20px]", // 4 digits
-  Amount: "w-[60px]", // 13 digits
-  "Sub Total": "w-[60px]", // 13 digits
-  CGST: "w-[50px]", // 11 digits
-  SGST: "w-[50px]", // 11 digits
-  "Item Name": "w-auto", // takes remaining space
+  "S.No": "w-[10px]",
+  HSN: "w-[50px]",
+  Qty: "w-[50px]",
+  Rate: "w-[60px]",
+  Tax: "w-[20px]",
+  Amount: "w-[60px]",
+  "Sub Total": "w-[60px]",
+  CGST: "w-[50px]",
+  SGST: "w-[50px]",
+  "Item Name": "w-auto",
 };
+
 function PrintInvoiceTable({
   head,
   pageRows,
@@ -31,162 +34,199 @@ function PrintInvoiceTable({
   shouldShowTotal,
   totalColumns,
   totals,
-  isLastPage
+  isLastPage,
+  carriedForward, // ✅ now accepted
 }: PrintInvoiceProps) {
   return (
     <div>
-      <table className="min-w-full table-fixed border-b border-ring">
+      <table className="min-w-full table-fixed border-ring">
         <thead>
           <tr>
             {head.map((h, i) => (
               <th
                 key={i}
-                className={`border border-ring px-2 py-1 text-center font-semibold whitespace-nowrap ${columnWidths[h] || "w-auto"}`}
+                className={`border border-ring first:border-l-0 last:border-r-0 px-2 py-1 text-center font-semibold whitespace-nowrap ${columnWidths[h] || "w-auto"}`}
               >
                 {h}
               </th>
             ))}
             {shouldShowTotal && (
-              <th className="border border-ring px-2 py-1 text-center font-semibold w-[120px]">
+              <th className="border border-ring  px-2 py-1 text-center font-semibold w-[120px]">
                 Total
               </th>
             )}
           </tr>
         </thead>
 
-      <tbody>
-  {/* Case: At least one item */}
-  {pageRows.length > 0 ? (
-    <>
-      {pageRows.map((row, i) => {
-        const itemNameIndex = head.findIndex((h) =>
-          h.toLowerCase().includes("item")
-        );
-        const itemName = row[itemNameIndex] || "";
-        const charsPerLine = 30;
-        const maxLinesPerItem = 3;
-        let requiredLines = Math.ceil(itemName.length / charsPerLine) || 1;
-        if (requiredLines > maxLinesPerItem)
-          requiredLines = maxLinesPerItem;
+        <tbody>
+          {/* ✅ Show carried forward row if available */}
+          {carriedForward && (
+            <tr className="font-bold bg-gray-50">
+              {head.map((col, i) => {
+                const align = alignments?.[i] || "center";
+                const isTotalCol = carriedForward[col] !== undefined;
 
-        return (
-          <tr
-            key={i}
-            style={{ height: `${requiredLines * 10}px` }}
-            className="align-top"
-          >
-            {head.map((h, idx) => {
-              const align = alignments?.[idx] || "center";
-              return (
-                <td
-                  key={idx}
-                  className={`border-x border-ring px-1 py-0 leading-tight text-${align} ${columnWidths[h] || "w-auto"}`}
-                >
-                  {row[idx] || ""}
-                </td>
-              );
-            })}
-            {shouldShowTotal && (
-              <td className="border px-1 py-0 leading-tight text-right w-[120px]">
-                {row[row.length - 1] || ""}
-              </td>
-            )}
-          </tr>
-        );
-      })}
+                const firstTotalIndex = head.findIndex((h) =>
+                  totalColumns.includes(h)
+                );
 
-      {/* Fill remaining empty rows so table always has itemsPerPage rows */}
-      {/* Fill remaining empty rows so table always has itemsPerPage rows */}
-{Array.from({ length: Math.max(0, itemsPerPage - pageRows.length) }).map(
-  (_, idx) => (
-    <tr key={`empty-${idx}`}>
-      {head.map((h, i) => (
-        <td
-          key={i}
-          className={`border-x border-ring px-1 py-0 leading-tight text-center ${columnWidths[h] || "w-auto"}`}
-          style={{ height: "30px" }}   // ✅ force height on cell
-        >
-          &nbsp;
-        </td>
-      ))}
-      {shouldShowTotal && (
-        <td
-          className="border px-1 py-0 leading-tight text-right w-[120px]"
-          style={{ height: "30px" }}   // ✅ also here
-        >
-          &nbsp;
-        </td>
-      )}
-    </tr>
-  )
-)}
-
-    </>
-  ) : (
-    // Case: No items at all → fill full page with empty rows
-    Array.from({ length: itemsPerPage }).map((_, idx) => (
-      <tr key={`empty-only-${idx}`} className="h-[30px]">
-        {head.map((h, i) => (
-          <td
-            key={i}
-            className={`border-x border-ring px-1 py-0 leading-tight text-center ${columnWidths[h] || "w-auto"}`}
-          >
-            &nbsp;
-          </td>
-        ))}
-        {shouldShowTotal && (
-          <td className="border px-1 py-0 leading-tight text-right w-[120px]">
-            &nbsp;
-          </td>
-        )}
-      </tr>
-    ))
-  )}
-</tbody>
-
-
-        {isLastPage && (
-          // ✅ Show totals only on last page
-          <tfoot className="border-t border-ring text-center">
-            {totalColumns.length > 0 && (
-              <tr className="font-bold bg-gray-100">
-                {head.map((col, i) => {
-                  const align = alignments?.[i] || "center";
-                  const isTotalCol = totals[col] !== undefined;
-
-                  const firstTotalIndex = head.findIndex((h) =>
-                    totalColumns.includes(h)
+                if (i === firstTotalIndex - 1) {
+                  return (
+                    <td
+                      key={i}
+                      className="px-2 py-1 text-right font-bold"
+                      colSpan={1}
+                    >
+                      Carried Forward
+                    </td>
                   );
+                }
 
-                  if (i === firstTotalIndex - 1) {
-                    return (
-                      <td
-                        key={i}
-                        className="px-2 py-1 text-right font-bold"
-                        colSpan={1}
-                      >
-                        Total
+                if (isTotalCol) {
+                  return (
+                    <td
+                      key={i}
+                      className={`px-0.5 py-1 text-${align} border-x first:border-l-0 last:border-r-0 border-ring`}
+                    >
+                      {carriedForward[col]}
+                    </td>
+                  );
+                }
+
+                return <td className="border-x first:border-l-0 last:border-r-0 border-ring" key={i}></td>;
+              })}
+              {shouldShowTotal && <td ></td>}
+            </tr>
+          )}
+
+          {/* Normal rows */}
+          {pageRows.length > 0 ? (
+            <>
+              {pageRows.map((row, i) => {
+                const itemNameIndex = head.findIndex((h) =>
+                  h.toLowerCase().includes("item")
+                );
+                const itemName = row[itemNameIndex] || "";
+                const charsPerLine = 30;
+                const maxLinesPerItem = 3;
+                let requiredLines =
+                  Math.ceil(itemName.length / charsPerLine) || 1;
+                if (requiredLines > maxLinesPerItem)
+                  requiredLines = maxLinesPerItem;
+
+                return (
+                  <tr
+                    key={i}
+                    style={{ height: `${requiredLines * 10}px` }}
+                    className="align-top"
+                  >
+                    {head.map((h, idx) => {
+                      const align = alignments?.[idx] || "center";
+                      return (
+                        <td
+                          key={idx}
+                          className={`border-x first:border-l-0 last:border-r-0 border-ring px-0.5 py-0 leading-tight text-${align} ${columnWidths[h] || "w-auto"}`}
+                        >
+                          {row[idx] || ""}
+                        </td>
+                      );
+                    })}
+                    {shouldShowTotal && (
+                      <td className="border first:border-l-0 last:border-r-0 px-1 py-0 leading-tight text-right w-[120px]">
+                        {row[row.length - 1] || ""}
                       </td>
-                    );
-                  }
+                    )}
+                  </tr>
+                );
+              })}
 
-                  if (isTotalCol) {
-                    return (
-                      <td
-                        key={i}
-                        className={`px-2 py-1 text-${align} border-x border-ring`}
-                      >
-                        {totals[col]}
-                      </td>
-                    );
-                  }
-
-                  return <td key={i}></td>;
-                })}
+              {/* Empty filler rows */}
+              {Array.from({
+                length: Math.max(0, itemsPerPage - pageRows.length),
+              }).map((_, idx) => (
+                <tr key={`empty-${idx}`}>
+                  {head.map((h, i) => (
+                    <td
+                      key={i}
+                      className={`border-x border-ring first:border-l-0 last:border-r-0 px-1 py-0 leading-tight text-center ${columnWidths[h] || "w-auto"}`}
+                      style={{ height: "30px" }}
+                    >
+                      &nbsp;
+                    </td>
+                  ))}
+                  {shouldShowTotal && (
+                    <td
+                      className="border first:border-l-0 last:border-r-0 px-1 py-0 leading-tight text-right w-[120px]"
+                      style={{ height: "30px" }}
+                    >
+                      &nbsp;
+                    </td>
+                  )}
+                </tr>
+              ))}
+            </>
+          ) : (
+            // No items at all → blank page
+            Array.from({ length: itemsPerPage }).map((_, idx) => (
+              <tr key={`empty-only-${idx}`} className="h-[30px]">
+                {head.map((h, i) => (
+                  <td
+                    key={i}
+                    className={`border-x border-ring px-1 py-0 leading-tight text-center ${columnWidths[h] || "w-auto"}`}
+                  >
+                    &nbsp;
+                  </td>
+                ))}
+                {shouldShowTotal && (
+                  <td className="border px-1 py-0 leading-tight text-right w-[120px]">
+                    &nbsp;
+                  </td>
+                )}
               </tr>
-            )}
-          </tfoot>
-        )  }
+            ))
+          )}
+        </tbody>
+
+        <tfoot className="border-t border-ring text-center">
+          {totalColumns.length > 0 && (
+            <tr className="font-bold">
+              {head.map((col, i) => {
+                const align = alignments?.[i] || "center";
+                const isTotalCol = totals[col] !== undefined;
+
+                const firstTotalIndex = head.findIndex((h) =>
+                  totalColumns.includes(h)
+                );
+
+                if (i === firstTotalIndex - 1) {
+                  return (
+                    <td
+                      key={i}
+                      className="px-2 py-1 text-right font-bold"
+                      colSpan={1}
+                    >
+                      {isLastPage ? "Total" : "Total"}
+                    </td>
+                  );
+                }
+
+                if (isTotalCol) {
+                  return (
+                    <td
+                      key={i}
+                      className={`py-1 px-0.5 text-${align} border-x last:border-r-0 border-ring`}
+                    >
+                      {totals[col]}
+                    </td>
+                  );
+                }
+
+                return <td key={i}></td>;
+              })}
+              {shouldShowTotal && <td></td>}
+            </tr>
+          )}
+        </tfoot>
       </table>
     </div>
   );

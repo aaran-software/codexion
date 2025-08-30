@@ -37,7 +37,7 @@ function PrintFooter({
   return (
     <div>
       <div className="w-full grid grid-cols-3">
-        <div className="p-2 border-r border-ring flex flex-col gap-2">
+        <div className="p-2 border-r border-t border-ring flex flex-col gap-2">
           <div className="flex flex-col gap-1">
             <div className="flex justify-between">
               <p className="font-bold">BANK NAME</p>
@@ -58,7 +58,7 @@ function PrintFooter({
             </div>
           </div>
         </div>
-        <div className="flex flex-col border-r border-ring p-2 justify-between">
+        <div className="flex flex-col border-r border-t border-ring p-2 justify-between">
           <div className="flex flex-col gap-2">
             <div className="flex justify-between">
               <p className="font-bold">Freight Charges</p>
@@ -85,7 +85,7 @@ function PrintFooter({
             </div>
           </div>
         </div>
-        <div className="flex flex-col p-2 justify-between">
+        <div className="flex flex-col p-2 border-t border-ring justify-between">
           <div className="flex flex-col gap-1">
             <div className="flex justify-between">
               <p className="font-bold">Taxable Amount</p>

@@ -48,6 +48,13 @@ export interface PrintAddress {
   address1: string;
   address2: string;
 }
+
+// Pagination setup with subtotals
+interface PageData {
+  rows: string[][];
+  subtotal: Record<string, number>;
+}
+
 function PrintFormat2({
   head,
   body,
@@ -130,95 +137,141 @@ function PrintFormat2({
   });
 
   // Pagination setup
-const pages: string[][][] = [];
 
-if (computedBody.length <= 12) {
-  // Case 1: All items fit in 1 page (≤12)
-  pages.push(computedBody);
-} else {
-  let i = 0;
+  // Pagination setup
+  const pages: PageData[] = [];
 
-  // First page → up to 27 items
-  const firstPageSize = Math.min(23, computedBody.length);
-  pages.push(computedBody.slice(i, i + firstPageSize));
-  i += firstPageSize;
+  if (computedBody.length <= 12) {
+    // ✅ If total items <= 12 → only 12 items on first page
+    const pageRows = computedBody.slice(0, 12);
+    const pageSubtotal: Record<string, number> = {};
+    totalColumns.forEach((col) => {
+      const colIndex = head.indexOf(col);
+      if (colIndex !== -1) {
+        pageSubtotal[col] = pageRows.reduce((sum, row) => {
+          const val = Number(row[colIndex]);
+          return sum + (isNaN(val) ? 0 : val);
+        }, 0);
+      }
+    });
+    pages.push({ rows: pageRows, subtotal: pageSubtotal });
+  } else {
+    let i = 0;
 
-  // Subsequent pages
-  while (i < computedBody.length) {
-    const remaining = computedBody.length - i;
+    // ✅ First page → up to 23 items if total > 12
+    const firstPageSize = Math.min(23, computedBody.length);
+    const firstPageRows = computedBody.slice(i, i + firstPageSize);
+    const firstSubtotal: Record<string, number> = {};
+    totalColumns.forEach((col) => {
+      const colIndex = head.indexOf(col);
+      firstSubtotal[col] = firstPageRows.reduce(
+        (sum, row) => sum + (parseFloat(row[colIndex]) || 0),
+        0
+      );
+    });
+    pages.push({ rows: firstPageRows, subtotal: firstSubtotal });
+    i += firstPageSize;
 
-    if (remaining <= 12) {
-      // Last page → ≤12 items
-      pages.push(computedBody.slice(i));
-      i = computedBody.length;
-    } else {
-      // Middle pages → 27 items
-      pages.push(computedBody.slice(i, i + 23));
-      i += 23;
+    // Subsequent pages
+    while (i < computedBody.length) {
+      const remaining = computedBody.length - i;
+
+      if (remaining <= 12) {
+        const lastRows = computedBody.slice(i);
+        const lastSubtotal: Record<string, number> = {};
+        totalColumns.forEach((col) => {
+          const colIndex = head.indexOf(col);
+          lastSubtotal[col] = lastRows.reduce(
+            (sum, row) => sum + (parseFloat(row[colIndex]) || 0),
+            0
+          );
+        });
+        pages.push({ rows: lastRows, subtotal: lastSubtotal });
+        i = computedBody.length;
+      } else {
+        const midRows = computedBody.slice(i, i + 23);
+        const midSubtotal: Record<string, number> = {};
+        totalColumns.forEach((col) => {
+          const colIndex = head.indexOf(col);
+          midSubtotal[col] = midRows.reduce(
+            (sum, row) => sum + (parseFloat(row[colIndex]) || 0),
+            0
+          );
+        });
+        pages.push({ rows: midRows, subtotal: midSubtotal });
+        i += 23;
+      }
     }
   }
-}
 
-// ✅ If last page has more than 12 items, add an extra blank page for footer
-const lastPage = pages[pages.length - 1];
-if (lastPage.length > 12) {
-  pages.push([]); // empty page only for footer
-}
-
-
+  // ✅ If last page has more than 12 rows, add empty footer page
+  const lastPage = pages[pages.length - 1];
+  if (lastPage.rows.length > 12) {
+    pages.push({ rows: [], subtotal: {} });
+  }
   return (
     <div className="w-full">
-   {pages.map((pageRows, pageIndex) => {
-  const isLastPage = pageIndex === pages.length - 1;
-  const isEmptyFooterPage = pageRows.length === 0;
+      {pages.map((page, pageIndex) => {
+        const isLastPage = pageIndex === pages.length - 1;
+        const isEmptyFooterPage = page.rows.length === 0;
+        const carriedForward =
+          pageIndex > 0 ? pages[pageIndex - 1].subtotal : null;
 
-  return (
-    <div
-      key={pageIndex}
-      className={`page border border-ring w-full ${pageIndex > 0 ? " mt-10" : ""} text-[10px]`}
-    >
-      <PrintHeader
-        client={client}
-        logo={logo}
-        invoiceInfo={invoiceInfo}
-        customerName={customerName}
-        BillAddress={BillAddress}
-        ShipingAddress={ShipingAddress}
-      />
+        return (
+          <div
+            key={pageIndex}
+            className={`page border border-ring w-full ${
+              pageIndex > 0 ? " mt-10" : ""
+            } text-[10px]`}
+          >
+            <PrintHeader
+              client={client}
+              logo={logo}
+              invoiceInfo={invoiceInfo}
+              customerName={customerName}
+              BillAddress={BillAddress}
+              ShipingAddress={ShipingAddress}
+            />
 
-      <PrintInvoiceTable
-        head={head}
-        body={body}
-        pageRows={pageRows}
-        alignments={alignments}
-         itemsPerPage={
-    isEmptyFooterPage ? 10 : 
-    pageIndex === 0 ? 23 : // first page
-    (isLastPage ? 10 : 23) // last or middle pages
-  }
-        shouldShowTotal={shouldShowTotal}
-        totalColumns={totalColumns}
-        totals={totals}
-        isLastPage={isLastPage}
-      />
+            <PrintInvoiceTable
+              head={head}
+              body={body}
+              pageRows={page.rows}
+              alignments={alignments}
+              itemsPerPage={
+                isEmptyFooterPage
+                  ? 9
+                  : pageIndex === 0
+                    ? computedBody.length <= 12
+                      ? 12 // ✅ force 12 if total items <= 12
+                      : 23 // ✅ otherwise allow 23 on first page
+                    : isLastPage
+                      ? 9
+                      : 23
+              }
+              shouldShowTotal={shouldShowTotal}
+              totalColumns={totalColumns}
+              totals={isLastPage ? totals : page.subtotal}
+              isLastPage={isLastPage}
+              carriedForward={carriedForward}
+            />
 
-      {(isLastPage || isEmptyFooterPage) && (
-        <PrintFooter
-          bank={bank}
-          totalAmount={totalAmount}
-          cgst={cgst}
-          sgst={sgst}
-          totalGST={totalGST}
-          roundedTotal={roundedTotal}
-          grandTotalInWords={grandTotalInWords}
-          client={client}
-          invoiceInfo={invoiceInfo}
-        />
-      )}
-    </div>
-  );
-})}
-
+            {(isLastPage || isEmptyFooterPage) && (
+              <PrintFooter
+                bank={bank}
+                totalAmount={totalAmount}
+                cgst={cgst}
+                sgst={sgst}
+                totalGST={totalGST}
+                roundedTotal={roundedTotal}
+                grandTotalInWords={grandTotalInWords}
+                client={client}
+                invoiceInfo={invoiceInfo}
+              />
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }

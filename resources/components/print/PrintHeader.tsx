@@ -84,7 +84,7 @@ function PrintHeader({ client, logo, invoiceInfo, customerName, BillAddress, Shi
               Customer Name & billing Address
             </div>
             <div className="text-center py-1 font-bold">
-              Customer Name & Address Shipping Address
+              Customer Name & Shipping Address
             </div>
 
             <div className="text-center py-1 px-5 border-t border-r border-ring">
