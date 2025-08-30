@@ -4,6 +4,7 @@ import {
   PrintBank,
   PrintInvoiceInfo,
 } from "../../../resources/layouts/printformat/PrintFormat2";
+import { formatAmount } from "./PrintInvoiceTable";
 
 interface PrintFooterProps {
   bank: PrintBank;
@@ -89,37 +90,37 @@ function PrintFooter({
           <div className="flex flex-col gap-1">
             <div className="flex justify-between">
               <p className="font-bold">Taxable Amount</p>
-              <p>{totalGST.toFixed(2)}</p>
+              <p>{formatAmount(totalGST.toFixed(2))}</p>
             </div>
             <div className="flex justify-between">
               <p className="font-bold">Total CGST (2.5%)</p>
-              <p>{cgst.toFixed(2)}</p>
+              <p>{formatAmount(cgst.toFixed(2))}</p>
             </div>
             <div className="flex justify-between">
               <p className="font-bold">Total SGST (2.5%)</p>
-              <p>{sgst.toFixed(2)}</p>
+              <p>{formatAmount(sgst.toFixed(2))}</p>
             </div>
             <div className="flex justify-between">
               <p className="font-bold">Total IGST (2.5%)</p>
-              <p>{totalGST.toFixed(2)}</p>
+              <p>{formatAmount(totalGST.toFixed(2))}</p>
             </div>
             <hr className="text-ring" />
             <div className="flex justify-between">
               <p className="font-bold">Total GST Amount</p>
-              <p>{totalGST.toFixed(2)}</p>
+              <p>{formatAmount(totalGST.toFixed(2))}</p>
             </div>
             <div className="flex justify-between">
               <p className="font-bold">Other Charges</p>
-              <p>{totalGST.toFixed(2)}</p>
+              <p>{formatAmount(totalGST.toFixed(2))}</p>
             </div>
             <div className="flex justify-between">
               <p className="font-bold">Round Off</p>
-              <p>{roundedTotal.toFixed(2)}</p>
+              <p>{formatAmount(roundedTotal.toFixed(2))}</p>
             </div>
             <hr className="text-ring" />
             <div className="flex justify-between">
               <p className="font-bold text-lg">Grand Total</p>
-              <p className="text-lg">{roundedTotal.toFixed(2)}</p>
+              <p className="text-lg">{formatAmount(roundedTotal.toFixed(2))}</p>
             </div>
           </div>
         </div>

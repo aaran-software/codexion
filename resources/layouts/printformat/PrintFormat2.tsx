@@ -141,9 +141,9 @@ function PrintFormat2({
   // Pagination setup
   const pages: PageData[] = [];
 
-  if (computedBody.length <= 12) {
+  if (computedBody.length <= 10) {
     // ✅ If total items <= 12 → only 12 items on first page
-    const pageRows = computedBody.slice(0, 12);
+    const pageRows = computedBody.slice(0, 10);
     const pageSubtotal: Record<string, number> = {};
     totalColumns.forEach((col) => {
       const colIndex = head.indexOf(col);
@@ -159,7 +159,7 @@ function PrintFormat2({
     let i = 0;
 
     // ✅ First page → up to 23 items if total > 12
-    const firstPageSize = Math.min(23, computedBody.length);
+    const firstPageSize = Math.min(22, computedBody.length);
     const firstPageRows = computedBody.slice(i, i + firstPageSize);
     const firstSubtotal: Record<string, number> = {};
     totalColumns.forEach((col) => {
@@ -176,7 +176,7 @@ function PrintFormat2({
     while (i < computedBody.length) {
       const remaining = computedBody.length - i;
 
-      if (remaining <= 12) {
+      if (remaining <= 10) {
         const lastRows = computedBody.slice(i);
         const lastSubtotal: Record<string, number> = {};
         totalColumns.forEach((col) => {
@@ -189,7 +189,7 @@ function PrintFormat2({
         pages.push({ rows: lastRows, subtotal: lastSubtotal });
         i = computedBody.length;
       } else {
-        const midRows = computedBody.slice(i, i + 23);
+        const midRows = computedBody.slice(i, i + 22);
         const midSubtotal: Record<string, number> = {};
         totalColumns.forEach((col) => {
           const colIndex = head.indexOf(col);
@@ -199,14 +199,14 @@ function PrintFormat2({
           );
         });
         pages.push({ rows: midRows, subtotal: midSubtotal });
-        i += 23;
+        i += 22;
       }
     }
   }
 
   // ✅ If last page has more than 12 rows, add empty footer page
   const lastPage = pages[pages.length - 1];
-  if (lastPage.rows.length > 12) {
+  if (lastPage.rows.length > 10) {
     pages.push({ rows: [], subtotal: {} });
   }
   return (
@@ -240,14 +240,14 @@ function PrintFormat2({
               alignments={alignments}
               itemsPerPage={
                 isEmptyFooterPage
-                  ? 9
+                  ? 10
                   : pageIndex === 0
-                    ? computedBody.length <= 12
-                      ? 12 // ✅ force 12 if total items <= 12
-                      : 23 // ✅ otherwise allow 23 on first page
+                    ? computedBody.length <= 10
+                      ? 10 // ✅ force 12 if total items <= 12
+                      : 22 // ✅ otherwise allow 23 on first page
                     : isLastPage
-                      ? 9
-                      : 23
+                      ? 10
+                      : 22
               }
               shouldShowTotal={shouldShowTotal}
               totalColumns={totalColumns}

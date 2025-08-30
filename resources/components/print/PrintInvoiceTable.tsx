@@ -1,5 +1,3 @@
-import React from "react";
-
 interface PrintInvoiceProps {
   head: string[];
   body: string[][];
@@ -24,6 +22,15 @@ export const columnWidths: Record<string, string> = {
   CGST: "w-[50px]",
   SGST: "w-[50px]",
   "Item Name": "w-auto",
+};
+export const formatAmount = (value: any) => {
+  if (value === null || value === undefined || value === "") return "";
+  const num = Number(value);
+  if (isNaN(num)) return value; // return as is if not numeric
+  return new Intl.NumberFormat("en-IN", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(num);
 };
 
 function PrintInvoiceTable({
@@ -88,14 +95,20 @@ function PrintInvoiceTable({
                       key={i}
                       className={`px-0.5 py-1 text-${align} border-x first:border-l-0 last:border-r-0 border-ring`}
                     >
-                      {carriedForward[col]}
+                      {/* {carriedForward[col]} */}
+                      {formatAmount(carriedForward[col])}
                     </td>
                   );
                 }
 
-                return <td className="border-x first:border-l-0 last:border-r-0 border-ring" key={i}></td>;
+                return (
+                  <td
+                    className="border-x first:border-l-0 last:border-r-0 border-ring"
+                    key={i}
+                  ></td>
+                );
               })}
-              {shouldShowTotal && <td ></td>}
+              {shouldShowTotal && <td></td>}
             </tr>
           )}
 
@@ -103,22 +116,13 @@ function PrintInvoiceTable({
           {pageRows.length > 0 ? (
             <>
               {pageRows.map((row, i) => {
-                const itemNameIndex = head.findIndex((h) =>
-                  h.toLowerCase().includes("item")
-                );
-                const itemName = row[itemNameIndex] || "";
-                const charsPerLine = 30;
-                const maxLinesPerItem = 3;
-                let requiredLines =
-                  Math.ceil(itemName.length / charsPerLine) || 1;
-                if (requiredLines > maxLinesPerItem)
-                  requiredLines = maxLinesPerItem;
+                let requiredLines = 3;
 
                 return (
                   <tr
                     key={i}
                     style={{ height: `${requiredLines * 10}px` }}
-                    className="align-top"
+                    className="align-top "
                   >
                     {head.map((h, idx) => {
                       const align = alignments?.[idx] || "center";
@@ -127,13 +131,17 @@ function PrintInvoiceTable({
                           key={idx}
                           className={`border-x first:border-l-0 last:border-r-0 border-ring px-0.5 py-0 leading-tight text-${align} ${columnWidths[h] || "w-auto"}`}
                         >
-                          {row[idx] || ""}
+                          {/* {row[idx] || ""} */}
+                          {h === "Sub Total"
+                            ? formatAmount(row[idx])
+                            : row[idx] || ""}
                         </td>
                       );
                     })}
                     {shouldShowTotal && (
                       <td className="border first:border-l-0 last:border-r-0 px-1 py-0 leading-tight text-right w-[120px]">
-                        {row[row.length - 1] || ""}
+                        {/* {row[row.length - 1] || ""} */}
+                        {formatAmount(row[row.length - 1])}
                       </td>
                     )}
                   </tr>
@@ -198,6 +206,11 @@ function PrintInvoiceTable({
                   totalColumns.includes(h)
                 );
 
+                // ✅ detect Qty / Quantity (case-insensitive)
+                const isQty =
+                  col.toLowerCase() === "qty" ||
+                  col.toLowerCase() === "quantity";
+
                 if (i === firstTotalIndex - 1) {
                   return (
                     <td
@@ -216,7 +229,7 @@ function PrintInvoiceTable({
                       key={i}
                       className={`py-1 px-0.5 text-${align} border-x last:border-r-0 border-ring`}
                     >
-                      {totals[col]}
+                      {isQty ? totals[col] : formatAmount(totals[col])}
                     </td>
                   );
                 }
