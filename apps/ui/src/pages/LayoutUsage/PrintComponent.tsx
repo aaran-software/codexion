@@ -1,7 +1,36 @@
 import Print from "../../../../../resources/layouts/printformat/Print";
 import PrintFormat2 from "../../../../../resources/layouts/printformat/PrintFormat2";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
+
+function mapDataToBody(head: string[], data: any[]) {
+  return data.map((item, index) => {
+    return head.map((col) => {
+      switch (col.toLowerCase()) {
+        case "s.no":
+          return (index + 1).toString(); // Serial number
+        case "hsn":
+          return item.hsn || "";
+        case "qty":
+        case "quantity":
+          return item.qty?.toString() || "";
+        case "rate":
+        case "price":
+          return item.rate?.toString() || "";
+        case "tax":
+          return item.tax?.toString() || "";
+        case "amount":
+        case "sub total":
+          return item.amount?.toString() || "";
+        case "item name":
+          return item.itemName || "";
+        default:
+          return item[col] || ""; // fallback
+      }
+    });
+  });
+}
+
 
 function PrintComponent() {
   const printRef = useRef<HTMLDivElement>(null);
@@ -16,6 +45,25 @@ function PrintComponent() {
     contentRef: printRef2,
     documentTitle: "sample print",
   });
+  const head = ["S.No", "HSN", "Qty", "Rate", "Tax", "Amount", "Item Name"];
+  const [body, setBody] = useState<string[][]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await fetch("https://your-api-endpoint.com/invoice-items");
+        const data = await res.json();
+
+        const mappedBody = mapDataToBody(head, data);
+        setBody(mappedBody);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    fetchData();
+  }, []);
+  
   return (
     <div>
       <div ref={printRef2} className="block m-auto p-6">
@@ -70,9 +118,9 @@ function PrintComponent() {
               "1111111111",
             ],
             [
-              "4",
+              "7",
               "87234",
-             "Notebook Noteboo kNotebooook Notebook",
+             "Notebook Noteboo kNotebook Notebook ok Notebook Notebook Notebook",
               "1000000",
               "5000000",
               "55%",
@@ -82,21 +130,9 @@ function PrintComponent() {
               "1111111111",
             ],
             [
-              "5",
+              "3",
               "87234",
-             "Notebook Noteboo kNotebook Nobook Notebook",
-              "1000000",
-              "5000000",
-              "55%",
-              "1111111111",
-              "11111111",
-              "11111111",
-              "1111111111",
-            ],
-            [
-              "6",
-              "87234",
-             "Notebook Noteboo kNotebook NotebNotebook Notebook",
+             "Notebook Noteboo kNotebootebook",
               "1000000",
               "5000000",
               "55%",
@@ -118,9 +154,9 @@ function PrintComponent() {
               "1111111111",
             ],
             [
-              "8",
+              "3",
               "87234",
-             "Notebook Noteboo kNotebook ook Notebook Notebook Notebook",
+             "Notebook Noteboo kNotebootebook",
               "1000000",
               "5000000",
               "55%",
@@ -130,33 +166,9 @@ function PrintComponent() {
               "1111111111",
             ],
             [
-              "9",
+              "7",
               "87234",
-             "Notebook Noteboo kNotebook Notebook Notebook Notebook Notebook Noteboo kNotebook Notebook Notebook Notebook",
-              "1000000",
-              "5000000",
-              "55%",
-              "1111111111",
-              "11111111",
-              "11111111",
-              "1111111111",
-            ],
-            [
-              "10",
-              "87234",
-             "Notebook Noteboo kNotebook Notebook Notebook Notebook Notebook Noteboo kNotebook Notebook Notebook Notebook",
-              "1000000",
-              "5000000",
-              "55%",
-              "1111111111",
-              "11111111",
-              "11111111",
-              "1111111111",
-            ],
-            [
-              "11",
-              "87234",
-             "Notebook Noteboo kNotebook Notebook Notebook Notebook Notebook Noteboo kNotebook Notebook Notebook Notebook",
+             "Notebook Noteboo kNotebook Notebook ok Notebook Notebook Notebook",
               "1000000",
               "5000000",
               "55%",

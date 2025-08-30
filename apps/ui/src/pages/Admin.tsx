@@ -218,7 +218,7 @@ export default function Admin() {
     },
     {
       id: "print",
-      className: "flex w-full p-4",
+      className: "flex w-full p-4 lg:px-[10%]",
       component: <PrintComponent />,
     },
     {

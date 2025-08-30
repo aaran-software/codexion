@@ -52,6 +52,17 @@
   .no-print {
     display: none !important;
   }
+  @page {
+    margin: 0;
+  }
+  .page {
+    page-break-after: always;
+    break-after: page;
+  }
+  .page:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
 }
 
 @custom-variant dark (&:is(.dark *));
