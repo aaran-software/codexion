@@ -80,7 +80,8 @@ function PrintComponent() {
             "Sub Total",
           ]}
           body={[
-            [
+            
+           [
               "1",
               "6109001",
               "Men's Cotton T-Shirt (Blue, L)",
@@ -175,18 +176,6 @@ function PrintComponent() {
               "39.90",
               "39.90",
               "1676",
-            ],
-            [
-              "9",
-              "6212009",
-              "Women's Dupatta (Cotton, Printed)",
-              "3",
-              "299",
-              "5%",
-              "897",
-              "22.42",
-              "22.42",
-              "942",
             ]
             
           ]}

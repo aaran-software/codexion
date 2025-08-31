@@ -8,7 +8,7 @@ interface PrintInvoiceProps {
   shouldShowTotal: boolean;
   totals: Record<string, number>;
   isLastPage: boolean;
-  carriedForward?: Record<string, number> | null; // ✅ added
+  carriedForward?: Record<string, number> | null;
 }
 
 export const columnWidths: Record<string, string> = {
@@ -26,7 +26,7 @@ export const columnWidths: Record<string, string> = {
 export const formatAmount = (value: any) => {
   if (value === null || value === undefined || value === "") return "";
   const num = Number(value);
-  if (isNaN(num)) return value; // return as is if not numeric
+  if (isNaN(num)) return value;
   return new Intl.NumberFormat("en-IN", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
@@ -42,7 +42,7 @@ function PrintInvoiceTable({
   totalColumns,
   totals,
   isLastPage,
-  carriedForward, // ✅ now accepted
+  carriedForward,
 }: PrintInvoiceProps) {
   return (
     <div>
@@ -116,31 +116,37 @@ function PrintInvoiceTable({
           {pageRows.length > 0 ? (
             <>
               {pageRows.map((row, i) => {
-                let requiredLines = 3;
+                // let requiredLines = 4;
 
                 return (
                   <tr
                     key={i}
-                    style={{ height: `${requiredLines * 10}px` }}
+                    style={{ height: `38px` }}
                     className="align-top "
                   >
                     {head.map((h, idx) => {
                       const align = alignments?.[idx] || "center";
                       return (
-                        <td
-                          key={idx}
-                          className={`border-x first:border-l-0 last:border-r-0 border-ring px-0.5 py-0 leading-tight text-${align} ${columnWidths[h] || "w-auto"}`}
-                        >
-                          {/* {row[idx] || ""} */}
-                          {h === "Sub Total"
-                            ? formatAmount(row[idx])
-                            : row[idx] || ""}
-                        </td>
+                       <td
+  key={idx}
+  className={`border-x first:border-l-0 last:border-r-0 border-ring px-0.5 py-0 leading-tight text-${align} ${columnWidths[h] || "w-auto"}`}
+>
+  {h === "Item Name" ? (
+    <div className="line-clamp-3">
+      {row[idx]}
+    </div>
+  ) : h === "Sub Total" ? (
+    formatAmount(row[idx])
+  ) : (
+    row[idx] || ""
+  )}
+</td>
+
+
                       );
                     })}
                     {shouldShowTotal && (
                       <td className="border first:border-l-0 last:border-r-0 px-1 py-0 leading-tight text-right w-[120px]">
-                        {/* {row[row.length - 1] || ""} */}
                         {formatAmount(row[row.length - 1])}
                       </td>
                     )}
@@ -239,14 +245,11 @@ function PrintInvoiceTable({
               {shouldShowTotal && <td></td>}
             </tr>
           )}
-          {
-            !isLastPage && (
-              <div className="absolute right-0 pr-6 pt-2 text-sm">
-            to be Continue...
-          </div>
-            )
-          }
-          
+          {!isLastPage && (
+            <div className="absolute right-0 pr-6 pt-2 text-sm">
+              to be Continue...
+            </div>
+          )}
         </tfoot>
       </table>
     </div>
