@@ -15,12 +15,12 @@ export const columnWidths: Record<string, string> = {
   "S.No": "w-[10px]",
   HSN: "w-[50px]",
   Qty: "w-[50px]",
-  Rate: "w-[60px]",
+  Rate: "w-[50px]",
   Tax: "w-[20px]",
   Amount: "w-[60px]",
-  "Sub Total": "w-[60px]",
-  CGST: "w-[50px]",
-  SGST: "w-[50px]",
+  "Sub Total": "w-[75px]",
+  CGST: "w-[53px]",
+  SGST: "w-[53px]",
   "Item Name": "w-auto",
 };
 export const formatAmount = (value: any) => {
@@ -68,7 +68,7 @@ function PrintInvoiceTable({
         <tbody>
           {/* ✅ Show carried forward row if available */}
           {carriedForward && (
-            <tr className="font-bold bg-gray-50">
+            <tr className="font-bold">
               {head.map((col, i) => {
                 const align = alignments?.[i] || "center";
                 const isTotalCol = carriedForward[col] !== undefined;
@@ -180,7 +180,7 @@ function PrintInvoiceTable({
                 {head.map((h, i) => (
                   <td
                     key={i}
-                    className={`border-x border-ring px-1 py-0 leading-tight text-center ${columnWidths[h] || "w-auto"}`}
+                    className={`border-x border-ring first:border-l-0 last:border-r-0 px-1 py-0 leading-tight text-center ${columnWidths[h] || "w-auto"}`}
                   >
                     &nbsp;
                   </td>
@@ -195,9 +195,9 @@ function PrintInvoiceTable({
           )}
         </tbody>
 
-        <tfoot className="border-t border-ring text-center">
+        <tfoot className="text-center">
           {totalColumns.length > 0 && (
-            <tr className="font-bold">
+            <tr className="font-bold border-y border-ring ">
               {head.map((col, i) => {
                 const align = alignments?.[i] || "center";
                 const isTotalCol = totals[col] !== undefined;
@@ -239,6 +239,14 @@ function PrintInvoiceTable({
               {shouldShowTotal && <td></td>}
             </tr>
           )}
+          {
+            !isLastPage && (
+              <div className="absolute right-0 pr-6 pt-2 text-sm">
+            to be Continue...
+          </div>
+            )
+          }
+          
         </tfoot>
       </table>
     </div>

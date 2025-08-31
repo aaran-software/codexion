@@ -19,6 +19,7 @@ interface PrintHeaderProps {
   BillAddress: PrintCustomerAddress;
   ShipingAddress: PrintCustomerAddress;
   invoiceInfo: PrintInvoiceInfo;
+  IRNQR:string
 }
 
 function PrintHeader({
@@ -28,27 +29,33 @@ function PrintHeader({
   customerName,
   BillAddress,
   ShipingAddress,
+  IRNQR
 }: PrintHeaderProps) {
   return (
     <div>
-      <div className="grid grid-cols-[15%_70%] gap-5 px-5 py-1">
+      <div className="grid grid-cols-[15%_65%_20%] gap-5 px-5">
         <img
-          className="w-full block m-auto onject-contain"
+          className="w-full block m-auto onject-contain  py-1"
           src={logo}
           alt="Logo"
         />
-        <div className="flex flex-col items-center justify-center text-center text-xs">
-          <h1 className="text-3xl font-bold">{client.name}</h1>
+        <div className="flex flex-col items-center justify-center text-center text-xs  py-1">
+          <h1 className="text-3xl font-bold tracking-widest">{client.name}</h1>
           {Object.values(client.address).map((line, idx) => (
             <p key={idx}>{line}</p>
           ))}
           <p>
-            <span className="font-bold">Phone: </span>
-            {client.phone} <span className="font-bold">Email: </span>
+            <span className="font-bold">Phone : </span>
+            {client.phone} <span className="font-bold">Email : </span>
             {client.email}
           </p>
           <p className="font-bold text-lg">GSTIN : {client.gstinNo}</p>
         </div>
+         <img
+          className="w-[80%] h-[100%] block m-auto p-1 pr-3 my-auto onject-cover"
+          src={IRNQR}
+          alt="QR"
+        />
       </div>
 
       {/* Invoice Title */}

@@ -43,6 +43,8 @@ interface PrintProps {
   ShipingAddress: PrintCustomerAddress;
   totalColumns?: string[];
   invoiceInfo: PrintInvoiceInfo;
+  IRNQR:string
+  BankQR:string
 }
 export interface PrintAddress {
   address1: string;
@@ -67,6 +69,8 @@ function PrintFormat2({
   ShipingAddress,
   totalColumns = [],
   invoiceInfo,
+  IRNQR,
+  BankQR
 }: PrintProps) {
   const quantityIndex = head.findIndex((h) =>
     h.toLowerCase().includes("quantity")
@@ -176,7 +180,7 @@ function PrintFormat2({
     while (i < computedBody.length) {
       const remaining = computedBody.length - i;
 
-      if (remaining <= 10) {
+      if (remaining <= 9) {
         const lastRows = computedBody.slice(i);
         const lastSubtotal: Record<string, number> = {};
         totalColumns.forEach((col) => {
@@ -206,7 +210,7 @@ function PrintFormat2({
 
   // ✅ If last page has more than 12 rows, add empty footer page
   const lastPage = pages[pages.length - 1];
-  if (lastPage.rows.length > 10) {
+  if (lastPage.rows.length > 9) {
     pages.push({ rows: [], subtotal: {} });
   }
   return (
@@ -220,8 +224,8 @@ function PrintFormat2({
         return (
           <div
             key={pageIndex}
-            className={`page border border-ring w-full ${
-              pageIndex > 0 ? " mt-10" : ""
+            className={`page border border-b-0 border-ring w-full ${
+              pageIndex > 0 ? " mt-6" : ""
             } text-[10px]`}
           >
             <PrintHeader
@@ -231,6 +235,7 @@ function PrintFormat2({
               customerName={customerName}
               BillAddress={BillAddress}
               ShipingAddress={ShipingAddress}
+              IRNQR={IRNQR}
             />
 
             <PrintInvoiceTable
@@ -240,13 +245,13 @@ function PrintFormat2({
               alignments={alignments}
               itemsPerPage={
                 isEmptyFooterPage
-                  ? 10
+                  ? 9
                   : pageIndex === 0
-                    ? computedBody.length <= 10
-                      ? 10 // ✅ force 12 if total items <= 12
+                    ? computedBody.length <= 9
+                      ? 9 // ✅ force 12 if total items <= 12
                       : 22 // ✅ otherwise allow 23 on first page
                     : isLastPage
-                      ? 10
+                      ? 9
                       : 22
               }
               shouldShowTotal={shouldShowTotal}
@@ -267,6 +272,8 @@ function PrintFormat2({
                 grandTotalInWords={grandTotalInWords}
                 client={client}
                 invoiceInfo={invoiceInfo}
+                isLastPage={isLastPage}
+                BankQR={BankQR}
               />
             )}
           </div>

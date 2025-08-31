@@ -82,10 +82,10 @@ function PrintComponent() {
           body={[
             [
               "1",
-              "6109",
+              "6109001",
               "Men's Cotton T-Shirt (Blue, L)",
               "2",
-              "499",
+              "111499",
               "5%",
               "998",
               "24.95",
@@ -94,7 +94,7 @@ function PrintComponent() {
             ],
             [
               "2",
-              "6203",
+              "6203002",
               "Men's Formal Shirt (White, 42)",
               "1",
               "899",
@@ -106,7 +106,7 @@ function PrintComponent() {
             ],
             [
               "3",
-              "6204",
+              "6204003",
               "Women's Kurti (Red, M)",
               "3",
               "799",
@@ -118,7 +118,7 @@ function PrintComponent() {
             ],
             [
               "4",
-              "6103",
+              "6103004",
               "Men's Denim Jeans (Black, 34)",
               "2",
               "1599",
@@ -130,7 +130,7 @@ function PrintComponent() {
             ],
             [
               "5",
-              "6211",
+              "6211005",
               "Silk Saree (Traditional, Green)",
               "1",
               "3499",
@@ -142,7 +142,7 @@ function PrintComponent() {
             ],
             [
               "6",
-              "6104",
+              "6104006",
               "Kids Frock (Pink, 8Y)",
               "2",
               "699",
@@ -154,7 +154,7 @@ function PrintComponent() {
             ],
             [
               "7",
-              "6110",
+              "6110007",
               "Men's Hoodie Sweatshirt (Grey, XL)",
               "1",
               "1299",
@@ -166,7 +166,7 @@ function PrintComponent() {
             ],
             [
               "8",
-              "6105",
+              "6105008",
               "Women's Leggings (Black, Free Size)",
               "4",
               "399",
@@ -178,7 +178,7 @@ function PrintComponent() {
             ],
             [
               "9",
-              "6212",
+              "6212009",
               "Women's Dupatta (Cotton, Printed)",
               "3",
               "299",
@@ -187,19 +187,8 @@ function PrintComponent() {
               "22.42",
               "22.42",
               "942",
-            ],
-            [
-              "10",
-              "6109",
-              "Men's Polo T-Shirt (Green, M)",
-              "5",
-              "599",
-              "5%",
-              "2995",
-              "74.87",
-              "74.87",
-              "3145",
-            ],
+            ]
+            
           ]}
           alignments={[
             "center",
@@ -214,14 +203,14 @@ function PrintComponent() {
             "right",
           ]}
           client={{
-            name: "ABC CLIENTS INDIA LTD",
+            name: "TECH MEDIA",
             address: {
               address1:
-                "No.1, P.V.G Nagar Extension, Samundipuram South, Gandhi Nagar, HP Petrol Pump",
-              address2: "Tiruppur , Tamil Nadu-641601",
+                "436, Avinashi Road, Near CITU Office,",
+              address2: "Tiruppur, Tamil Nadu-641602",
             },
-            phone: 9363944493,
-            email: "sukraagarments96@gmail.com",
+            phone: 9894244450,
+            email: "info@techmedia.in",
             gstinNo: "33AXIPP0352P1Z6",
           }}
           bank={{
@@ -235,7 +224,7 @@ function PrintComponent() {
           BillAddress={{
             address1: "VELAKANNI SCHOOLVELAKANNI SCHOOL KIRSHNAGIRI",
             address2: "Tamil Nadu, India",
-            address3: " State Code: 33 PIN Code: 635001",
+            address3: "State Code: 33 PIN Code: 635001",
             GSTIN: "GSTIN: 33AXIPP0352P1Z6",
           }}
           ShipingAddress={{
@@ -254,6 +243,8 @@ function PrintComponent() {
             placeOfSupply: "Tamil Nadu",
             IRN: "5e0d2a3c8f9b7d6a1c4f3b2e7a8d9c0b1234567890abcdef1234567890abcdef",
           }}
+          IRNQR="/assets/QR/qr.jpg"
+          BankQR="/assets/QR/qr.png"
         />
         <button
           onClick={handlePrint2}
