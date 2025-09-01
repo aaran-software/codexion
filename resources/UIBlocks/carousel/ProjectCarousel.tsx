@@ -101,7 +101,7 @@ const ProjectCarousel: React.FC<Props> = ({
   });
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full p-6">
       {/* Category Filter */}
       <div ref={filerref1} className="flex gap-3 mb-6 justify-center flex-wrap">
         {categories.map((cat, index) => (
@@ -141,7 +141,7 @@ const ProjectCarousel: React.FC<Props> = ({
           {filteredProducts.map((product) => (
             <div
               key={product.id}
-              className="py-7 flex-shrink-0"
+              className="py-7 px-2 flex-shrink-0"
               style={{ width: `${100 / numVisible1}%` }}
             >
               <motion.div

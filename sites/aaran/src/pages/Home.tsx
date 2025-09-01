@@ -6,7 +6,7 @@ import ContactCard from "../../../../resources/UIBlocks/card/ContactCard";
 import Team2 from "../../../../resources/layouts/team/team2";
 import TypingText from "../../../../resources/AnimationComponents/TypingText";
 import Roadmap from "../../../../resources/UIBlocks/timeline/Roadmap";
-import { Rocket, Award, Target, Users } from "lucide-react"; // optional icons
+import { Rocket, Target, Users } from "lucide-react"; // optional icons
 import HalfOrbit from "../../../../resources/UIBlocks/Orbit/HalfOrbit";
 import { FaBullseye, FaEye, FaHandshake } from "react-icons/fa";
 import HighlightCardWithIcon from "../../../../resources/UIBlocks/card/HighlightedCardwithIcon";

@@ -3,8 +3,6 @@ import { FaIndustry } from "react-icons/fa";
 import { IoBusiness } from "react-icons/io5";
 import { TbTruckDelivery } from "react-icons/tb";
 function Contact() {
-    
-
   return (
     <div className="px-4 lg:px-[10%] my-25">
       <Contact1
@@ -15,14 +13,14 @@ function Contact() {
 No: 3/306-A, Thandradevi Pattinam,
 Paramakudi-623707
 Ramnad District.`,
-icon: IoBusiness ,
+            icon: IoBusiness,
           },
           {
             title: "Logistics Centre",
             details: `Link Agro Exports
 274, North Masi Street,
 Madurai – 625001`,
-icon: TbTruckDelivery ,
+            icon: TbTruckDelivery,
           },
           {
             title: "Plant Address",
@@ -30,7 +28,7 @@ icon: TbTruckDelivery ,
 Uchipuli Post,
 Ramanathapuram District
 Tamilnadu - 623534`,
-icon: FaIndustry,
+            icon: FaIndustry,
           },
         ]}
         socialLinks={[
