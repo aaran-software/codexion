@@ -8,25 +8,25 @@ interface PrintInvoiceProps {
   shouldShowTotal: boolean;
   totals: Record<string, number>;
   isLastPage: boolean;
-  carriedForward?: Record<string, number> | null; // ✅ added
+  carriedForward?: Record<string, number> | null;
 }
 
 export const columnWidths: Record<string, string> = {
   "S.No": "w-[10px]",
   HSN: "w-[50px]",
   Qty: "w-[50px]",
-  Rate: "w-[60px]",
+  Rate: "w-[50px]",
   Tax: "w-[20px]",
   Amount: "w-[60px]",
-  "Sub Total": "w-[60px]",
-  CGST: "w-[50px]",
-  SGST: "w-[50px]",
+  "Sub Total": "w-[75px]",
+  CGST: "w-[53px]",
+  SGST: "w-[53px]",
   "Item Name": "w-auto",
 };
 export const formatAmount = (value: any) => {
   if (value === null || value === undefined || value === "") return "";
   const num = Number(value);
-  if (isNaN(num)) return value; // return as is if not numeric
+  if (isNaN(num)) return value;
   return new Intl.NumberFormat("en-IN", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
@@ -42,7 +42,7 @@ function PrintInvoiceTable({
   totalColumns,
   totals,
   isLastPage,
-  carriedForward, // ✅ now accepted
+  carriedForward,
 }: PrintInvoiceProps) {
   return (
     <div>
@@ -68,7 +68,7 @@ function PrintInvoiceTable({
         <tbody>
           {/* ✅ Show carried forward row if available */}
           {carriedForward && (
-            <tr className="font-bold bg-gray-50">
+            <tr className="font-bold">
               {head.map((col, i) => {
                 const align = alignments?.[i] || "center";
                 const isTotalCol = carriedForward[col] !== undefined;
@@ -116,31 +116,37 @@ function PrintInvoiceTable({
           {pageRows.length > 0 ? (
             <>
               {pageRows.map((row, i) => {
-                let requiredLines = 3;
+                // let requiredLines = 4;
 
                 return (
                   <tr
                     key={i}
-                    style={{ height: `${requiredLines * 10}px` }}
+                    style={{ height: `38px` }}
                     className="align-top "
                   >
                     {head.map((h, idx) => {
                       const align = alignments?.[idx] || "center";
                       return (
-                        <td
-                          key={idx}
-                          className={`border-x first:border-l-0 last:border-r-0 border-ring px-0.5 py-0 leading-tight text-${align} ${columnWidths[h] || "w-auto"}`}
-                        >
-                          {/* {row[idx] || ""} */}
-                          {h === "Sub Total"
-                            ? formatAmount(row[idx])
-                            : row[idx] || ""}
-                        </td>
+                       <td
+  key={idx}
+  className={`border-x first:border-l-0 last:border-r-0 border-ring px-0.5 py-0 leading-tight text-${align} ${columnWidths[h] || "w-auto"}`}
+>
+  {h === "Item Name" ? (
+    <div className="line-clamp-3">
+      {row[idx]}
+    </div>
+  ) : h === "Sub Total" ? (
+    formatAmount(row[idx])
+  ) : (
+    row[idx] || ""
+  )}
+</td>
+
+
                       );
                     })}
                     {shouldShowTotal && (
                       <td className="border first:border-l-0 last:border-r-0 px-1 py-0 leading-tight text-right w-[120px]">
-                        {/* {row[row.length - 1] || ""} */}
                         {formatAmount(row[row.length - 1])}
                       </td>
                     )}
@@ -180,7 +186,7 @@ function PrintInvoiceTable({
                 {head.map((h, i) => (
                   <td
                     key={i}
-                    className={`border-x border-ring px-1 py-0 leading-tight text-center ${columnWidths[h] || "w-auto"}`}
+                    className={`border-x border-ring first:border-l-0 last:border-r-0 px-1 py-0 leading-tight text-center ${columnWidths[h] || "w-auto"}`}
                   >
                     &nbsp;
                   </td>
@@ -195,9 +201,9 @@ function PrintInvoiceTable({
           )}
         </tbody>
 
-        <tfoot className="border-t border-ring text-center">
+        <tfoot className="text-center">
           {totalColumns.length > 0 && (
-            <tr className="font-bold">
+            <tr className="font-bold border-y border-ring ">
               {head.map((col, i) => {
                 const align = alignments?.[i] || "center";
                 const isTotalCol = totals[col] !== undefined;
@@ -238,6 +244,11 @@ function PrintInvoiceTable({
               })}
               {shouldShowTotal && <td></td>}
             </tr>
+          )}
+          {!isLastPage && (
+            <div className="absolute right-0 pr-6 pt-2 text-sm">
+              to be Continue...
+            </div>
           )}
         </tfoot>
       </table>

@@ -43,6 +43,8 @@ interface PrintProps {
   ShipingAddress: PrintCustomerAddress;
   totalColumns?: string[];
   invoiceInfo: PrintInvoiceInfo;
+  IRNQR:string
+  BankQR:string
 }
 export interface PrintAddress {
   address1: string;
@@ -67,6 +69,8 @@ function PrintFormat2({
   ShipingAddress,
   totalColumns = [],
   invoiceInfo,
+  IRNQR,
+  BankQR
 }: PrintProps) {
   const quantityIndex = head.findIndex((h) =>
     h.toLowerCase().includes("quantity")
@@ -141,9 +145,9 @@ function PrintFormat2({
   // Pagination setup
   const pages: PageData[] = [];
 
-  if (computedBody.length <= 10) {
+  if (computedBody.length <= 8) {
     // ✅ If total items <= 12 → only 12 items on first page
-    const pageRows = computedBody.slice(0, 10);
+    const pageRows = computedBody.slice(0, 8);
     const pageSubtotal: Record<string, number> = {};
     totalColumns.forEach((col) => {
       const colIndex = head.indexOf(col);
@@ -159,7 +163,7 @@ function PrintFormat2({
     let i = 0;
 
     // ✅ First page → up to 23 items if total > 12
-    const firstPageSize = Math.min(22, computedBody.length);
+    const firstPageSize = Math.min(18, computedBody.length);
     const firstPageRows = computedBody.slice(i, i + firstPageSize);
     const firstSubtotal: Record<string, number> = {};
     totalColumns.forEach((col) => {
@@ -176,7 +180,7 @@ function PrintFormat2({
     while (i < computedBody.length) {
       const remaining = computedBody.length - i;
 
-      if (remaining <= 10) {
+      if (remaining <= 8) {
         const lastRows = computedBody.slice(i);
         const lastSubtotal: Record<string, number> = {};
         totalColumns.forEach((col) => {
@@ -189,7 +193,7 @@ function PrintFormat2({
         pages.push({ rows: lastRows, subtotal: lastSubtotal });
         i = computedBody.length;
       } else {
-        const midRows = computedBody.slice(i, i + 22);
+        const midRows = computedBody.slice(i, i + 18);
         const midSubtotal: Record<string, number> = {};
         totalColumns.forEach((col) => {
           const colIndex = head.indexOf(col);
@@ -199,14 +203,14 @@ function PrintFormat2({
           );
         });
         pages.push({ rows: midRows, subtotal: midSubtotal });
-        i += 22;
+        i += 18;
       }
     }
   }
 
   // ✅ If last page has more than 12 rows, add empty footer page
   const lastPage = pages[pages.length - 1];
-  if (lastPage.rows.length > 10) {
+  if (lastPage.rows.length > 8) {
     pages.push({ rows: [], subtotal: {} });
   }
   return (
@@ -220,8 +224,8 @@ function PrintFormat2({
         return (
           <div
             key={pageIndex}
-            className={`page border border-ring w-full ${
-              pageIndex > 0 ? " mt-10" : ""
+            className={`page border border-b-0 border-ring w-full ${
+              pageIndex > 0 ? " mt-6" : ""
             } text-[10px]`}
           >
             <PrintHeader
@@ -231,6 +235,7 @@ function PrintFormat2({
               customerName={customerName}
               BillAddress={BillAddress}
               ShipingAddress={ShipingAddress}
+              IRNQR={IRNQR}
             />
 
             <PrintInvoiceTable
@@ -240,14 +245,14 @@ function PrintFormat2({
               alignments={alignments}
               itemsPerPage={
                 isEmptyFooterPage
-                  ? 10
+                  ? 9
                   : pageIndex === 0
-                    ? computedBody.length <= 10
-                      ? 10 // ✅ force 12 if total items <= 12
-                      : 22 // ✅ otherwise allow 23 on first page
+                    ? computedBody.length <= 8
+                      ? 8 // ✅ force 12 if total items <= 12
+                      : 18 // ✅ otherwise allow 23 on first page
                     : isLastPage
-                      ? 10
-                      : 22
+                      ? 8
+                      : 18
               }
               shouldShowTotal={shouldShowTotal}
               totalColumns={totalColumns}
@@ -267,6 +272,8 @@ function PrintFormat2({
                 grandTotalInWords={grandTotalInWords}
                 client={client}
                 invoiceInfo={invoiceInfo}
+                isLastPage={isLastPage}
+                BankQR={BankQR}
               />
             )}
           </div>

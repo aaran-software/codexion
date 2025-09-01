@@ -31,7 +31,6 @@ function mapDataToBody(head: string[], data: any[]) {
   });
 }
 
-
 function PrintComponent() {
   const printRef = useRef<HTMLDivElement>(null);
   const printRef2 = useRef<HTMLDivElement>(null);
@@ -63,7 +62,7 @@ function PrintComponent() {
 
     fetchData();
   }, []);
-  
+
   return (
     <div>
       <div ref={printRef2} className="block m-auto p-6">
@@ -80,20 +79,106 @@ function PrintComponent() {
             "SGST",
             "Sub Total",
           ]}
-         body={[
-  ["1","6109","Men's Cotton T-Shirt (Blue, L)","2","499","5%","998","24.95","24.95","1048"],
-  ["2","6203","Men's Formal Shirt (White, 42)","1","899","5%","899","22.47","22.47","944"],
-  ["3","6204","Women's Kurti (Red, M)","3","799","5%","2397","59.93","59.93","2517"],
-  ["4","6103","Men's Denim Jeans (Black, 34)","2","1599","5%","3198","79.95","79.95","3358"],
-  ["5","6211","Silk Saree (Traditional, Green)","1","3499","12%","3499","209.94","209.94","3919"],
-  ["6","6104","Kids Frock (Pink, 8Y)","2","699","5%","1398","34.95","34.95","1468"],
-  ["7","6110","Men's Hoodie Sweatshirt (Grey, XL)","1","1299","12%","1299","77.94","77.94","1455"],
-  ["8","6105","Women's Leggings (Black, Free Size)","4","399","5%","1596","39.90","39.90","1676"],
-  ["9","6212","Women's Dupatta (Cotton, Printed)","3","299","5%","897","22.42","22.42","942"],
-  ["10","6109","Men's Polo T-Shirt (Green, M)","5","599","5%","2995","74.87","74.87","3145"],
-  
-]}
-
+          body={[
+            
+           [
+              "1",
+              "6109001",
+              "Men's Cotton T-Shirt (Blue, L)",
+              "2",
+              "111499",
+              "5%",
+              "998",
+              "24.95",
+              "24.95",
+              "1048",
+            ],
+            [
+              "2",
+              "6203002",
+              "Men's Formal Shirt (White, 42)",
+              "1",
+              "899",
+              "5%",
+              "899",
+              "22.47",
+              "22.47",
+              "944",
+            ],
+            [
+              "3",
+              "6204003",
+              "Women's Kurti (Red, M)",
+              "3",
+              "799",
+              "5%",
+              "2397",
+              "59.93",
+              "59.93",
+              "2517",
+            ],
+            [
+              "4",
+              "6103004",
+              "Men's Denim Jeans (Black, 34)",
+              "2",
+              "1599",
+              "5%",
+              "3198",
+              "79.95",
+              "79.95",
+              "3358",
+            ],
+            [
+              "5",
+              "6211005",
+              "Silk Saree (Traditional, Green)",
+              "1",
+              "3499",
+              "12%",
+              "3499",
+              "209.94",
+              "209.94",
+              "3919",
+            ],
+            [
+              "6",
+              "6104006",
+              "Kids Frock (Pink, 8Y)",
+              "2",
+              "699",
+              "5%",
+              "1398",
+              "34.95",
+              "34.95",
+              "1468",
+            ],
+            [
+              "7",
+              "6110007",
+              "Men's Hoodie Sweatshirt (Grey, XL)",
+              "1",
+              "1299",
+              "12%",
+              "1299",
+              "77.94",
+              "77.94",
+              "1455",
+            ],
+            [
+              "8",
+              "6105008",
+              "Women's Leggings (Black, Free Size)",
+              "4",
+              "399",
+              "5%",
+              "1596",
+              "39.90",
+              "39.90",
+              "1676",
+            ]
+            
+          ]}
           alignments={[
             "center",
             "center",
@@ -107,15 +192,15 @@ function PrintComponent() {
             "right",
           ]}
           client={{
-            name: "ABC CLIENTS INDIA LTD",
+            name: "TECH MEDIA",
             address: {
-              address1: "No.1, P.V.G Nagar Extension, Samundipuram South, Gandhi Nagar, HP Petrol Pump",
-              address2: "Tiruppur , Tamil Nadu-641601",
+              address1:
+                "436, Avinashi Road, Near CITU Office,",
+              address2: "Tiruppur, Tamil Nadu-641602",
             },
-            phone: 9363944493,
-            email: "sukraagarments96@gmail.com",
+            phone: 9894244450,
+            email: "info@techmedia.in",
             gstinNo: "33AXIPP0352P1Z6",
-
           }}
           bank={{
             accountNo: "D123456789101112",
@@ -126,18 +211,17 @@ function PrintComponent() {
           logo={"/assets/logo/logo.svg"}
           customerName="DEEPA"
           BillAddress={{
-            address1:"VELAKANNI SCHOOLVELAKANNI SCHOOL KIRSHNAGIRI",
-            address2:"Tamil Nadu, India",
-            address3:" State Code: 33 PIN Code: 635001",
-            GSTIN:"GSTIN: 33AXIPP0352P1Z6"
+            address1: "VELAKANNI SCHOOLVELAKANNI SCHOOL KIRSHNAGIRI",
+            address2: "Tamil Nadu, India",
+            address3: "State Code: 33 PIN Code: 635001",
+            GSTIN: "GSTIN: 33AXIPP0352P1Z6",
           }}
-           ShipingAddress={{
-            address1:"VELAKANNI SCHOOLVELAKANNI SCHOOL KIRSHNAGIRI",
-            address2:"Tamil Nadu, India",
-            address3:" State Code: 33 PIN Code: 635001",
-            GSTIN:"GSTIN: 33AXIPP0352P1Z6"
+          ShipingAddress={{
+            address1: "VELAKANNI SCHOOLVELAKANNI SCHOOL KIRSHNAGIRI",
+            address2: "Tamil Nadu, India",
+            address3: " State Code: 33 PIN Code: 635001",
+            GSTIN: "GSTIN: 33AXIPP0352P1Z6",
           }}
-          
           totalColumns={["Qty", "Amount", "Sub Total", "CGST", "SGST"]}
           invoiceInfo={{
             invoiceNo: "INV-001",
@@ -146,8 +230,10 @@ function PrintComponent() {
             vehicleNo: "TN24AB1234",
             supplyDateTime: "29/08/2025 10:00 AM",
             placeOfSupply: "Tamil Nadu",
-            IRN:"5e0d2a3c8f9b7d6a1c4f3b2e7a8d9c0b1234567890abcdef1234567890abcdef"
+            IRN: "5e0d2a3c8f9b7d6a1c4f3b2e7a8d9c0b1234567890abcdef1234567890abcdef",
           }}
+          IRNQR="/assets/QR/qr.jpg"
+          BankQR="/assets/QR/qr.png"
         />
         <button
           onClick={handlePrint2}
