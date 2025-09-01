@@ -1,4 +1,4 @@
-import Timeline from "../../../../../resources/components/Timeline/Timeline";
+import Timeline from "../../../../../resources/UIBlocks/timeline/Timeline";
 import { BookIcon } from "lucide-react";
 
 const timelineData = [

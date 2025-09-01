@@ -190,6 +190,8 @@ body::-webkit-scrollbar {
   --color-loss: var(--loss);
   --color-input-warning: var(--input-warning);
 
+  --color-footer: var(--footer);
+  --color-footer-foreground: var(--footer-foreground);
 
 }
 
@@ -265,7 +267,8 @@ body::-webkit-scrollbar {
 
 
     --input-warning: #fef2f2;
-
+    --footer: #000000;
+    --footer-foreground: #ffffff;
 }
 
 .dark {
@@ -336,6 +339,8 @@ body::-webkit-scrollbar {
 
     --input-warning: #000000;
 
+        --footer: #000000;
+    --footer-foreground: #ffffff;
 }
 
 }

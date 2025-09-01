@@ -21,6 +21,6 @@
     ]
   },
   "include": [
-    "apps/*/src"
+    "apps/*/src", "email.cjs"
   ]
 }

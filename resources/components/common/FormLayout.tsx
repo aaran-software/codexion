@@ -17,7 +17,7 @@ import { useReactToPrint } from "react-to-print";
 import Print from "../../layouts/printformat/Print";
 import apiClient from "../../../resources/global/api/apiClients";
 import Button from "../../../resources/components/button/Button";
-import Tooltipcomp from "../tooltip/tooltipcomp";
+import Tooltip from "../tooltip/tooltip";
 import TabForm from "../../UIBlocks/form/TabForm";
 type FormLayoutProps = {
   groupedFields: FieldGroup[];
@@ -160,20 +160,19 @@ function FormLayout({
   }, [filteredData, currentPage, rowsPerPage]);
 
   const handleEdit = async (rowData: any) => {
-  setEditId(rowData.id);
+    setEditId(rowData.id);
 
-  try {
-    const url = `${formApi.read}/${encodeURIComponent(rowData.id)}`;
-    const res = await apiClient.get(url);
-    const detail = res.data.data;
+    try {
+      const url = `${formApi.read}/${encodeURIComponent(rowData.id)}`;
+      const res = await apiClient.get(url);
+      const detail = res.data.data;
 
-    setEditData(detail);   // ✅ load full record into form
-    setFormOpen(true);
-  } catch (err) {
-    console.error(`❌ Failed to fetch details for ${rowData.id}`, err);
-  }
-};
-
+      setEditData(detail); // ✅ load full record into form
+      setFormOpen(true);
+    } catch (err) {
+      console.error(`❌ Failed to fetch details for ${rowData.id}`, err);
+    }
+  };
 
   const handleDelete = (index: number) => {
     const updated = [...tableData];
@@ -249,60 +248,44 @@ function FormLayout({
                   </div>
                 ))}
             </div>
-            <Tooltipcomp
-              tip={"Filter"}
-              content={
-                <ImageButton
-                  className="p-2"
-                  icon="filter"
-                  onClick={() => setFilterDrawerOpen(!filterDrawerOpen)}
-                />
-              }
-            />
+            <Tooltip content={"Filter"}>
+              <ImageButton
+                className="p-2"
+                icon="filter"
+                onClick={() => setFilterDrawerOpen(!filterDrawerOpen)}
+              />
+            </Tooltip>
           </div>
 
           <div className="flex gap-2 items-center">
-            <Tooltipcomp
-              tip={"Column hide"}
-              content={
-                <ButtonDropdown
-                  icon="column"
-                  columns={head
-                    .filter((h) => h.key !== "id")
-                    .map((h) => ({ key: h.key, label: h.label }))}
-                  visibleColumns={visibleColumns}
-                  onChange={setVisibleColumns}
-                  excludedColumns={["id"]}
-                  className="block m-auto p-2"
-                />
-              }
-            />
-            <Tooltipcomp
-              tip={"Export CSV"}
-              content={
-                <ImageButton
-                  icon="export"
-                  className="p-2"
-                  onClick={() =>
-                    exportToCSV(
-                      filteredData,
-                      head.map((h) => h.key),
-                      `purchase.csv`
-                    )
-                  }
-                />
-              }
-            />
-            <Tooltipcomp
-              tip={"Print"}
-              content={
-                <ImageButton
-                  icon="print"
-                  className="p-2"
-                  onClick={handlePrint}
-                />
-              }
-            />
+            <Tooltip content={"Column hide"}>
+              <ButtonDropdown
+                icon="column"
+                columns={head
+                  .filter((h) => h.key !== "id")
+                  .map((h) => ({ key: h.key, label: h.label }))}
+                visibleColumns={visibleColumns}
+                onChange={setVisibleColumns}
+                excludedColumns={["id"]}
+                className="block m-auto p-2"
+              />
+            </Tooltip>
+            <Tooltip content={"Export CSV"}>
+              <ImageButton
+                icon="export"
+                className="p-2"
+                onClick={() =>
+                  exportToCSV(
+                    filteredData,
+                    head.map((h) => h.key),
+                    `purchase.csv`
+                  )
+                }
+              />
+            </Tooltip>
+            <Tooltip content={"Print"}>
+              <ImageButton icon="print" className="p-2" onClick={handlePrint} />
+            </Tooltip>
 
             <AnimateButton
               label="Create"
