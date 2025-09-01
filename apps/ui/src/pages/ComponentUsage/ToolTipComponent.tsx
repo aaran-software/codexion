@@ -1,12 +1,16 @@
-import Tooltipcomp from "../../../../../resources/components/tooltip/tooltipcomp"
+import Tooltip from "../../../../../resources/components/tooltip/tooltip"
 
 function ToolTipComponent() {
-  return (
-    <div>
-        <Tooltipcomp tip="Login Button" className="" content={"Click Me"} />
+    return (
+        <div>
+            <Tooltip content="Hello! I'm a tooltip" side="top" delayDuration={200}>
+                <button className="px-3 py-1 rounded bg-blue-600 text-white">
+                    Hover me
+                </button>
+            </Tooltip>
 
-    </div>
-  )
+        </div>
+    )
 }
 
 export default ToolTipComponent

@@ -23,7 +23,7 @@ function PortfolioContact({ mapSrc }: PortfolioContactProps) {
         </div>
 
         <div className="border border-ring/30 bg-background rounded-lg p-5 shadow-2xl">
-          <form className="flex flex-col space-y-4 border border-ring/30 rounded-lg p-5">
+          <form className="flex flex-col space-y-4 rounded-lg">
             <div>
               <label htmlFor="name" className="text-foreground text-lg">
                 Name

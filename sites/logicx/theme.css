@@ -165,6 +165,7 @@
   --color-input-warning: var(--input-warning);
 
   --color-footer: var(--footer);
+  --color-footer-foreground: var(--footer-foreground);
 
   --color-highlight1: var(--highlight1);
   --color-highlight2: var(--highlight2);
@@ -249,6 +250,7 @@
     --input-warning: #fef2f2;
 
     --footer: #000000;
+    --footer-foreground: #ffffff;
     
     --highlight1: #3a3182;
     --highlight2: #3a3182;

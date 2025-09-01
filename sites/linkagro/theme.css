@@ -117,6 +117,7 @@
   --color-loss: var(--loss);
   --color-input-warning: var(--input-warning);
   --color-footer: var(--footer);
+  --color-footer-foreground: var(--footer-foreground);
   --color-tag: var(--tag);
 
   --color-highlight1: var(--highlight1);
@@ -193,6 +194,7 @@
     --input-warning: #fef2f2;
 
     --footer: #18281E;
+    --footer-foreground: #ffffff;
 
      --highlight1: #3a3182;
     --highlight2: #3a3182;
