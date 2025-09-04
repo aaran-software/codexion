@@ -1,7 +1,7 @@
 import React from "react";
 import DocsWrapper from "../DocsWrapper";
 import BlogCarouselCard from "../../../../../resources/UIBlocks/carousel/BlogCarouselCard";
-import { LinkAgroBlogs } from "../../../../../resources/global/library/blog";
+import { LinkAgroBlogs } from "../../../../../resources/global/helpers/blog";
 import { Slide } from "../../../../../resources/UIBlocks/carousel/HeroCarousel";
 import HeroCarousel from "../../../../../resources/UIBlocks/carousel/HeroCarousel";
 import ProjectCarousel from "../../../../../resources/UIBlocks/carousel/ProjectCarousel";

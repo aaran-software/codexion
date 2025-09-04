@@ -1,8 +1,8 @@
 import { lazy, Suspense, useEffect } from "react";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 
-const SignUp = lazy(() => import("../../global/auth/Signup"));
-const ProtectedRoute = lazy(() => import("../../global/auth/ProtectedRoute"));
+const SignUp = lazy(() => import("../../../resources/global/auth/Signup"));
+const ProtectedRoute = lazy(() => import("../../../resources/global/auth/ProtectedRoute"));
 const Admin = lazy(() => import("./pages/Admin"));
 const Home = lazy(() => import("./pages/Home"));
 const ProductPage = lazy(
@@ -18,7 +18,7 @@ const Header = lazy(
   () => import("../../../resources/UIBlocks/header/Header")
 );
 const FrappeLoginForm = lazy(
-  () => import("../../../resources/layouts/auth/frappe-login")
+  () => import("../../../resources/UIBlocks/auth/frappe-login")
 );
 const SpecialCategory = lazy(
   () => import("../../../resources/UIBlocks/SpecialCategory")

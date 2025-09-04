@@ -23,7 +23,9 @@ app.post("/send", async (req: Request, res: Response) => {
   const { name, email, message }: ContactForm = req.body;
 
   if (!name || !email || !message) {
-    return res.status(400).json({ success: false, message: "All fields are required." });
+    return res
+      .status(400)
+      .json({ success: false, message: "All fields are required." });
   }
 
   const appType = process.env.VITE_APP_TYPE;
@@ -42,6 +44,7 @@ app.post("/send", async (req: Request, res: Response) => {
     const mailOptions = {
       from: email,
       to: user,
+      replyTo: email,
       subject: `New message from ${name}`,
       html: `
         <p><strong>Name:</strong> ${name}</p>
@@ -52,10 +55,14 @@ app.post("/send", async (req: Request, res: Response) => {
     };
 
     await transporter.sendMail(mailOptions);
-    res.status(200).json({ success: true, message: "Message sent successfully!" });
+    res
+      .status(200)
+      .json({ success: true, message: "Message sent successfully!" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, message: "Failed to send message." });
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to send message." });
   }
 });
 

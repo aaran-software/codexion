@@ -1,5 +1,5 @@
-import Print from "../../../../../resources/layouts/printformat/Print";
-import PrintFormat2 from "../../../../../resources/layouts/printformat/PrintFormat2";
+import Print from "../../../../../resources/UIBlocks/printformat/Print";
+import PrintFormat2 from "../../../../../resources/UIBlocks/printformat/PrintFormat2";
 import { useEffect, useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 

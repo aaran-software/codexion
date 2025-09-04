@@ -13,10 +13,9 @@ import {
   SidebarTrigger,
 } from "../../../../resources/components/sidebar/sidebar";
 import { useEffect, useState } from "react";
-import { useAppContext } from "../../../global/AppContaxt";
+import { useAppContext } from "../../../../resources/global/AppContaxt";
 import { useNavigate, useParams } from "react-router-dom";
-import { useFrappeAuth } from "../../../global/auth/frappeAuthContext";
-import Dashboard from "../../../../resources/components/dashboard/Dashboard";
+import { useFrappeAuth } from "../../../../resources/global/auth/frappeAuthContext";
 import AppHeader from "../../../../resources/UIBlocks/header/AppHeader";
 import { AppSidebar } from "../../../../resources/components/sidebar/app-sidebar";
 import ScrollToTopButton from "../../../../resources/components/common/scrolltotopbutton";

@@ -1,10 +1,6 @@
 // AppContext.tsx
-import {
-  createContext,
-  useContext,
-  useState,
-  type ReactNode,
-} from "react";
+import React from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 
 type Settings = {
   theme: string;
@@ -21,16 +17,21 @@ type AppContextType = {
   APP_TYPE: string;
   API_URL: string;
   API_METHOD: string;
+  APP_PORT: number;
+  APP_HOST: string;
 };
 
-// const APP_TYPE = import.meta.env.VITE_APP_TYPE || 'CODEXSUN';
-
 const env = import.meta.env;
-const APP_TYPE = (import.meta.env.VITE_APP_TYPE).toUpperCase();
+const APP_TYPE = import.meta.env.VITE_APP_TYPE;
 const API_URL = env[`VITE_${APP_TYPE}_API_URL`];
 const API_METHOD = env[`VITE_${APP_TYPE}_API_METHOD`];
-
+const APP_PORT = import.meta.env.VITE_APP_PORT;
 const AppContext = createContext<AppContextType | undefined>(undefined);
+
+const rawHost = env.VITE_APP_HOST || env.VITE_HOST;
+const APP_HOST = rawHost
+  ? rawHost.replace(/^https?:\/\//, "") // strip protocol if present
+  : "0.0.0.0";
 
 export const AppProvider = ({
   children,
@@ -60,7 +61,9 @@ export const AppProvider = ({
         updateSettings,
         APP_TYPE,
         API_URL,
-        API_METHOD
+        API_METHOD,
+        APP_PORT,
+        APP_HOST,
       }}
     >
       {children}

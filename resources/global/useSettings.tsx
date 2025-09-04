@@ -1,3 +1,4 @@
+import React from "react";
 import {
   useEffect,
   useState,
@@ -6,8 +7,8 @@ import {
   type ReactNode,
 } from "react";
 import { useAppContext } from "./AppContaxt";
-import LoadingSpinner from "../../resources/components/loading/LoadingSpinner";
 import LoadingScreen from "../../resources/components/loading/LoadingScreen";
+
 const SettingsContext = createContext<any>(null);
 
 export function useAppSettings() {
@@ -25,7 +26,7 @@ export default function AppInitializer({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!APP_TYPE) return;
 
-    let jsonPath = "/settings.json";
+    let jsonPath = "../settings.json";
 
     const loadSettings = async () => {
       try {
@@ -54,9 +55,7 @@ export default function AppInitializer({ children }: { children: ReactNode }) {
     );
   }
   if (!settings) {
-    return (
-        <LoadingScreen image={"/assets/logo/logicx_logo.svg"} />
-    );
+    return <LoadingScreen image={"/assets/logo/logicx_logo.svg"} />;
   }
 
   return (

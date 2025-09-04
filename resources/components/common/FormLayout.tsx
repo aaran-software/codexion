@@ -14,7 +14,7 @@ import Pagination from "../../../resources/components/pagination/pagination";
 import { useEffect, useMemo, useRef, useState } from "react";
 import CommonForm, { type FieldGroup } from "./commonform";
 import { useReactToPrint } from "react-to-print";
-import Print from "../../layouts/printformat/Print";
+import Print from "../../UIBlocks/printformat/Print";
 import apiClient from "../../../resources/global/api/apiClients";
 import Button from "../../../resources/components/button/Button";
 import Tooltip from "../tooltip/tooltip";
@@ -44,28 +44,29 @@ function FormLayout({
       try {
         // Step 1: Get list of companies
         const listRes = await apiClient.get(formApi.read);
-        const companies = listRes.data.data || [];
+        const companies = listRes.data || [];
 
         // Step 2: For each company, fetch detailed data
-        const detailedData = await Promise.all(
-          companies.map(async (company: any) => {
-            const name = encodeURIComponent(company.name);
-            const url = `${formApi.read}/${name}`;
-            try {
-              const detailRes = await apiClient.get(url);
-              return detailRes.data.data || null; // your detailed company object
-            } catch (err) {
-              console.warn(
-                `❌ Failed to fetch details for ${company.name}`,
-                err
-              );
-              return null;
-            }
-          })
-        );
+        // const detailedData = await Promise.all(
+        //   companies.map(async (company: any) => {
+        //     const name = encodeURIComponent(company.name);
+        //     const url = `${formApi.read}/${name}`;
+        //     try {
+        //       const detailRes = await apiClient.get(url);
+        //       console.log(detailRes.data.data)
+        //       return detailRes.data.data || null; // your detailed company object
+        //     } catch (err) {
+        //       console.warn(
+        //         `❌ Failed to fetch details for ${company.name}`,
+        //         err
+        //       );
+        //       return null;
+        //     }
+        //   })
+        // );
 
         // Step 3: Convert to table rows
-        const rows: TableRowData[] = detailedData
+        const rows: TableRowData[] = companies
           .filter(Boolean)
           .map((entry: any) => {
             const row: TableRowData = {
@@ -165,7 +166,7 @@ function FormLayout({
     try {
       const url = `${formApi.read}/${encodeURIComponent(rowData.id)}`;
       const res = await apiClient.get(url);
-      const detail = res.data.data;
+      const detail = res.data;
 
       setEditData(detail); // ✅ load full record into form
       setFormOpen(true);

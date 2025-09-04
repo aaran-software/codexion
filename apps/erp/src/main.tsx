@@ -3,11 +3,11 @@ import ReactDOM from "react-dom/client";
 import AppRoutes from "./Routes";
 import "../theme.css";
 import {BrowserRouter} from "react-router-dom";
-import {AppProvider} from "../../global/AppContaxt";
-import {AuthProvider} from "../../global/auth/frappeAuthContext";
+import {AppProvider} from "../../../resources/global/AppContaxt";
+import {AuthProvider} from "../../../resources/global/auth/frappeAuthContext";
 import settings from "../public/settings.json";
-import AppInitializer from "../../global/useSettings";
-import {ThemeProvider} from "../../../resources/components/theme-provider";
+import AppInitializer from "../../../resources/global/useSettings";
+import {ThemeProvider} from "../../../resources/global/theme-provider";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <React.StrictMode>

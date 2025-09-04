@@ -130,7 +130,7 @@ function FooterBlock() {
           ],
         }}
       >
-        <AppFooter />
+        <AppFooter content={""} />
       </DocsWrapper>
 
       <DocsWrapper

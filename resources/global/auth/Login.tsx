@@ -1,4 +1,5 @@
-import { LoginForm } from "../../../resources/layouts/auth/login-form"
+import React from "react"
+import { LoginForm } from "../../../resources/UIBlocks/auth/login-form"
 
 export default function Login() {
   return (

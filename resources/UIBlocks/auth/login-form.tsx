@@ -8,10 +8,11 @@ import {
   CardHeader,
   CardTitle,
 } from "../../../resources/components/chart/card";
-import { useAuth } from "../../../apps/global/auth/AuthContext";
-import { useAppContext } from "../../../apps/global/AppContaxt";
-import FloatingInput from "../input/floating-input";
+import { useAuth } from "../../../resources/global/auth/AuthContext";
+import { useAppContext } from "../../../resources/global/AppContaxt";
+import FloatingInput from "../../components/input/floating-input";
 import Button from "../../../resources/components/button/Button";
+import React from "react";
 
 export function LoginForm({ className }: { className?: string }) {
   const [usr, setUsr] = useState("");

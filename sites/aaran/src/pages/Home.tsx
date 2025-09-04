@@ -3,7 +3,7 @@ import HeroBanner from "../../../../resources/UIBlocks/banner/HeroBanner";
 import StartingSection1 from "../../../../resources/UIBlocks/startingsection/StartingSection1";
 import TestimonialCarousel from "../../../../resources/UIBlocks/testimonials/TestimonialCard";
 import ContactCard from "../../../../resources/UIBlocks/card/ContactCard";
-import Team2 from "../../../../resources/layouts/team/team2";
+import Team2 from "../../../../resources/UIBlocks/team/team2";
 import TypingText from "../../../../resources/AnimationComponents/TypingText";
 import Roadmap from "../../../../resources/UIBlocks/timeline/Roadmap";
 import { Rocket, Target, Users } from "lucide-react"; // optional icons

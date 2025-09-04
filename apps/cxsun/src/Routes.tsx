@@ -1,8 +1,8 @@
 import React from 'react'
 import {Routes, Route} from 'react-router-dom'
-import Login from "../../global/auth/Login";
-import SignUp from "../../global/auth/Signup";
-import ProtectedRoute from "../../global/auth/ProtectedRoute";
+import Login from "../../../resources/global/auth/Login";
+import SignUp from "../../../resources/global/auth/Signup";
+import ProtectedRoute from "../../../resources/global/auth/ProtectedRoute";
 import Admin from "./pages/Admin";
 import Docs from "../../ecart/src/docs";
 

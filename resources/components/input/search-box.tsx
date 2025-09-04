@@ -1,9 +1,9 @@
-import { cn } from "../../../resources/global/library/utils";
-import type { Product } from "../header/Header";
+import { cn } from "../../../resources/global/helpers/utils";
+import type { Product } from "../../UIBlocks/header/Header";
 import apiClient from "../../../resources/global/api/apiClients";
-import { useAppContext } from "../../../apps/global/AppContaxt";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAppContext } from "../../../resources/global/AppContaxt";
 
 interface GlobalSearchProps {
   className?: string;
