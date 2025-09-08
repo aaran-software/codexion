@@ -1,7 +1,7 @@
 import { Calendar22 } from '../../../../../resources/components/calendar-22';
 import { Calendar } from '../../../../../resources/components/calendar';
 import { useState } from 'react';
-import { DatePicker } from '../../../../../resources/components/datepicker/Datepicker';
+import { DatePicker } from '../../../../../resources/components/datepicker/DatePicker';
 
 function CalendarComponents() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);

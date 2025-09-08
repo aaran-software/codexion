@@ -43,7 +43,7 @@ function TestimonialBlock() {
           ],
         }}
       >
-         <TestimonialCarousel testimonials={Testimonials} />
+         <TestimonialCarousel testimonials={Testimonials} heading={'Our Client Reviews'} />
       </DocsWrapper>
     </div>
   )

@@ -1,11 +1,11 @@
 import React from "react";
 import DocsWrapper from "../DocsWrapper";
-import AppFooter from "../../../../../resources/UIBlocks/footer/AppFooter";
+// import AppFooter from "../../../../../resources/UIBlocks/footer/AppFooter";
 import AppHeader from "../../../../../resources/UIBlocks/header/AppHeader";
 import ContactHeader from "../../../../../resources/UIBlocks/header/ContactHeader";
-import HeaderPortfolio from "../../../../../resources/UIBlocks/header/header-portfolio";
-import HeaderPortfolio2 from "../../../../../resources/UIBlocks/header/HeaderPortfolio2";
-import TransparentHeader from "../../../../../resources/UIBlocks/header/TransparentHeader";
+// import HeaderPortfolio from "../../../../../resources/UIBlocks/header/header-portfolio";
+// import HeaderPortfolio2 from "../../../../../resources/UIBlocks/header/HeaderPortfolio2";
+// import TransparentHeader from "../../../../../resources/UIBlocks/header/TransparentHeader";
 import Header from "../../../../../resources/UIBlocks/header/Header";
 import { FaEnvelope, FaPhoneAlt } from "react-icons/fa";
 import { AiFillClockCircle } from "react-icons/ai";

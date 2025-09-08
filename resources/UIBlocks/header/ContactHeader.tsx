@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Button from "../../components/button/Button";
 import { IconType } from "react-icons"; // type for icons
 
@@ -10,9 +11,15 @@ export type ContactItem = {
 interface ContactHeaderProps {
   contacts: ContactItem[];
   buttonLabel: string;
+  path:string
+  routePath?: string;
 }
 
-function ContactHeader({ contacts, buttonLabel }: ContactHeaderProps) {
+function ContactHeader({ contacts, buttonLabel, path, routePath }: ContactHeaderProps) {
+  const navigate = useNavigate();
+  const HandleRoute = () => {
+    navigate(routePath ? routePath : "");
+  };
   return (
     <div className="flex flex-row justify-between bg-primary text-primary-background items-center gap-6 text-center">
       {/* Contacts */}
@@ -31,6 +38,9 @@ function ContactHeader({ contacts, buttonLabel }: ContactHeaderProps) {
       {/* Button */}
       <Button
         label={buttonLabel}
+        scrollToId={path}
+        path={path}
+        onClick={HandleRoute}
         className="bg-foreground text-background !rounded-full hover:bg-background hover:text-foreground"
       />
     </div>

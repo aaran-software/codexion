@@ -7,7 +7,6 @@ type Section = {
   title: string;
   description: string;
   image: string;
-  date?: string;
   ctaText?: string;
 };
 
@@ -55,22 +54,17 @@ const VerticalHoverBlocks: React.FC<Props> = ({ sections }) => {
               <h2 className="text-2xl text-primary font-extrabold mb-2">
                 {activeItem.label}
               </h2>
-              {activeItem.date && (
-                <p className="text-sm font-semibold text-gray-500 mb-2">
-                  {activeItem.date}
-                </p>
-              )}
-              <h2 className="text-2xl font-extrabold mb-3 line-clamp-2">
+              <h2 className="text-xl font-extrabold mb-3 line-clamp-2">
                 {activeItem.title}
               </h2>
-              <p className="text-gray-600 text-base mb-4 line-clamp-3">
+              <p className="text-gray-600 text-base mb-4 line-clamp-5">
                 {activeItem.description}
               </p>
-              <Button
+              {/* <Button
                 label={activeItem.ctaText ?? "Read More"}
                 arrowRight
                 className="inline-flex items-center gap-2 bg-blue-600 text-white px-5 py-3 rounded-md hover:bg-blue-700 transition"
-              />
+              /> */}
             </div>
             {/* Image */}
             <img
@@ -122,32 +116,27 @@ const VerticalHoverBlocks: React.FC<Props> = ({ sections }) => {
             transition={{ duration: 0.45, ease: "easeInOut" }}
             className="flex-1 flex flex-col md:flex-row w-full bg-white border border-ring/30 rounded-2xl shadow-xl overflow-hidden h-[450px]"
           >
-            <div className="flex-1 flex flex-col md:flex-row items-center justify-between px-6 py-8 md:px-12 relative">
+            <div className="flex-1 flex flex-col md:flex-row items-center justify-between px-6 py-8 md:px-4 gap-4 relative">
               {/* Text */}
               <motion.div layout className="max-w-2xl text-center md:text-left">
                 <h2 className="text-2xl md:text-xl text-primary font-extrabold leading-snug mb-5">
                   {activeItem.label}
                 </h2>
-                {activeItem.date && (
-                  <p className="text-sm font-semibold text-gray-500 mb-4">
-                    {activeItem.date}
-                  </p>
-                )}
-                <h2 className="text-2xl md:text-4xl font-extrabold leading-snug mb-5 line-clamp-2">
+                <h2 className="text-xl md:text-2xl font-extrabold leading-snug mb-5 line-clamp-3 text-justify">
                   {activeItem.title}
                 </h2>
-                <p className="text-gray-600 text-base md:text-lg leading-7 mb-8 line-clamp-3">
+                <p className="text-gray-600 text-base md:text-lg leading-7 mb-8 line-clamp-7 text-justify">
                   {activeItem.description}
                 </p>
-                <Button
+                {/* <Button
                   label={activeItem.ctaText ?? "Read More"}
                   arrowRight
                   className="inline-flex items-center gap-2 bg-blue-600 text-white px-5 py-3 rounded-md hover:bg-blue-700 transition"
-                />
+                /> */}
               </motion.div>
 
               {/* Image */}
-              <motion.div layout className="mt-6 md:mt-0 md:pr-6 flex-shrink-0">
+              <motion.div layout className="mt-6 md:mt-0 flex-shrink-0">
                 <img
                   src={activeItem.image}
                   alt={activeItem.title}

@@ -10,6 +10,7 @@ import { lazy, Suspense } from "react";
 import LoadingScreen from "../../../resources/components/loading/LoadingScreen";
 import TransparentHeader from "../../../resources/UIBlocks/header/TransparentHeader";
 import PortfolioFooter from "../../../resources/UIBlocks/footer/PortfolioFooter2";
+import NotFound from "../../../resources/components/notfound/NotFound";
 const Home = lazy(() => import("./pages/Home"));
 
 function AppRoutes() {
@@ -30,6 +31,18 @@ function AppRoutes() {
 
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route
+          path="*"
+          element={
+            <NotFound
+              title="Oops! Page not found"
+              description="The page you are looking for might have been moved or deleted."
+              buttonLabel="Back to Home"
+              homePath="/"
+              highlightColor="text-red-500"
+            />
+          }
+        />
         </Routes>
 
         <PortfolioFooter

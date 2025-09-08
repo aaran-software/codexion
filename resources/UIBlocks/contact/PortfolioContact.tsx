@@ -58,7 +58,7 @@ function PortfolioContact({ mapSrc }: PortfolioContactProps) {
 
   return (
     <div className="">
-      <h1 className="text-5xl font-bold py-10 text-center text-foreground">
+      <h1 className="text-lg lg:text-4xl font-bold py-10 text-center text-foreground">
         Have Any Questions?
       </h1>
       <div className="fixed top-3 right-0 z-100">

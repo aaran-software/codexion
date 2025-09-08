@@ -4,7 +4,7 @@ import { IoMdMenu } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import ContactHeader, { ContactItem } from "./ContactHeader";
-import { useAppSettings } from "../../../apps/global/useSettings";
+import { useAppSettings } from "../../../resources/global/useSettings";
 
 type MenuItem = {
   label: string;
@@ -15,12 +15,15 @@ type HeaderPortfolioProps = {
   menu: MenuItem[];
   contact: ContactItem[];
   contactHeader?: boolean;
+  contactHeaderPath?: string;
+  routePath?: string;
 };
 
 function HeaderPortfolio({
   menu,
   contact,
   contactHeader = false,
+  contactHeaderPath = "#contact",
 }: HeaderPortfolioProps) {
   const settings = useAppSettings();
   if (!settings) return null;
@@ -65,7 +68,7 @@ function HeaderPortfolio({
         <div
           className={`hidden lg:block bg-primary text-white md:px-[10%] py-1 px-5`}
         >
-          <ContactHeader contacts={contact} buttonLabel="Get a Quote" />
+          <ContactHeader contacts={contact} path={contactHeaderPath} routePath="" buttonLabel="Get a Quote" />
         </div>
       )}
 
