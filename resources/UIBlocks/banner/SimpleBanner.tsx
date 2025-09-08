@@ -31,6 +31,7 @@ function SimpleBanner({
       <img src={imgPath} alt="" className="items-center hover:animate-pulse" />
       <div className="flex flex-col justify-center items-start gap-5">
         <div className={`text-2xl md:text-4xl font-bold ${textStyle}`}>{title}</div>
+        
         <Button
           className={`${buttonStyle}`}
           scrollToId={path}

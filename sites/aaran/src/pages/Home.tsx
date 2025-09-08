@@ -10,13 +10,13 @@ import { Rocket, Target, Users } from "lucide-react"; // optional icons
 import HalfOrbit from "../../../../resources/UIBlocks/Orbit/HalfOrbit";
 import { FaBullseye, FaEye, FaHandshake } from "react-icons/fa";
 import HighlightCardWithIcon from "../../../../resources/UIBlocks/card/HighlightedCardwithIcon";
-import Consultant from "../../../../resources/UIBlocks/consultant/consultant";
+import BusinessHighlightsSection from "../../../../resources/UIBlocks/businessHighlights/BusinessHighlightsSection";
 
 const TransparentCard = lazy(
   () => import("../../../../resources/UIBlocks/card/TransparentCard")
 );
 const AnimatedCard = lazy(
-  () => import("../../../../resources/UIBlocks/card/animatedCard")
+  () => import("../../../../resources/UIBlocks/card/AnimatedCard")
 );
 const Pricing = lazy(
   () => import("../../../../resources/UIBlocks/pricingcard/Pricing")
@@ -367,7 +367,7 @@ function Home() {
       </div>
 
       <div className="py-20 ">
-        <Consultant
+        <BusinessHighlightsSection
           companyInfo={companyInfo}
           backgroundImage="/assets/bg.jpeg"
           cta={cta}

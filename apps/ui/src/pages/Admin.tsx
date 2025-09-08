@@ -43,7 +43,6 @@ import BarCodeComponent from "./ComponentUsage/BarCodeComponent";
 import BannerBlock from "./UIBlocksUsage/BannerBlock";
 import CardBlock from "./UIBlocksUsage/CardBlock";
 import CarouselBlock from "./UIBlocksUsage/CarouselBlock";
-import ConsultantBlock from "./UIBlocksUsage/ConsultantBlock";
 import ContactBlock from "./UIBlocksUsage/ContactBlock";
 import FilterBlock from "./UIBlocksUsage/FilterBlock";
 import FooterBlock from "./UIBlocksUsage/FooterBlock";
@@ -58,6 +57,8 @@ import TestimonialBlock from "./UIBlocksUsage/TestimonialBlock";
 import MapBlock from "./UIBlocksUsage/MapBlock";
 import DocsIntro from "./DocsIntro";
 import RatingBlock from "./UIBlocksUsage/RatingBlock";
+import AboutBlock from "./UIBlocksUsage/AboutBlock";
+import BusinessHighlightsSectionBlock from "./UIBlocksUsage/BusinessHighlightsSectionBlock";
 
 export default function Admin() {
   const { user } = useFrappeAuth();
@@ -233,6 +234,11 @@ export default function Admin() {
 
     //blocks
     {
+      id: "aboutblock",
+      className: "flex justify-center items-center min-h-full p-4",
+      component: <AboutBlock />,
+    },
+    {
       id: "bannerblock",
       className: "flex justify-center items-center min-h-full p-4",
       component: <BannerBlock />,
@@ -248,9 +254,9 @@ export default function Admin() {
       component: <CarouselBlock />,
     },
     {
-      id: "consultantblock",
+      id: "businesshighlight",
       className: "flex justify-center items-center min-h-full p-4",
-      component: <ConsultantBlock />,
+      component: <BusinessHighlightsSectionBlock />,
     },
     {
       id: "contactblock",

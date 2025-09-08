@@ -153,6 +153,11 @@
         "url": "#",
         "items": [
           {
+            "title": "About Block",
+            "currentComponent": "aboutblock",
+            "url": "aboutblock"
+          },
+          {
             "title": "Banners Block",
             "currentComponent": "bannerblock",
             "url": "bannerblock"
@@ -168,9 +173,9 @@
             "url": "carouselblock"
           },
           {
-            "title": "Consulant Block",
-            "currentComponent": "consultantblock",
-            "url": "consultantblock"
+            "title": "Business Highlight Block",
+            "currentComponent": "businesshighlight",
+            "url": "businesshighlight"
           },
           {
             "title": "Contact Block",

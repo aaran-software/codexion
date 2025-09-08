@@ -142,7 +142,7 @@ const CardBlock = () => {
   return (
     <div className="flex flex-col gap-10">
       <DocsWrapper
-        title="AnimatedCard"
+        title="1. AnimatedCard"
         propDocs={[
           { name: "title", description: "Main heading for the section" },
           { name: "description", description: "Subheading below the title" },
@@ -166,7 +166,7 @@ const CardBlock = () => {
       </DocsWrapper>
 
       <DocsWrapper
-        title="ServicesCard"
+        title="2. ServicesCard"
         propDocs={[
           {
             name: "items",
@@ -184,7 +184,7 @@ const CardBlock = () => {
       </DocsWrapper>
 
       <DocsWrapper
-        title="ContactCard"
+        title="3. ContactCard"
         propDocs={[
           {
             name: "contact.address",
@@ -216,7 +216,7 @@ const CardBlock = () => {
       </DocsWrapper>
 
       <DocsWrapper
-        title="FlexColCard"
+        title="4. FlexColCard"
         propDocs={[
           {
             name: "heading",
@@ -242,7 +242,7 @@ const CardBlock = () => {
       </DocsWrapper>
 
       <DocsWrapper
-        title="HighlighCard"
+        title="5. HighlighCard"
         propDocs={[
           {
             name: "sectionTitle",
@@ -268,7 +268,7 @@ const CardBlock = () => {
       </DocsWrapper>
 
       <DocsWrapper
-        title="HighlightCardWithIcon"
+        title="6. HighlightCardWithIcon"
         propDocs={[
           {
             name: "sectionTitle",
@@ -303,7 +303,7 @@ const CardBlock = () => {
       </DocsWrapper>
 
       <DocsWrapper
-        title="ScrollableCard"
+        title="7. ScrollableCard"
         propDocs={[
           {
             name: "products",
@@ -339,7 +339,7 @@ const CardBlock = () => {
       </DocsWrapper>
 
       <DocsWrapper
-        title="TransparentCard"
+        title="8. TransparentCard"
         propDocs={[
           {
             name: "image",
@@ -365,7 +365,7 @@ const CardBlock = () => {
       </DocsWrapper>
 
       <DocsWrapper
-        title="NexusCard"
+        title="9. NexusCard"
         propDocs={[
           {
             name: "image",
@@ -432,7 +432,7 @@ const CardBlock = () => {
       </DocsWrapper>
 
       <DocsWrapper
-        title="NexusCard"
+        title="10. GroupProductCard"
         propDocs={[
           {
             name: "image",
@@ -460,7 +460,7 @@ const CardBlock = () => {
       </DocsWrapper>
 
       <DocsWrapper
-        title="NexusCard"
+        title="11. ProductCard"
         propDocs={[
           {
             name: "image",
@@ -490,7 +490,7 @@ const CardBlock = () => {
       </DocsWrapper>
 
        <DocsWrapper
-        title="NexusCard"
+        title="12. ProductCard2"
         propDocs={[
           {
             name: "image",

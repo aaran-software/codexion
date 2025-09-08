@@ -16,7 +16,7 @@ interface RoadmapProps {
 
 const Roadmap: React.FC<RoadmapProps> = ({ items, RoadmapHeading }) => {
   return (
-    <section className="overflow-x-hidden">
+    <section className="overflow-x-hidden py-10">
       <h2 className="text-4xl font-bold text-center mb-15">{RoadmapHeading}</h2>
 
       <div className="relative max-w-6xl mx-auto">

@@ -72,6 +72,7 @@ function HeaderPortfolio({
         </div>
       )}
 
+
       {/* Logo + Menu Bar */}
       <div className="bg-background flex justify-between h-20 items-center px-5  py-2 md:py-4">
         {/* Logo */}

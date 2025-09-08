@@ -6,6 +6,7 @@ import { Slide } from "../../../../../resources/UIBlocks/carousel/HeroCarousel";
 import HeroCarousel from "../../../../../resources/UIBlocks/carousel/HeroCarousel";
 import ProjectCarousel from "../../../../../resources/UIBlocks/carousel/ProjectCarousel";
 import BannerCarousel from "../../../../../resources/UIBlocks/BannerCarousel";
+import ImageCarousel from "../../../../../resources/UIBlocks/carousel/ImageCarousel";
 
 function CarouselBlock() {
   const blogs = [...LinkAgroBlogs];
@@ -189,11 +190,37 @@ function CarouselBlock() {
           reusableIn: ["Features Section", "Landing Pages", "Service Blocks"],
         }}
       >
-       <BannerCarousel
-        api={`api/resource/Catalog Details?fields=["name"]&filters=[["is_slider", "=", 1]]`}
-        delay={6000}
-      />
+        <BannerCarousel
+          api={`api/resource/Catalog Details?fields=["name"]&filters=[["is_slider", "=", 1]]`}
+          delay={6000}
+        />
+      </DocsWrapper>
 
+      <DocsWrapper
+        title="ImageCarousel"
+        propDocs={[
+          { name: "title", description: "Main heading for the section" },
+          { name: "description", description: "Subheading below the title" },
+          {
+            name: "cards",
+            description:
+              "Array of card objects with `title`, `description`, `image`, and `hoverColor`",
+          },
+        ]}
+        paths={{
+          file: "/resources/UIBlocks/carousel/BlogCarouselCard",
+          usedIn: ["/pages/Home.tsx"],
+          reusableIn: ["Features Section", "Landing Pages", "Service Blocks"],
+        }}
+      >
+        <ImageCarousel
+          images={[
+            { id: "1", image: "/assets/bg.jpg" },
+            { id: "2", image: "/assets/bg.jpg" },
+            { id: "3", image: "/assets/bg.jpg" },
+          ]}
+          interval={6000}
+        />
       </DocsWrapper>
 
       {/*<DocsWrapper*/}
