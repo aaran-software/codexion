@@ -7,7 +7,7 @@ import BlogCarouselCard from "../../../../resources/UIBlocks/carousel/BlogCarous
 import { useState } from "react";
 import ProcessHighlightSection from "../../../../resources/UIBlocks/process/ProcessHighlightSection";
 import PortfolioContact from "../../../../resources/UIBlocks/contact/PortfolioContact";
-import { LinkAgroBlogs } from "./Blog";
+import { LinkAgroBlogs } from "../../../../resources/global/helpers/blog";
 
 function Home() {
   const slidesData: Slide[] = [

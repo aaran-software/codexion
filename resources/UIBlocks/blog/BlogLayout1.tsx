@@ -2,17 +2,11 @@ import { useState } from "react";
 import GlobalSearch from "../../components/input/search-box";
 import Timeline from "../../UIBlocks/timeline/timeline";
 import { useNavigate, useParams } from "react-router-dom";
-import { LinkAgroBlogs } from "../../../sites/linkagro/src/pages/Blog";
+import { BlogPost, LinkAgroBlogs } from "../../global/helpers/blog";
 
-const recentPosts = [
-  {
-    title: "10 Tips for Writing Clean React Code",
-    author: "Jane Smith",
-    date: "July 30, 2025",
-    thumbnail: "/assets/tomato-3919426_1280.jpg",
-  },
-  // Add more recent post objects here...
-];
+interface BlogLayoutProps {
+  blogs: BlogPost[];
+}
 
 const initialComments = [
   {
@@ -45,13 +39,13 @@ const initialComments = [
   },
 ];
 
-function BlogLayout1() {
+function BlogLayout1({blogs}: BlogLayoutProps) {
   const navigate=useNavigate()
   const { id } = useParams();
-  const post = LinkAgroBlogs.find((p) => p.id === Number(id));
+  const post = blogs.find((p) => p.id === Number(id));
   const [comments, setComments] = useState(initialComments);
   const [newComment, setNewComment] = useState("");
-  const recentBlogs = LinkAgroBlogs.filter((p) => p.id !== Number(id));
+  const recentBlogs = blogs.filter((p) => p.id !== Number(id));
   if (!post) {
     return (
       <div className="p-10 text-center">

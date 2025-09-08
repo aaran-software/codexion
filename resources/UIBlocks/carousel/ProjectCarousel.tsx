@@ -101,7 +101,7 @@ const ProjectCarousel: React.FC<Props> = ({
   });
 
   return (
-    <div className="relative w-full p-6">
+    <div className="relative w-full">
       {/* Category Filter */}
       <div ref={filerref1} className="flex gap-3 mb-6 justify-center flex-wrap">
         {categories.map((cat, index) => (
@@ -171,12 +171,12 @@ const ProjectCarousel: React.FC<Props> = ({
         <ImageButton
           icon="left"
           onClick={prevSlide}
-          className="absolute -left-3 top-1/2 -translate-y-1/2 bg-primary/30 text-foreground p-2"
+          className="absolute -left-8 top-1/2 -translate-y-1/2 bg-primary/30 text-foreground p-2"
         />
         <ImageButton
           icon="right"
           onClick={nextSlide}
-          className="absolute -right-3 top-1/2 -translate-y-1/2 bg-primary/30 text-foreground p-2"
+          className="absolute -right-8 top-1/2 -translate-y-1/2 bg-primary/30 text-foreground p-2"
         />
       </div>
     </div>

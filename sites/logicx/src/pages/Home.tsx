@@ -2,7 +2,7 @@ import React, { lazy, useState } from "react";
 import { FaFacebookF, FaTwitter, FaInstagram } from "react-icons/fa";
 import { AiFillClockCircle } from "react-icons/ai";
 import ScrollToTopButton from "../../../../resources/components/common/scrolltotopbutton";
-const Team = lazy(() => import("../../../../resources/layouts/team/team"));
+const Team = lazy(() => import("../../../../resources/UIBlocks/team/team"));
 const PortfolioContact = lazy(
   () => import("../../../../resources/UIBlocks/contact/PortfolioContact")
 );
@@ -25,7 +25,7 @@ const BrandMarquee = lazy(
 );
 import { FaEye, FaBullseye, FaHandshake } from "react-icons/fa";
 import BlogCarouselCard from "../../../../resources/UIBlocks/carousel/BlogCarouselCard";
-import { LogicxBlogs } from "../../../../resources/global/library/blog";
+import { LogicxBlogs } from "../../../../resources/global/helpers/blog";
 import HighlightedBanner from "../../../../resources/UIBlocks/banner/HighlightedBanner";
 import VerticalHoverBlocks from "../../../../resources/UIBlocks/banner/VerticalHoverBlocks";
 import TypingText from "../../../../resources/AnimationComponents/TypingText";
@@ -58,7 +58,7 @@ const Home: React.FC = () => {
       title1: "Smarter Operations.",
       title2: "Simplified ERP.",
       description:
-        "Tailored ERP solutions to streamline your business—from inventory to invoicing, everything in one place.",
+        "Tailored ERP solutions to streamline your business from inventory to invoicing, everything in one place.",
       image: "/assets/svg/home-hero.svg",
       bgClass: "bg-website-background text-website-foreground",
     },
@@ -67,7 +67,7 @@ const Home: React.FC = () => {
       title1: "Powerful Integration.",
       title2: "Limitless Growth.",
       description:
-        "Connect your ERP with Tally, WooCommerce, payment gateways, and more—for seamless business automation.",
+        "Connect your ERP with Tally, WooCommerce, payment gateways, and more for seamless business automation.",
       image: "/assets/svg/create.svg",
       bgClass: "bg-website-background text-website-foreground",
     },
@@ -76,7 +76,7 @@ const Home: React.FC = () => {
       title1: "Custom Workflows.",
       title2: "Exact Fit ERP.",
       description:
-        "We don’t just deploy—our domain experts craft workflows for retail, textile, manufacturing & service sectors.",
+        "We don’t just deploy our domain experts craft workflows for retail, textile, manufacturing & service sectors.",
       image: "/assets/svg/home-hero.svg",
       bgClass: "bg-website-background text-website-foreground",
     },
@@ -132,9 +132,9 @@ const Home: React.FC = () => {
     },
     {
       image: "/assets/story/4.webp",
-      title: "Global Recognition",
+      title: "Seamless Shopping, Anytime, Anywhere.",
       description:
-        "Awards and client testimonials recognized our passion for excellence, reinforcing our reputation as a trusted partner.",
+        "Shop smarter with secure payments and quick access to everything you need.",
       buttonLabel: "View More",
     },
     {
@@ -149,7 +149,7 @@ const Home: React.FC = () => {
   const industries = [
     {
       title: "Software Industry Solutions",
-      image: "/assets/service/erpnext.png",
+      image: "/assets/service/erpnext.webp",
       description:
         "We deliver tailored ERP, billing, and e-commerce solutions designed to streamline operations and accelerate growth for software companies.",
       services: [
@@ -177,7 +177,7 @@ const Home: React.FC = () => {
     },
     {
       title: "Electronics Retail & Distribution",
-      image: "/assets/industry/electronics.png",
+      image: "/assets/industry/electronics.webp",
       description:
         "Our ERP and e-commerce platforms empower electronics wholesalers, retailers, and distributors to manage high-volume inventory and multi-channel sales.",
       services: [
@@ -242,7 +242,7 @@ const Home: React.FC = () => {
   const projects = [
     {
       title: "ERP Services We Offer",
-      image: "/assets/service/erpnext.png",
+      image: "/assets/service/erpnext.webp",
       services: [
         {
           heading: "Implementation & Deployment",
@@ -273,7 +273,7 @@ const Home: React.FC = () => {
     },
     {
       title: "Ecart – E-Commerce Platform",
-      image: "/assets/service/ecart.png",
+      image: "/assets/service/ecart.webp",
       services: [
         {
           heading: "Custom Storefront",
@@ -314,7 +314,7 @@ const Home: React.FC = () => {
     },
     {
       title: "QBill (Quick Bill)",
-      image: "/assets/service/qbilling.png",
+      image: "/assets/service/qbilling.webp",
       services: [
         {
           heading: "GST-Compliant Invoicing",
@@ -339,67 +339,59 @@ const Home: React.FC = () => {
   const product = [
     {
       id: 1,
-      title: "Linkagro Exports Portfolio",
-      description: "A modern personal portfolio site.",
-      category: "website",
-      image: "/assets/product/linkagro.jpg",
-      link: "https://linkagro.in/",
-    },
-    {
-      id: 2,
       title: "Tech media eCart",
       description: "Mobile app for shopping.",
-      category: "app",
-      image: "/assets/product/techmedia.png",
+      category: "Web apps",
+      image: "/assets/product/techmedia.webp",
       link: "https://techmedia.in",
     },
     {
-      id: 3,
+      id: 2,
       title: "Logicx Portfolio",
       description: "Corporate business website.",
-      category: "website",
-      image: "/assets/product/logicx.png",
+      category: "websites",
+      image: "/assets/product/logicx.webp",
       link: "https://logicx.in/",
     },
     {
-      id: 4,
+      id: 3,
       title: "Aaran Portfolio",
       description: "Corporate business website.",
-      category: "website",
-      image: "/assets/product/aaran.png",
+      category: "websites",
+      image: "/assets/product/aaran.webp",
       link: "https://grand-florentine-b254ee.netlify.app/",
     },
     {
-      id: 5,
+      id: 4,
       title: "ERPNext",
       description: "Corporate business website.",
-      category: "app",
-      image: "/assets/product/linkagro.png",
+      category: "Web apps",
+      image: "/assets/product/erp.webp",
       link: "https://example.com/company",
     },
   ];
 
   const teamData = [
     {
-      image: "/assets/sample1.jpg",
+      image: "/assets/blog/user.webp",
       name: "Desirae Dias",
       designation: "CEO",
       bio: "Visionary leader driving innovation and excellence.",
     },
     {
-      image: "/assets/sample1.jpg",
+      image: "/assets/blog/user.webp",
       name: "Madelyn Torff",
       designation: "Marketing Head",
       bio: "Expert in growth strategies and brand management.",
     },
     {
-      image: "/assets/sample1.jpg",
+      image: "/assets/blog/user.webp",
       name: "Tiana Gouse",
       designation: "Project Manager",
       bio: "Ensures projects are delivered with precision and care.",
     },
     {
-      image: "/assets/sample1.jpg",
+      image: "/assets/blog/user.webp",
       name: "Livia Passaquin",
       designation: "Director",
       bio: "Guides business strategy and organizational success.",
@@ -420,21 +412,21 @@ const Home: React.FC = () => {
     {
       id: 1,
       company: "TechCorp",
-      logo: "/assets/client/client.png",
+      logo: "/assets/client/client.webp",
       feedback: "The software streamlined our operations...",
       client: "John Doe, CTO",
     },
     {
       id: 2,
       company: "HealthPlus",
-      logo: "/assets/client/client.png",
+      logo: "/assets/client/client.webp",
       feedback: "We reduced costs by 25% after implementing... ",
       client: "Sarah Lee, Operations Head",
     },
     {
       id: 3,
       company: "HealthPlus",
-      logo: "/assets/client/client.png",
+      logo: "/assets/client/client.webp",
       feedback: "We reduced costs by 25% after implementing... ",
       client: "Sarah Lee, Operations Head",
     },
@@ -491,27 +483,33 @@ const Home: React.FC = () => {
   const [whyChoose] = useState([
     {
       number: 1,
-      title: "Proven Development Process",
+      title: "Proven Expertise",
       description:
-        "20+ Years of Proven Experience in Software Development and IT Solutions",
+        "Years of experience delivering innovative digital solutions across industries.",
     },
     {
       number: 2,
-      title: "Global Reach & Scalability",
+      title: "Custom-Built for You",
       description:
-        "Scalable & Custom Software Solutions for Startups to Enterprises",
+        "Tailor-made websites, e-carts, and ERP systems designed to match your business needs.",
     },
     {
       number: 3,
-      title: "Technology Expertise",
+      title: "Reliable & Secure",
       description:
-        "Expertise Across Multiple Technologies – Web, Mobile, Cloud, and AI",
+        "We prioritize data security and seamless performance for every project.",
     },
     {
       number: 4,
-      title: "Commitment to Quality",
+      title: "Future-Ready Technology",
       description:
-        "Long-Term Client Partnerships based on Trust, Innovation, and Reliable Support",
+        "Built with modern frameworks and scalable architecture to grow with your business.",
+    },
+    {
+      number: 5,
+      title: "End-to-End Support",
+      description:
+        " From planning to launch and beyond, we’re with you at every step.",
     },
   ]);
 
@@ -526,6 +524,7 @@ const Home: React.FC = () => {
         ]}
         contact={contactItems}
         contactHeader={true}
+        contactHeaderPath={"contact"}
       />
       <section id="home" className="">
         {/* Top view */}
@@ -557,7 +556,7 @@ const Home: React.FC = () => {
         <div className="px-5 lg:px-[12%] grid lg:grid-cols-2 gap-15 pt-10 pb-10">
           <div className="flex justify-center items-center">
             <img
-              src={"/assets/about.jpg"}
+              src={"/assets/about.webp"}
               className="w-full object-cover"
               alt="img"
               loading="lazy"
@@ -587,11 +586,13 @@ const Home: React.FC = () => {
         </div>
 
         {/* vision mission section */}
-        <HighlightCardWithIcon
-          className="grid-cols-1 md:grid-cols-3"
-          sectionTitle=""
-          items={VisionMission}
-        />
+        <div className="px-5 lg:px-[10%]">
+          <HighlightCardWithIcon
+            className="grid-cols-1 md:grid-cols-3"
+            sectionTitle=""
+            items={VisionMission}
+          />
+        </div>
 
         <div className="px-4 py-10 lg:px-[10%]">
           <div className="flex flex-col gap-3 pt-5">
@@ -628,34 +629,35 @@ const Home: React.FC = () => {
         <ProcessHighlightSection
           title="Why choose us?"
           description=""
-          imageUrl="/assets/about1.jpg"
-          bgimage="/assets/bg1.jpg"
+          imageUrl="/assets/about1.webp"
+          bgimage="/assets/bg1.webp"
           steps={whyChoose}
         />
         <div className="py-10 px-5 lg:px-[10%] ">
           <VerticalHoverBlocks
             sections={[
               {
-                label: "CX INSIGHTS",
-                date: "APR 17, 2024",
-                title:
-                  "AI-Driven Agent Training: A Paradigm Shift for Contact Centers",
+                label: "E-Cart",
+                title: "E-Cart Revolution: Empowering Local Shops Online",
                 description:
-                  "In this LinkedIn Live event, Forrester and [24]7.ai discussed how generative AI is transforming contact centers with quick, cost-effective, and efficient agent onboarding.",
-                image: "/assets/1.jpg",
+                  "Bring your store online with ease! E-Cart helps shop owners create their digital storefront, share links on WhatsApp, and attract customers beyond walk-ins. From small shops to big showrooms, selling online is now just a click away.",
+                image: "/assets/1.webp",
                 ctaText: "Read More",
               },
               {
-                label: "EVENTS",
-                title: "Upcoming Webinars",
-                description: "Join our thought leaders for live discussions.",
-                image: "/assets/2.jpg",
+                label: "Portfolio",
+                title:
+                  "Showcase Your Work: Professional Portfolios Made Simple",
+                description:
+                  "Your work deserves the spotlight. Our portfolio solutions help individuals and businesses build stunning, customizable websites that highlight skills, projects, and achievements - all with a modern, responsive design.",
+                image: "/assets/2.webp",
               },
               {
-                label: "NEWS",
-                title: "Product Release Q3",
-                description: "Discover the latest features and updates.",
-                image: "/assets/3.jpg",
+                label: "Custom ERP Software",
+                title: "Streamlining Business Your Way",
+                description:
+                  "From inventory to invoices, our custom ERP software is built to fit your business needs. Flexible, scalable, and easy to use — manage operations, track sales, and make data-driven decisions all in one place.",
+                image: "/assets/3.webp",
               },
             ]}
           />
@@ -689,45 +691,45 @@ const Home: React.FC = () => {
           />
         </div>
         <NexusCard
-          sectionTitle="Integrations"
-          sectionDescription="Streamline your marketing activities by integrating collected data with the choice of your CRM and campaign integration options."
+          sectionTitle="Our Tech Stack"
+          sectionDescription="We build robust, scalable, and future-ready solutions powered by modern technologies — from front-end frameworks to back-end engines and cloud hosting platforms."
           leftClassName="text-left"
           rightClassName="grid-rows-3"
           items={[
             {
-              logo: "/assets/hp.svg",
-              alt: "Stripe",
-              title: "Stripe",
+              logo: "/assets/techstack/react.svg",
+              alt: "React",
+              title: "React",
               className: "bg-[#3E2F89]",
             },
             {
-              logo: "/assets/hp.svg",
-              alt: "PayPal",
-              title: "PayPal",
+              logo: "/assets/techstack/Hostinger.svg",
+              alt: "Hostinger",
+              title: "Hostinger",
               className: "bg-[#c71313]",
             },
             {
-              logo: "/assets/hp.svg",
-              alt: "Razorpay",
-              title: "Razorpay",
+              logo: "/assets/techstack/MySQL.svg",
+              alt: "MySQL",
+              title: "MySQL",
               className: "bg-[#67c090] row-span-2",
             },
             {
-              logo: "/assets/hp.svg",
-              alt: "QuickBooks",
-              title: "QuickBooks",
+              logo: "/assets/techstack/Node.js.svg",
+              alt: "Node.js",
+              title: "Node.js",
               className: "bg-[#ea2264]",
             },
             {
-              logo: "/assets/hp.svg",
-              alt: "Xero",
-              title: "Xero",
+              logo: "/assets/techstack/Tailwind CSS.svg",
+              alt: "TailwindCSS",
+              title: "TailwindCSS",
               className: "bg-[#f5babb] row-span-2",
             },
             {
-              logo: "/assets/hp.svg",
-              alt: "Tally",
-              title: "Tally",
+              logo: "/assets/techstack/GitHub.svg",
+              alt: "GitHub",
+              title: "GitHub",
               className: "bg-[#b2b0e8]",
             },
           ]}
@@ -742,7 +744,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      <div className="my-25 py-15 md:py-20 bg-website-background">
+      {/* <div className="my-25 py-15 md:py-20 bg-website-background">
         <BrandMarquee
           text="Our Clients"
           type="logo"
@@ -750,16 +752,16 @@ const Home: React.FC = () => {
           speed={30}
           height={12}
         />
-      </div>
+      </div> */}
 
-      <div className="mt-20">
-        <h1 className="text-2xl md:text-4xl text-center font-bold">
-          What Our Client Says
-        </h1>
-        <TestimonialCarousel testimonials={Testimonials} />
-      </div>
+      {/* <div className="mt-20">
+        <TestimonialCarousel
+          testimonials={Testimonials}
+          heading={"What Our Client Says"}
+        />
+      </div> */}
 
-      <div className="md:px-[10%] p-4 my-15">
+      <div className="lg:px-[10%] p-4 my-15">
         <BlogCarouselCard blogs={blogs} title={"Latest Posts & Articles"} />
       </div>
 
@@ -774,10 +776,10 @@ const Home: React.FC = () => {
         />
       </section>
 
-      <div className="px-5 py-20 lg:px-[10%]">
+      <div className="px-4 py-20 lg:px-[10%]">
         <SimpleBanner
           title={"Turning Complexity into Simplicity"}
-          imgPath={"assets/h1.png"}
+          imgPath={"assets/h1.webp"}
           path={"contact"}
           buttonLabel={"Start Now"}
           className="bg-purple-800"
@@ -786,7 +788,7 @@ const Home: React.FC = () => {
         />
       </div>
 
-      <div className="px-[10%] pb-15">
+      <div className="px-4 lg:px-[10%] pb-15">
         <Accordion
           title="Frequently Asked Questions"
           type="plus"

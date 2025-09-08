@@ -21,6 +21,7 @@ const HeaderPortfolio2 = lazy(
   () => import("../../../resources/UIBlocks/header/HeaderPortfolio2")
 );
 import ScrollToTopButton from "../../../resources/components/common/scrolltotopbutton";
+import { LinkAgroBlogs } from "../../../resources/global/helpers/blog";
 
 const BlogLayout1 = lazy(
   () => import("../../../resources/UIBlocks/blog/BlogLayout1")
@@ -82,7 +83,11 @@ function AppRoutes() {
           <Route path="/" element={<Home />} />
           <Route path="/product" element={<Product />} />
           <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:id" element={<BlogLayout1 />} />
+          <Route
+            path="/blog/:id"
+            element={<BlogLayout1 blogs={LinkAgroBlogs} />}
+          />
+
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
           <Route path="/manufacture" element={<Manufacture />} />
@@ -96,17 +101,17 @@ function AppRoutes() {
             }
           />
           <Route
-          path="*"
-          element={
-            <NotFound
-              title="Oops! Page not found"
-              description="The page you are looking for might have been moved or deleted."
-              buttonLabel="Back to Home"
-              homePath="/"
-              highlightColor="text-red-500"
-            />
-          }
-        />
+            path="*"
+            element={
+              <NotFound
+                title="Oops! Page not found"
+                description="The page you are looking for might have been moved or deleted."
+                buttonLabel="Back to Home"
+                homePath="/"
+                highlightColor="text-red-500"
+              />
+            }
+          />
         </Routes>
 
         <PortfolioFooter3
@@ -120,7 +125,6 @@ function AppRoutes() {
           companyName="Link Agro Exports"
           textColor="text-background"
         />
-
       </Suspense>
     </div>
   );
