@@ -12,18 +12,29 @@ type RoadmapItem = {
 interface RoadmapProps {
   items: RoadmapItem[];
   RoadmapHeading: string;
+  description?: string;
 }
 
-const Roadmap: React.FC<RoadmapProps> = ({ items, RoadmapHeading }) => {
+const Roadmap: React.FC<RoadmapProps> = ({ items, RoadmapHeading,description }) => {
   return (
     <section className="overflow-x-hidden py-10">
-      <h2 className="text-4xl font-bold text-center mb-15">{RoadmapHeading}</h2>
-
+      <div className="mb-15 flex flex-col gap-5">
+        <h2 className="text-4xl font-bold text-center">{RoadmapHeading}</h2>
+      {description && (
+        <p className="text-center text-gray-600 mx-auto px-4 lg:px-[10%]">
+          {description}
+        </p>
+      )}
+      </div>
       <div className="relative max-w-6xl mx-auto">
         {/* Road / Line */}
-        <div className="absolute left-1/2 top-0 h-full w-1 bg-gray-300 -translate-x-1/2" />
+        {/* Desktop line (center) */}
+        <div className="absolute left-1/2 top-0 h-full w-1 bg-gray-300 -translate-x-1/2 hidden sm:block" />
 
-        <div className="space-y-20">
+        {/* Mobile line (left) */}
+        <div className="absolute left-5.5 top-0 h-full w-1 bg-gray-300 sm:hidden" />
+
+        <div className="space-y-10">
           {items.map((item, index) => {
             const isLeft = index % 2 === 0;
 

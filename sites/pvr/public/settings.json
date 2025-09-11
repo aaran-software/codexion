@@ -17,7 +17,7 @@
     "company_subname":"INTERNATIONAL",
     "mode":"both",
     "color": "",
-    "text_color": "text-[#3A3182]",
+    "text_color": "text-primary",
     "padding": "2",
     "font":"",
     "footer_logo": "/assets/logo/logo.svg"

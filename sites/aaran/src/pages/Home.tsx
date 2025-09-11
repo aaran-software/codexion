@@ -5,7 +5,7 @@ import TestimonialCarousel from "../../../../resources/UIBlocks/testimonials/Tes
 import ContactCard from "../../../../resources/UIBlocks/card/ContactCard";
 import Team2 from "../../../../resources/UIBlocks/team/team2";
 import TypingText from "../../../../resources/AnimationComponents/TypingText";
-import Roadmap from "../../../../resources/UIBlocks/timeline/Roadmap";
+import Roadmap from "../../../../resources/UIBlocks/Roadmap/Roadmap";
 import { Rocket, Target, Users } from "lucide-react"; // optional icons
 import HalfOrbit from "../../../../resources/UIBlocks/Orbit/HalfOrbit";
 import { FaBullseye, FaEye, FaHandshake } from "react-icons/fa";
@@ -415,6 +415,7 @@ function Home() {
             { name: "TypeScript", icon: "/assets/tech/ts.png" },
           ]}
           arcAngle={Math.PI / 1.0}
+          title="TECH STACK"
         />
       </div>
 

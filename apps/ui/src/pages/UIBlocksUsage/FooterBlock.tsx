@@ -5,6 +5,7 @@ import PortfolioFooter3 from "../../../../../resources/UIBlocks/footer/Portfolio
 import FooterLayout1 from "../../../../../resources/UIBlocks/footer/FooterLayout1";
 import FooterLayout2 from "../../../../../resources/UIBlocks/footer/FooterLayout2";
 import PortfolioFooter from "../../../../../resources/UIBlocks/footer/PortfolioFooter2";
+import PortfolioFooter4 from "../../../../../resources/UIBlocks/footer/PortfolioFooter4";
 import {
   FaFacebookF,
   FaTwitter,
@@ -50,7 +51,6 @@ function FooterBlock() {
 
   return (
     <div className="flex flex-col gap-10">
-      
       <DocsWrapper
         title="PortfolioFooter3"
         propDocs={[
@@ -471,15 +471,8 @@ function FooterBlock() {
               { label: "Blog", href: "/blog" },
             ],
           }}
-          consumerPolicy={{
-            title: "Consumer Policy",
-            items: [
-              { label: "Privacy Policy", href: "/privacy" },
-              { label: "Terms of Service", href: "/terms" },
-            ],
-            phone: "+919894244450",
-            email: "info@logicx.com",
-          }}
+          phone="+919894244450"
+          email="info@logicx.com"
           address={{
             lines: [
               "436, Avinashi Road, Near CITU Office",
@@ -490,13 +483,6 @@ function FooterBlock() {
               { icon: <FaTwitter />, href: "https://twitter.com" },
               { icon: <FaInstagram />, href: "https://instagram.com" },
             ],
-          }}
-          updateConfig={{
-            id: "update1",
-            title: "Latest Updates",
-            description:
-              "Check out the latest product updates and announcements.",
-            api: "/api/updates", // can be your API endpoint
           }}
           mapLink="https://www.google.com/maps/embed?pb=!1m18!..." // Embed map link
           version="1.0.0"
@@ -585,6 +571,75 @@ function FooterBlock() {
         />
       </DocsWrapper>
 
+      <DocsWrapper
+        title="PortfolioFooter4"
+        propDocs={[
+          {
+            name: "logo",
+            description:
+              "Path/URL of the company logo displayed in the footer.",
+          },
+          {
+            name: "newsletterTitle",
+            description:
+              "Heading text for the newsletter subscription section.",
+          },
+          {
+            name: "newsletterPlaceholder",
+            description:
+              "Placeholder text inside the newsletter email input field.",
+          },
+          {
+            name: "newsletterButton",
+            description: "Label text for the newsletter subscribe button.",
+          },
+          {
+            name: "companyLinks",
+            description:
+              "Array of company navigation links. Each item includes `label` and `url`.",
+          },
+          {
+            name: "utilityLinks",
+            description:
+              "Array of utility/support links such as style guide or licenses. Each item includes `label` and `url`.",
+          },
+          {
+            name: "socialLinks",
+            description:
+              "Array of social media links. Each contains `icon`, `label`, and `url`.",
+          },
+          {
+            name: "copyright",
+            description:
+              "Text displayed at the bottom of the footer, usually containing copyright notice.",
+          },
+        ]}
+        paths={{
+          file: "/resources/UIBlocks/footer/PortfolioFooter",
+          usedIn: ["/pages/Home.tsx"],
+          reusableIn: [
+            "Landing sections",
+            "Portfolio Previews",
+            "Hero Backgrounds",
+            "Scroll Animations",
+          ],
+        }}
+      >
+        <PortfolioFooter4
+          address="79/22-B-4, EASWARAMOORTHY GOUNDER LAYOUT,
+SAMUNDIPURAM EAST, GANDHI NAGAR PO,
+TIRUPUR - 641 603, TAMILNADU, INDIA"
+          contacts={contacts}
+          socialLinks={socialLinks}
+          pages={pages}
+          newsletterText={newsletterText}
+          newsletterPlaceholder="Your email"
+          newsletterButtonText="Subscribe"
+          companyName="Link Agro Exports"
+          textColor="text-background"
+          mapSrc={`https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d3914.8392617362874!2d77.31750527370102!3d11.125346452663674!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1s79%2F22-B-4%2C%20EASWARAMOORTHY%20GOUNDER%20LAYOUT%2C%20SAMUNDIPURAM%20EAST%2C%20GANDHI%20NAGAR%20PO%2C%20TIRUPUR%20-%20641%20603%2C%20TAMILNADU%2C%20INDIA.!5e0!3m2!1sen!2sin!4v1757349543666!5m2!1sen!2sin`}
+        />
+      </DocsWrapper>
     </div>
   );
 }

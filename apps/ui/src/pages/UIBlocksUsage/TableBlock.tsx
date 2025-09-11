@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import SpecTable, { TableRow } from "../../../../resources/UIBlocks/table/SpecTable";
+import DocsWrapper from "../DocsWrapper";
+import SpecTable, {
+  TableRow,
+} from "../../../../../resources/UIBlocks/table/SpecTable";
 
-function Product() {
+function TableBlock() {
   const [tableData] = useState<TableRow[]>([
     {
       header: "Type of Yarn",
@@ -38,6 +41,7 @@ function Product() {
     {
       header: "Textile Dyeing Production",
       data: [
+        "Techniques:",
         "Reactive Dyes",
         "Garment Dyeing",
         "Lava Dyeing",
@@ -87,13 +91,32 @@ function Product() {
       ],
     },
   ]);
+
   return (
-    <div className="mt-20 lg:mt-30">
-      <div className="pt-20 px-4">
+    <div>
+      <DocsWrapper
+        title="SpecTable"
+        propDocs={[
+          {
+            name: "tableData",
+            description: "contains the table rows and cells",
+          },
+        ]}
+        paths={{
+          file: "resources/UIBlocks/table/SpecTable",
+          usedIn: ["/pages/Home.tsx"],
+          reusableIn: [
+            "Landing sections",
+            "Portfolio Previews",
+            "Hero Backgrounds",
+            "Scroll Animations",
+          ],
+        }}
+      >
         <SpecTable tableData={tableData} />
-      </div>
+      </DocsWrapper>
     </div>
   );
 }
 
-export default Product;
+export default TableBlock;

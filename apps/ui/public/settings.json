@@ -198,6 +198,16 @@
             "url": "headerblock"
           },
           {
+            "title": "Hightlight Block",
+            "currentComponent": "highlightblock",
+            "url": "highlightblock"
+          },
+          {
+            "title": "Orbit Block",
+            "currentComponent": "orbitblock",
+            "url": "orbitblock"
+          },
+          {
             "title": "Portfolio Products Block",
             "currentComponent": "cardblock",
             "url": "productblock"
@@ -228,7 +238,12 @@
             "url": "startingblock"
           },
           {
-            "title": "Testimonial Blocks Block",
+            "title": "Table Blocks",
+            "currentComponent": "tableblock",
+            "url": "tableblock"
+          },
+          {
+            "title": "Testimonial Blocks",
             "currentComponent": "testimonialblock",
             "url": "testimonialblock"
           },
@@ -241,6 +256,11 @@
             "title": "Rating and Review",
             "currentComponent": "rating",
             "url": "starrating"
+          },
+          {
+            "title": "Road Map",
+            "currentComponent": "roadmap",
+            "url": "roadmap"
           }
         ]
       },

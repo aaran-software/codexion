@@ -1,4 +1,4 @@
-import FloatContact from "../contact/FloatContact";
+import FloatContact from "./FloatContact";
 import { IconType } from "react-icons";
 import Alert from "../../components/alert/alert";
 import { useState } from "react";

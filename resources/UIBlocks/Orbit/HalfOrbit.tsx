@@ -6,22 +6,24 @@ type TechItem = {
   icon: string; // image url
 };
 
-interface TechOrbitProps {
+interface HalfOrbitProps {
   centerImage: string;
   items: TechItem[];
   radius?: number;
   size?: number;
   arcAngle?: number;
   autoRotateSpeed?: number;
+  title:string
 }
 
-const HalfOrbit: React.FC<TechOrbitProps> = ({
+const HalfOrbit: React.FC<HalfOrbitProps> = ({
   centerImage,
   items,
   radius = 220,
   size = 500,
   arcAngle = Math.PI,
   autoRotateSpeed = 0.1,
+  title
 }) => {
   const [scrollY, setScrollY] = useState(0);
   const [autoRotation, setAutoRotation] = useState(0);
@@ -74,7 +76,7 @@ const HalfOrbit: React.FC<TechOrbitProps> = ({
           alt="center"
           className="w-32 h-32 sm:w-64 sm:h-64 object-contain"
         />
-        <h1 className="text-2xl md:text-4xl font-bold text-center">TECH STACK</h1>
+        <h1 className="text-2xl md:text-4xl font-bold text-center">{title}</h1>
       </div>
 
       <div

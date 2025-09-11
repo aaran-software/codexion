@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface CounterProps {
   target: number;      // Final value to reach
@@ -8,8 +8,33 @@ interface CounterProps {
 
 const Counter: React.FC<CounterProps> = ({ target, duration = 2000, className }) => {
   const [count, setCount] = useState(0);
+  const [hasStarted, setHasStarted] = useState(false);
+  const ref = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !hasStarted) {
+            setHasStarted(true);
+          }
+        });
+      },
+      { threshold: 0.3 } // starts when 30% of element is visible
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) observer.unobserve(ref.current);
+    };
+  }, [hasStarted]);
+
+  useEffect(() => {
+    if (!hasStarted) return;
+
     let start = 0;
     const increment = target / (duration / 30); // update every ~30ms
 
@@ -24,9 +49,9 @@ const Counter: React.FC<CounterProps> = ({ target, duration = 2000, className })
     }, 30);
 
     return () => clearInterval(timer);
-  }, [target, duration]);
+  }, [target, duration, hasStarted]);
 
-  return <span className={className}>{count}</span>;
+  return <span ref={ref} className={className}>{count}</span>;
 };
 
 export default Counter;

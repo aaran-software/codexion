@@ -59,6 +59,10 @@ import DocsIntro from "./DocsIntro";
 import RatingBlock from "./UIBlocksUsage/RatingBlock";
 import AboutBlock from "./UIBlocksUsage/AboutBlock";
 import BusinessHighlightsSectionBlock from "./UIBlocksUsage/BusinessHighlightsSectionBlock";
+import RoadMapBlock from "./UIBlocksUsage/RoadMapBlock";
+import HighlightSectionBlock from "./UIBlocksUsage/HighlightSectionBlock";
+import OrbitBlock from "./UIBlocksUsage/OrbitBlock";
+import TableBlock from "./UIBlocksUsage/TableBlock";
 
 export default function Admin() {
   const { user } = useFrappeAuth();
@@ -279,6 +283,16 @@ export default function Admin() {
       component: <HeaderBlock />,
     },
     {
+      id: "highlightblock",
+      className: " p-4",
+      component: <HighlightSectionBlock />,
+    },
+    {
+      id: "orbitblock",
+      className: " p-4",
+      component: <OrbitBlock />,
+    },
+    {
       id: "productblock",
       className: "flex justify-center items-center min-h-full p-4",
       component: <ProductBlock />,
@@ -314,6 +328,11 @@ export default function Admin() {
       component: <TestimonialBlock />,
     },
     {
+      id: "tableblock",
+      className: "flex justify-center items-center min-h-full p-4",
+      component: <TableBlock />,
+    },
+    {
       id: "mapblock",
       className: "flex justify-center items-center min-h-full p-4",
       component: <MapBlock />,
@@ -322,6 +341,11 @@ export default function Admin() {
       id: "rating",
       className: "flex justify-center items-center min-h-full p-4",
       component: <RatingBlock />,
+    },
+    {
+      id: "roadmap",
+      className: "p-4",
+      component: <RoadMapBlock />,
     },
   ]);
 

@@ -4,7 +4,7 @@ import { useAppSettings } from "../../../resources/global/useSettings";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/button/Button";
 
-export type ContactInfo = {
+type ContactInfo = {
   icon: IconType;
   value: string;
   href?: string;
@@ -33,11 +33,11 @@ type FooterProps = {
   version?: string;
   poweredCompany?: string;
   poweredUrl?: string;
+  mapSrc: string;
 };
 
-const PortfolioFooter3: React.FC<FooterProps> = ({
+const PortfolioFooter4: React.FC<FooterProps> = ({
   address,
-  contacts,
   socialLinks,
   pages,
   newsletterText,
@@ -48,6 +48,7 @@ const PortfolioFooter3: React.FC<FooterProps> = ({
   version = "1.0",
   poweredCompany = "Aaran",
   poweredUrl = "https://my.codexsun.com/",
+  mapSrc
 }) => {
   const settings = useAppSettings();
   const navigate = useNavigate();
@@ -68,32 +69,36 @@ const PortfolioFooter3: React.FC<FooterProps> = ({
   };
   const logo = settings.logo || defaultLogo;
   return (
-    <footer className="bg-footer text-white pt-12 pb-6">
-      {/* Top Contact Section */}
-
-      <div className="flex flex-col md:flex-row justify-evenly gap-4 px-5 lg:px-[10%]">
-        {contacts.map((item, idx) => {
-          const IconComponent = item.icon;
-          return (
-            <div
-              key={idx}
-              className="flex items-center gap-2 border-b-2 border-ring/30 p-5 border-b-primary w-full text-sm"
-            >
-              <IconComponent className="w-12 h-12 p-2 shrink-0  hover:scale-110" />
-              <a
-                href={item.href}
-                target="_blank"
-                className="text-lg font-bold border-l-2 pl-2 border-primary cursor-pointer"
-              >
-                {item.value}
-              </a>
-            </div>
-          );
-        })}
+    <footer className="bg-footer text-footer-foreground mt-20 pt-12 pb-6 relative">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-highlight1 flex justify-center p-10 rounded-lg w-[80%] shadow-lg">
+    <div className="flex flex-col md:flex-row gap-4 justify-between w-full">
+      <div className="w-full md:w-[50%] flex flex-col gap-4">
+        <h3 className="font-bold text-2xl">Our Newsletters</h3>
+        <p className="text-background/90">{newsletterText}</p>
       </div>
+     <form className="flex items-center gap-4 md:w-1/2 w-full md:justify-end">
+      {/* On mobile the input takes full width, on sm+ it is 70% of form */}
+      <input
+        type="email"
+        placeholder={newsletterPlaceholder}
+        className="h-12 px-4 rounded-lg bg-white text-gray-800 outline-none w-[70%]"
+      />
+
+      {/* Ensure your Button component accepts and forwards className.
+          `h-12 flex items-center justify-center` will vertically center its text/icon. */}
+      <Button
+        type="submit"
+        className="h-12 px-5 flex items-center justify-center bg-primary text-primary-foreground whitespace-nowrap"
+      >
+        {newsletterButtonText}
+      </Button>
+    </form>
+
+    </div>
+  </div>
 
       {/* Main Footer */}
-      <div className="lg:px-[10%] mx-auto px-5 grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+      <div className="lg:px-[10%] mt-30 mx-auto px-5 grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Company Info */}
         <div className="space-y-4">
           <div
@@ -198,22 +203,19 @@ const PortfolioFooter3: React.FC<FooterProps> = ({
           </ul>
         </div>
 
-        <div className="flex flex-col gap-4">
-          <h3 className="font-bold text-lg">Subscribe</h3>
-          <p className="text-background/90">{newsletterText}</p>
-          <form className="flex items-center h-max bg-white rounded-full overflow-hidden w-max md:w-full max-w-full">
-            <input
-              type="email"
-              placeholder={newsletterPlaceholder}
-              className="flex-1 min-w-0 px-4 py-2 text-gray-800 outline-none"
-            />
-            <Button
-              type="submit"
-              className="bg-primary text-sm text-primary-foreground px-3 py-2 m-1 cursor-pointer whitespace-nowrap font-medium rounded-r-full flex-shrink-0 hover:bg-hover"
-            >
-              {newsletterButtonText}
-            </Button>
-          </form>
+        <div>
+            <div className="flex items-center">
+          <iframe
+            src={mapSrc}
+            width="600"
+            height="250"
+            aria-label="location"
+            loading="lazy"
+            className="w-full rounded-lg shadow-lg"
+          >
+            <span className="sr-only">location</span>
+          </iframe>
+        </div>
         </div>
       </div>
 
@@ -238,4 +240,4 @@ const PortfolioFooter3: React.FC<FooterProps> = ({
   );
 };
 
-export default PortfolioFooter3;
+export default PortfolioFooter4;

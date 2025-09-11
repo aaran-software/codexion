@@ -7,15 +7,35 @@ import FlexColCard from "../../../../resources/UIBlocks/card/FlexColCard";
 const CardShowcase = lazy(
   () => import("../../../../resources/UIBlocks/CardShowcase")
 );
-import Roadmap from "../../../../resources/UIBlocks/timeline/Roadmap";
-import { Rocket, Target, Users } from "lucide-react";
-
+import Roadmap from "../../../../resources/UIBlocks/Roadmap/Roadmap";
+import {
+  Rocket,
+  Target,
+  Code2,
+  Layers,
+  ShieldCheck,
+  Repeat,
+  Leaf,
+  Users,
+  BadgeCheck,
+  Clock,
+  Brush,
+  Ship,
+  Scissors,
+  Droplets,
+  Shirt,
+} from "lucide-react";
+import { GiSewingMachine } from "react-icons/gi";
 const BrandMarquee = lazy(
   () => import("../../../../resources/components/marquee/BrandMarquee")
 );
 import SimpleBanner from "../../../../resources/UIBlocks/banner/SimpleBanner";
+import ProcessSection from "../../../../resources/UIBlocks/process/ProcessSection";
+import NexusCard from "../../../../resources/UIBlocks/card/NexusCard";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+  const navigate = useNavigate();
   const bannerImages = [
     { id: "1", image: "/assets/banner/banner1.jpg" },
     { id: "2", image: "/assets/banner/banner2.jpg" },
@@ -175,25 +195,55 @@ function Home() {
 
   const roadmapData = [
     {
-      year: "2015",
-      title: "Founded the Company",
-      description: "Started with a small team of passionate developers.",
+      year: "01",
+      title: "RECEPTION OF THE YARN",
+      description:
+        "Organic, recycled & BCI cotton yarn, Recycled polyester etc",
       icon: <Users className="w-5 h-5 text-white" />,
-      color: "#F59E0B", // amber
+      color: "#F59E0B",
     },
     {
-      year: "2018",
-      title: "First Enterprise Client",
+      year: "02",
+      title: "KNITTING",
       description: "Delivered scalable ERP solution for a global manufacturer.",
-      icon: <Target className="w-5 h-5 text-white" />,
-      color: "#10B981", // green
+      icon: <Shirt className="w-5 h-5 text-white" />,
+      color: "#10B981",
     },
     {
-      year: "2023",
-      title: "AI & Cloud Innovation",
-      description: "Launched SaaS products leveraging AI and cloud computing.",
-      icon: <Rocket className="w-5 h-5 text-white" />,
-      color: "#3B82F6", // blue
+      year: "03",
+      title: "DYEING & FINISHING",
+      description: "Azo free dyes & chemicals",
+      icon: <Droplets className="w-5 h-5 text-white" />,
+      color: "#3B82F6",
+    },
+    {
+      year: "04",
+      title: "CUTTING",
+      description: "Automatic cutting capabilities",
+      icon: <Scissors className="w-5 h-5 text-white" />,
+      color: "#EC4899",
+    },
+    {
+      year: "05",
+      title: "SEWING",
+      description: "Type of construction: Tubular/ Side Seam",
+      icon: <GiSewingMachine className="w-5 h-5 text-white" />,
+      color: "#10B981",
+    },
+    {
+      year: "06",
+      title: "SCREEN PRINTING & EMBELLISHMENT",
+      description: "Wide range of screenprinting and embellishment techniques",
+      icon: <Brush className="w-5 h-5 text-white" />,
+      color: "#F97316",
+    },
+    {
+      year: "07",
+      title: "PACKING & WORLDWIDE SHIPPING",
+      description:
+        "We can ship directly from our facility to any part of the world",
+      icon: <Ship className="w-5 h-5 text-white" />,
+      color: "#10B981",
     },
   ];
 
@@ -205,7 +255,7 @@ function Home() {
     { name: "APPLE" },
   ];
   return (
-    <div className="mt-20">
+    <div className="mt-20 lg:mt-30">
       <HeroBanner2
         images={bannerImages}
         interval={5000}
@@ -214,40 +264,162 @@ function Home() {
         videoPath={"/assets/banner/bannervideo.mp4"}
       />
 
-      <div className="my-10">
+      {/* <div className="my-10">
         <AnimatedCard
           title="Why Choose Us"
           description="We provide high quality services for your business"
           cards={whyChooseUs}
         />
-      </div>
+      </div> */}
 
       <div className="mx-4 py-10 md:mx-[10%]">
         <FlexColCard heading="Our Expertise" items={ourExpertise} />
       </div>
+
       <div className="mx-4 py-10 md:mx-[10%]">
         <CardShowcase items={projects} />
       </div>
 
-<div className="py-10">
-<Roadmap
-        items={roadmapData}
-        RoadmapHeading={"Our Journey & Future Roadmap"}
+      <BusinessHighlightsSection2
+        backgroundImage="/assets/banner/banner1.jpg"
+        cta={{
+          title: "Start Your ERP Journey Today!",
+          subTitle: "Get in touch with our experts for a free consultation.",
+          buttonText: "CONTACT US",
+          buttonLink: "#contact",
+        }}
       />
-</div>
-      
 
-      <div className="my-10 md:my-20 py-10 md:py-10 bg-primary/10">
-        <BrandMarquee
-          type="big-text"
-          text="Our Client"
-          brands={brands}
-          speed={30}
-          height={16}
+      <div className="px-4 py-10">
+        <ProcessSection
+          items={[
+            {
+              title: "EASY PRODUCT DEVELOPMENT",
+              description:
+                "Dedicated team to convert your design into a sample product",
+              icon: (
+                <Code2 className="w-8 h-8 md:w-16 md:h-16 text-indigo-600" />
+              ),
+            },
+            {
+              title: "SMALL MOQ",
+              description:
+                "We work with small MOQ's Starting from 500pcs/Style/Colour",
+              icon: (
+                <Layers className="w-8 h-8 md:w-16 md:h-16 text-indigo-600" />
+              ),
+            },
+            {
+              title: "QUALITY",
+              description:
+                "Stage by stage quality checks ensure you High Quality Garments",
+              icon: (
+                <ShieldCheck className="w-8 h-8 md:w-16 md:h-16 text-indigo-600" />
+              ),
+            },
+            {
+              title: "FLEXIBILITY",
+              description: "Always willing to adapt to our customer needs.",
+              icon: (
+                <Repeat className="w-8 h-8 md:w-16 md:h-16 text-indigo-600" />
+              ),
+            },
+            {
+              title: "SUSTAINABILITY",
+              description:
+                "We are taking all necessary steps towards sustainability such as Use of Solar energy, Zero discharge of effluents, use of organic/recycled materials etc.",
+              icon: <Leaf className="w-8 h-8 md:w-16 md:h-16 text-green-600" />,
+            },
+            {
+              title: "EMPLOYEE WELFARE",
+              description:
+                "Proud to have a workforce that has a long-term relationship with us, built on mutual trust & development",
+              icon: (
+                <Users className="w-8 h-8 md:w-16 md:h-16 text-indigo-600" />
+              ),
+            },
+            {
+              title: "COMPLIANCE CERTIFICATIONS",
+              description:
+                "We work with OEKO-TEX, GOTS, BCI, SEDEX, GRS & BSCI Certifications.",
+              icon: (
+                <BadgeCheck className="w-8 h-8 md:w-16 md:h-16 text-indigo-600" />
+              ),
+            },
+            {
+              title: "SHORT LEAD TIME",
+              description:
+                "With a vertical setup we deliver your products in a short lead time.",
+              icon: (
+                <Clock className="w-8 h-8 md:w-16 md:h-16 text-indigo-600" />
+              ),
+            },
+          ]}
+          title="What Makes PVR INTERNATIONAL Different?"
         />
       </div>
 
-      <AboutSection
+      <NexusCard
+        sectionTitle="Ensuring the safety of
+our people, customers
+and the environment"
+        sectionDescription="PVR INTERNATIONAL is recognized for its
+genuine dedication to business growth
+through the support of its people, fostering
+positive relationships with the local
+community, and minimizing the
+environmental impact resulting from its
+operations.
+We have initiated the adoption of clean
+energy sources, implemented a rigorous
+Zero Discharge Policy, and actively
+collaborate with various social compliance
+organizations to ensure equitable and
+sustainable work practices."
+        leftClassName="text-left"
+        rightClassName="grid-rows-3"
+        items={[
+          {
+            logo: "/assets/award/bci.jpg",
+            alt: "React",
+            title: "React",
+            className: "bg-[#3E2F89] col-span-2",
+          },
+          {
+            logo: "/assets/award/organic.png",
+            alt: "Hostinger",
+            title: "Hostinger",
+            className: "bg-[#c71313]",
+          },
+          {
+            logo: "/assets/award/sedex.png",
+            alt: "MySQL",
+            title: "MySQL",
+            className: "bg-[#67c090]",
+          },
+          {
+            logo: "/assets/award/bci.jpg",
+            alt: "Node.js",
+            title: "Node.js",
+            className: "bg-[#ea2264] col-span-2",
+          },
+          {
+            logo: "/assets/award/bci.jpg",
+            alt: "TailwindCSS",
+            title: "TailwindCSS",
+            className: "bg-[#f5babb] col-span-2",
+          },
+          {
+            logo: "/assets/award/sedex.png",
+            alt: "GitHub",
+            title: "GitHub",
+            className: "bg-[#b2b0e8]",
+          },
+        ]}
+      />
+
+      <div className="px-4">
+        <AboutSection
         subtitle="About Textilery"
         title="We Provide The Best Textile Industry Since 2005"
         description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
@@ -267,43 +439,80 @@ function Home() {
         founderRole="PVR Groups"
         founderImage="/assets/user.png"
         buttonLabel="About Us"
-        onButtonClick={() => alert("Go to About Page")}
+        onButtonClick={() => navigate("/about")}
       />
+      </div>
 
-      <BusinessHighlightsSection2
-        backgroundImage="/assets/banner/banner1.jpg"
-        cta={{
-          title: "Start your ERP journey today!",
-          subTitle: "Get in touch with our experts for a free consultation.",
-          buttonText: "CONTACT US",
-          buttonLink: "#contact",
-          contacts: [
-            {
-              icon: "/assets/svg/phone.svg",
-              title: "Call Us",
-              value: "+91 12345 67890",
-              href:"tel:+911234567890"
-            },
-            {
-              icon: "/assets/svg/email.svg",
-              title: "Email Us",
-              value: "support@example.com",
-              href:"mailto:support@example.com"
-            },
-          ],
-        }}
-      />
+      <div className="py-10">
+        <Roadmap
+          items={roadmapData}
+          RoadmapHeading={"Journey Of Our Garments"}
+        />
+      </div>
 
-    <div className="mx-4 py-20 md:mx-[10%]">
+      <div className="grid md:grid-cols-2 gap-12 px-4 lg:px-[10%] text-justify py-5">
+        {/* Left Column */}
+        <div className={`text-lg leading-relaxed `}>
+          <h3 className="text-2xl font-semibold text-primary mb-4">
+            Vertical Integration
+          </h3>
+          <p>
+            PVR INTERNATIONAL offers a vertically-integrated manufacturing
+            process that allows direct control over our processes and a
+            continuous improvement mindset enable resource and operational
+            efficiencу.
+          </p>
+          <p>
+            This model sets us apart from other apparel manufacturers and allow
+            us to offer our global customers with high quality products at
+            competitive costs.
+          </p>
+          <p>
+            Facility capabilities include knitting, dyeing, and finishing
+            techniques such as peaching, raising, sueding for open width and
+            tubular fabric, cut & sew, laser cutting, screen printing, digital
+            printing, embroidery, and embellishment.
+          </p>
+        </div>
+
+        {/* Right Column - Product List */}
+        <div
+          className={`bg-highlight1 p-6 rounded-lg shadow-md text-lg text-highlight1-foreground`}
+        >
+          <h3 className="text-2xl font-semibold  mb-4">Our Customers</h3>
+          <p>
+            Our company manufactures products for renowned global athletic and
+            lifestyle brands according to their specifications, offering a whole
+            range of products at competitive prices while ensuring social and
+            environmental aspects are adhered.
+          </p>
+          <p>
+            Our customers have come to trust PVR INTERNATIONAL as a strategic
+            partner for reasons including our personalized customer service,
+            sustainability commitment and manuacturing expertise.
+          </p>
+        </div>
+      </div>
+      <div className="my-10 md:my-20 py-10 md:py-10 bg-primary/10">
+        <BrandMarquee
+          type="big-text"
+          text="Our Client"
+          brands={brands}
+          speed={30}
+          height={16}
+        />
+      </div>
+
+      <div className="mx-4 py-20 md:mx-[10%]">
         <SimpleBanner
-        title={"Turning Complexity into Simplicity"}
-        imgPath={"/assets/h1.webp"}
-        path={"contact"}
-        buttonLabel={"Start Now"}
-        className="bg-purple-800"
-        buttonStyle="bg-foreground text-background "
-        textStyle="text-background"
-      />
+          title={"Turning Complexity into Simplicity"}
+          imgPath={"/assets/h1.webp"}
+          path={"contact"}
+          buttonLabel={"Start Now"}
+          className="bg-purple-800"
+          buttonStyle="bg-foreground text-background "
+          textStyle="text-background"
+        />
       </div>
     </div>
   );

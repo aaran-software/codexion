@@ -20,7 +20,7 @@ interface AboutProps {
   founderImage: string;
   buttonLabel: string;
   onButtonClick?: () => void;
-  counterDuration:number
+  counterDuration: number;
 }
 
 const AboutSection: React.FC<AboutProps> = ({
@@ -37,18 +37,18 @@ const AboutSection: React.FC<AboutProps> = ({
   founderImage,
   buttonLabel,
   onButtonClick,
-  counterDuration
+  counterDuration,
 }) => {
   return (
-    <section className="py-16 px-4">
+    <section className="py-16">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         {/* Left Images */}
-        <div className="relative w-full flex justify-center md:justify-start">
+        <div className="relative w-full flex justify-start">
           {/* Left Image */}
           <img
             src={leftImage}
             alt="About Left"
-            className="rounded-lg shadow-lg w-[85%] h-[55vh] md:w-[70%] md:h-[80vh] object-cover"
+            className="rounded-lg shadow-lg w-[75%] h-[55vh] md:w-[70%] md:h-[80vh] object-cover"
           />
 
           {/* Right Image */}
@@ -58,13 +58,13 @@ const AboutSection: React.FC<AboutProps> = ({
             className="
                 absolute 
                 top-1/2 
-                left-[45%] 
+                left-[35%] 
                 -translate-y-1/2 
                 rounded-lg shadow-lg 
                 w-[65%] h-[35vh] 
                 md:w-[50%] md:h-[60vh] 
                 object-cover 
-                border-[10px] md:border-[16px] border-white
+                border-y-[10px] border-l-[10px] md:border-[16px] border-white
                 "
           />
         </div>
@@ -111,12 +111,14 @@ const AboutSection: React.FC<AboutProps> = ({
               <h4 className="font-semibold text-gray-900">{founderName}</h4>
               <p className="text-gray-500 text-sm">{founderRole}</p>
             </div>
-            <button
-              onClick={onButtonClick}
-              className="ml-auto bg-green-500 text-white px-5 py-2 rounded shadow hover:bg-green-600 transition"
-            >
-              {buttonLabel}
-            </button>
+            {onButtonClick && (
+              <button
+                onClick={onButtonClick}
+                className="ml-auto bg-primary text-white px-5 py-2 rounded shadow hover:bg-highlight1 transition cursor-pointer"
+              >
+                {buttonLabel}
+              </button>
+            )}
           </div>
         </div>
       </div>

@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-@tailwind utilities;
-
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -137,13 +135,13 @@
 @layer base {
   :root {
     --radius: 0.65rem;
-    --background: #eaf3df;
+    --background: #ffffff;
     --foreground: oklch(0.145 0 0);
     --card-background: oklch(1 0 0);
     --card-foreground: oklch(0.145 0 0);
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.145 0 0);
-    --primary: #448d47;
+    --primary: #136f39;
     --primary-foreground: oklch(0.985 0 0);
     --hover: #3A3182;
     --secondary: oklch(0.97 0 0);
@@ -199,7 +197,7 @@
     --footer-foreground: #ffffff;
 
      --highlight1: #3a3182;
-    --highlight2: #3a3182;
+    --highlight2: #ca209c;
     --highlight3: #3a3182;
     --highlight4: #3a3182;
     --highlight5: #3a3182;
@@ -211,7 +209,7 @@
     --highlight5-foreground: #ffffff;
 
   }
-
+/* 
   .dark {
     --background: #000000;
     --foreground: oklch(0.985 0 0);
@@ -284,5 +282,5 @@
     --highlight4-foreground: #ffffff;
     --highlight5-foreground: #ffffff;
 
-  }
+  } */
 }
