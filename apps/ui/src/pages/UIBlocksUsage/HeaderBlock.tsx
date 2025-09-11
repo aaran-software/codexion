@@ -82,7 +82,7 @@ function HeaderBlock() {
           ],
         }}
       >
-        <ContactHeader contacts={contactItems} buttonLabel="Get a Quote" />
+        <ContactHeader contacts={contactItems} buttonLabel="Get a Quote" path={""} />
       </DocsWrapper>
 
 

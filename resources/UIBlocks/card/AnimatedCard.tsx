@@ -65,10 +65,9 @@ const AnimatedCard: React.FC<AnimatedCardProps> = ({
           <div
             key={index}
             data-index={index}
-       ref={(el) => {
-  cardRefs.current[index] = el;
-}}
-
+            ref={(el) => {
+              cardRefs.current[index] = el;
+            }}
             className={`
               relative group bg-white shadow-lg rounded-2xl overflow-hidden cursor-pointer mt-5
               animate__animated ${getAnimation(index)}
@@ -86,7 +85,7 @@ const AnimatedCard: React.FC<AnimatedCardProps> = ({
                 src={card.image}
                 alt={card.title}
                 loading="lazy"
-                className="w-full object-contain transition-transform duration-500 group-hover:scale-110"
+                className="w-full object-contain rounded-2xl transition-transform duration-500 group-hover:scale-110 mb-5"
               />
             </div>
 

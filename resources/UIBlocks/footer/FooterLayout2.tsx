@@ -1,6 +1,4 @@
 import { Link } from "react-router-dom";
-import NewUpdate from "../../../resources/components/advertisment/NewUpdate";
-import { useState } from "react";
 import { FaPhone } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import React from "react";
@@ -9,21 +7,15 @@ interface FooterColumn {
   title: string;
   items: { label: string; href: string }[];
 }
-
 interface FooterLayoutProps {
   about: FooterColumn;
   companyName: string;
-  consumerPolicy: FooterColumn & { phone: string; email: string };
   address: {
     lines: string[];
     socialLinks: { icon: React.ReactNode; href: string }[];
   };
-  updateConfig: {
-    id: string;
-    title: string;
-    description: string;
-    api: string;
-  };
+  phone: string;
+  email: string;
   mapLink: string;
   version: string;
   copyrights: string;
@@ -33,35 +25,18 @@ interface FooterLayoutProps {
 const FooterLayout2: React.FC<FooterLayoutProps> = ({
   about,
   companyName,
-  consumerPolicy,
+  // consumerPolicy,
   address,
-  updateConfig,
   version,
   copyrights,
   copyrights_company,
   mapLink,
+  phone,
+  email,
 }) => {
-  const [successMessage, setSuccessMessage] = useState("");
-  const [showUpdate, setShowUpdate] = useState(false);
-  const [resetKey, setResetKey] = useState(0);
-
-  const handleVisible = () => {
-    setResetKey((prev) => prev + 1);
-    setShowUpdate(true);
-  };
-
-  const handleCloseUpdate = () => {
-    setShowUpdate(false);
-  };
-
-  const handleUpdateStatus = (message: string) => {
-    setSuccessMessage(message);
-    setTimeout(() => setSuccessMessage(""), 3000);
-  };
-
   const renderColumn = (column: FooterColumn) => (
     <div>
-      <h5 className="font-bold mb-2 text-xl">{column.title}</h5>
+      <h5 className="font-bold mb-2 text-xl text-primary">{column.title}</h5>
       <ul className="space-y-1">
         {column.items.map((item, idx) => (
           <li key={idx}>
@@ -80,16 +55,18 @@ const FooterLayout2: React.FC<FooterLayoutProps> = ({
         {/* Address */}
 
         <div>
-          <h5 className="font-bold mb-2 text-2xl">{companyName}</h5>
+          <h5 className="font-bold mb-2 text-2xl text-primary">
+            {companyName}
+          </h5>
           <p className="text-white leading-6">
             {address.lines.map((line, idx) => (
               <span key={idx}>
                 {line.split(",").map((part, i, arr) => (
                   <React.Fragment key={i}>
                     {part.trim()}
-                    {i < arr.length - 1 && ","} {/* keep comma */}
+                    {i < arr.length - 1 && ","} 
                     {i < arr.length - 1 && <br />}{" "}
-                    {/* break line after comma */}
+                    
                   </React.Fragment>
                 ))}
                 {idx < address.lines.length - 1 && <br />}{" "}
@@ -98,18 +75,12 @@ const FooterLayout2: React.FC<FooterLayoutProps> = ({
             ))}
           </p>
           <p className="my-3">
-            <a
-              href={`tel:${consumerPolicy.phone}`}
-              className="flex items-center gap-1"
-            >
-              <FaPhone className="rotate-90 shrink-0 w-5 h-5" /> {consumerPolicy.phone}
+            <a href={`tel:${phone}`} className="flex items-center gap-1">
+              <FaPhone className="rotate-90 shrink-0 w-5 h-5" /> {phone}
             </a>
             <br />
-            <a
-              href={`mailto:${consumerPolicy.email}`}
-              className="flex items-center gap-1"
-            >
-              <MdEmail className="shrink-0 w-5 h-5" /> {consumerPolicy.email}
+            <a href={`mailto:${email}`} className="flex items-center gap-1">
+              <MdEmail className="shrink-0 w-5 h-5" /> {email}
             </a>
           </p>
           <div className="flex gap-3 mt-1">
@@ -132,7 +103,7 @@ const FooterLayout2: React.FC<FooterLayoutProps> = ({
 
         {/* Consumer Policy */}
         <div>
-          <h1 className="font-bold mb-2 text-xl">Visit Us</h1>
+          <h1 className="font-bold mb-2 text-xl text-primary">Visit Us</h1>
           <iframe
             src={mapLink}
             className="w-[100%] md:w-[80%]"
@@ -142,24 +113,6 @@ const FooterLayout2: React.FC<FooterLayoutProps> = ({
         </div>
       </div>
 
-      {showUpdate && (
-        <NewUpdate
-          key={resetKey}
-          id={updateConfig.id}
-          title={updateConfig.title}
-          description={updateConfig.description}
-          api={updateConfig.api}
-          onClose={handleCloseUpdate}
-          onStatus={handleUpdateStatus}
-        />
-      )}
-
-      {successMessage && (
-        <div className="fixed bottom-4 right-4 bg-green-100 text-green-800 px-4 py-2 rounded shadow-md z-50">
-          {successMessage}
-        </div>
-      )}
-
       <div className="flex flex-row gap-3 justify-between border-t border-white/10">
         <div></div>
         <div className="text-center py-3 bg-neutral-900">
@@ -168,10 +121,7 @@ const FooterLayout2: React.FC<FooterLayoutProps> = ({
             {copyrights_company}
           </a>
         </div>
-        <div
-          className="block my-auto text-background/50 pr-5 cursor-pointer whitespace-nowrap"
-          onClick={handleVisible}
-        >
+        <div className="block my-auto text-background/50 pr-5 cursor-pointer whitespace-nowrap">
           V {version}
         </div>
       </div>

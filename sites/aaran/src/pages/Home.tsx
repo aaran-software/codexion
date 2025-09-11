@@ -5,18 +5,18 @@ import TestimonialCarousel from "../../../../resources/UIBlocks/testimonials/Tes
 import ContactCard from "../../../../resources/UIBlocks/card/ContactCard";
 import Team2 from "../../../../resources/UIBlocks/team/team2";
 import TypingText from "../../../../resources/AnimationComponents/TypingText";
-import Roadmap from "../../../../resources/UIBlocks/timeline/Roadmap";
+import Roadmap from "../../../../resources/UIBlocks/Roadmap/Roadmap";
 import { Rocket, Target, Users } from "lucide-react"; // optional icons
 import HalfOrbit from "../../../../resources/UIBlocks/Orbit/HalfOrbit";
 import { FaBullseye, FaEye, FaHandshake } from "react-icons/fa";
 import HighlightCardWithIcon from "../../../../resources/UIBlocks/card/HighlightedCardwithIcon";
-import Consultant from "../../../../resources/UIBlocks/consultant/consultant";
+import BusinessHighlightsSection from "../../../../resources/UIBlocks/businessHighlights/BusinessHighlightsSection";
 
 const TransparentCard = lazy(
   () => import("../../../../resources/UIBlocks/card/TransparentCard")
 );
 const AnimatedCard = lazy(
-  () => import("../../../../resources/UIBlocks/card/animatedCard")
+  () => import("../../../../resources/UIBlocks/card/AnimatedCard")
 );
 const Pricing = lazy(
   () => import("../../../../resources/UIBlocks/pricingcard/Pricing")
@@ -367,7 +367,7 @@ function Home() {
       </div>
 
       <div className="py-20 ">
-        <Consultant
+        <BusinessHighlightsSection
           companyInfo={companyInfo}
           backgroundImage="/assets/bg.jpeg"
           cta={cta}
@@ -415,6 +415,7 @@ function Home() {
             { name: "TypeScript", icon: "/assets/tech/ts.png" },
           ]}
           arcAngle={Math.PI / 1.0}
+          title="TECH STACK"
         />
       </div>
 

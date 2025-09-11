@@ -28,6 +28,10 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
     const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 10;
     setShowLeft(isOverflowing && !atStart);
     setShowRight(isOverflowing && !atEnd);
+
+    // ✅ update current index based on scroll position
+    const newIndex = Math.round(el.scrollLeft / window.innerWidth);
+    setCurrentIndex(newIndex);
   };
 
   useEffect(() => {
@@ -61,16 +65,15 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
     goToSlide(newIndex);
   };
 
-  // Auto play
+  // ✅ Auto play (independent of currentIndex changes)
   useEffect(() => {
     if (images.length <= 1) return;
     const timer = setInterval(() => {
       const nextIndex = (currentIndex + 1) % images.length;
       goToSlide(nextIndex);
     }, interval);
-
     return () => clearInterval(timer);
-  }, [currentIndex, interval, images.length]);
+  }, [interval, images.length, currentIndex]);
 
   return (
     <div className="relative max-w-full overflow-hidden">
@@ -92,7 +95,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
           className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full shadow p-2 hover:bg-gray-200"
           icon={"right"}
         >
-          <span className="sr-only">previous slide</span>
+          <span className="sr-only">next slide</span>
         </ImageButton>
       )}
 
@@ -112,20 +115,21 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
                 alt={image.id}
                 className="w-full h-full object-cover"
               />
-              {/* Optional index indicator */}
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                {images.map((_, i) => (
-                  <span
-                    key={i}
-                    className={`w-3 h-3 rounded-full ${
-                      i === currentIndex ? "bg-primary" : "bg-background"
-                    }`}
-                  />
-                ))}
-              </div>
             </div>
           ))}
         </div>
+      </div>
+
+      {/* ✅ Single index indicator (moved outside loop) */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+        {images.map((_, i) => (
+          <span
+            key={i}
+            className={`w-3 h-3 rounded-full transition-colors ${
+              i === currentIndex ? "bg-primary" : "bg-background"
+            }`}
+          />
+        ))}
       </div>
     </div>
   );

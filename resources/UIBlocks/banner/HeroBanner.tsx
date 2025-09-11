@@ -6,7 +6,8 @@ type HeroBannerProps = {
   title: string;
   subtitle: string;
   buttonText: string;
-  buttonLink: string;
+  buttonLink?: string;
+  buttonHandleClick?: () => void;
 };
 
 const HeroBanner: React.FC<HeroBannerProps> = ({
@@ -15,6 +16,7 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
   subtitle,
   buttonText,
   buttonLink,
+  buttonHandleClick
 }) => {
       const [addressref, inView1] = useInView({ triggerOnce: false, threshold: 0.2 });
 
@@ -35,13 +37,14 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
         </h1>
 
         {/* Subtitle */}
-        <p className="text-gray-200 max-w-2xl mx-auto mb-8">
+        <p className="text-gray-200 mx-auto mb-8">
           {subtitle}
         </p>
 
         {/* Button */}
         <a
           href={buttonLink}
+          onClick={buttonHandleClick}
           className="inline-block bg-background text-foreground font-medium px-6 py-3 rounded-full shadow-md hover:shadow-lg hover:bg-hover transition hover:scale-105 duration-300"
         >
           {buttonText}

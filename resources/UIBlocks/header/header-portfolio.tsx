@@ -8,7 +8,8 @@ import { useAppSettings } from "../../../resources/global/useSettings";
 
 type MenuItem = {
   label: string;
-  path: string;
+  path?: string; // for scroll sections
+  route?: string;
 };
 
 type HeaderPortfolioProps = {
@@ -68,7 +69,12 @@ function HeaderPortfolio({
         <div
           className={`hidden lg:block bg-primary text-white md:px-[10%] py-1 px-5`}
         >
-          <ContactHeader contacts={contact} path={contactHeaderPath} routePath="" buttonLabel="Get a Quote" />
+          <ContactHeader
+            contacts={contact}
+            path={contactHeaderPath}
+            routePath=""
+            buttonLabel="Get a Quote"
+          />
         </div>
       )}
 
@@ -105,7 +111,7 @@ function HeaderPortfolio({
             >
               {logo.company_name} <br />
               <span
-                className="company-subname font-normal"
+                className="company-subname font-normal tracking-[0.3em]"
                 style={{ fontSize: `${logo.font_subsize}px` }}
               >
                 {logo.company_subname}
@@ -127,7 +133,7 @@ function HeaderPortfolio({
               >
                 {logo.company_name}
                 <span
-                  className="company-subname font-normal"
+                  className="company-subname font-normal tracking-[0.3em]"
                   style={{ fontSize: `${logo.font_subsize}px` }}
                 >
                   {logo.company_subname}
@@ -141,23 +147,41 @@ function HeaderPortfolio({
 
         <ul className="hidden md:flex flex-row justify-between gap-10 items-center">
           {menu.map((item) => (
-            <li key={item.path} className="relative group">
-              <ScrollLink
-                to={item.path}
-                smooth
-                duration={600}
-                offset={-70}
-                spy
-                onClick={() => setActive(item.path)}
-                onSetActive={() => setActive(item.path)}
-                className={`cursor-pointer text-lg transition-all duration-200 ${
-                  active === item.path
-                    ? "text-primary border-b-4 border-b-primary font-bold"
-                    : "text-foreground hover:text-hover"
-                }`}
-              >
-                {item.label}
-              </ScrollLink>
+            <li key={item.label} className="relative group">
+              {item.path ? (
+                // ScrollLink for section scroll
+                <ScrollLink
+                  to={item.path}
+                  smooth
+                  duration={600}
+                  offset={-70}
+                  spy
+                  onClick={() => setActive(item.path!)}
+                  onSetActive={() => setActive(item.path!)}
+                  className={`cursor-pointer text-lg transition-all duration-200 ${
+                    active === item.path
+                      ? "text-primary border-b-4 border-b-primary font-bold"
+                      : "text-foreground hover:text-hover"
+                  }`}
+                >
+                  {item.label}
+                </ScrollLink>
+              ) : item.route ? (
+                // Navigate for route
+                <span
+                  onClick={() => {
+                    navigate(item.route!);
+                    setActive(item.route!);
+                  }}
+                  className={`cursor-pointer text-lg transition-all duration-200 ${
+                    active === item.route
+                      ? "text-primary border-b-4 border-b-primary font-bold"
+                      : "text-foreground hover:text-hover"
+                  }`}
+                >
+                  {item.label}
+                </span>
+              ) : null}
             </li>
           ))}
         </ul>
@@ -189,19 +213,32 @@ function HeaderPortfolio({
 
         {/* Mobile Links */}
         <div className="flex flex-col mt-16">
-          {menu.map((item) => (
-            <ScrollLink
-              key={item.path}
-              to={item.path}
-              smooth
-              duration={600}
-              offset={-70}
-              onClick={() => setMenuVisible(false)}
-              className="border-b w-full border-gray-500 p-2 mt-5 hover:text-[#23aa70] last:border-b-0 cursor-pointer"
-            >
-              {item.label}
-            </ScrollLink>
-          ))}
+          {menu.map((item) =>
+            item.path ? (
+              <ScrollLink
+                key={item.label}
+                to={item.path}
+                smooth
+                duration={600}
+                offset={-70}
+                onClick={() => setMenuVisible(false)}
+                className="border-b w-full border-gray-500 p-2 mt-5 hover:text-[#23aa70] last:border-b-0 cursor-pointer"
+              >
+                {item.label}
+              </ScrollLink>
+            ) : item.route ? (
+              <span
+                key={item.label}
+                onClick={() => {
+                  navigate(item.route!);
+                  setMenuVisible(false);
+                }}
+                className="border-b w-full border-gray-500 p-2 mt-5 hover:text-[#23aa70] last:border-b-0 cursor-pointer"
+              >
+                {item.label}
+              </span>
+            ) : null
+          )}
         </div>
       </ul>
     </header>

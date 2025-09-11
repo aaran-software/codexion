@@ -1,4 +1,5 @@
 import HeroBanner from "../../../../../resources/UIBlocks/banner/HeroBanner";
+import HeroBanner2 from "../../../../../resources/UIBlocks/banner/HeroBanner2";
 import HighlightedBanner from "../../../../../resources/UIBlocks/banner/HighlightedBanner";
 import VerticalHoverBlocks from "../../../../../resources/UIBlocks/banner/VerticalHoverBlocks";
 import SimpleBanner from "../../../../../resources/UIBlocks/banner/SimpleBanner";
@@ -158,6 +159,43 @@ const BannerBlock = () => {
           className="bg-purple-800"
           buttonStyle="bg-foreground text-background "
           textStyle="text-background"
+        />
+      </DocsWrapper>
+
+      <DocsWrapper
+        title="HomeBanner Props"
+        propDocs={[
+          { name: "images", description: "Array of banner images (id, image)" },
+          {
+            name: "interval?",
+            description:
+              "Time interval (ms) for auto image change, default 5000",
+          },
+          {
+            name: "title",
+            description: "Fixed title text displayed on the banner",
+          },
+          {
+            name: "description",
+            description: "Fixed description text displayed under the title",
+          },
+        ]}
+        paths={{
+          file: "/resources/UIBlocks/banner/HomeBanner",
+          usedIn: ["/pages/Home.tsx"],
+          reusableIn: ["Landing", "About", "Services", "Contact"],
+        }}
+      >
+        <HeroBanner2
+          images={[
+            { id: "1", image: "/assets/bg.jpg" },
+            { id: "2", image: "/assets/bg2.jpg" },
+            { id: "3", image: "/assets/bg.jpg" },
+          ]}
+          interval={5000}
+          title="Welcome to Codexion"
+          description="We build smart solutions that accelerate your business growth."
+          videoPath={"/assets/banner/bannervideo.mp4"}
         />
       </DocsWrapper>
     </div>

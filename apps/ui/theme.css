@@ -42,6 +42,19 @@
     transform: translateY(0);
   }
 }
+/* for HoroBanner2 */
+@keyframes zoomInSlow {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+.animate-zoom {
+  animation: zoomInSlow 5s ease-in-out forwards;
+}
 
 .error-float {
   animation: floatFadeIn 0.3s ease-out;
@@ -133,6 +146,21 @@
   --color-profit: var(--profit);
   --color-loss: var(--loss);
   --color-input-warning: var(--input-warning);
+
+  --color-footer: var(--footer);
+  --color-footer-foreground: var(--footer-foreground);
+  --color-tag: var(--tag);
+
+  --color-highlight1: var(--highlight1);
+  --color-highlight2: var(--highlight2);
+  --color-highlight3: var(--highlight3);
+  --color-highlight4: var(--highlight4);
+  --color-highlight5: var(--highlight5);
+  --color-highlight1-foreground: var(--highlight1-foreground);
+  --color-highlight2-foreground: var(--highlight2-foreground);
+  --color-highlight3-foreground: var(--highlight3-foreground);
+  --color-highlight4-foreground: var(--highlight4-foreground);
+  --color-highlight5-foreground: var(--highlight5-foreground);
 }
 
 @layer base {
@@ -194,6 +222,21 @@
     --profit: #0cdf10;
     --loss: #d50808;
     --input-warning: #fef2f2;
+
+    --footer: #18281e;
+    --footer-foreground: #ffffff;
+
+    --highlight1: #3a3182;
+    --highlight2: #3a3182;
+    --highlight3: #3a3182;
+    --highlight4: #3a3182;
+    --highlight5: #3a3182;
+
+    --highlight1-foreground: #ffffff;
+    --highlight2-foreground: #ffffff;
+    --highlight3-foreground: #ffffff;
+    --highlight4-foreground: #ffffff;
+    --highlight5-foreground: #ffffff;
   }
 
   .dark {
@@ -252,5 +295,19 @@
     --profit: #099849;
     --loss: #d50808d5;
     --input-warning: #000000;
+
+    --footer: #18281e;
+    --footer-foreground: #ffffff;
+    --highlight1: #3a3182;
+    --highlight2: #3a3182;
+    --highlight3: #3a3182;
+    --highlight4: #3a3182;
+    --highlight5: #3a3182;
+
+    --highlight1-foreground: #ffffff;
+    --highlight2-foreground: #ffffff;
+    --highlight3-foreground: #ffffff;
+    --highlight4-foreground: #ffffff;
+    --highlight5-foreground: #ffffff;
   }
 }

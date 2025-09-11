@@ -13,7 +13,7 @@ const CardShowcase = lazy(
   () => import("../../../../resources/UIBlocks/CardShowcase")
 );
 import TestimonialCarousel from "../../../../resources/UIBlocks/testimonials/TestimonialCard";
-import Consultant from "../../../../resources/UIBlocks/consultant/consultant";
+import BusinessHighlightsSection from "../../../../resources/UIBlocks/businessHighlights/BusinessHighlightsSection";
 import { FaEnvelope, FaPhoneAlt } from "react-icons/fa";
 import PortfolioFooter3 from "../../../../resources/UIBlocks/footer/PortfolioFooter3";
 import HeroCarousel, {
@@ -614,7 +614,7 @@ const Home: React.FC = () => {
       </section>
 
       <div className="py-20 ">
-        <Consultant
+        <BusinessHighlightsSection
           companyInfo={companyInfo}
           backgroundImage="/assets/software.avif"
           cta={cta}

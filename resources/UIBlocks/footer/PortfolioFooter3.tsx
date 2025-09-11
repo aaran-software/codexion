@@ -4,7 +4,7 @@ import { useAppSettings } from "../../../resources/global/useSettings";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/button/Button";
 
-type ContactInfo = {
+export type ContactInfo = {
   icon: IconType;
   value: string;
   href?: string;

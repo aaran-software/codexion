@@ -153,6 +153,11 @@
         "url": "#",
         "items": [
           {
+            "title": "About Block",
+            "currentComponent": "aboutblock",
+            "url": "aboutblock"
+          },
+          {
             "title": "Banners Block",
             "currentComponent": "bannerblock",
             "url": "bannerblock"
@@ -168,9 +173,9 @@
             "url": "carouselblock"
           },
           {
-            "title": "Consulant Block",
-            "currentComponent": "consultantblock",
-            "url": "consultantblock"
+            "title": "Business Highlight Block",
+            "currentComponent": "businesshighlight",
+            "url": "businesshighlight"
           },
           {
             "title": "Contact Block",
@@ -191,6 +196,16 @@
             "title": "Header Block",
             "currentComponent": "headerblock",
             "url": "headerblock"
+          },
+          {
+            "title": "Hightlight Block",
+            "currentComponent": "highlightblock",
+            "url": "highlightblock"
+          },
+          {
+            "title": "Orbit Block",
+            "currentComponent": "orbitblock",
+            "url": "orbitblock"
           },
           {
             "title": "Portfolio Products Block",
@@ -223,7 +238,12 @@
             "url": "startingblock"
           },
           {
-            "title": "Testimonial Blocks Block",
+            "title": "Table Blocks",
+            "currentComponent": "tableblock",
+            "url": "tableblock"
+          },
+          {
+            "title": "Testimonial Blocks",
             "currentComponent": "testimonialblock",
             "url": "testimonialblock"
           },
@@ -236,6 +256,11 @@
             "title": "Rating and Review",
             "currentComponent": "rating",
             "url": "starrating"
+          },
+          {
+            "title": "Road Map",
+            "currentComponent": "roadmap",
+            "url": "roadmap"
           }
         ]
       },

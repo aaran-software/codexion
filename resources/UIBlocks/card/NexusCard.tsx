@@ -30,14 +30,24 @@ export default function NexusCard({
         </div>
 
         {/* RIGHT CONTENT (LOGOS GRID) */}
-        <div className={`grid grid-cols-3 gap-4 max-w-lg mx-auto ${rightClassName || ""}`}>
+        <div
+          className={`grid grid-cols-3 gap-4 max-w-lg mx-auto ${rightClassName || ""}`}
+        >
           {items.map((item, idx) => (
             <div
               key={idx}
               className={`p-6 flex flex-col items-center justify-center rounded-lg ${item.className || ""}`}
             >
-              <img src={item.logo} alt={item.alt} className="h-10 mb-2" />
-              <p>{item.title}</p>
+              <img
+                src={item.logo}
+                alt={item.alt}
+                className={`mb-2 transition-all duration-300 ${
+                  item.className?.includes("col-span-2")
+                    ? "h-10 w-24"
+                    : "h-10 w-10"
+                }`}
+              />
+              <p className="text-sm sm:text-base">{item.title}</p>
             </div>
           ))}
         </div>
